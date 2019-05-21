@@ -1,1 +1,1 @@
-# Online shopping portal :art:
+# Online shopping+rental portal :art:
