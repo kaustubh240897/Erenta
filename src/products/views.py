@@ -11,11 +11,13 @@ def product_list_view(request):
     }
     return render(request,"products/product_list.html", context)
 
-def product_detail_view(request, pk=None, *args, **kwargs):
+def product_detail_view(request, slug, *args, **kwargs):
     
-    instance = Product_description.objects.get_by_id(pk)
+    instance = Product_description.objects.get_by_slug(slug=slug)
     if instance is None:
         raise Http404("product doesnot exist")
+
+    
 
     context = {
         'object': instance

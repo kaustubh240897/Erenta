@@ -1,6 +1,8 @@
 import random
 import os
 from django.db import models
+from django.db.models.signals import pre_save,post_save
+from .utils import unique_slug_generator
 
 # Create your models here.
 def get_filename_ext(filepath):
@@ -31,8 +33,8 @@ class ProductManager(models.Manager):
     def all(self):
         return self.get_queryset().active()
 
-    def get_by_id(self, id):
-        qs = self.get_queryset().filter(id=id) # products_description.objects
+    def get_by_slug(self, slug):
+        qs = self.get_queryset().active().filter(slug=slug) # products_description.objects
         if qs.count()==1:
             return qs.first
         return None
@@ -44,12 +46,22 @@ class Product_description(models.Model):
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
     days = models.IntegerField( null=True)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
 
     objects = ProductManager()
 
+    def get_absolute_url(self):
+        return "/products/{slug}/".format(slug=self.slug)
+
     def __str__(self):
         return self.product_name
+
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug= unique_slug_generator(instance)
+pre_save.connect(product_pre_save_receiver, sender=Product_description)
+
 
 
 
