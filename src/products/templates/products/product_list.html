@@ -1,3 +1,16 @@
-{% for obj in qs %}
-<a href='{{ obj.get_absolute_url }}'>{{ obj.product_name }}</a><br/>
-{% endfor %}
+{% extends "base.html" %}
+
+{% block content %}
+     <div class='container'>
+         <div class='row'>
+             
+         {% for obj in qs %}
+         <div class='col'>
+     
+          {% include 'products/snippets/card.html' with instance=obj %}
+          </div>
+     {% endfor %}
+
+       </div>
+     </div>
+{% endblock %}
