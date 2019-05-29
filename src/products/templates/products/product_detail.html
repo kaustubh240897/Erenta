@@ -2,10 +2,20 @@
 
 {% block content %}
 
-{{ object.product_name }}<br/>
-{{ object.description }}<br/>
-{% if object.image %}
-<img src='{{ object.image.url }}' class='img-fluid' />
-{% endif %}
+<div class='container'>
+    <div class='row'>
+        <div class='col'>
+           <h1>{{ object.product_name }}</h1> 
+           {{ object.timestamp|timesince }} ago
+           <h3>{{ "title here"|title }}</h3>
+            {{ object.description|linebreaks }}<br/>
+             {% if object.image %}
+            <img src='{{ object.image.url }}' class='img-fluid' />
+             {% endif %}       
+
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
