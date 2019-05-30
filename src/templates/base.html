@@ -10,13 +10,16 @@
     <title>Basic Home Page!</title>
     {% include 'base/css.html' %}
     {% block base_head %} {% endblock %}
+   
   </head>
   <body>
     {% include 'base/navbar.html' with brand_name='ShopNow' %}
+    
+     
     {% block content %}
     {% endblock %}
 
-
+    
      {% include 'base/js.html' %}
   </body>
 </html>
