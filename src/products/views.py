@@ -7,7 +7,8 @@ from django.http import Http404
 def product_list_view(request):
     queryset = Product_description.objects.all()
     context = {
-        'qs': queryset
+        'qs': queryset ,
+         "title":"Products",
     }
     return render(request,"products/product_list.html", context)
 
@@ -20,7 +21,8 @@ def product_detail_view(request, slug, *args, **kwargs):
     
 
     context = {
-        'object': instance
+        'object': instance,
+         "title":"Products_details",
     }
     return render(request,"products/product_detail.html", context)
 

@@ -27,6 +27,8 @@ urlpatterns = [
     path('contact/',contact_page, name='contact'),
     path('about/',about_page, name='about'),
     path('products/', include(("products.urls", 'products'), namespace='products')),
+    path('search/', include(("search.urls", 'search'), namespace='search')),
+
    
 ]
 
