@@ -4,23 +4,24 @@
   <title>{{ title }}</title>
   <div class='container'>
               <div class='row mb-3'>
+                Results are here-:
            {% if query %}
             <div class='col-12 mb-3'>
                 Results for <b>{{ query }}</b>
                 <hr/>
             </div>
             
-             {% else %}
+            {% else %}
               
            <div class='col-12 col-md-6 mx-auto py-5'>
-               <input class='form-control' type='text' placeholder="Search">
+              {% include 'search/snippets/search-form.html' %}
             
             </div>
             <div class='col-12'>
                 <hr> 
             </div>
            {% endif %}
-              </div>
+    </div>
          <div class='row'>
             
 

@@ -5,7 +5,7 @@ from .views import search_product_view
 
 urlpatterns = [
    
-    path('',search_product_view , name='list'),
+    path('',search_product_view , name='query'),
     
 ]
 

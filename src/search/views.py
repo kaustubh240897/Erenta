@@ -8,7 +8,7 @@ def search_product_view(request):
     query = method_dict.get('q', None)
     print(query)
     if query is not None:
-        queryset = Product_description.objects.filter(product_name__iexact= query)
+        queryset = Product_description.objects.search(query)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -20,5 +20,6 @@ def search_product_view(request):
         query=self.request.GET.get('q')
         context['query']=query
         #SearchQuery.objects.create(query=query)
+        return context
 
     return render(request,"search/view.html", context)
