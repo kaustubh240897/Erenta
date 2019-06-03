@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path ,include
+from carts.views import cart_home
 #from products.views import product_list_view, product_detail_view
 
 from .views import home_page, about_page, contact_page
@@ -25,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_page, name='home'),
     path('contact/',contact_page, name='contact'),
+    path('cart/',cart_home,name='cart'),
     path('about/',about_page, name='about'),
     path('products/', include(("products.urls", 'products'), namespace='products')),
     path('search/', include(("search.urls", 'search'), namespace='search')),

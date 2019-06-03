@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import ContactForm
 
 def home_page(request):
+    #print(request.session.get("first_name","Unknown"))
     context = {
        "title":"Shop Now!",
        "content" : "Welcome to shopnow!"
