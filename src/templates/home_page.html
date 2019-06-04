@@ -8,7 +8,18 @@
 
 {% block content %}
 
+{% if request.user.is_authenticated %}
+<div class='row'>
+  <div class='col'>
+  
+  {{ premium_content }} {{ user }}!
+  </div>
+</div>
+{% else %}
+For better experience please Login.
+{% endif %}
 
+  
      <!-- <div class="container-fluid"> -->
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
