@@ -1,0 +1,12 @@
+<div class='container'>
+<form  method='POST' action='{% url "login" %}'>
+     {% csrf_token %}
+     {% if next %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+     
+
+     {{ form }}<br>
+<button type='submit' class='btn btn-success'> Submit </button>
+</form>
+</div>

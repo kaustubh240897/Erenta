@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, get_user_model
+from django.utils.http import is_safe_url
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .forms import LoginForm,RegisterForm
-from django.utils.http import is_safe_url
+
 
 
 # Create your views here.
