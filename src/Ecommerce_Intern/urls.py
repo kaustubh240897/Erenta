@@ -18,10 +18,12 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path ,include
+from django.contrib.auth.views import LogoutView
+
 #from carts.views import cart_home
 #from products.views import product_list_view, product_detail_view
-
-from .views import home_page, about_page, contact_page, login_page,register_page
+from accounts.views import login_page,register_page
+from .views import home_page, about_page, contact_page
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_page, name='home'),
@@ -29,6 +31,7 @@ urlpatterns = [
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
     path('about/',about_page, name='about'),
     path('login/',login_page, name='login'),
+    path('logout/',LogoutView.as_view(), name='logout'),
     path('register/',register_page, name='register'),
     path('products/', include(("products.urls", 'products'), namespace='products')),
     path('search/', include(("search.urls", 'search'), namespace='search')),
