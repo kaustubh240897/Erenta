@@ -28,7 +28,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query) | Q(description__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
+        lookups = Q(product_name__icontains=query) | Q(description__icontains=query) | Q(catogary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
@@ -51,6 +51,7 @@ class ProductManager(models.Manager):
 
 class Product_description(models.Model):
     product_name = models.CharField(max_length=100)
+    catogary = models.CharField(max_length=100, default='clothing')
     description = models.TextField()
     quantity = models.CharField(max_length=10, default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)

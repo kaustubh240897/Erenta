@@ -12,6 +12,7 @@ class Tag(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     active =models.BooleanField(default=True)
     products = models.ManyToManyField(Product_description, blank=True)
+    
 
     def __str__(self):
         return self.product_name
