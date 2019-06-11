@@ -21,5 +21,49 @@
     
     
      {% include 'base/js.html' %}
+    <script>
+      $(document).ready(function(){
+          var productForm= $(".form-product-ajax")
+          productForm.submit(function(event){
+
+             event.preventDefault();
+             console.log("form is not sending")
+             var thisForm = $(this)
+             var actionEndPoint=thisForm.attr("action");
+             var httpMethod = thisForm.attr("method");
+             var formData =thisForm.serialize();
+             $.ajax({
+                 url:actionEndPoint,
+                 method:httpMethod,
+                 data:formData,
+                 success: function(data){
+                    console.log("success")
+                    console.log(data)
+                    console.log("Added",data.added)
+                    console.log("Removed",data.removed)
+                    var submitSpan = thisForm.find(".submit-span")
+                    console.log(submitSpan.html())
+                    if (data.added){
+                      submitSpan.html( "In the cart <button type='submit' class='btn btn-link'>Remove?</button> ")
+                    }
+                    else{
+                      submitSpan.html("<button type='submit' class='btn btn-success'>Add  to cart</button>" )
+                    }
+                 },
+                 error: function(errorData){
+                    console.log("error")
+                    console.log(errorData)
+                 }
+
+             })
+
+             
+          })
+
+      })
+     
+    </script>
+
+
   </body>
 </html>

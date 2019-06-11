@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from .models import Cart
 from addresses.forms import AddressForm
 from addresses.models import Address
@@ -18,6 +19,7 @@ def cart_home(request):
 
 def cart_update(request):
     product_id=request.POST.get('product_id')
+   
     if product_id is not None:
         try:
             product_obj = Product_description.objects.get(id=product_id)
@@ -28,9 +30,20 @@ def cart_update(request):
         cart_obj, new_obj = Cart.objects.new_or_get(request)
         if product_obj in cart_obj.products.all():
             cart_obj.products.remove(product_obj)
+            added = False
         else:
             cart_obj.products.add(product_obj)
+            added= True
         request.session['cart_items']=cart_obj.products.count()
+
+        if request.is_ajax():
+            print("ajax request")
+            json_data = {
+                "added": added,
+                "removed": not added,
+            }
+            return JsonResponse(json_data)
+
     return redirect("cart:home")
 
 
