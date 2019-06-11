@@ -23,6 +23,7 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from carts.views import cart_home
 #from products.views import product_list_view, product_detail_view
 from accounts.views import login_page,register_page,guest_register_view
+from carts.views import cart_detail_api_view
 from .views import home_page, about_page, contact_page
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,8 +32,9 @@ urlpatterns = [
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
     path('about/',about_page, name='about'),
     path('login/',login_page, name='login'),
+    path('api/cart/',cart_detail_api_view, name='api_cart'),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
-     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
+    path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
     path('register/guest/',guest_register_view, name='guest_register'),
     path('logout/',LogoutView.as_view(), name='logout'),
     path('register/',register_page, name='register'),
