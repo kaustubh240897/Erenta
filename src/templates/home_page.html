@@ -8,6 +8,7 @@
 
 {% block content %}
 
+
 {% if request.user.is_authenticated %}
 <div class='row'>
   <div class='col'>
@@ -19,7 +20,7 @@
 For better experience please Login.
 {% endif %}
 
-  
+
      <!-- <div class="container-fluid"> -->
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -59,61 +60,17 @@ For better experience please Login.
       <span class="sr-only">Next</span>
     </a>
   </div>
+  <h2>Categories</h2>
 <!-- </div> -->
 
                              <!-- Cards   -->
 
-<div class="card-columns">
-  <div class="card" style="width:300px">
-  <img class="card-img-top" src="{% static 'img/a.jpg' %}" alt="Card image">
-  <div class="card-body">
-    <h4 class="card-title">Clothing</h4>
-    <p class="card-text">Latest releases </p>
-    <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
-  </div>
-</div>
-  <!-- <div class="card bg-primary">
-    <div class="card-body text-center">
-      <p class="card-text">Some text inside the first card</p>
-    </div>
-  </div> -->
 
 
-
-  
-    <div class="card" style="width:300px">
-  <img class="card-img-top" src="{% static 'img/b.jpg' %}" alt="Card image">
-  <div class="card-body">
-    <h4 class="card-title">Books/novels corner</h4>
-    <p>Want to read latest and famous Novels</p>
-    <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
-  </div>
-</div>
-<!-- <div class="card bg-warning"></div>
-    <div class="card-body text-center">
-      <p class="card-text">Some text inside the second card</p>
-    </div>3
-  </div> -->
-
-
-
-
-  
-    <div class="card" style="width:300px">
-  <img class="card-img-top" src="{% static 'img/c.jpg' %}" alt="Card image">
-  <div class="card-body">
-    <h4 class="card-title">Musical Instruments</h4>
-    <p class="card-text">Want to try Learn musical Instruments? </p>
-    <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
-  </div>
-</div>
+    {% include 'catogary/snippets/catogary.html' %}
   
 
-
-
-<!-- Multipleitem carousel -->
-  
-
+     
 
 
 {% endblock %}

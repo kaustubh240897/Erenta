@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <title>{{ title }}</title>
+  <div class='container'>
+              <div class='row mb-3'>
+                Items are here-:
+          
+            
+           
+            <div class='col-12'>
+                <hr> 
+            </div>
+           
+    </div>
+         <div class='row'>
+            
+
+         {% for obj in qs %}
+         <div class='col'>
+          
+          {% include 'products/snippets/card.html' with instance=obj %}
+          {% if forloop.counter|divisibleby:3 %}
+                   </div> </div> <div class='row'> <div class='col-12'> <hr/> </div> 
+          {% else %}
+           </div>
+          {% endif %}
+          
+     {% endfor %}
+
+       </div>
+     </div>
+{% endblock %}

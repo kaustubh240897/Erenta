@@ -40,6 +40,7 @@ urlpatterns = [
     path('register/',register_page, name='register'),
     path('products/', include(("products.urls", 'products'), namespace='products')),
     path('search/', include(("search.urls", 'search'), namespace='search')),
+    path('catogary/', include(("catogary.urls", 'catogary'), namespace='catogary')),
 
    
 ]
