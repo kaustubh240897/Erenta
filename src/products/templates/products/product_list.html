@@ -1,8 +1,15 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+{% url 'products:query_3' as catogary_list_url_2 %}
+{% url 'products:query' as catogary_list_url_1 %}
+{% url 'products:query_1' as catogary_list_url %}
   <title>{{ title }}</title>
      <div class='container'>
+      <a href="{{ catogary_list_url }}" > <button type="button" class="btn btn-dark btn-sm">Books/Novels</button></a>
+       <a href="{{ catogary_list_url_1 }}" ><button type="button" class="btn btn-dark btn-sm">Clothing</button></a>
+       <a href="{{ catogary_list_url_2 }}" ><button type="button" class="btn btn-dark btn-sm">Instruments</button></a>
          <div class='row'>
              
          {% for obj in qs %}
