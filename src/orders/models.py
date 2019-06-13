@@ -17,7 +17,7 @@ ORDER_STATUS_CHOICES = (
 class OrderManager(models.Manager):
     def new_or_get(self,billing_profile,cart_obj):
         created = False
-        qs=self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj,active=True, status='created')
+        qs=self.get_queryset().filter(billing_profile=billing_profile, cart=cart_obj, active=True, status='created')
         if qs.count()==1:
             obj = qs.first()
         else:
@@ -46,7 +46,8 @@ class Order(models.Model):
     def update_total(self):
         cart_total=self.cart.total
         shipping_total=self.shipping_total
-        new_total = math.fsum([cart_total , shipping_total])
+        
+        new_total = math.fsum([cart_total, shipping_total])
         formatted_total = format(new_total, '.2f')
         self.total=formatted_total
         self.save()
@@ -88,7 +89,7 @@ def post_save_cart_total(sender,created,instance,*args,**kwargs):
 
 post_save.connect(post_save_cart_total, sender=Cart)
 
-def post_save_order(sender,created,instance,*args,**kwargs):
+def post_save_order(sender,instance,created,*args,**kwargs):
     if created:
         instance.update_total()
 
