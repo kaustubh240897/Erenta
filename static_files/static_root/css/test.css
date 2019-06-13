@@ -1,5 +1,5 @@
-/* body{
-    color:blue;
+body{
+    /* background-color: #ffff80; */
 }
 .img-shop{
     height: auto;
@@ -8,10 +8,31 @@
     margin: 0 auto;
 }
 .carousel-item{
-     height:202px !important;
+     /* height:200px !important; */
 }
 .abc{
     width: 100%;
-    height: 400px;
+    height: 500px;
     background-size:cover; 
+}
+/* .carousel{
+    padding:-5%;
 } */
+.h{
+    color:red;
+}
+.p{
+    color:green;
+}
+.card{
+    margin-top:3%;
+}
+.card-columns{
+    /* padding: 2%; */
+    margin-left: 8%;
+    margin-right:8%;
+    margin-top:3%;
+}
+.card-img-top{
+    height:200px;
+}
