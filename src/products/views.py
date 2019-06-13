@@ -62,6 +62,27 @@ class ProductDetailSlugView( DetailView):
 # catogaries
 
 
+def catogary_product_view_4(request):
+    
+    query_4 = "Accessories"
+    
+    print(query_4)
+    if query_4 is not None:
+        queryset = Product_description.objects.search(query_4)
+    else:
+        queryset=Product_description.objects.all()
+    context = {
+          'qs': queryset ,
+         "title":"Products",
+    }
+    
+
+    return render(request,"products/view.html", context)
+
+
+
+
+
 def catogary_product_view_3(request):
     
     query_3 = "Instruments"

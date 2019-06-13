@@ -41,11 +41,13 @@ class ContactForm(forms.Form):
 
     #customized validation
   def clean_email(self):
-      email=self.cleaned_data.get("email")
-      if not "gmail.com" or not "ac.in" in email:
-         raise forms.ValidationError("Email should be gmail.com or ac.in")
-         return email
+        email=self.cleaned_data.get("email")
+        if not "gmail.com" in email:
+            raise forms.ValidationError("Email should be gmail.com ")
+            return email
 
 
+#   def clean_content(self):
+#         raise forms.ValidationError("Content is wrong")
 
 

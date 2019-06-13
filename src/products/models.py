@@ -49,9 +49,17 @@ class ProductManager(models.Manager):
     def search(self, query):
         return self.get_queryset().active().search(query)
 
+
+CATEGARY = (
+    (('Clothing'), ('Clothing')),
+    (('Accessories'), ('Accessories')),
+    (('Books + novels'), ('Books + novels')),
+    (('Instruments'), ('Instruments'))
+)
+
 class Product_description(models.Model):
     product_name = models.CharField(max_length=100)
-    catogary = models.CharField(max_length=100, default='clothing')
+    catogary = models.CharField(choices=CATEGARY, default=1, max_length=50)
     description = models.TextField()
     quantity = models.CharField(max_length=10, default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)

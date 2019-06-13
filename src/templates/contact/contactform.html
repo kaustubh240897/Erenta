@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class='text-center'>
-        <h1>{{ title }}</h1>
-       <h1>Hello, All!</h1>
-       </div>
+
    
        <div class='container'>
            
                <div class='row'>
                    <div class='col'>
-                       <p>{{ content }}</p>
+                      
                        
                        
    
@@ -25,13 +22,14 @@
                                <div class="row">
                            
                                    <!--Grid column-->
-                                   <div class="col-md-9 mb-md-0 mb-5">
-                                       <form id="contact-form" name="contact-form"  method="POST">
+                                   <div class="col-md-9 mb-md-0 mb-5 mx-auto">
+                                        <p>{{ content }}</p>
+                                       <form class='contact-form'  name="contact-form"  method="POST" action='{% url "contact" %}'>
                                            {% csrf_token %}
                            
                                            {{ form }}
                                            <div class="text-center text-md-left">
-                                           <a class="btn btn-primary" onclick="document.getElementById('contact-form').submit();">Send</a>
+                                           <button type='submit' class='btn-btn-default'>Submit</button>
                                        </div>
                            
                                        </form>
