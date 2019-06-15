@@ -1,6 +1,7 @@
 from django.views.generic import ListView,DetailView
 from django.shortcuts import render, get_object_or_404
 from .models import Product_description
+from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from django.http import Http404
 
@@ -30,7 +31,7 @@ def product_list_view(request):
 
 
 
-class ProductDetailSlugView( DetailView):
+class ProductDetailSlugView( ObjectViewedMixin ,DetailView):
     queryset = Product_description.objects.all()
     template_name = "products/product_detail.html"
 
@@ -54,6 +55,7 @@ class ProductDetailSlugView( DetailView):
             instance = qs.first()
         except:
             raise Http404("Uhhmmm ")
+        #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
         return instance
 
     
