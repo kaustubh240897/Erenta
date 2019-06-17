@@ -6,5 +6,5 @@ class ObjectViewedMixin(object):
         request = self.request
         instance = context.get('object')
         if instance:
-            object_viewed_signal.send(instance.__class__,instance=instance, request=request)
+            object_viewed_signal.send(instance.__class__ , instance=instance, request=request)
         return context

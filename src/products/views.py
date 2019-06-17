@@ -5,6 +5,7 @@ from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from django.http import Http404
 
+
 # Create your views here.
 def product_list_view(request):
     queryset = Product_description.objects.all()
@@ -31,7 +32,7 @@ def product_list_view(request):
 
 
 
-class ProductDetailSlugView( ObjectViewedMixin ,DetailView):
+class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
     queryset = Product_description.objects.all()
     template_name = "products/product_detail.html"
 
