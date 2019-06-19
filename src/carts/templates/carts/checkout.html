@@ -66,6 +66,12 @@
      </div>
      {% else %}
 
+       {% if not has_card %}
+       <!-- enter credit card-->
+       <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
+
+       {% else %}
+
        <h1> Finalize Checkout </h1>
        <p> Cart Items: {% for product in object.cart.products.all %} {{ product }} {% if not forloop.last %}, {% endif %} {% endfor %} </p>
        <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
@@ -80,7 +86,7 @@
 
        </form>
        
-       
+       {% endif %}
 
     {% endif %}
 {% endif %}
