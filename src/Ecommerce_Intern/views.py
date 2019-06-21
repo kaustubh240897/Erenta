@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
-from products.models import Product_description
+from products.models import Product_description,Contact
 from django.views.generic import ListView
 
 def home_page(request):
@@ -24,6 +24,7 @@ def about_page(request):
 
 def contact_page(request):
    contact_form = ContactForm(request.POST or None)
+   
    context = {
        "title":"Contact",
        "content":"welcome to contact page",
@@ -32,14 +33,18 @@ def contact_page(request):
 
     
 
-   #if request.method== "POST":
-       #print(request.POST)
-       #print(request.POST.get('name'))
-       #print(request.POST.get('email'))
-       #print(request.POST.get('subject'))
-       #print(request.POST.get('message'))
+   if request.method== "POST":
+       
+       name=request.POST.get('name')
+       email=request.POST.get('email')
+       subject=request.POST.get('subject')
+       message=request.POST.get('message')
+       contact = Contact(name=name, email=email, subject=subject, message=message)
+       contact.save()
+       
    if contact_form.is_valid():
        print(contact_form.cleaned_data)
+       
        if request.is_ajax():
            return JsonResponse({"message": "Thank You "})
 
@@ -49,6 +54,7 @@ def contact_page(request):
             return HttpResponse(errors, status=400,content_type= 'application/json')
    
 
+   
 
    return render(request,"contact/contactform.html",context)
 

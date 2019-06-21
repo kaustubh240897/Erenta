@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+</br>
+</br>
+</br>
 <title>{{ title }}</title>
 <div class='container'>
     <div class='row'>
@@ -8,6 +11,7 @@
            <h1>{{ object.product_name }}</h1> 
            {{ object.timestamp|timesince }} ago
            <h3>{{ "title here"|title }}</h3>
+           <h6> Cost per day-: ${{ object.cost_per_day }}</h6>
             {{ object.description|linebreaks }}<br/>
              {% if object.image %}
             <img src='{{ object.image.url }}' class='img-fluid' />
@@ -15,11 +19,46 @@
 
         </div>
         <div class='col-12 col-md-6'>
-            {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
-            
-        </div>
-    </div>
+           
+             
+
+      <form class='save-detail'  name="save-detail"  method="POST" action="/products/slug:slug/"></form>  {% csrf_token %}
+            <h6>Quantity</h6>
+             
+         <div class="col-sm-4 ">
+        <input type="text" value="1" class="form-control" id="name3"> 
+       </div>
+
+         
+ 
+    </br>
+    
+
+     <div class="form-group">
+  <label for="sel1">Select size:</label>
+  <select class="form-control" id="sel1">
+    <option>None</option>
+    <option>S</option>
+    <option>M</option>
+    <option>L</option>
+    <option>XL</option>
+  </select>
+</div> 
+      
+</br>
+<h6>Number of Days you want it?</h6>
+ <div class="col-sm-4 ">
+        <input type="text" value="1" class="form-control" id="name3"> 
+       </div>
+    </br>
+
+  <button type='submit' class='btn btn-outline-dark mx-auto '>Save</button>
+ 
+</br>
+</br>
+</form>
+ {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
 </div>
-
-
+ </div>
 {% endblock %}
+

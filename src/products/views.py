@@ -35,6 +35,7 @@ def product_list_view(request):
 class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
     queryset = Product_description.objects.all()
     template_name = "products/product_detail.html"
+    
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)

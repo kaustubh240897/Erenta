@@ -14,6 +14,14 @@ ORDER_STATUS_CHOICES = (
     ('refunded','Refunded'),
 )
 
+SIZE = (
+    (('None'),('None')),
+    (('S'),('S')),
+    (('M'),('M')),
+    (('L'),('L')),
+   (('XL'),('XL')),
+ )
+
 class OrderManager(models.Manager):
     def new_or_get(self,billing_profile,cart_obj):
         created = False
@@ -29,6 +37,7 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     billing_profile    = models.ForeignKey(BillingProfile, null=True,blank=True, on_delete=models.CASCADE)
     order_id           = models.CharField( max_length=120, blank=True)
+    
     shipping_address   = models.ForeignKey(Address, related_name="shipping_address", null=True,blank=True, on_delete=models.CASCADE)
     billing_address    = models.ForeignKey(Address, related_name="billing_address", null=True,blank=True, on_delete=models.CASCADE)
     cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
@@ -94,3 +103,14 @@ def post_save_order(sender,instance,created,*args,**kwargs):
         instance.update_total()
 
 post_save.connect(post_save_order, sender=Order)
+
+
+
+# class order_details(models.Model):
+#     billing_profile    = models.ForeignKey(BillingProfile, null=True,blank=True, on_delete=models.CASCADE)
+#     quantity           = models.CharField(max_length=10, default=1, blank=True) 
+#     size               = models.CharField(choices=SIZE, default=1, max_length=10, blank=True)
+#     days               = models.IntegerField( null=True, blank=True)
+    
+#     def __str__(self):
+#         return self.billing_profile

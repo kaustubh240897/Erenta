@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import path ,include
 from django.contrib.auth.views import LogoutView
@@ -32,6 +32,8 @@ urlpatterns = [
     path('contact/',contact_page, name='contact'),
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
     path('about/',about_page, name='about'),
+    #path('accounts/login/',RedirectView.as_view(url='/login')),
+    path('accounts/',include(("accounts.urls", 'accounts'), namespace='accounts')),
     path('login/',LoginView.as_view(), name='login'),
     path('api/cart/',cart_detail_api_view, name='api_cart'),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
