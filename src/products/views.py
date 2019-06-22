@@ -61,7 +61,18 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         return instance
 
     
-    
+
+# def order_detail(request):
+#     if request.method == "POST":
+#         quantity=request.POST.get('quantity')
+#         size=request.POST.get('size')
+#         days=request.POST.get('days')
+#         order_det = order_details(quantity=quantity, size=size, days=days)
+#         order_det.save()
+
+#     return render(request,"products/product_form.html")
+           
+
 
 # catogaries
 

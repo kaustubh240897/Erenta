@@ -10,6 +10,7 @@ from .views import catogary_product_view_3
 from .views import catogary_product_view_4
 
 
+
 urlpatterns = [
    
     path('',product_list_view, name='list'),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('Novels',catogary_product_view_2 , name='query_1'),
     path('instruments',catogary_product_view_3 , name='query_3'),
     path('Accessories',catogary_product_view_4 , name='query_4'),
+   
 
 ]
 

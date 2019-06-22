@@ -9,7 +9,11 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Product Name</th>
+      <th scope="col">quantity</th>
+      <th scope="col">size</th>
+      <th scope="col">days</th>
       <th scope="col">Price</th>
+      
       
     </tr>
   </thead>
@@ -24,24 +28,27 @@
 
         {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
       </td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td>{{ product.cost_per_day }}</td>
       
     </tr>
      
     {% endfor %}
     <tr>
-      <td colspan="2"></td>
+      <td colspan="5"></td>
       
        <td><b>Subtotal</b> $<span class='cart-subtotal'> {{ cart.subtotal }} </span></td>
     </tr>
     
     <tr>
-      <td colspan="2"></td>
+      <td colspan="5"></td>
       
        <td><b>Total</b> $<span class='cart-total'> {{ cart.total }}</span></td>
     </tr>
 
-    <td colspan="2"></td>
+    <td colspan="5"></td>
       
        <td><a class='btn btn-lg btn-black btn-success' href='{% url "cart:checkout" %}'>Checkout</a></td>
     </tr>

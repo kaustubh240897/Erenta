@@ -20,23 +20,20 @@
         </div>
         <div class='col-12 col-md-6'>
            
-             
+            
+ {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
+ 
+        </br> 
 
-      <form class='save-detail'  name="save-detail"  method="POST" action="/products/slug:slug/"></form>  {% csrf_token %}
-            <h6>Quantity</h6>
+     <h6>Quantity</h6>
              
          <div class="col-sm-4 ">
-        <input type="text" value="1" class="form-control" id="name3"> 
+        <input type="text" value="1" name='quantity' class="form-control" id="name3"> 
        </div>
-
-         
- 
-    </br>
-    
-
-     <div class="form-group">
+</br>
+    <div class="form-group" name='size'>
   <label for="sel1">Select size:</label>
-  <select class="form-control" id="sel1">
+  <select class="form-control" name='size' id="sel1">
     <option>None</option>
     <option>S</option>
     <option>M</option>
@@ -48,16 +45,14 @@
 </br>
 <h6>Number of Days you want it?</h6>
  <div class="col-sm-4 ">
-        <input type="text" value="1" class="form-control" id="name3"> 
+        <input type="text" value="1" name='days' class="form-control" id="name3"> 
        </div>
-    </br>
-
-  <button type='submit' class='btn btn-outline-dark mx-auto '>Save</button>
  
+ </br>
 </br>
-</br>
-</form>
- {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
+
+
+
 </div>
  </div>
 {% endblock %}

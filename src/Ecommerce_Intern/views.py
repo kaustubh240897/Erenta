@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
+from orders.models import order_details
 from django.views.generic import ListView
 
 def home_page(request):
@@ -34,7 +35,6 @@ def contact_page(request):
     
 
    if request.method== "POST":
-       
        name=request.POST.get('name')
        email=request.POST.get('email')
        subject=request.POST.get('subject')
@@ -58,3 +58,12 @@ def contact_page(request):
 
    return render(request,"contact/contactform.html",context)
 
+
+
+
+
+
+            
+               
+
+    

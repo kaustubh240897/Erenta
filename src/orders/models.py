@@ -106,11 +106,11 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
-# class order_details(models.Model):
-#     billing_profile    = models.ForeignKey(BillingProfile, null=True,blank=True, on_delete=models.CASCADE)
-#     quantity           = models.CharField(max_length=10, default=1, blank=True) 
-#     size               = models.CharField(choices=SIZE, default=1, max_length=10, blank=True)
-#     days               = models.IntegerField( null=True, blank=True)
+class order_details(models.Model):
+     #order_id           = models.ForeignKey(Order, null=True,blank=True, on_delete=models.CASCADE)
+     quantity           = models.CharField(max_length=10, default=1, blank=True) 
+     size               = models.CharField(choices=SIZE, default=1, max_length=10, blank=True)
+     days               = models.IntegerField( null=True, blank=True)
     
-#     def __str__(self):
-#         return self.billing_profile
+     def __str__(self):
+         return self.order_id.order_id
