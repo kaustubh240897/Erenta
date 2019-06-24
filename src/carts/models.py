@@ -7,6 +7,8 @@ from products.models import Product_description
 
 User = settings.AUTH_USER_MODEL
 
+
+
 class CartManager(models.Manager):
     def new_or_get(self , request):
         cart_id = request.session.get("cart_id", None)
@@ -36,6 +38,9 @@ class CartManager(models.Manager):
 class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product_description,blank=True)
+    # quantity = models.IntegerField(default=1)
+    # size     = models.CharField( default=None, max_length=10)
+    # days    = models.IntegerField( null=True, blank=True) 
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     total = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -45,6 +50,8 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+
 
 
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
@@ -52,7 +59,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
         products = instance.products.all()
         total=0
         for x in products:
-            total += x.cost_per_day
+            total += x.cost_per_day 
         if instance.subtotal != total:
             instance.subtotal=total
             instance.save()

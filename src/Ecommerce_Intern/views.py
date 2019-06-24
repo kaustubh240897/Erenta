@@ -3,7 +3,6 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
-from orders.models import order_details
 from django.views.generic import ListView
 
 def home_page(request):
