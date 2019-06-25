@@ -32,7 +32,7 @@ EMAIL_HOST_USER = 'kaustubh.dwi@gmail.com' # sendgrid
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Python ecommerce <kaustubh.dwi@gmail.com>'
+DEFAULT_FROM_EMAIL = 'Python rental <kaustubh.dwi@gmail.com>'
 BASE_URL = '127.0.0.1:8000'
 
 MANAGERS = (
@@ -44,7 +44,9 @@ ADMINS = MANAGERS
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+
+
 
 
 # Application definition
