@@ -25,7 +25,7 @@ SECRET_KEY = 'az07)e=s3ttmo+5l)!)1nw7!q=kd9sbah^&9qjj-(&y93q)167'
 
 
 
-ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'kaustubh.dwi@gmail.com' # sendgrid
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
     
     'products',
     'search',

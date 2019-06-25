@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView,FormView,DetailView
+from django.views.generic import CreateView,FormView,DetailView,View,UpdateView
 from django.utils.http import is_safe_url
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import LoginForm,RegisterForm,GuestForm
+from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm
 from .models import GuestEmail
 from .signals import user_logged_in
 
@@ -48,6 +49,21 @@ def guest_register_view(request):
             return redirect("/register/")
     
     return redirect("/register/")
+
+
+class UserDetailUpdateView(LoginRequiredMixin,UpdateView):
+    form_class = UserDetailChangeForm
+    template_name = 'accounts/detail-update-view.html'
+    #succeess_url = '/account/'
+    def get_object(self):
+        return self.request.user
+    def get_context_data(self,*args,**kwargs):
+        context = super(UserDetailUpdateView,self).get_context_data(*args,**kwargs)
+        context['title']='Change your details'
+        return context
+    def get_success_url(self):
+        return reverse("account:home")
+
 
 
 class LoginView(FormView):

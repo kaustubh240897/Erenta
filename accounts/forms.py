@@ -32,6 +32,12 @@ class UserAdminCreationForm(forms.ModelForm):
             user.save()
         return user
 
+class UserDetailChangeForm(forms.ModelForm):
+    full_name = forms.CharField(label='Name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
+    class Meta:
+        model = User
+        fields = ['full_name']
+
 
 class UserAdminChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on
@@ -42,7 +48,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('full_name', 'email', 'password', 'active', 'admin')
+        fields = ('full_name', 'email', 'password', 'is_active', 'admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
