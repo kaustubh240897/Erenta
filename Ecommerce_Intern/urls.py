@@ -46,6 +46,7 @@ urlpatterns = [
     path('register/',RegisterView.as_view(), name='register'),
     path('settings/',RedirectView.as_view(url='/account')),
     path('products/', include(("products.urls", 'products'), namespace='products')),
+    path('orders/', include(("orders.urls", 'orders'), namespace='orders')),
     path('search/', include(("search.urls", 'search'), namespace='search')),
     path('catogary/', include(("catogary.urls", 'catogary'), namespace='catogary')),
 

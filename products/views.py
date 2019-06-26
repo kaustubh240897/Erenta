@@ -1,5 +1,6 @@
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404
 from .models import Product_description
 from analytics.mixins import ObjectViewedMixin
@@ -33,7 +34,7 @@ def product_list_view(request):
 #     return render(request,"products/product_detail.html", context)
 
 class UserProductHistoryView(LoginRequiredMixin ,ListView):
-    template_name = "products/product_list.html"
+    template_name = "products/user-history.html"
     
 
     def get_context_data(self, *args, **kwargs):
@@ -44,10 +45,8 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(Product_description)
-        viewed_ids = [x.object_id for x in views]
-        return Product_description.objects.filter(pk__in=viewed_ids)
-
+        views = request.user.objectviewed_set.by_model(Product_description, model_queryset=False)[:10]
+        return views
 
 
 class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
