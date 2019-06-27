@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+<div class='container'>
+</br>
 <form method='POST'>{% csrf_token %}
-                           
-{{ form }}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+{{ form.as_p }}
              
 <button type='submit' class='btn btn-success'>Submit</button>
 </form>
+</div>
 {% endblock %}

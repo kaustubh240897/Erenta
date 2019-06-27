@@ -2,8 +2,8 @@
 {% url 'catogary:query_3' as catogary_list_url_2 %}
 {% url 'catogary:query' as catogary_list_url_1 %}
 {% url 'catogary:query_1' as catogary_list_url %}
-
-
+<div class='container'>
+ <div class='row'>
   <div class='card-columns'>
   <div class="card" style="width:300px">
  <a href="{{ catogary_list_url }}" ><img class="card-img-top" src="{% static 'img/b.jpg' %}"  alt="Card image"  ></a>
@@ -22,7 +22,7 @@
     <p class="card-text">Latest releases </p>
   </div>
   </div>
-  <div></div>
+  
 
   <div class="card" style="width:300px">
    <a href="{{ catogary_list_url_2 }}" ><img class="card-img-top" src="{% static 'img/c.jpg' %}" alt="Card image"></a>
@@ -32,5 +32,7 @@
     <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
   </div>
   </div>
+</div>
+</div>
 
-
+</div>

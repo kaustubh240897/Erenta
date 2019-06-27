@@ -81,7 +81,7 @@ def checkout_home(request):
     shipping_address_id = request.session.get("shipping_address_id",None)
     #billing_address_form = AddressForm()
 
-    billing_profile, billing_profile_created =BillingProfile.objects.new_or_get(request)
+    billing_profile,billing_profile_created = BillingProfile.objects.new_or_get(request)
     address_qs = None
     has_card = False
     if billing_profile is not None:

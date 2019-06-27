@@ -4,16 +4,18 @@ from django.contrib.auth.models import (
 )
 
 class UserManager(BaseUserManager):
-    def create_user(self, email,full_name, password=None, is_active=True, is_staff=False , is_admin=False):
+    def create_user(self, email, full_name, password=None, is_active=True, is_staff=False , is_admin=False):
         if not email:
             raise ValueError("User must have an Email Address")
         if not password:
             raise ValueError("User must have Password")
         if not full_name:
             raise ValueError("full name is required")
+        
         user_obj = self.model(
             email = self.normalize_email(email),
-            full_name = full_name
+            full_name = full_name,
+            
         
         )
         user_obj.set_password(password) #set user password
@@ -44,7 +46,7 @@ class UserManager(BaseUserManager):
 
 # Create your models here.
 class User(AbstractBaseUser):
-    email = models.EmailField(max_length=255,unique=True)
+    email = models.EmailField(max_length=255,unique=True,null=True)
     full_name = models.CharField(max_length=255,blank=True,null=True)
     is_active = models.BooleanField(default=True) # can login
     staff = models.BooleanField(default=False)
@@ -95,3 +97,37 @@ class GuestEmail(models.Model):
     
     def __str__(self):
         return self.email
+
+
+
+
+    
+    
+
+
+
+class Supplier(models.Model):
+    # email = models.EmailField(max_length=255,unique=True)
+    # full_name = models.CharField(max_length=255,blank=True,null=True)
+    # password1 = models.CharField(max_length=16,null=True)
+    # password2 = models.CharField(max_length=16,null=True)
+    Shop_name = models.CharField(max_length=100,blank=True,unique=True,null=True)
+    Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
+    Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
+    Postal_code = models.IntegerField(blank=True,null=True)
+    City = models.CharField(max_length=55,blank=True,null=True)
+    Mobile_number = models.IntegerField(blank=True,null=True)
+    Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
+    is_active = models.BooleanField(default=True) # can login
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return str(self.Shop_name)
+    
+
+
+
+
+
+    
