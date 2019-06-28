@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+</br>
+
+Welcome {{ request.user }}!
+</br>
+<div class='container'>
+<div class='row'>
+    <div class='col-12'>
+        <h1>Dashboard</h1>
+        <hr/>
+    </div>
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Support</h5>
+      <div class='list-group'>
+          <a class='list-group-item' href='{% url "about" %}'>About </a>
+          <a class='list-group-item' href='{% url "contact" %}'>Contact </a>
+      </div>
+      
+    
+  </div>
+</div>
+</div>
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Orders</h5>
+     <div class='list-group'>
+          <a class='list-group-item' href='{% url "orders:list" %}'>My Orders </a>
+          
+            <!-- <a class='list-group-item' href='#'>Addresses </a> -->
+      </div>
+    
+  </div>
+</div>
+</div>
+
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Personal Info</h5>
+        <a class='list-group-item' href='{% url "account:user-update" %}'>Update details </a>
+          <a class='list-group-item' href='{% url "password_change" %}'> ChangePassword </a>
+    
+  </div>
+</div>
+</div>
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Add Products</h5>
+        <a class='list-group-item' href='{% url "add" %}'>Add Product </a>
+    
+  </div>
+</div>
+</div>
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">My Products</h5>
+        <a class='list-group-item' href='{% url "account:user-product-history" %}'>Products </a>
+    
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+</div>
+</div>
+{% endblock %}

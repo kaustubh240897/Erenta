@@ -1,12 +1,22 @@
 from django.db.models import Q
+from django.conf import settings
 import random
 import os
 from django.db import models
+from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save,post_save
 from Ecommerce_Intern.utils import unique_slug_generator
 from django.urls import reverse
 
+User = settings.AUTH_USER_MODEL
 # Create your models here.
+MY_CHOICES = ((1, 'S'),
+               (2, 'M'),
+               (3, 'L'),
+               (4, 'XL'),
+               (5, 'Not applicable'))
+
+
 def get_filename_ext(filepath):
     base_name=os.path.basename(filepath)
     name, ext=os.path.splitext(base_name)
@@ -60,12 +70,14 @@ CATEGARY = (
 
 class Product_description(models.Model):
     product_name = models.CharField(max_length=100)
-    catogary = models.CharField(choices=CATEGARY, default=1, max_length=50)
+    categary = models.CharField(choices=CATEGARY, default=1, max_length=50)
+    sub_categary = models.CharField(max_length=50,default=None,null=True)
     description = models.TextField()
-    #quantity = models.CharField(max_length=10, default=1, blank=True) 
+    quantity = models.IntegerField(default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
-    #size = models.CharField(choices=SIZE, default=1, max_length=10, blank=True)
+    size = MultiSelectField(choices=MY_CHOICES,default=5)
     #days = models.IntegerField( null=True, blank=True)
+    email = models.ForeignKey(User,default=True,on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)

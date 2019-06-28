@@ -1,10 +1,11 @@
-from django.views.generic import ListView,DetailView,View
+from django.views.generic import ListView,DetailView,View,CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404
 from .models import Product_description
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
+from .forms import ProductForm
 
 from django.http import Http404
 
@@ -174,3 +175,15 @@ def catogary_product_view_2(request):
 
     return render(request,"products/view.html", context)
 
+class SupplierHomeView(LoginRequiredMixin, DetailView):
+    template_name = 'products/dashboard.html'
+    def get_object(self):
+        return self.request.user
+    
+
+
+class AddProductView(LoginRequiredMixin,CreateView):
+    model = Product_description
+    form_class = ProductForm
+    template_name = 'products/add_products.html'
+    success_url = '/supplier/'

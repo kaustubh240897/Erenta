@@ -24,6 +24,7 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import product_list_view, product_detail_view
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierRegisterView,SupplierLoginView
 from billing.views import payment_method_view,payment_method_createview
+from products.views import SupplierHomeView,AddProductView
 from carts.views import cart_detail_api_view
 from .views import home_page, about_page, contact_page
 urlpatterns = [
@@ -51,6 +52,8 @@ urlpatterns = [
     path('orders/', include(("orders.urls", 'orders'), namespace='orders')),
     path('search/', include(("search.urls", 'search'), namespace='search')),
     path('catogary/', include(("catogary.urls", 'catogary'), namespace='catogary')),
+    path('supplier/',SupplierHomeView.as_view(),name='supplier'),
+    path('add/',AddProductView.as_view(),name='add')
 
    
 ]

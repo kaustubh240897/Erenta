@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 </br>
-<div class='container' action='/products/'>
-<form  method='POST'>{% csrf_token %}
+<div class='container' action='/supplier/'>
+<form  method='POST'> {% csrf_token %}
                            
 {{ form.as_p }} 
 <button type='submit' class='btn btn-success'> Submit </button>

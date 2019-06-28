@@ -101,7 +101,7 @@ class LoginView(FormView):
 
 class SupplierLoginView(FormView):
     form_class=LoginForm
-    success_url='/products/'
+    success_url='/supplier/'
     template_name='accounts/snippets/login.html' 
     def form_valid(self, form):
         request = self.request
@@ -122,7 +122,7 @@ class SupplierLoginView(FormView):
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:
-                return redirect("/products/")
+                return redirect("/supplier/")
         return super(SupplierLoginView,self).form_invalid(form)
 
 
