@@ -1,0 +1,15 @@
+<div class="card" style="width: 18rem;">
+  {% if instance.image %}
+  <img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
+  
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title"> {{ instance.product_name }}</h5>
+    <h6 class="card-title"> ${{ instance.cost_per_day }} /day</h6>
+    <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
+    <a href="{{ instance.get_absolute_url }}" class="btn btn-primary">View! </a>
+    
+    
+    
+  </div>
+</div>

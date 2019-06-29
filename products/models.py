@@ -7,8 +7,10 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save,post_save
 from Ecommerce_Intern.utils import unique_slug_generator
 from django.urls import reverse
+#from django.contrib.auth import get_user_model
 
 User = settings.AUTH_USER_MODEL
+
 # Create your models here.
 MY_CHOICES = ((1, 'S'),
                (2, 'M'),
@@ -38,7 +40,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query) | Q(description__icontains=query) | Q(catogary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
+        lookups = Q(product_name__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query)|Q(registered_email=query)| Q(categary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
@@ -59,6 +61,12 @@ class ProductManager(models.Manager):
     def search(self, query):
         return self.get_queryset().active().search(query)
 
+    
+    
+    
+
+    
+
 
 CATEGARY = (
     (('Clothing'), ('Clothing')),
@@ -69,6 +77,7 @@ CATEGARY = (
 
 
 class Product_description(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product_name = models.CharField(max_length=100)
     categary = models.CharField(choices=CATEGARY, default=1, max_length=50)
     sub_categary = models.CharField(max_length=50,default=None,null=True)
@@ -77,7 +86,8 @@ class Product_description(models.Model):
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
     size = MultiSelectField(choices=MY_CHOICES,default=5)
     #days = models.IntegerField( null=True, blank=True)
-    email = models.ForeignKey(User,default=True,on_delete=models.CASCADE)
+    brand = models.CharField(max_length=20, default=True,null=True)
+    registered_email = models.EmailField(null=True)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
@@ -85,6 +95,7 @@ class Product_description(models.Model):
 
 
     objects = ProductManager()
+    
 
     def get_absolute_url(self):
         #return "/products/{slug}/".format(slug=self.slug)
@@ -92,6 +103,9 @@ class Product_description(models.Model):
 
     def __str__(self):
         return self.product_name
+    
+    
+
 
     @property
     def name(self):

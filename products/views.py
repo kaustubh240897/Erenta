@@ -6,9 +6,10 @@ from .models import Product_description
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from .forms import ProductForm
-
 from django.http import Http404
-
+from django.conf import settings
+from accounts.models import User
+#User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
@@ -175,6 +176,7 @@ def catogary_product_view_2(request):
 
     return render(request,"products/view.html", context)
 
+
 class SupplierHomeView(LoginRequiredMixin, DetailView):
     template_name = 'products/dashboard.html'
     def get_object(self):
@@ -183,7 +185,45 @@ class SupplierHomeView(LoginRequiredMixin, DetailView):
 
 
 class AddProductView(LoginRequiredMixin,CreateView):
+    
     model = Product_description
     form_class = ProductForm
     template_name = 'products/add_products.html'
     success_url = '/supplier/'
+    
+    
+# def my_product_list_view(request):
+#     queryset = Product_description.objects.filter(pk=pk)
+#     context = {
+#         'qs': queryset ,
+#          "title":"My Products",
+#     }
+#     return render(request,"products/product_list.html", context)
+
+
+# def my_product_view(request):
+   
+#     queryset = Product_description.objects.filter(registered_email=)
+#     context = {
+#         'qs': queryset ,
+#         "title":"Products",
+
+#     }
+#     return render(request,"products/my_products.html", context)
+
+class my_productsView(LoginRequiredMixin,ListView):
+    model = Product_description
+    template_name='products/my_products.html'
+    context_object_name = 'qs'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['qs'] = Product_description.objects.filter(registered_email = self.request.user)
+        print(context['qs'])
+        return context
+    
+    
+
+
+   
+
