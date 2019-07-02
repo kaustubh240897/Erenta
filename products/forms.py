@@ -29,14 +29,13 @@ class ProductDetailChangeForm(forms.ModelForm):
     product_name = forms.CharField(label='product_name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
     description = forms.CharField(label='description',widget=forms.Textarea(attrs={'placeholder': 'Please enter the  description'}))
     quantity = forms.IntegerField(label='quantity', required=False, widget=forms.NumberInput(attrs={"class":'form-control'}))
-    slug = forms.CharField(label='slug', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
     cost_per_day = forms.DecimalField(label='cost_per_day', required=False, widget=forms.NumberInput(attrs={"class":'form-control'}))
     # image = forms.FileField(widget=forms.ClearableFileInput(attrs={"class":'form-control'}))
 
 
     class Meta:
         model = Product_description
-        fields = ['product_name','description','quantity','slug','cost_per_day']
+        fields = ['product_name','description','quantity','cost_per_day','image']
     
     
 

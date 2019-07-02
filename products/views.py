@@ -195,24 +195,7 @@ class AddProductView(LoginRequiredMixin,CreateView):
     success_url = '/supplier/'
     
     
-# def my_product_list_view(request):
-#     queryset = Product_description.objects.filter(pk=pk)
-#     context = {
-#         'qs': queryset ,
-#          "title":"My Products",
-#     }
-#     return render(request,"products/product_list.html", context)
 
-
-# def my_product_view(request):
-   
-#     queryset = Product_description.objects.filter(registered_email=)
-#     context = {
-#         'qs': queryset ,
-#         "title":"Products",
-
-#     }
-#     return render(request,"products/my_products.html", context)
 
 class my_productsView(LoginRequiredMixin,ListView):
     model = Product_description
@@ -229,21 +212,9 @@ class my_productsView(LoginRequiredMixin,ListView):
 
 
    
-# class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
-#     form_class = ProductDetailChangeForm
-#     template_name = 'products/product-update-view.html'
-#     #succeess_url = '/supplier/'
-#     def get_object(self):
-#         return self.request.user
-#     def get_context_data(self,*args,**kwargs):
-#         context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
-#         context['title']='Change your product details'
-#         return context
-    
-#     def get_success_url(self):
-#         return reverse("supplier")
 
-class ProductDetailUpdateView(UpdateView):
+
+class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
     form_class = ProductDetailChangeForm
     model = Product_description
     template_name = 'products/product-update-view.html'
@@ -267,17 +238,7 @@ class ProductDetailUpdateView(UpdateView):
         return instance
 
 
-    # def get(self,request,*args, **kwargs):
-        
-    #     self.object = Product_description.objects.get({"slug":self.slug})
-    #     form_class = self.get_form_class()
-    #     form = self.get_form(form_class)
-    #     context = self.get_context_data(object=self.object, form=form)
-    #     return self.render_to_response(context)
-
-    # def get_object(self, queryset=None):
-    #     obj = Product_description.objects.get({"slug"=self.slug})
-    #     return obj
+    
     def get_context_data(self,*args,**kwargs):
         context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
         context['title']='Change your product details'
