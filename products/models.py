@@ -77,6 +77,7 @@ CATEGARY = (
 
 
 class Product_description(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product_name = models.CharField(max_length=100)
     categary = models.CharField(choices=CATEGARY, default=1, max_length=50)
@@ -100,6 +101,9 @@ class Product_description(models.Model):
     def get_absolute_url(self):
         #return "/products/{slug}/".format(slug=self.slug)
         return reverse ("products:detail", kwargs={"slug":self.slug})
+    
+    def get_absolute_url1(self):
+        return reverse("update",kwargs={"slug":self.slug})
 
     def __str__(self):
         return self.product_name

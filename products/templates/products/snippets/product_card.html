@@ -7,7 +7,7 @@
     <h5 class="card-title"> {{ instance.product_name }}</h5>
     <h6 class="card-title"> ${{ instance.cost_per_day }} /day</h6>
     <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
-    <a href="#" class="btn btn-primary">Update! </a>
+    <a href="{{ instance.get_absolute_url1 }}" class="btn btn-warning">Update! </a>
     
     
     

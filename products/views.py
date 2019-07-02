@@ -1,15 +1,18 @@
 from django.views.generic import ListView,DetailView,View,CreateView
+from django.views.generic.edit import UpdateView
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404
 from .models import Product_description
+from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
-from .forms import ProductForm
+from .forms import ProductForm,ProductDetailChangeForm
 from django.http import Http404
 from django.conf import settings
 from accounts.models import User
-#User = settings.AUTH_USER_MODEL
+User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
@@ -226,4 +229,61 @@ class my_productsView(LoginRequiredMixin,ListView):
 
 
    
+# class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
+#     form_class = ProductDetailChangeForm
+#     template_name = 'products/product-update-view.html'
+#     #succeess_url = '/supplier/'
+#     def get_object(self):
+#         return self.request.user
+#     def get_context_data(self,*args,**kwargs):
+#         context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
+#         context['title']='Change your product details'
+#         return context
+    
+#     def get_success_url(self):
+#         return reverse("supplier")
 
+class ProductDetailUpdateView(UpdateView):
+    form_class = ProductDetailChangeForm
+    model = Product_description
+    template_name = 'products/product-update-view.html'
+    
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        slug = self.kwargs.get('slug')
+
+        #instance = get_object_or_404(Product, slug=slug, active=True)
+        try:
+            instance = Product_description.objects.get(slug=slug, active=True)
+        except Product_description.DoesNotExist:
+            raise Http404("Not found..")
+        except Product_description.MultipleObjectsReturned:
+            qs = Product_description.objects.filter(slug=slug, active=True)
+            instance = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
+        #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
+        return instance
+
+
+    # def get(self,request,*args, **kwargs):
+        
+    #     self.object = Product_description.objects.get({"slug":self.slug})
+    #     form_class = self.get_form_class()
+    #     form = self.get_form(form_class)
+    #     context = self.get_context_data(object=self.object, form=form)
+    #     return self.render_to_response(context)
+
+    # def get_object(self, queryset=None):
+    #     obj = Product_description.objects.get({"slug"=self.slug})
+    #     return obj
+    def get_context_data(self,*args,**kwargs):
+        context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
+        context['title']='Change your product details'
+        return context
+    
+    def get_success_url(self):
+        return reverse("supplier")
+
+    
