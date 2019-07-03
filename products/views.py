@@ -1,6 +1,6 @@
 from django.views.generic import ListView,DetailView,View,CreateView
 from django.views.generic.edit import UpdateView
-
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404
@@ -245,6 +245,7 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
         return context
     
     def get_success_url(self):
+        messages.success(self.request, 'Updated Successfully !!!')
         return reverse("supplier")
 
     

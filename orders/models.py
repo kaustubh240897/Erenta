@@ -3,9 +3,11 @@ import math
 from carts.models import Cart
 from django.urls import reverse
 from billing.models import BillingProfile
+from products.models import Product_description
 from addresses.models import Address
 from django.db.models.signals import pre_save , post_save
 from Ecommerce_Intern.utils import unique_order_id_generator
+from accounts.models import User
 
 # Create your models here.
 ORDER_STATUS_CHOICES = (
@@ -63,6 +65,9 @@ class Order(models.Model):
         
     def get_absolute_url(self):
         return reverse("orders:detail", kwargs={'order_id':self.order_id})
+    
+    def get_absolute_url1(self):
+        return reverse("orders:supplierorderdetail", kwargs={'order_id':self.order_id})
 
     def get_status(self):
         if self.status == "refunded":
@@ -126,3 +131,11 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
+
+class SupplierOrders(models.Model):
+    user       = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
+    products   = models.ForeignKey(Product_description, null=True,blank=True, on_delete=models.CASCADE)
+    orders     = models.ForeignKey(Order, null=True, blank=True, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.products.product_name

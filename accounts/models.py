@@ -111,6 +111,7 @@ class Supplier(models.Model):
     # full_name = models.CharField(max_length=255,blank=True,null=True)
     # password1 = models.CharField(max_length=16,null=True)
     # password2 = models.CharField(max_length=16,null=True)
+    
     Shop_name = models.CharField(max_length=100,blank=True,unique=True,null=True)
     Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
     Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
