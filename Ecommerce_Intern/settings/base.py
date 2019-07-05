@@ -58,10 +58,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+   # third party
+    'storages',
+
     'multiselectfield',
     'products',
-    'search',
+    'search', 
     'tags',
     'carts',
     'orders',
@@ -179,7 +181,7 @@ STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR), "static_files", "static_root
 MEDIA_URL = '/media/'
 MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR), "static_files", "media_root")
 
-
+from Ecommerce_Intern.aws.conf import *
 
 CORS_REPLACE_HTTPS_REFERER      = False
 HOST_SCHEME                     = "http://"
@@ -190,3 +192,5 @@ CSRF_COOKIE_SECURE              = False
 SECURE_HSTS_SECONDS             = None
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
+
+
