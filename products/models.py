@@ -105,6 +105,7 @@ class Product_description(models.Model):
     def get_absolute_url1(self):
         return reverse("update",kwargs={"slug":self.slug})
 
+
     def __str__(self):
         return self.product_name
     

@@ -15,7 +15,7 @@ urlpatterns = [
    
     path('',product_list_view, name='list'),
     path('<slug:slug>/',ProductDetailSlugView.as_view(), name='detail'),
-   
+    
     path('clothing',catogary_product_view_1 , name='query'),
     path('Novels',catogary_product_view_2 , name='query_1'),
     path('instruments',catogary_product_view_3 , name='query_3'),

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.views.generic import CreateView
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Cart
@@ -8,7 +9,9 @@ from billing.models import BillingProfile
 from products.models import Product_description
 from orders.models import Order
 from accounts.models import GuestEmail
+
 from accounts.forms import LoginForm, GuestForm
+from django.contrib import messages
 # Create your views here.
 
 
@@ -27,8 +30,15 @@ def cart_detail_api_view(request):
          "url"          : x.get_absolute_url(),
          "product_name" : x.product_name , 
          "cost_per_day" : x.cost_per_day
+         }  for x in cart_obj.products.all()]
+     other = [{
+         "id"           : x.id,
+         "quantity"     : x.quantity,
+         "size" : x.size , 
+         "days" : x.days
          }
-          for x in cart_obj.products.all()]
+         for x in cart_obj.other.all()]
+         
      cart_data = {"products" : products, "subtotal" : cart_obj.subtotal , "total" : cart_obj.total }
      return JsonResponse(cart_data)
 
@@ -37,22 +47,25 @@ def cart_home(request):
     return render(request,"carts/home.html", {"cart" : cart_obj})
 
 def cart_update(request):
+
     product_id=request.POST.get('product_id')
-   
+    
     if product_id is not None:
         try:
             product_obj = Product_description.objects.get(id=product_id)
         except Product_description.DoesNotExist:
             print("Product does not exist now!")
             return redirect("cart:home")
-
+       
         cart_obj, new_obj = Cart.objects.new_or_get(request)
         if product_obj in cart_obj.products.all():
             cart_obj.products.remove(product_obj)
             added = False
+        
         else:
             cart_obj.products.add(product_obj)
             added= True
+        
         request.session['cart_items']=cart_obj.products.count()
 
         if request.is_ajax():

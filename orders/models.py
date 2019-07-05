@@ -132,10 +132,3 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
-class SupplierOrders(models.Model):
-    user       = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
-    products   = models.ForeignKey(Product_description, null=True,blank=True, on_delete=models.CASCADE)
-    orders     = models.ForeignKey(Order, null=True, blank=True, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.products.product_name

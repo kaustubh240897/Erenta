@@ -3,7 +3,7 @@ from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from billing.models import BillingProfile
 from django.shortcuts import render
-from .models import Order,SupplierOrders
+from .models import Order
 from products.models import Product_description
 # Create your views here.
 

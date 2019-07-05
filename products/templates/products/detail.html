@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+</br>
+<div class='container'>
+
+
+<h2>Please fill Details.</h2>
+</br>
+<form  method='POST'  action=''>
+     {% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+    
+        {{ form.as_p }}<br/>
+   
+    
+     
+<button type='submit' class='btn btn-success'> Save </button>
+
+   </form>
+</div>
+   {% endblock %}
