@@ -3,7 +3,7 @@ from django.db import models
 from decimal import Decimal
 from django.db.models.signals import pre_save , post_save, m2m_changed
 from products.models import Product_description
-#from otherdetails.models import OtherDetails
+from otherdetails.models import OtherDetails
 User = settings.AUTH_USER_MODEL
 
 
@@ -38,7 +38,7 @@ class CartManager(models.Manager):
 class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product_description,blank=True)
-    #other = models.ManyToManyField(OtherDetails,null=True,blank=True)
+    other = models.ManyToManyField(OtherDetails,null=True,blank=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     total = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)

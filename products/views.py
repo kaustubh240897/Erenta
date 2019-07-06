@@ -11,9 +11,9 @@ from carts.models import Cart
 from .forms import ProductForm,ProductDetailChangeForm
 from django.http import Http404
 from django.conf import settings
-from carts.forms import OtherDetailForm
+
 from accounts.models import User
-from otherdetails.models import OtherDetails
+
 User = settings.AUTH_USER_MODEL
 
 # Create your views here.
@@ -251,20 +251,5 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
         return reverse("supplier")
 
     
-class OtherDetailsView(CreateView):
-    
-    model = OtherDetails
-    form_class = OtherDetailForm
-    template_name = 'products/detail.html'
-    def form_valid(self, form):
-        article = form.save(commit=False)
-        article.user = self.request.user
-        
-        #article.save()  # This is redundant, see comments.
-        return super(OtherDetailsView, self).form_valid(form) 
-    
 
-    def get_success_url(self):
-        return reverse("other")
-    
     

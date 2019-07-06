@@ -15,6 +15,7 @@
       <th scope="col">Price</th>
       
       
+      
     </tr>
   </thead>
   <tbody class='cart-body'>
@@ -25,8 +26,7 @@
     
       <th scope="row">{{ forloop.counter }}</th>
       <td><a href='{{ product.get_absolute_url }}'>{{ product.product_name }}</a>
-
-        {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
+      {% include 'carts/snippets/remove-product.html' with product_id=product.id %}
       </td>
       <td>1</td>
       <td>None</td>
@@ -36,6 +36,7 @@
     </tr>
      
     {% endfor %}
+   
     <tr>
       <td colspan="5"></td>
       
