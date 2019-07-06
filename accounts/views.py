@@ -102,7 +102,7 @@ class LoginView(FormView):
 class SupplierLoginView(FormView):
     form_class=LoginForm
     success_url='/supplier/'
-    template_name='accounts/snippets/login.html' 
+    template_name='accounts/snippets/login1.html' 
     def form_valid(self, form):
         request = self.request
         next_ = request.GET.get('next')

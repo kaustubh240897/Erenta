@@ -39,7 +39,7 @@ urlpatterns = [
     path('accounts/',include(("accounts.passwords.urls"))),
     path('account/',include(("accounts.urls", 'accounts'), namespace='account')),
     path('login/',LoginView.as_view(), name='login'),
-    path('loginsupplier/',SupplierLoginView.as_view(), name='login'),
+    path('loginsupplier/',SupplierLoginView.as_view(), name='login1'),
     path('api/cart/',cart_detail_api_view, name='api_cart'),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
