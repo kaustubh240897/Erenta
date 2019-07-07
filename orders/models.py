@@ -21,6 +21,7 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def by_request(self,request):
         billing_profile,created=BillingProfile.objects.new_or_get(request)
         return self.filter(billing_profile=billing_profile)
+    
     def not_created(self):
         return self.exclude(status='created')
 
@@ -30,6 +31,7 @@ class OrderManager(models.Manager):
 
     def by_request(self,request):
         return self.get_queryset().by_request(request)
+   
 
     def new_or_get(self,billing_profile,cart_obj):
         created = False
@@ -40,7 +42,7 @@ class OrderManager(models.Manager):
             obj = self.model.objects.create(billing_profile=billing_profile , cart=cart_obj)
             created = True
         return obj, created 
-
+    
 
 class Order(models.Model):
     billing_profile    = models.ForeignKey(BillingProfile, null=True,blank=True, on_delete=models.CASCADE)

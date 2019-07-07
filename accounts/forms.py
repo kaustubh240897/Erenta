@@ -99,7 +99,7 @@ class RegisterForm(forms.ModelForm):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        #user.active=False # send confirmation email
+        #user.is_active=False # send confirmation email
         if commit:
             user.save()
         return user
@@ -110,12 +110,16 @@ class RegisterForm(forms.ModelForm):
 
 
 class SupplierRegisterForm(forms.ModelForm): 
-    # password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    Shop_name = forms.CharField(label='Shop_name',required=True ,widget=forms.TextInput)
+    Address_Line1 = forms.CharField(label='Address_Line1',required=True ,widget=forms.TextInput)
+    Postal_code = forms.CharField(label='Postal_code',required=True ,widget=forms.NumberInput)
+    City        = forms.CharField(label='City',required=True ,widget=forms.TextInput)
+    Mobile_number = forms.CharField(label='Mobile_number',required=True ,widget=forms.NumberInput)
     # password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = Supplier
-        fields = ['Shop_name','Address_Line1','Address_Line2','Postal_code','City','Mobile_number','Shop_registration_number']
+        fields = ['Shop_name','email','Address_Line1','Address_Line2','Postal_code','City','Mobile_number','Shop_registration_number']
     
     # def clean_password2(self):
     #     # Check that the two password entries match

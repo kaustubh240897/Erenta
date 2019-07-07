@@ -18,7 +18,7 @@ class OtherDetailsView(CreateView):
     def form_valid(self, form):
         article = form.save(commit=False)
         article.user = self.request.user
-        
+         
         #article.save()  # This is redundant, see comments.
         return super(OtherDetailsView, self).form_valid(form) 
     

@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView,FormView,DetailView,View,UpdateView
 from django.utils.http import is_safe_url
@@ -85,6 +86,10 @@ class LoginView(FormView):
         user = authenticate(request, username=email , password=password)
 
         if user is not None:
+            if not user.is_active:
+                messages.error(request,"This user is inactive")
+                return super(LoginView,self).form_invalid(form)
+
             login(request, user)
             user_logged_in.send(user.__class__ , instance=user, request=request)
             try: 
@@ -137,7 +142,7 @@ class RegisterView(CreateView):
 class SupplierRegisterView(CreateView):
     model = Supplier
     form_class = SupplierRegisterForm
-    template_name = 'accounts/register.html'
+    template_name = 'accounts/supplier_register.html'
     success_url = '/register/'
 
     
