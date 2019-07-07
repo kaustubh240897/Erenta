@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'kaustubh.dwi@gmail.com' # sendgrid
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_PASSWORD = 'it12345cs'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Python rental <kaustubh.dwi@gmail.com>'
