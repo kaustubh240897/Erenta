@@ -10,11 +10,13 @@
 
 <div class='row text-center'>
 <div class='col-12 col-md-3 mx-auto'>
+</br>
   <p class='lead'>Login</p>
     {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
 </div>
  <p class='lead'>or</p>
 <div class='col-8 col-md-8'>
+</br>
      <p class='lead'> Continue as Guest</p>
     {% url "guest_register" as guest_register_url %}
 
@@ -73,6 +75,8 @@
 
        {% if not has_card %}
        <!-- enter credit card-->
+      </br>
+       <h2>Payment</h2>
        <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
 
        {% else %}

@@ -19,7 +19,7 @@
 <p>Items: {% for product in object.cart.products.all %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
 <p>Billing Address: {{ object.billing_address.get_address }}</p>
-<p>User's Email: {{ object.billing_profile.user }}</p>
+<p>User's Email: {{ object.billing_profile }}</p>
 <p>Subtotal: {{ object.cart.total }}</p>
 <p>Shipping Total: {{ object.shipping_total }}</p>
 <p>Order Total: {{ object.total }}</p>
