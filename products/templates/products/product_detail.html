@@ -23,9 +23,12 @@
         <div class='col-12 col-md-6'>
            
             
- {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
- 
+       {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
+        </br>
+    
+      <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a>
         </br> 
+
       </br>
     </br>
  <!-- <div class='col-2 col-md-6 my-2'>
