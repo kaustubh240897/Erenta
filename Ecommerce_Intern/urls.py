@@ -28,6 +28,7 @@ from products.views import SupplierHomeView,AddProductView,my_productsView,Produ
 from carts.views import cart_detail_api_view
 from otherdetails.views import OtherDetailsView
 from .views import home_page, about_page, contact_page
+from orders.views import RequestRefundView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -58,7 +59,8 @@ urlpatterns = [
     path('add/',AddProductView.as_view(),name='add'),
     path('myproduct/',my_productsView.as_view(), name='myproduct'),
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
-    path('detailform/',OtherDetailsView.as_view(),name='other'), 
+    path('detailform/',OtherDetailsView.as_view(),name='other'),
+    path('request-refund/',RequestRefundView.as_view(),name='refund') 
    
 ]
 

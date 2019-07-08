@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'analytics',
     'catogary',
     'billing',
+    'crispy_forms',
     
 ]
 

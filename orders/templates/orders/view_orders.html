@@ -16,12 +16,14 @@
             <tbody>
                 {% for object in object_list %}
                     <tr>
-                      
-                        <td>{% for product in object.cart.products.all %} {{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                       
+                        <td>{% for product in object.cart.products.all %} 
+                
+                             {{ product }}{% if not forloop.last %},  {% endif %}{% endfor %}</td>
                         
                         <td><a href='{{ object.get_absolute_url1 }}'>{{ object.order_id }}</a></td>
                         <td>1</td>
-                        
+                            
                          <!-- <td>{{ object.cart.products.size.all }}</td>  -->
                         
                     </tr>

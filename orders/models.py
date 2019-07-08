@@ -2,12 +2,14 @@ from django.db import models
 import math
 from carts.models import Cart
 from django.urls import reverse
+from django.conf import settings
 from billing.models import BillingProfile
 from products.models import Product_description
 from addresses.models import Address
 from django.db.models.signals import pre_save , post_save
 from Ecommerce_Intern.utils import unique_order_id_generator
 from accounts.models import User
+User = settings.AUTH_USER_MODEL
 
 # Create your models here.
 ORDER_STATUS_CHOICES = (
@@ -54,6 +56,10 @@ class Order(models.Model):
     shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
     total              = models.DecimalField(default=0.00,max_digits=50,decimal_places=2)
     active             = models.BooleanField(default=True)
+    being_delivered    = models.BooleanField(default=False)
+    received           = models.BooleanField(default=False)
+    refund_requested   = models.BooleanField(default=False)
+    refund_granted     = models.BooleanField(default=False)
     updated            = models.DateTimeField(auto_now=True)
     timestamp          = models.DateTimeField(auto_now=True)
 
@@ -134,3 +140,11 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
+class Refund(models.Model):
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    reason = models.TextField()
+    accepted = models.BooleanField(default=False)
+    email    = models.EmailField()
+
+    def __str__(self):
+        return f"{self.pk}"
