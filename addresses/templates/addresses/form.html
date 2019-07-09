@@ -1,4 +1,4 @@
-{% load crispy_forms_tags %}
+
 <div class='container'>
 <form  method='POST' action='{% if action_url %} {{ action_url }} {% else %}{% url "login" %}{% endif %}'>
      {% csrf_token %}
@@ -9,7 +9,7 @@
     <input type='hidden' name='address_type' value='{{ address_type }}' />  
      {% endif %}
 
-     {{ form|crispy }}<br>
+     {{ form }}<br>
 <button type='submit' class='btn btn-success'> Submit </button>
 </form>
 </div>
