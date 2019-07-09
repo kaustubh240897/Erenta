@@ -7,9 +7,6 @@
 {% url 'products:query_1' as catogary_list_url %}
 {% url 'products:query_4' as catogary_list_url_3 %}
 </br>
-</br>
-
-
   <title>{{ title }}</title>
      <div class='container'>
       <a href="{{ catogary_list_url }}" > <button type="button" class="btn btn-dark btn-sm">Books/Novels</button></a>
@@ -18,6 +15,7 @@
        <a href="{{ catogary_list_url_3 }}" ><button type="button" class="btn btn-dark btn-sm">Accessories</button></a>
          <div class='row'>
          </br>
+        
          {% for obj in qs %}
          <div class='col'>
           {{ forloop.counter }}
