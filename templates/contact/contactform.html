@@ -1,16 +1,13 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 
-
-   
-       <div class='container'>
+<div class='container'>
            
                <div class='row'>
                    <div class='col'>
                       
-                 
-   
-                           <section class="mb-10">
+                
    
                                <!--Section heading-->
                                <h2 class="h1-responsive font-weight-bold text-center my-6">Contact us</h2>
@@ -26,7 +23,7 @@
                                        <form class='contact-form'  name="contact-form"  method="POST" action='{% url "contact" %}'>
                                            {% csrf_token %}
                            
-                                           {{ form }}
+                                           {{ form|crispy }}
                                            <div class="text-center text-md-left">
                                            <button type='submit' class='btn btn-primary'>Submit</button>
                                        </div>
@@ -58,7 +55,7 @@
                            
                                </div>
                            
-                           </section>
+                    
    
                            
                        

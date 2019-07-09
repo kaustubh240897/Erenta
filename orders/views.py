@@ -80,7 +80,7 @@ class RequestRefundView(View):
                 messages.info(self.request, "Your request has received.")
                 return redirect("refund")
             except ObjectDoesNotExist:
-                messages.info(self.request, "This order does not exist.")
+                messages.warning(self.request, "This order does not exist.")
                 return redirect("refund")
 
 
