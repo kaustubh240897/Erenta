@@ -134,5 +134,23 @@ class Contact(models.Model):
         return self.email
 
 
+RATING = (
+    (('1'), ('1')),
+    (('2'), ('2')),
+    (('3'), ('3')),
+    (('4'), ('4')),
+    (('5'), ('5'))
+)
 
 
+class Review(models.Model):
+    product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    email     = models.ForeignKey(User,on_delete=models.CASCADE)
+    rating    = models.CharField(choices=RATING, default=5, max_length=10)
+    review = models.TextField()
+    timestamp= models.DateTimeField(auto_now_add=True)
+    
+
+    def __str__(self):
+        return f"{self.product_id}"
+    

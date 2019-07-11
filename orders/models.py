@@ -24,6 +24,7 @@ class OrderManagerQuerySet(models.query.QuerySet):
         billing_profile,created=BillingProfile.objects.new_or_get(request)
         return self.filter(billing_profile=billing_profile)
     
+    
     def not_created(self):
         return self.exclude(status='created')
 
@@ -33,7 +34,14 @@ class OrderManager(models.Manager):
 
     def by_request(self,request):
         return self.get_queryset().by_request(request)
-   
+    
+    # def get_by_id(self):
+    #     qs = Order.objects.cart.products.filter(registered_email=registered_email)
+    #     # if qs.count()==1:
+    #     #     return qs.first
+    #     # else:
+    #     #     return None
+    #     return qs
 
     def new_or_get(self,billing_profile,cart_obj):
         created = False

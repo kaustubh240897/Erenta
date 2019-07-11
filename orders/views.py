@@ -64,7 +64,7 @@ class RequestRefundView(View):
         form = RefundForm(self.request.POST)
         if form.is_valid():
             order_id = form.cleaned_data.get('order_id')
-            message = form.cleaned_data.get('message')
+            reason = form.cleaned_data.get('reason')
             email   = form.cleaned_data.get('email')
             # edit the order
             try:
@@ -74,7 +74,7 @@ class RequestRefundView(View):
                 #store the refund
                 refund = Refund()
                 refund.order = order
-                refund.reason = message
+                refund.reason = reason
                 refund.email  = email
                 refund.save()
                 messages.info(self.request, "Your request has received.")

@@ -5,6 +5,7 @@ from .forms import ContactForm
 from products.models import Product_description,Contact
 from django.views.generic import ListView
 
+
 def home_page(request):
     #print(request.session.get("first_name","Unknown"))
     context = {
@@ -40,6 +41,7 @@ def contact_page(request):
        message=request.POST.get('message')
        contact = Contact(name=name, email=email, subject=subject, message=message)
        contact.save()
+       
        
    if contact_form.is_valid():
        print(contact_form.cleaned_data)

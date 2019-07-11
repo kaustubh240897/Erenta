@@ -11,6 +11,8 @@
         {{ forloop.counter }}
         {% include 'products/snippets/product_card.html' with instance=obj %}  
         </div>
+      {% empty %}
+      <p class='col-12'>   You have not created any products yet.</p>
     {% endfor %}
 </div>
 {% endblock %}

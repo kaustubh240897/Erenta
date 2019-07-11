@@ -3,14 +3,15 @@ from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render, get_object_or_404
-from .models import Product_description
+from django.shortcuts import render, redirect ,get_object_or_404
+from .models import Product_description,Review
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
-from .forms import ProductForm,ProductDetailChangeForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm
 from django.http import Http404
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
 
@@ -252,4 +253,35 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
 
     
 
-    
+
+
+
+class ReviewView(View):
+    def get(self, *args, **kwargs):
+        form = RatingForm()
+        context={
+            'form': form
+        }
+        return render(self.request, "products/review.html" ,context)
+    def post(self,*args, **kwargs):
+        form = RatingForm(self.request.POST)
+        if form.is_valid():
+            id = form.cleaned_data.get('id')
+            rating = form.cleaned_data.get('rating')
+            review   = form.cleaned_data.get('review')
+            # edit the order
+            try:
+                product_id=Product_description.objects.get(id=id)
+                product_id.save()
+                #store the refund
+                review = Review()
+                review.product_id = product_id
+                review.email = self.request.user
+                review.rating = rating
+                review.review  = review
+                review.save()
+                messages.info(self.request, "Your review has received.")
+                return redirect("review")
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "This product does not exist.")
+                return redirect("review")
