@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
 </br>
@@ -10,7 +10,9 @@
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
-{{ form|crispy }}
+     {{ form|crispy }}<br/>
+     <label for='email'>Email</label>
+     <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
              
 <button type='submit' class='btn btn-success'>Submit</button>
 </form>

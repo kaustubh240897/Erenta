@@ -114,7 +114,7 @@ class Product_description(models.Model):
 
     @property
     def name(self):
-        return self.title
+        return self.product_name
 
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

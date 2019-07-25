@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,SupplierRegisterForm
 from .models import GuestEmail,Supplier
 from .signals import user_logged_in
-
+from django.db import IntegrityError
 
 # Create your views here.
 # @login_required  #/accounts/login/?next=/some/path/
@@ -139,11 +139,26 @@ class RegisterView(CreateView):
     
 
 
-class SupplierRegisterView(CreateView):
-    model = Supplier
-    form_class = SupplierRegisterForm
-    template_name = 'accounts/supplier_register.html'
-    success_url = '/register/'
+# class SupplierRegisterView(CreateView):
+#     model = Supplier
+#     form_class = SupplierRegisterForm
+#     template_name = 'accounts/supplier_register.html'
+#     success_url = '/supplier/'
+@login_required
+def supplier_register(request):
+    if request.method == 'POST':
+        form = SupplierRegisterForm(request.user, request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.email = request.user
+            product.save()
+            messages.success(request, 'Your details added successfully!') 
+            return redirect('supplier')
+        else:
+            messages.warning(request, 'Please correct the error below.') 
+    else:
+        form = SupplierRegisterForm(request.user)
+    return render(request, 'accounts/supplier_register.html', {'form': form})
 
     
 

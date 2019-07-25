@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
@@ -113,13 +116,14 @@ class Supplier(models.Model):
     # password2 = models.CharField(max_length=16,null=True)
      
     Shop_name = models.CharField(max_length=100,blank=True,unique=True,null=True)
-    email     = models.EmailField(null=True)
+    email     = models.ForeignKey(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
     Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
     Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
     Postal_code = models.IntegerField(blank=True,null=True)
     City = models.CharField(max_length=55,blank=True,null=True)
     Mobile_number = models.IntegerField(blank=True,null=True)
     Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
+    bank_account_number = models.IntegerField(blank=True, null=True)
     is_supplier = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True) # can login
     timestamp = models.DateTimeField(auto_now_add=True)
