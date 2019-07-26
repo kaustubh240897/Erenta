@@ -116,7 +116,7 @@ class Supplier(models.Model):
     # password2 = models.CharField(max_length=16,null=True)
      
     Shop_name = models.CharField(max_length=100,blank=True,unique=True,null=True)
-    email     = models.ForeignKey(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
+    email     = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
     Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
     Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
     Postal_code = models.IntegerField(blank=True,null=True)

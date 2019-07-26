@@ -143,5 +143,15 @@ class SupplierRegisterForm(forms.ModelForm):
         #self.fields['category'].queryset = Category.objects.filter(email=email)
     
     
+class BusinessDetailUpdateForm(forms.ModelForm): 
+    Shop_name = forms.CharField(label='Shop name',required=True ,widget=forms.TextInput)
+    Address_Line1 = forms.CharField(label='Address Line 1',required=True ,widget=forms.TextInput)
+    Postal_code = forms.CharField(label='Postal code',required=True ,widget=forms.NumberInput)
+    City        = forms.CharField(label='City',required=True ,widget=forms.TextInput)
+    Mobile_number = forms.CharField(label='Mobile number',required=True ,widget=forms.NumberInput)
+    # password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
+    class Meta:
+        model = Supplier
+        fields = ['Shop_name','Address_Line1','Address_Line2','Postal_code','City','Mobile_number','bank_account_number','Shop_registration_number']
 

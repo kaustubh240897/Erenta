@@ -22,7 +22,7 @@ from django.contrib.auth.views import LogoutView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 #from carts.views import cart_home
 #from products.views import product_list_view, product_detail_view
-from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,supplier_register
+from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,supplier_register,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView
 from carts.views import cart_detail_api_view
@@ -61,7 +61,8 @@ urlpatterns = [
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
     path('detailform/',OtherDetailsView.as_view(),name='other'),
     path('request-refund/',RequestRefundView.as_view(),name='refund'),
-    path('reviews/',ReviewView.as_view(),name='review') 
+    path('reviews/',ReviewView.as_view(),name='review'),
+    path('businessdetailupdate',BusinessDetailUpdateView.as_view(),name='businessdetailupdate') 
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
