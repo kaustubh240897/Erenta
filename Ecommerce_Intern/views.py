@@ -59,12 +59,7 @@ def contact_page(request):
    return render(request,"contact/contactform.html",context)
 
 
-def logout_page(request):
-    context = {
-       "title":"Logout",
-     }
-    
-    return render(request,"logout_page.html",context)
+
 
 
             

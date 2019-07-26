@@ -27,7 +27,7 @@ from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView
 from carts.views import cart_detail_api_view
 from otherdetails.views import OtherDetailsView
-from .views import home_page, about_page, contact_page,logout_page
+from .views import home_page, about_page, contact_page
 from orders.views import RequestRefundView
 
 urlpatterns = [
@@ -49,7 +49,7 @@ urlpatterns = [
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/',RegisterView.as_view(), name='register'),
-    path('logout_page/', logout_page, name='logout_page'),
+    #path('logout_page/', logout_page, name='logout_page'),
     path('settings/',RedirectView.as_view(url='/account')),
     path('products/', include(("products.urls", 'products'), namespace='products')),
     path('orders/', include(("orders.urls", 'orders'), namespace='orders')),
