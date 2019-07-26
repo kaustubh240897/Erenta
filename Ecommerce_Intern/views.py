@@ -5,7 +5,6 @@ from .forms import ContactForm
 from products.models import Product_description,Contact
 from django.views.generic import ListView
 
-
 def home_page(request):
     #print(request.session.get("first_name","Unknown"))
     context = {
@@ -60,8 +59,12 @@ def contact_page(request):
    return render(request,"contact/contactform.html",context)
 
 
-
-
+def logout_page(request):
+    context = {
+       "title":"Logout",
+     }
+    
+    return render(request,"logout_page.html",context)
 
 
             

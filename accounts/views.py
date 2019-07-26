@@ -8,7 +8,7 @@ from django.views.generic import CreateView,FormView,DetailView,View,UpdateView
 from django.utils.http import is_safe_url
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,SupplierRegisterForm,BusinessDetailUpdateForm
+from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,BusinessDetailUpdateForm
 from .models import GuestEmail,Supplier
 from .signals import user_logged_in
 from django.db import IntegrityError
@@ -138,50 +138,44 @@ class RegisterView(CreateView):
     success_url = '/'
     
 
-
-# class SupplierRegisterView(CreateView):
-#     model = Supplier
-#     form_class = SupplierRegisterForm
-#     template_name = 'accounts/supplier_register.html'
-#     success_url = '/supplier/'
-@login_required
-def supplier_register(request):
-    try:
-        if request.method == 'POST':
-            form = SupplierRegisterForm(request.user, request.POST)
-            if form.is_valid():
-                product = form.save(commit=False)
-                product.email = request.user
-                product.save()
-                messages.success(request, 'Your details added successfully!') 
-                return redirect('supplier')
-            else:
-                messages.warning(request, 'Please correct the error below.') 
-        else:
-            form = SupplierRegisterForm(request.user)
-        return render(request, 'accounts/supplier_register.html', {'form': form})
+# supplier business details register form
+# @login_required
+# def supplier_register(request):
+#     try:
+#         if request.method == 'POST':
+#             form = SupplierRegisterForm(request.user, request.POST)
+#             if form.is_valid():
+#                 product = form.save(commit=False)
+#                 product.email = request.user
+#                 product.save()
+#                 messages.success(request, 'Your details added successfully!') 
+#                 return redirect('supplier')
+#             else:
+#                 messages.warning(request, 'Please correct the error below.') 
+#         else:
+#             form = SupplierRegisterForm(request.user)
+#         return render(request, 'accounts/supplier_register.html', {'form': form})
     
-    except IntegrityError:
-        return HttpResponse("Sorry!! You had already filled details with this email.Please go to update details for updating your details.")  
+#     except IntegrityError:
+#         return HttpResponse("Sorry!! You had already filled details with this email.Please go to update details for updating your details.")  
 
     
 
 class BusinessDetailUpdateView(LoginRequiredMixin,UpdateView):
     form_class = BusinessDetailUpdateForm
     template_name = 'accounts/business-detail-update-view.html'
-    #succeess_url = '/account/'
-    # def get_object(self):
-    #     return self.request.user
+    
     
     def get_object(self):
-        return Supplier.objects.get(email=self.request.user)
+        obj,created= Supplier.objects.get_or_create(email=self.request.user)
+        return obj
 
     def get_context_data(self,*args,**kwargs):
         context = super(BusinessDetailUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='Update your details'
+        context['title']='Register/Update your details'
         return context
     def get_success_url(self):
-        messages.success(self.request, 'Your details updated successfully!') 
+        messages.success(self.request, 'Your details registered/updated successfully!') 
         return reverse("supplier")
 
 

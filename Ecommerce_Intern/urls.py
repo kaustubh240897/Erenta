@@ -22,12 +22,12 @@ from django.contrib.auth.views import LogoutView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 #from carts.views import cart_home
 #from products.views import product_list_view, product_detail_view
-from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,supplier_register,BusinessDetailUpdateView
+from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView
 from carts.views import cart_detail_api_view
 from otherdetails.views import OtherDetailsView
-from .views import home_page, about_page, contact_page
+from .views import home_page, about_page, contact_page,logout_page
 from orders.views import RequestRefundView
 
 urlpatterns = [
@@ -49,7 +49,7 @@ urlpatterns = [
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
     path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/',RegisterView.as_view(), name='register'),
-    path('registersupplier/', supplier_register, name='supplierregister'),
+    path('logout_page/', logout_page, name='logout_page'),
     path('settings/',RedirectView.as_view(url='/account')),
     path('products/', include(("products.urls", 'products'), namespace='products')),
     path('orders/', include(("orders.urls", 'orders'), namespace='orders')),
