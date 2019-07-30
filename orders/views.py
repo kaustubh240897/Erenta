@@ -33,7 +33,16 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
     
 
     def get_queryset(self):
-        return Order.objects.all().not_created()
+        print(self.request.user)
+        all_orders = Order.objects.filter(cart__products__registered_email=self.request.user).not_created()
+        # doing for only one order, do it for ever order
+        
+        # all_products_in_order = all_orders[2].cart.products.all()
+        print(all_orders)
+        # print(all_products_in_order[1].registered_email)
+        return (all_orders)
+        # return Order.objects.all().not_created()
+        #return Order.objects.all().not_created().cart.products.all.filter(registered_email=self.request.user)
 
 
 class SupplierOrderDetailView(LoginRequiredMixin,DetailView):

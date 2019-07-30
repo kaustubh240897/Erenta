@@ -62,7 +62,7 @@ urlpatterns = [
     path('detailform/',OtherDetailsView.as_view(),name='other'),
     path('request-refund/',RequestRefundView.as_view(),name='refund'),
     path('reviews/',ReviewView.as_view(),name='review'),
-    path('businessdetailupdate',BusinessDetailUpdateView.as_view(),name='businessdetailupdate') 
+    path('businessdetailupdate/',BusinessDetailUpdateView.as_view(),name='businessdetailupdate') 
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

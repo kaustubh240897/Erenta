@@ -274,12 +274,12 @@ class ReviewView(View):
                 product_id=Product_description.objects.get(id=id)
                 product_id.save()
                 #store the refund
-                review = Review()
-                review.product_id = product_id
-                review.email = self.request.user
-                review.rating = rating
-                review.review  = review
-                review.save()
+                reviews = Review()
+                reviews.product_id = product_id
+                reviews.email = self.request.user
+                reviews.rating = rating
+                reviews.review  = review
+                reviews.save()
                 messages.info(self.request, "Your review has received.")
                 return redirect("review")
             except ObjectDoesNotExist:
