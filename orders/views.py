@@ -36,9 +36,11 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
         print(self.request.user)
         all_orders = Order.objects.filter(cart__products__registered_email=self.request.user).not_created()
         # doing for only one order, do it for ever order
-        
+        # for orders in all_orders:
+        #     if(orders.objects.cart.products.registered_email = self.request.user):
+        #         return orders 
         # all_products_in_order = all_orders[2].cart.products.all()
-        print(all_orders)
+        #print(all_orders)
         # print(all_products_in_order[1].registered_email)
         return (all_orders)
         # return Order.objects.all().not_created()

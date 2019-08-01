@@ -198,6 +198,7 @@ class AddProductView(LoginRequiredMixin,CreateView):
     success_url = '/supplier/'
     
     
+    
 
 
 class my_productsView(LoginRequiredMixin,ListView):
