@@ -49,7 +49,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
 
 class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
     model =  Order
-    template_name = 'orders/order_detail.html'
+    template_name = 'orders/supplier_order_details.html'
     def get_object(self):
         qs = Order.objects.all().filter(
             order_id = self.kwargs.get('order_id')

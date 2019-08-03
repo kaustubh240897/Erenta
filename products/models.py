@@ -154,3 +154,15 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.product_id}"
     
+
+class Review(models.Model):
+    product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    email     = models.ForeignKey(User,on_delete=models.CASCADE)
+    rating    = models.CharField(choices=RATING, default=5, max_length=10)
+    review = models.TextField()
+    timestamp= models.DateTimeField(auto_now_add=True)
+    
+
+    def __str__(self):
+        return "%s reviewed on %s" %(self.product_id, self.timestamp)
+        

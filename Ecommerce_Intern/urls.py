@@ -29,6 +29,9 @@ from carts.views import cart_detail_api_view
 from otherdetails.views import OtherDetailsView
 from .views import home_page, about_page, contact_page
 from orders.views import RequestRefundView
+admin.site.site_header = 'ShopNow Administration'
+admin.site.site_title = 'ShopNow Administration'
+admin.site.index_title = 'ShopNow Administration'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
