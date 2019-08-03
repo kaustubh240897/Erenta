@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product_description,Contact,Review
+from .models import Product_description,Contact,User_Review,Supplier_Review
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
     list_display= ['__str__', 'slug']
@@ -9,6 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product_description, ProductAdmin)
 admin.site.register(Contact)
-admin.site.register(Review)
+admin.site.register(User_Review)
+admin.site.register(Supplier_Review)
 
 

@@ -87,7 +87,7 @@ class Product_description(models.Model):
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
     size = MultiSelectField(choices=MY_CHOICES,default=5)
     #days = models.IntegerField( null=True, blank=True)
-    brand = models.CharField(max_length=20, default=True,null=True)
+    brand = models.CharField(max_length=20, default=None,null=True)
     registered_email = models.EmailField(null=True)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
@@ -143,7 +143,7 @@ RATING = (
 )
 
 
-class Review(models.Model):
+class User_Review(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     email     = models.ForeignKey(User,on_delete=models.CASCADE)
     rating    = models.CharField(choices=RATING, default=5, max_length=10)
@@ -155,14 +155,14 @@ class Review(models.Model):
         return f"{self.product_id}"
     
 
-class Review(models.Model):
-    product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    email     = models.ForeignKey(User,on_delete=models.CASCADE)
+class Supplier_Review(models.Model):
+    customer  = models.EmailField(default=None,null=True,blank=True)
+    email     = models.ForeignKey(User,default=None,on_delete=models.CASCADE)
     rating    = models.CharField(choices=RATING, default=5, max_length=10)
     review = models.TextField()
     timestamp= models.DateTimeField(auto_now_add=True)
     
 
     def __str__(self):
-        return "%s reviewed on %s" %(self.product_id, self.timestamp)
+        return "%s reviewed on %s" %(self.email, self.timestamp)
         

@@ -4,11 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,Review
+from .models import Product_description,User_Review,Supplier_Review
+from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -195,7 +196,9 @@ class AddProductView(LoginRequiredMixin,CreateView):
     model = Product_description
     form_class = ProductForm
     template_name = 'products/add_products.html'
-    success_url = '/supplier/'
+    def get_success_url(self):
+        messages.success(self.request, 'added Successfully !!!')
+        return reverse("supplier")
     
     
     
@@ -275,7 +278,7 @@ class ReviewView(View):
                 product_id=Product_description.objects.get(id=id)
                 product_id.save()
                 #store the refund
-                reviews = Review()
+                reviews = User_Review()
                 reviews.product_id = product_id
                 reviews.email = self.request.user
                 reviews.rating = rating
@@ -286,3 +289,32 @@ class ReviewView(View):
             except ObjectDoesNotExist:
                 messages.warning(self.request, "This product does not exist.")
                 return redirect("review")
+
+
+class SupplierReviewView(View):
+    def get(self, *args, **kwargs):
+        form = SupplierRatingForm()
+        context={
+            'form': form
+        }
+        return render(self.request, "products/supplier_review.html" ,context)
+    def post(self,*args, **kwargs):
+        form = SupplierRatingForm(self.request.POST)
+        if form.is_valid():
+            customer = form.cleaned_data.get('customer')
+            rating = form.cleaned_data.get('rating')
+            review   = form.cleaned_data.get('review')
+            # edit the order
+            try:
+                #store the refund
+                reviews = Supplier_Review()
+                reviews.customer = customer
+                reviews.email = self.request.user
+                reviews.rating = rating
+                reviews.review  = review
+                reviews.save()
+                messages.info(self.request, "Your review has received.")
+                return redirect("supplierreview")
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "Sorry! This user does not exist.")
+                return redirect("supplierreview")

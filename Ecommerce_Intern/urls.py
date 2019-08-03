@@ -24,7 +24,7 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import product_list_view, product_detail_view
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView
+from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView
 from carts.views import cart_detail_api_view
 from otherdetails.views import OtherDetailsView
 from .views import home_page, about_page, contact_page
@@ -65,6 +65,7 @@ urlpatterns = [
     path('detailform/',OtherDetailsView.as_view(),name='other'),
     path('request-refund/',RequestRefundView.as_view(),name='refund'),
     path('reviews/',ReviewView.as_view(),name='review'),
+    path('supplierreviews/',SupplierReviewView.as_view(),name='supplierreview'),
     path('businessdetailupdate/',BusinessDetailUpdateView.as_view(),name='businessdetailupdate') 
 ]
 

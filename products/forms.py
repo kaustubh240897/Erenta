@@ -46,7 +46,12 @@ class RatingForm(forms.Form):
         'rows': 4
     }))
     
-
+class SupplierRatingForm(forms.Form):
+    customer = forms.EmailField(required=True,label='customer email')
+    rating  = forms.ChoiceField(choices=[(x, x) for x in range(1, 6)])
+    review  =forms.CharField(required=True,widget=forms.Textarea(attrs={
+        'rows': 4
+    }))
 
 
     
