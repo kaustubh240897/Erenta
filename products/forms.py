@@ -1,6 +1,6 @@
 from django import forms
 from .models import Product_description
-
+from otherdetails.models import OtherDetails
 
 
 
@@ -37,7 +37,9 @@ class ProductDetailChangeForm(forms.ModelForm):
         model = Product_description
         fields = ['product_name','description','quantity','cost_per_day','image']
     
-    
+
+
+        
 
 class RatingForm(forms.Form):
     id = forms.CharField(required=True,label='product_id')

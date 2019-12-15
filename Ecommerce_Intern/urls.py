@@ -21,12 +21,12 @@ from django.urls import path ,include
 from django.contrib.auth.views import LogoutView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 #from carts.views import cart_home
-#from products.views import product_list_view, product_detail_view
+#from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView
 from carts.views import cart_detail_api_view
-from otherdetails.views import OtherDetailsView
+#from products.views import OtherDetailFormView
 from .views import home_page, about_page, contact_page
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
@@ -62,7 +62,7 @@ urlpatterns = [
     path('add/',AddProductView.as_view(),name='add'),
     path('myproduct/',my_productsView.as_view(), name='myproduct'),
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
-    path('detailform/',OtherDetailsView.as_view(),name='other'),
+    #path('products/<slug:slug>/',ProductDetailSlugView.as_view(),name='other'),
     path('request-refund/',RequestRefundView.as_view(),name='refund'),
     path('reviews/',ReviewView.as_view(),name='review'),
     path('supplierreviews/',SupplierReviewView.as_view(),name='supplierreview'),

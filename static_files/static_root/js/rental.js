@@ -123,7 +123,7 @@ $(document).ready(function(){
                     var submitSpan = thisForm.find(".submit-span")
                     console.log(submitSpan.html())
                     if (data.added){
-                      submitSpan.html( "In the cart <button type='submit' class='btn btn-link'>Remove?</button> ")
+                      submitSpan.html( "<button type='submit' class='btn btn-danger'>Remove?</button> ")
                     }
                     else{
                       submitSpan.html("<button type='submit' class='btn btn-success'>Add  to cart</button>" )

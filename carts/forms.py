@@ -7,7 +7,7 @@ class OtherDetailForm(forms.ModelForm):
 
     class Meta:
         model = OtherDetails
-        fields = ['product','quantity','size','days','other_details']
+        fields = ['quantity','size','days','other_details']
     
     
 

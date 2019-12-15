@@ -3,17 +3,46 @@
 {% block content %}
 
 <div class='container'>
+</br>
+<title>{{ title }}</title>
+<div class='container'>
+    <div class='row'>
+        <div class='col-12 col-md-6'>
+           <h1>{{ object.product_name }}</h1> 
+           {{ object.timestamp|timesince }} ago
+           <h5>Brand-:{{ object.brand }}</h5>
+           <h6> Cost per day-: ${{ object.cost_per_day }}</h6>
+           <h6> Quantity-: {{ object.quantity}} remaining only </h6>
+           <h5>Sizes available: {{ object.size }}</h5>
+            {{ object.description|linebreaks }}<br/>
+             {% if object.image %}
+            <img src='{{ object.image.url }}' class='img-fluid' />
+             {% endif %}       
 
+        </div>
+
+
+<div class='col-12 col-md-6'>
+           
+            
+       {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
+        </br>
+    
+      <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a>
+        </br> 
+
+      </br>
+    </br>
 
 <h2>Please fill Details.</h2>
 </br>
-<form  method='POST'  action=''>
+<form  method='POST'  action= "">
      {% csrf_token %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
     
-        {{ form|crispy }}<br/>
+        {{ form|crispy }}
    
     
      
@@ -21,4 +50,7 @@
 
    </form>
 </div>
-   {% endblock %}
+</div>
+</div>
+</div>
+ {% endblock %}

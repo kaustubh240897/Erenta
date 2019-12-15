@@ -7,6 +7,7 @@ from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
 from products.models import Product_description
+from otherdetails.models import OtherDetails
 from orders.models import Order
 from accounts.models import GuestEmail
 
@@ -54,6 +55,7 @@ def cart_update(request):
     if product_id is not None:
         try:
             product_obj = Product_description.objects.get(id=product_id)
+            
         except Product_description.DoesNotExist:
             print("Product does not exist now!")
             return redirect("cart:home")
@@ -67,6 +69,7 @@ def cart_update(request):
             cart_obj.products.add(product_obj)
             added= True
         
+        
         request.session['cart_items']=cart_obj.products.count()
 
         if request.is_ajax():
@@ -79,6 +82,10 @@ def cart_update(request):
             return JsonResponse(json_data, status=200)
 
     return redirect("cart:home")
+
+
+
+
 
 
 def checkout_home(request):

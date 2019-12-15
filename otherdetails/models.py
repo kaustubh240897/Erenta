@@ -21,6 +21,6 @@ class OtherDetails(models.Model):
     size    = models.CharField(choices=SIZES,default=1,max_length=20)
     days    = models.IntegerField(default=1)
     other_details = models.TextField(blank=True,null=True,max_length=200)
-
+    
     def __str__(self):
-        return str(self.user)  
+        return str(self.product)  

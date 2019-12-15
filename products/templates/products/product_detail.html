@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 </br>
 <title>{{ title }}</title>
@@ -29,41 +29,23 @@
 
       </br>
     </br>
- <!-- <div class='col-2 col-md-6 my-2'>
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">select your size, time and other details</h5>
-        <a class='list-group-item' href='{% url "other" %}'> fill details </a>
-    
-  </div>
-</div>
-</div> 
-  -->
-
-       <h6>Quantity</h6>
-             
-         <div class="col-sm-4 ">
-        <input type="text" value="1" name='quantity' class="form-control" id="name3"> 
-       </div>
-</br>
-    <div class="form-group" name='size'>
-  <label for="sel1">Select size:</label>
-  <select class="form-control" name='size' id="sel1">
-    <option>None</option>
-    <option>S</option>
-    <option>M</option>
-    <option>L</option>
-    <option>XL</option>
-  </select>
-</div> 
-      
-</br>
-<h6>Number of Days you want it?</h6>
- <div class="col-sm-4 ">
-        <input type="text" value="1" name='days' class="form-control" id="name3"> 
-       </div>
  
- </br>
+ <h2>Please fill Details.</h2>
+</br>
+<form  method='POST'  action=''>
+     {% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+    
+        {{ form|crispy }}<br/>
+   
+    
+     
+<button type='submit' class='btn btn-success'> Save </button>
+
+   </form> 
+  
 </br>  
 
 

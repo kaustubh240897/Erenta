@@ -1,4 +1,4 @@
-from django.views.generic import ListView,DetailView,View,CreateView
+from django.views.generic import ListView,DetailView,View,CreateView,FormView
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,12 +9,14 @@ from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
+from otherdetails.models import OtherDetails
 from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-
+from carts.forms import OtherDetailForm
 from accounts.models import User
+from django.http import HttpResponseRedirect
 
 User = settings.AUTH_USER_MODEL
 
@@ -60,14 +62,54 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
 class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
     queryset = Product_description.objects.all()
-    template_name = "products/product_detail.html"
+    template_name = "products/detail.html"
+    
     
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        context['form'] = OtherDetailForm(initial={'post': self.object })
+        context['title'] = 'Details'
         return context
+    
+    def post(self, *args, **kwargs):
+        print(self.request.POST)
+        form = OtherDetailForm(self.request.POST)
+        if form.is_valid():
+            quantity = form.cleaned_data.get('quantity')
+            size = form.cleaned_data.get('size')
+            days   = form.cleaned_data.get('days')
+            other_details = form.cleaned_data.get('other_details')
+            # edit the order
+            try:
+                
+                details = OtherDetails()
+                details.user = self.request.user
+                slug_type = self.request.build_absolute_uri().split('/')
+                slug_type = slug_type[len(slug_type)-2]
+                details.product = Product_description.objects.get(slug=slug_type)
+                details.quantity = quantity
+                details.size = size
+                details.days = days
+                print(days)
+                details.other_details  = other_details
+                print(size)
+                details.save()
+                messages.info(self.request, "Your details has received.")
+                return redirect("products:detail",slug=self.kwargs.get('slug'))
+
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "your details has not received.")
+                return redirect("products:detail", slug=self.kwargs.get('slug'))
+    
+    
+
+    def get_success_url(self):
+        messages.success(self.request, 'added Successfully !!!')
+        return reverse("products:detail",slug=self.kwargs.get('slug'))
+    
 
     def get_object(self, *args, **kwargs):
         request = self.request
@@ -86,18 +128,6 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
         return instance
 
-    
-
-# def order_detail(request):
-#     if request.method == "POST":
-#         quantity=request.POST.get('quantity')
-#         size=request.POST.get('size')
-#         days=request.POST.get('days')
-#         order_det = order_details(quantity=quantity, size=size, days=days)
-#         order_det.save()
-
-#     return render(request,"products/product_form.html")
-           
 
 
 # catogaries
@@ -196,9 +226,21 @@ class AddProductView(LoginRequiredMixin,CreateView):
     model = Product_description
     form_class = ProductForm
     template_name = 'products/add_products.html'
+    def form_valid(self,form):
+        obj = form.save(commit=False)
+        obj.user = self.request.user # logged in user is available on a view func's `request` instance
+        obj.save()
+        return HttpResponseRedirect(self.get_success_url())
+    
+        
+    
     def get_success_url(self):
         messages.success(self.request, 'added Successfully !!!')
         return reverse("supplier")
+
+        
+        
+    
     
     
     
