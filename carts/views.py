@@ -32,16 +32,9 @@ def cart_detail_api_view(request):
          "product_name" : x.product_name , 
          "cost_per_day" : x.cost_per_day
          }  for x in cart_obj.products.all()]
-     other = [{
-         "id"           : x.id,
-         "product"      : x.product,
-         "quantity"     : x.quantity,
-         "size" : x.size , 
-         "days" : x.days
-         }
-         for x in cart_obj.other.all()]
+     
          
-     cart_data = {"products" : products,"other": other ,"subtotal" : cart_obj.subtotal , "total" : cart_obj.total }
+     cart_data = {"products" : products,"subtotal" : cart_obj.subtotal , "total" : cart_obj.total }
      return JsonResponse(cart_data)
 
 def cart_home(request):

@@ -34,7 +34,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         print(self.request.user)
-        all_orders = Order.objects.filter(cart__products__registered_email=self.request.user).not_created()
+        all_orders = Order.objects.filter(cart__products__user=self.request.user).not_created().distinct()
         # doing for only one order, do it for ever order
         # for orders in all_orders:
         #     if(orders.objects.cart.products.registered_email = self.request.user):

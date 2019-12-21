@@ -19,7 +19,7 @@
                        
                         <td>{% for product in object.cart.products.all %} 
                 
-                           {% if product.registered_email == request.user.email %}  {{ product }} {% elif not forloop.last %}   {% endif %}{% endfor %}</td>
+                           {% if product.user == request.user %}  {{ product }} {% elif not forloop.last %}   {% endif %}{% endfor %}</td>
                         
                         <td><a href='{{ object.get_absolute_url1 }}'>{{ object.order_id }}</a></td>
                         <td>1</td>
