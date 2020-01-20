@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.views.generic import CreateView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponseRedirect
+from django.urls import reverse
 from django.http import JsonResponse
-from .models import Cart
+from .models import Cart,CartItem
 from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
-from products.models import Product_description
+from products.models import Product_description, Variation
 from otherdetails.models import OtherDetails
 from orders.models import Order
 from accounts.models import GuestEmail
@@ -24,57 +25,153 @@ stripe.api_key =  STRIPE_SECRET_KEY
 
 
 
-def cart_detail_api_view(request):
-     cart_obj, new_obj = Cart.objects.new_or_get(request)
-     products = [{
-         "id"           : x.id,
-         "url"          : x.get_absolute_url(),
-         "product_name" : x.product_name , 
-         "cost_per_day" : x.cost_per_day
-         }  for x in cart_obj.products.all()]
+# def cart_detail_api_view(request):
+#      cart_obj, new_obj = Cart.objects.new_or_get(request)
+#      items = [{
+#          "id"           : x.id,
+#          "url"          : x.get_absolute_url(),
+#          "product_name" : x.product_name , 
+#          "cost_per_day" : x.cost_per_day
+#          }  for x in cart_obj.items.all()]
      
          
-     cart_data = {"products" : products,"subtotal" : cart_obj.subtotal , "total" : cart_obj.total }
-     return JsonResponse(cart_data)
+#      cart_data = {"items" : items,"subtotal" : cart_obj.subtotal , "total" : cart_obj.total }
+#      return JsonResponse(cart_data)
 
 def cart_home(request):
-    cart_obj, new_obj = Cart.objects.new_or_get(request)
-    return render(request,"carts/home.html", {"cart" : cart_obj})
+    try:
+        the_id = request.session['cart_id']
+    except:
+        the_id=None 
+    if the_id:
+        cart_obj = Cart.objects.get(id=the_id)
+        new_total = 0.00
+        for item in cart_obj.cartitem_set.all():
+            line_total = float(item.product.cost_per_day)* (item.quantity)
+            new_total += line_total
+        print(new_total)
+        request.session['cart_items']=cart_obj.cartitem_set.count()
+        cart_obj.subtotal=new_total
+        cart_obj.save()
 
-def cart_update(request):
+    return render(request,"carts/view.html", {"cart" : cart_obj})
 
-    product_id=request.POST.get('product_id')
+# def update_cart(request,slug):
+#     request.session.set_expiry(1200000)
+#     try:
+#         qty = request.GET.get('qty')
+#         update_qty = True
+#     except:
+#         qty = None
+#         update_qty = False
     
-    if product_id is not None:
-        try:
-            product_obj = Product_description.objects.get(id=product_id)
-            
-        except Product_description.DoesNotExist:
-            print("Product does not exist now!")
-            return redirect("cart:home")
-       
-        cart_obj, new_obj = Cart.objects.new_or_get(request)
-        if product_obj in cart_obj.products.all():
-            cart_obj.products.remove(product_obj)
-            added = False
+#     cart_obj, new_obj = Cart.objects.new_or_get(request)
+#     cart_id = request.session.get("cart_id", None)
+#     cart = Cart.objects.get(id=cart_id)
+#     product=None
+#     try:
+#         product = Product_description.objects.get(slug=slug)
         
-        else:
-            cart_obj.products.add(product_obj)
-            added= True
-        
-        
-        request.session['cart_items']=cart_obj.products.count()
+#     except Product_description.DoesNotExist:
+#         pass
+#     except:
+#         pass
+    
+#     cart_item, created = CartItem.objects.get_or_create(cart=cart,product=product)
+#     if product is None:
+#         cart_item.delete()
+#     if update_qty and qty:
+#         if int(qty) ==0:
+#             cart_item.delete()
+#         else:
+#             cart_item.quantity=qty
+#             cart_item.save()
+#     else:
+#         pass
+#     new_total = 0.00
+#     for item in cart_obj.cartitem_set.all():
+#         line_total = float(item.product.cost_per_day)*(item.quantity)
+#         new_total += line_total
+#     print(new_total)
+#     request.session['cart_items']=cart_obj.cartitem_set.count()
+#     cart_obj.subtotal=new_total
+#     cart_obj.save()
 
-        if request.is_ajax():
-            print("ajax request")
-            json_data = {
-                "added": added,
-                "removed": not added,
-                "cartItemCount":cart_obj.products.count()
-            }
-            return JsonResponse(json_data, status=200)
+#     return redirect("cart:home")
 
+def remove_cart(request,id):
+    # try:
+    #     cart_id = request.session['cart_id']
+    #     cart = Cart.objects.get(id=cart_id)
+    # except:
+    #     return redirect("cart:home")
+    cart_obj, new_obj = Cart.objects.new_or_get(request)
+    cartitem = CartItem.objects.get(id=id)
+    cartitem.cart=None 
+    cartitem.save()
+    messages.success(request, 'removed Successfully !!!')
     return redirect("cart:home")
+
+     
+
+
+def add_to_cart(request,id):
+    request.session.set_expiry(1200000)
+
+    product_id=request.POST.get('product_id',None)
+    
+    
+    try:
+        product_obj = Product_description.objects.get(id=id)
+            
+    except Product_description.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("cart:home")
+    cart_id = request.session.get("cart_id", None)
+    cart_obj, new_obj = Cart.objects.new_or_get(request)
+    
+    product_variations = []
+    if request.method == "POST":
+        qty = request.POST['qty']
+        if int(qty) >=0:
+            for item in request.POST:
+                key = item
+                val = request.POST[key]
+                try:
+                    v = Variation.objects.get(product=product_obj, category__iexact=key, title__iexact=val)
+                    product_variations.append(v)
+                    print(v)
+                except:
+                    pass
+
+        
+
+        
+            cart_item= CartItem.objects.create(cart_id=cart_id, product_id=id)
+        
+        
+            
+            if len(product_variations)>0:
+                cart_item.variations.add(*product_variations)
+            cart_item.quantity=qty
+            cart_item.save()
+
+                
+            
+                # if request.is_ajax():
+                #     print("ajax request")
+                #     json_data = {
+                #         "added": added,
+                #         "removed": not added,
+                #         "cartItemCount":cart_obj.cartitem_set.count()
+                #     }
+                #     return JsonResponse(json_data, status=200)
+            messages.success(request, 'added Successfully !!!')
+            return redirect("cart:home")
+    
+    messages.success(request, 'error occured !!!')
+    return redirect("cart:home")
+
 
 
 
@@ -83,8 +180,10 @@ def cart_update(request):
 
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
+    
+    
     order_obj=None
-    if cart_created or cart_obj.products.count()==0:
+    if cart_created or cart_obj.cartitem_set.count()==0:
         return redirect("cart:home")
     
     

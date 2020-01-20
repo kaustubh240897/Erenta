@@ -100,106 +100,106 @@ $(document).ready(function(){
         
         
         
-         // cart + Add Products
-          var productForm= $(".form-product-ajax")
-          productForm.submit(function(event){
+        //  // cart + Add Products
+        //   var productForm= $(".form-product-ajax")
+        //   productForm.submit(function(event){
 
-             event.preventDefault();
-             //console.log("form is not sending")
-             var thisForm = $(this)
-             //var actionEndPoint=thisForm.attr("action");
-             var actionEndPoint = thisForm.attr("data-endpoint")
-             var httpMethod = thisForm.attr("method");
-             var formData =thisForm.serialize();
-             $.ajax({
-                 url:actionEndPoint,
-                 method:httpMethod,
-                 data:formData,
-                 success: function(data){
-                    console.log("success")
-                    console.log(data)
-                    console.log("Added",data.added)
-                    console.log("Removed",data.removed)
-                    var submitSpan = thisForm.find(".submit-span")
-                    console.log(submitSpan.html())
-                    if (data.added){
-                      submitSpan.html( "<button type='submit' class='btn btn-danger'>Remove?</button> ")
-                    }
-                    else{
-                      submitSpan.html("<button type='submit' class='btn btn-success'>Add  to cart</button>" )
-                    }
-                    var navbarCount= $(".navbar-cart-count")
-                    navbarCount.text(data.cartItemCount)
-                    var currentPath = window.location.href
-                    if (currentPath.indexOf("cart") != -1)
-                    {
-                      refreshCart()
-                    }
-                 },
-                 error: function(errorData){
-                    $.alert({
-                      title :"Oops!",
-                      content :"An Error occured",
-                      theme : "modern",
-                      })
+        //      event.preventDefault();
+        //      //console.log("form is not sending")
+        //      var thisForm = $(this)
+        //      //var actionEndPoint=thisForm.attr("action");
+        //      var actionEndPoint = thisForm.attr("data-endpoint")
+        //      var httpMethod = thisForm.attr("method");
+        //      var formData =thisForm.serialize();
+        //      $.ajax({
+        //          url:actionEndPoint,
+        //          method:httpMethod,
+        //          data:formData,
+        //          success: function(data){
+        //             console.log("success")
+        //             console.log(data)
+        //             console.log("Added",data.added)
+        //             console.log("Removed",data.removed)
+        //             var submitSpan = thisForm.find(".submit-span")
+        //             console.log(submitSpan.html())
+        //             if (data.added){
+        //               submitSpan.html( "<button type='submit' class='btn btn-danger'>Remove?</button> ")
+        //             }
+        //             else{
+        //               submitSpan.html("<button type='submit' class='btn btn-success'>Add  to cart</button>" )
+        //             }
+        //             var navbarCount= $(".navbar-cart-count")
+        //             navbarCount.text(data.cartItemCount)
+        //             var currentPath = window.location.href
+        //             if (currentPath.indexOf("cart") != -1)
+        //             {
+        //               refreshCart()
+        //             }
+        //          },
+        //          error: function(errorData){
+        //             $.alert({
+        //               title :"Oops!",
+        //               content :"An Error occured",
+        //               theme : "modern",
+        //               })
                     
-                 }
+        //          }
 
-             })
+        //      })
 
              
-          })
+        //   })
 
-          function refreshCart(){
-                    console.log("in current cart")
-                    var cartTable = $(".cart-table")
-                    var cartBody = cartTable.find(".cart-body")
-                    //cartBody.html("<h1>Changed</h1>")
-                    var productRows = cartBody.find(".cart-product")
-                    var currentUrl = window.location.href
+        //   function refreshCart(){
+        //             console.log("in current cart")
+        //             var cartTable = $(".cart-table")
+        //             var cartBody = cartTable.find(".cart-body")
+        //             //cartBody.html("<h1>Changed</h1>")
+        //             var productRows = cartBody.find(".cart-product")
+        //             var currentUrl = window.location.href
                   
 
-                    var refreshCartUrl = '/api/cart/'
-                    var refreshCartMethod = "GET";
-                    var data = {};
-                    $.ajax({
-                      url: refreshCartUrl,
-                      method: refreshCartMethod,
-                      data: data,
-                      success: function(data){
-                        var hiddenCartItemRemoveForm = $(".cart-item-remove-form")
+        //             var refreshCartUrl = '/api/cart/'
+        //             var refreshCartMethod = "GET";
+        //             var data = {};
+        //             $.ajax({
+        //               url: refreshCartUrl,
+        //               method: refreshCartMethod,
+        //               data: data,
+        //               success: function(data){
+        //                 var hiddenCartItemRemoveForm = $(".cart-item-remove-form")
                         
-                        if (data.products.length > 0){
-                             productRows.html(" ")
-                             i= data.products.length
-                             $ .each(data.products, function(index,value){
-                                 var newCartItemRemove = hiddenCartItemRemoveForm.clone()
-                                 newCartItemRemove.css("dislay","block")
-                                 //newCartItemRemove.removeClass("hidden-class")
-                                 newCartItemRemove.find(".cart-item-product-id").val(value.id)
-                                   cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td> <a href ='" + value.url + "'>"   + value.product_name + "</a> " +  newCartItemRemove.html() + "</td><td>" + value.cost_per_day + "</td></tr>")
-                             i--
-                             })
+        //                 if (data.products.length > 0){
+        //                      productRows.html(" ")
+        //                      i= data.products.length
+        //                      $ .each(data.products, function(index,value){
+        //                          var newCartItemRemove = hiddenCartItemRemoveForm.clone()
+        //                          newCartItemRemove.css("dislay","block")
+        //                          //newCartItemRemove.removeClass("hidden-class")
+        //                          newCartItemRemove.find(".cart-item-product-id").val(value.id)
+        //                            cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td> <a href ='" + value.url + "'>"   + value.product_name + "</a> " +  newCartItemRemove.html() + "</td><td>" + value.cost_per_day + "</td></tr>")
+        //                      i--
+        //                      })
                           
-                             cartBody.find(".cart-subtotal").text(data.subtotal)
-                             cartBody.find(".cart-total").text(data.total)
-                        }
-                        else{
-                          window.location.href = currentUrl
-                        }
+        //                      cartBody.find(".cart-subtotal").text(data.subtotal)
+        //                      cartBody.find(".cart-total").text(data.total)
+        //                 }
+        //                 else{
+        //                   window.location.href = currentUrl
+        //                 }
 
-                      },
-                      error: function(errorData){
-                       $.alert({
-                      title :"Oops!",
-                      content :"An Error occured",
-                      theme : "modern",
-                      })
-                      }
+        //               },
+        //               error: function(errorData){
+        //                $.alert({
+        //               title :"Oops!",
+        //               content :"An Error occured",
+        //               theme : "modern",
+        //               })
+        //               }
                         
 
-                    })
-          }
+        //             })
+        //   }
 
       })
      

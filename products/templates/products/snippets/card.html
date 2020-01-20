@@ -1,8 +1,10 @@
-
+{% load staticfiles %}
 <div class="card" style="width: 18rem">
    {% if instance.image %}
   <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
   </a>
+  {% else %}
+  <img class='image-responsive' src='{% static "img/placeholder.png" %}'/>
   {% endif %}
   <div class="card-body">
     <h5 class="card-title"></h5>

@@ -16,7 +16,9 @@ class OrderAdmin(admin.ModelAdmin):
                     'refund_granted',
                     'billing_profile',
                     'billing_address',
-                     'cart', ]
+                     'cart',
+                     'updated' ]
+    readonly_fields=['timestamp','updated']
     
     list_display_links = ['billing_profile',
                           'billing_address',

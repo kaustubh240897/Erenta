@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review
+from .models import Product_description,User_Review,Supplier_Review,ProductImage
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
@@ -62,16 +62,21 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
 class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
     queryset = Product_description.objects.all()
+    
     template_name = "products/detail.html"
     
     
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
-        cart_obj, new_obj = Cart.objects.new_or_get(self.request)
-        context['cart'] = cart_obj
+        # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
+        # context['cart'] = cart_obj
+        slug = self.kwargs.get('slug')
+        product= Product_description.objects.get(slug=slug)
         context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Details'
+        context['all']=Product_description.objects.get(slug=slug)
+        context['images']=ProductImage.objects.filter(product=product)
         return context
     
     def post(self, *args, **kwargs):

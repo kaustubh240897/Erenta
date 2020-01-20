@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from decimal import Decimal
 from django.db.models.signals import pre_save , post_save, m2m_changed
-from products.models import Product_description
+from products.models import Product_description,Variation
 from otherdetails.models import OtherDetails
 User = settings.AUTH_USER_MODEL
 
@@ -23,6 +23,7 @@ class CartManager(models.Manager):
             cart_obj= Cart.objects.new(user=request.user)
             new_obj = True
             request.session['cart_id'] = cart_obj.id
+            cart_id = cart_obj.id
         return cart_obj, new_obj
     
     
@@ -35,12 +36,30 @@ class CartManager(models.Manager):
         return self.model.objects.create(user=user_obj)
 
 
+class CartItem(models.Model):
+    cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product_description,null=True,blank=True,on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    variations = models.ManyToManyField(Variation,blank=True)
+    line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        try:
+            return str(self.cart.id)
+        except:
+            return self.product.product_name
+
+
+
 class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product_description,blank=True)
+    #items = models.ManyToManyField(CartItem, null=True, blank=True)
+    #products = models.ManyToManyField(Product_description,blank=True)
     other = models.ManyToManyField(OtherDetails,blank=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
-    total = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
+    total = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -52,20 +71,21 @@ class Cart(models.Model):
 
 
 
-def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
-    if action =='post_add' or action =='post_remove' or action =='post_clear':
-        products = instance.products.all()
-        total=0
-        for x in products:
-            total += x.cost_per_day 
-        if instance.subtotal != total:
-            instance.subtotal=total
-            instance.save()
-m2m_changed.connect(m2m_changed_cart_receiver, sender = Cart.products.through)
+# def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
+#     if action =='post_add' or action =='post_remove' or action =='post_clear':
+#         items = instance.items.all()
+#         total=0
+#         for x in items:
+#             line_total = float(x.product.cost_per_day)*(x.quantity)
+#             total += line_total
+#         if instance.subtotal != total:
+#             instance.subtotal=total
+#             instance.save()
+# m2m_changed.connect(m2m_changed_cart_receiver, sender = Cart.items.through)
     
 def pre_save_cart_receiver(sender, instance,*args,**kwargs):
     if instance.subtotal > 0:
-        instance.total=Decimal(instance.subtotal) * Decimal(1.09)
+        instance.total=Decimal(instance.subtotal) * Decimal(1)
     else:
         instance.total=0.00
 pre_save.connect(pre_save_cart_receiver , sender=Cart)

@@ -93,6 +93,7 @@ class Product_description(models.Model):
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
     timestamp= models.DateTimeField(auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True)
 
 
     objects = ProductManager()
@@ -109,7 +110,8 @@ class Product_description(models.Model):
     def __str__(self):
         return self.product_name
     
-    
+    class Meta:
+        unique_together=('product_name','slug') 
 
 
     @property
@@ -120,6 +122,52 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug= unique_slug_generator(instance)
 pre_save.connect(product_pre_save_receiver, sender=Product_description)
+
+
+class ProductImage(models.Model):
+    product=models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    featured = models.BooleanField(default=False)
+    thumbnail = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+
+    def __str__(self):
+        return self.product.product_name
+
+
+class VariationManager(models.Manager):
+    def all(self):
+        return super(VariationManager, self).filter(active=True)
+    def sizes(self):
+        return self.all().filter(category='size')
+    def colors(self):
+        return self.all().filter(category='color')
+
+
+
+
+VAR_CATEGORIES = (
+    ('size','size'),
+    ('color','color'),
+    ('package','package'),
+
+)
+
+class Variation(models.Model):
+    product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    category = models.CharField(max_length=120, choices=VAR_CATEGORIES,default='size')
+    title = models.CharField(max_length=120)
+    image = models.ForeignKey(ProductImage,null=True,blank=True,on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
+    discount_price = models.FloatField(blank=True,null=True)
+    active = models.BooleanField(default=True)
+    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+
+    objects = VariationManager()
+
+    def __str__(self):
+        return self.title
 
 
 
