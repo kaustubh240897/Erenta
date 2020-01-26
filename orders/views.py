@@ -4,7 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from billing.models import BillingProfile
 from django.shortcuts import render
 from .models import Order,Refund
+from carts.models import Coupon
 from .forms import RefundForm
+from carts.forms import CouponForm
 from django.contrib import messages
 from products.models import Product_description
 from django.shortcuts import render,redirect
@@ -34,7 +36,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         print(self.request.user)
-        all_orders = Order.objects.filter(cart__products__user=self.request.user).not_created().distinct()
+        all_orders = Order.objects.filter(cart__cartitem__product__user=self.request.user).not_created().distinct()
         # doing for only one order, do it for ever order
         # for orders in all_orders:
         #     if(orders.objects.cart.products.registered_email = self.request.user):
@@ -96,4 +98,34 @@ class RequestRefundView(View):
 
 
 
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+        return coupon
+    except ObjectDoesNotExist:
+        messages.info(request,"Your coupon does not exist")
+        return redirect("cart:checkout")
 
+
+class AddCouponView(View):
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(billing_profile__user=self.request.user)
+        form = CouponForm()
+        context={
+            'couponform': form
+        }
+        return render(self.request, "order_snippet.html" ,context)
+    def post(self, *args, **kwargs):
+        form = CouponForm(self.request.POST or None)
+        if form.is_valid():
+            try:
+                code = form.cleaned_data.get('code')
+                order = Order.objects.get(
+                    billing_profile=self.request.user)
+                order.coupon = get_coupon(self.request, code)
+                order.save()
+                messages.success(self.request, "Successfully added coupon")
+                return redirect("cart:checkout")
+            except ObjectDoesNotExist:
+                messages.info(self.request, "You do not have an active order")
+                return redirect("cart:checkout")

@@ -42,7 +42,7 @@ class ProductDetailChangeForm(forms.ModelForm):
         
 
 class RatingForm(forms.Form):
-    id = forms.CharField(required=True,label='product_id')
+    name = forms.CharField(required=True,label='product_id')
     rating  = forms.ChoiceField(choices=[(x, x) for x in range(1, 6)])
     review  =forms.CharField(required=True,widget=forms.Textarea(attrs={
         'rows': 4

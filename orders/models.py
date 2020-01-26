@@ -1,6 +1,6 @@
 from django.db import models
 import math
-from carts.models import Cart
+from carts.models import Cart,Coupon
 from django.urls import reverse
 from django.conf import settings
 from billing.models import BillingProfile
@@ -60,6 +60,7 @@ class Order(models.Model):
     shipping_address   = models.ForeignKey(Address, related_name="shipping_address", null=True,blank=True, on_delete=models.CASCADE)
     billing_address    = models.ForeignKey(Address, related_name="billing_address", null=True,blank=True, on_delete=models.CASCADE)
     cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    coupon             = models.ForeignKey(Coupon,on_delete=models.CASCADE,blank=True,null=True)
     status             = models.CharField(max_length=120, default='created')
     shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
     total              = models.DecimalField(default=0.00,max_digits=50,decimal_places=2)
@@ -98,6 +99,7 @@ class Order(models.Model):
         shipping_total=self.shipping_total
         
         new_total = math.fsum([cart_total, shipping_total])
+        #new_total = new_total- self.coupon.amount
         formatted_total = format(new_total, '.2f')
         self.total=formatted_total
         self.save()

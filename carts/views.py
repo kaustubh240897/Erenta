@@ -47,11 +47,16 @@ def cart_home(request):
         cart_obj = Cart.objects.get(id=the_id)
         new_total = 0.00
         for item in cart_obj.cartitem_set.all():
-            line_total = float(item.product.cost_per_day)* (item.quantity)
-            new_total += line_total
-        print(new_total)
+            if item.product.discount_price:
+                line_total = float(item.product.discount_price)* (item.quantity)
+                new_total += line_total
+                cart_obj.subtotal=new_total
+            else:
+                line_total = float(item.product.cost_per_day)* (item.quantity)
+                new_total += line_total
+                print(new_total)
+                cart_obj.subtotal=new_total
         request.session['cart_items']=cart_obj.cartitem_set.count()
-        cart_obj.subtotal=new_total
         cart_obj.save()
 
     return render(request,"carts/view.html", {"cart" : cart_obj})
@@ -127,13 +132,15 @@ def add_to_cart(request,id):
     except Product_description.DoesNotExist:
         print("Product does not exist now!")
         return redirect("cart:home")
-    cart_id = request.session.get("cart_id", None)
+    
     cart_obj, new_obj = Cart.objects.new_or_get(request)
+    cart_id = request.session.get("cart_id", None)
+    print(cart_id)
     
     product_variations = []
     if request.method == "POST":
         qty = request.POST['qty']
-        if int(qty) >=0:
+        if int(qty) >0:
             for item in request.POST:
                 key = item
                 val = request.POST[key]
@@ -144,13 +151,7 @@ def add_to_cart(request,id):
                 except:
                     pass
 
-        
-
-        
             cart_item= CartItem.objects.create(cart_id=cart_id, product_id=id)
-        
-        
-            
             if len(product_variations)>0:
                 cart_item.variations.add(*product_variations)
             cart_item.quantity=qty
@@ -180,8 +181,6 @@ def add_to_cart(request,id):
 
 def checkout_home(request):
     cart_obj, cart_created = Cart.objects.new_or_get(request)
-    
-    
     order_obj=None
     if cart_created or cart_obj.cartitem_set.count()==0:
         return redirect("cart:home")

@@ -11,10 +11,12 @@
 
 {% if request.user.is_authenticated %}
 <div class='row'>
-  <div class='col'>
   
-  {{ premium_content }} {{ user }}!
-  </div>
+  <a class='list-group-item' href='{% url "account:user-update" %}'>
+    <img src="{% static 'img/a.jpg' %}" width=50px  class="rounded-circle" alt="...."> </a>{{ premium_content }} {{ user.full_name }}!
+ 
+  
+  
 </div>
 {% else %}
 For better experience please Login.

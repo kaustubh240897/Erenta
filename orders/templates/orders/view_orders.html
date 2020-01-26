@@ -17,9 +17,9 @@
                 {% for object in object_list %}
                     <tr>
                        
-                        <td>{% for product in object.cart.products.all %} 
+                        <td>{% for item in object.cart.cartitem_set.all %} 
                 
-                           {% if product.user == request.user %}  {{ product }} {% elif not forloop.last %}   {% endif %}{% endfor %}</td>
+                           {% if item.product.user == request.user %}  {{ item.product }}, {% elif not forloop.last %}   {% endif %}{% endfor %}</td>
                         
                         <td><a href='{{ object.get_absolute_url1 }}'>{{ object.order_id }}</a></td>
                         <td>1</td>

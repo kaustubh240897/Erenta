@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.db.models.signals import pre_save , post_save, m2m_changed
 from products.models import Product_description,Variation
 from otherdetails.models import OtherDetails
+from datetime import date
 User = settings.AUTH_USER_MODEL
 
 
@@ -40,6 +41,8 @@ class CartItem(models.Model):
     cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
     product = models.ForeignKey(Product_description,null=True,blank=True,on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    start_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
+    end_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
     variations = models.ManyToManyField(Variation,blank=True)
     line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -50,6 +53,17 @@ class CartItem(models.Model):
             return str(self.cart.id)
         except:
             return self.product.product_name
+    
+    def get_amount_saved(self):
+        return self.quantity * (self.product.cost_per_day-self.product.discount_price)
+
+def pre_save_cartitem_receiver(sender, instance,*args,**kwargs):
+    if instance.product.discount_price:
+        instance.line_total= Decimal(instance.quantity)*(instance.product.discount_price)
+    else:
+        instance.line_total= Decimal(instance.quantity)*(instance.product.cost_per_day)
+
+pre_save.connect(pre_save_cartitem_receiver , sender=CartItem)
 
 
 
@@ -57,7 +71,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     #items = models.ManyToManyField(CartItem, null=True, blank=True)
     #products = models.ManyToManyField(Product_description,blank=True)
-    other = models.ManyToManyField(OtherDetails,blank=True)
+    #other = models.ManyToManyField(OtherDetails,blank=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     total = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -85,10 +99,18 @@ class Cart(models.Model):
     
 def pre_save_cart_receiver(sender, instance,*args,**kwargs):
     if instance.subtotal > 0:
-        instance.total=Decimal(instance.subtotal) * Decimal(1)
+        instance.total=format((Decimal(instance.subtotal) * Decimal(1.1)),'.2f')
     else:
         instance.total=0.00
 pre_save.connect(pre_save_cart_receiver , sender=Cart)
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15)
+    amount = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
+
+    def __str__(self):
+        return self.code
 
 
 

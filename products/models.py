@@ -85,6 +85,7 @@ class Product_description(models.Model):
     description = models.TextField()
     quantity = models.IntegerField(default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
+    discount_price = models.DecimalField(max_digits=15, decimal_places=2,blank=True,null=True)
     size = MultiSelectField(choices=MY_CHOICES,default=5)
     #days = models.IntegerField( null=True, blank=True)
     brand = models.CharField(max_length=20, default=None,null=True)
@@ -105,7 +106,9 @@ class Product_description(models.Model):
     
     def get_absolute_url1(self):
         return reverse("update",kwargs={"slug":self.slug})
-
+    
+    def get_amount_percent_saved(self):
+        return format((((self.cost_per_day-self.discount_price)/(self.cost_per_day))*100),'.2f')
 
     def __str__(self):
         return self.product_name
@@ -160,7 +163,6 @@ class Variation(models.Model):
     title = models.CharField(max_length=120)
     image = models.ForeignKey(ProductImage,null=True,blank=True,on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
-    discount_price = models.FloatField(blank=True,null=True)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 

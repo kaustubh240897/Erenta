@@ -9,4 +9,3 @@ class RefundForm(forms.Form):
     }))
     email   = forms.EmailField()
 
-    

@@ -73,41 +73,43 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         # context['cart'] = cart_obj
         slug = self.kwargs.get('slug')
         product= Product_description.objects.get(slug=slug)
-        context['form'] = OtherDetailForm(initial={'post': self.object })
+        product_id = Product_description.objects.get(slug=slug)
+        # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Details'
         context['all']=Product_description.objects.get(slug=slug)
         context['images']=ProductImage.objects.filter(product=product)
+        context['reviews']=User_Review.objects.filter(product_id=product_id)
         return context
     
-    def post(self, *args, **kwargs):
-        print(self.request.POST)
-        form = OtherDetailForm(self.request.POST)
-        if form.is_valid():
-            quantity = form.cleaned_data.get('quantity')
-            size = form.cleaned_data.get('size')
-            days   = form.cleaned_data.get('days')
-            other_details = form.cleaned_data.get('other_details')
-            # edit the order
-            try:
+    # def post(self, *args, **kwargs):
+    #     print(self.request.POST)
+    #     form = OtherDetailForm(self.request.POST)
+    #     if form.is_valid():
+    #         quantity = form.cleaned_data.get('quantity')
+    #         size = form.cleaned_data.get('size')
+    #         days   = form.cleaned_data.get('days')
+    #         other_details = form.cleaned_data.get('other_details')
+    #         # edit the order
+    #         try:
                 
-                details = OtherDetails()
-                details.user = self.request.user
-                slug_type = self.request.build_absolute_uri().split('/')
-                slug_type = slug_type[len(slug_type)-2]
-                details.product = Product_description.objects.get(slug=slug_type)
-                details.quantity = quantity
-                details.size = size
-                details.days = days
-                print(days)
-                details.other_details  = other_details
-                print(size)
-                details.save()
-                messages.info(self.request, "Your details has received.")
-                return redirect("products:detail",slug=self.kwargs.get('slug'))
+    #             details = OtherDetails()
+    #             details.user = self.request.user
+    #             slug_type = self.request.build_absolute_uri().split('/')
+    #             slug_type = slug_type[len(slug_type)-2]
+    #             details.product = Product_description.objects.get(slug=slug_type)
+    #             details.quantity = quantity
+    #             details.size = size
+    #             details.days = days
+    #             print(days)
+    #             details.other_details  = other_details
+    #             print(size)
+    #             details.save()
+    #             messages.info(self.request, "Your details has received.")
+    #             return redirect("products:detail",slug=self.kwargs.get('slug'))
 
-            except ObjectDoesNotExist:
-                messages.warning(self.request, "your details has not received.")
-                return redirect("products:detail", slug=self.kwargs.get('slug'))
+    #         except ObjectDoesNotExist:
+    #             messages.warning(self.request, "your details has not received.")
+    #             return redirect("products:detail", slug=self.kwargs.get('slug'))
     
     
 
@@ -317,12 +319,12 @@ class ReviewView(View):
     def post(self,*args, **kwargs):
         form = RatingForm(self.request.POST)
         if form.is_valid():
-            id = form.cleaned_data.get('id')
+            name = form.cleaned_data.get('name')
             rating = form.cleaned_data.get('rating')
             review   = form.cleaned_data.get('review')
             # edit the order
             try:
-                product_id=Product_description.objects.get(id=id)
+                product_id=Product_description.objects.get(slug=name)
                 product_id.save()
                 #store the refund
                 reviews = User_Review()

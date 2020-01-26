@@ -10,9 +10,8 @@
       <th scope="col">#</th>
       <th scope="col">Product Name</th>
       <th scope="col">quantity</th>
-      <th scope="col">size</th>
       <th scope="col">days</th>
-      <th scope="col">Price</th>
+      <th scope="col">Price(in $)</th>
       
       
       
@@ -31,30 +30,35 @@
       
       </td>
       <td>{{ item.quantity }}</td>
-      <td>None</td>
       <td>1</td>
-      <td>{{ item.product.cost_per_day }}</td>
-      <td><a href='{% url "cart:remove_cart" item.id %}'>Remove</a></td>
+      {% if item.product.discount_price %}
+      <td>${{ item.product.discount_price }}
+        <span class="badge badge-primary">Saving ${{ item.get_amount_saved }}</span></td>
+      {% else %}
+      <td>${{ item.product.cost_per_day }}</td>
+      {% endif %}
+      <td><a href='{% url "cart:remove_cart" item.id %}'><i class='fa fa-trash'></i></a></td>
       
     </tr>
      
     {% endfor %}
    
     <tr>
-      <td colspan="5"></td>
+      <td colspan="4"></td>
       
        <td><b>Subtotal</b> $ {{ cart.subtotal }}</td>
     </tr>
     
     <tr>
-      <td colspan="5"></td>
+      <td colspan="4"></td>
       
-       <td><b>Total(Including all taxes)</b> $ {{ cart.total }}+ $15(Shipping total)</td>
+       <td><b>Total(Including all taxes)</b> <b>$ {{ cart.total }}+ $15(Shipping total)</b></td>
     </tr>
 
-    <td colspan="5"></td>
+    <td colspan="4"></td>
       
-       <td><a class='btn btn-lg btn-black btn-success' href='{% url "cart:checkout" %}'>Checkout</a></td>
+       <td><a class='btn btn-lg btn-black btn-primary' href='/'>Continue Shopping</a>
+        <a class='btn btn-lg btn-black btn-warning' href='{% url "cart:checkout" %}'>Proceed to Checkout</a></td>
     </tr>
 
 

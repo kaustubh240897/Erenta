@@ -16,11 +16,12 @@
          <div class='col-sm-4 col-xs-6 pull-right'>
            <form class='form' method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
              <input class='btn btn-dark btn-block' type='submit' value='Add to cart' />
-              <input class='form-control' name='qty' type='number' value='1' />
+              Quantity-: <input class='form-control' name='qty' type='number' value='1' />
               
           {% if object.variation_set.all %}
 
              {% if object.variation_set.sizes %}
+             Size-:
               <select class='form-control' name='size'>
                 {% for item in object.variation_set.sizes %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
@@ -30,6 +31,7 @@
              {% endif %}
               
               {% if  object.variation_set.colors %}
+              Color-:
               <select class='form-control' name='color'>
                 {% for item in object.variation_set.colors %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
@@ -60,8 +62,13 @@
              {% endfor %}
 
            {{ object.timestamp|timesince }} ago
-           <h5>Brand-:{{ object.brand }}</h5>
+           <h5>Brand-: {{ object.brand }}</h5>
+           
+           {% if object.discount_price %}
+           <h6> Cost per day-:<strike> ${{ object.cost_per_day }}</strike> ${{ object.discount_price }} ({{ object.get_amount_percent_saved }}% Off)</h6>
+           {% else %}
            <h6> Cost per day-: ${{ object.cost_per_day }}</h6>
+           {% endif %}
            <h6> Quantity-: {{ object.quantity}} remaining only </h6>
            <h5>Sizes available: {{ object.size }}</h5>
             {{ object.description|linebreaks }}<br/>
@@ -80,23 +87,66 @@
     </br>
     {{ all }}
 
-<h2>Please fill Details.</h2>
-</br>
-<form  method='POST'  action= "">
-     {% csrf_token %}
-     {% if next_url %}
-     <input type='hidden' name='next' value='{{ next_url }}' />
-     {% endif %}
+
+</div>
+</div>
+</div>
+</div>
+
+
+ <h1>Our Customers Rating and Reviews.</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">UserName</th>
+      <th scope="col">product name</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
     
-        {{ form|crispy }}
+      
+      
+      
+    </tr>
+  </thead>
+   {% if reviews.exists %}
+  <tbody>
+   
+    {% for rev in reviews %}
+      <tr>
+
+    
+      <th scope="row">{{ forloop.counter }}</th>
+      <td> {{ rev.email.full_name }}
+      
+      </td>
+      <td><a href='{{ rev.product_id.get_absolute_url }}'>{{ rev.product_id.product_name }} </a></td>
+      <td>{{ rev.review }}</td>
+      <td>{{ rev.rating }} out of 5</td>
+     
+    </tr>
+     
+    {% endfor %}
    
     
-     
-<button type='submit' class='btn btn-success'> Save </button>
 
-   </form>
-</div>
-</div>
-</div>
-</div>
+
+  </tbody>
+</table>
+
+{% else %}
+
+<p class='lead'>Not Reviewed yet!</p>
+ {% endif %}
+
+
+
+
+
+
+
+ 
+ 
+
  {% endblock %}

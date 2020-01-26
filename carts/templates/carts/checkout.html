@@ -90,9 +90,10 @@
        <p>Shipping Total: {{ object.shipping_total }}</p>
        <p>Order Total: {{ object.total }}</p>
        
+      {% include 'orders/order_snippet.html' %}
        
        <form class='form' method="POST" action="">{% csrf_token %}
-         <button type='submit' class='btn btn-success'>Checkout</button>
+         <button type='submit' class='btn btn-success'>Checkout finally</button>
 
        </form>
        
