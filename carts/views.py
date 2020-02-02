@@ -58,6 +58,8 @@ def cart_home(request):
                 cart_obj.subtotal=new_total
         request.session['cart_items']=cart_obj.cartitem_set.count()
         cart_obj.save()
+    else:
+        cart_obj=None
 
     return render(request,"carts/view.html", {"cart" : cart_obj})
 
