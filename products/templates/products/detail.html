@@ -95,7 +95,7 @@
 
 
  <h1>Our Customers Rating and Reviews.</h1>
-
+ {% if reviews.exists %}
 <table class="table">
   <thead>
     <tr>
@@ -110,7 +110,7 @@
       
     </tr>
   </thead>
-   {% if reviews.exists %}
+  
   <tbody>
    
     {% for rev in reviews %}

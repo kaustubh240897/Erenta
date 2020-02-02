@@ -2,17 +2,58 @@
 
 
 {% block content %}
-{% url 'products:query_3' as catogary_list_url_2 %}
-{% url 'products:query' as catogary_list_url_1 %}
-{% url 'products:query_1' as catogary_list_url %}
-{% url 'products:query_4' as catogary_list_url_3 %}
+
 </br>
   <title>{{ title }}</title>
      <div class='container'>
-      <a href="{{ catogary_list_url }}" > <button type="button" class="btn btn-dark btn-sm">Books/Novels</button></a>
-       <a href="{{ catogary_list_url_1 }}" ><button type="button" class="btn btn-dark btn-sm">Clothing</button></a>
-       <a href="{{ catogary_list_url_2 }}" ><button type="button" class="btn btn-dark btn-sm">Instruments</button></a>
-       <a href="{{ catogary_list_url_3 }}" ><button type="button" class="btn btn-dark btn-sm">Accessories</button></a>
+       <div class="row">
+       <div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Books/Novels
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Hindi Novels</a>
+    <a class="dropdown-item" href="#">English Novels</a>
+    <a class="dropdown-item" href="#">Japnese Novels</a>
+  </div>
+       </div>
+   <div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Men
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'products:query1' 'menclothing' %}">Men's Clothing</a>
+    <a class="dropdown-item" href="{% url 'products:query1' 'menfootwear' %}">Men's footwear</a>
+
+  </div>
+   </div>
+   <div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Women
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'products:query1' 'womenclothing' %}">Women's Clothing</a>
+    <a class="dropdown-item" href="{% url 'products:query1' 'womenaccessories' %}">Women's Accessories</a>
+  </div>
+   </div>
+    <div class="dropdown">
+  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Electronics
+  </a>
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'products:query1' 'fitnessband' %}">Fitness-band</a>
+    <a class="dropdown-item" href="{% url 'products:query1' 'laptops' %}">Laptops</a>
+    <a class="dropdown-item" href="{% url 'products:query1' 'playstations' %}">Playstations</a>
+     <a class="dropdown-item" href="{% url 'products:query1' 'musicalinstruments' %}">Musical Instruments</a>
+
+  </div>
+  </div>
+       </div>     
+      
          <div class='row'>
          </br>
         

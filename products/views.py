@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
@@ -135,22 +135,69 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
         return instance
 
+# pricing sort
+
+# def sort_product_view_increase(self,categary,request):
+#     categary = self.request.get(categary)
+#     categary= Product_description.objects.get(categary=categary)
+#     queryset1 = Product_description.objects.filter(categary=categary).order_by('cost_per_day')
+    
+#     context = {
+#           'qs1': queryset1 ,
+#          "title":"Sorted Products",
+#     }
+    
+
+#     return render(request,"products/view.html", context)
 
 
 # catogaries
 
 
-def catogary_product_view_4(request):
+
+
+
+
+def sub_catogary_product_view_by_color(request,slug, color):
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-2]
+    print(slug_type)
+    try:
+        sub_cat_query = Sub_Category.objects.get(slug=slug)
+    except Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
     
-    query_4 = "Accessories"
-    
-    print(query_4)
-    if query_4 is not None:
-        queryset = Product_description.objects.search(query_4)
+    if sub_cat_query is not None:
+        queryset = Product_description.objects.filter(sub_categary=sub_cat_query, variation__title=color)
     else:
         queryset=Product_description.objects.all()
     context = {
           'qs': queryset ,
+          'slug': slug_type,
+         "title":"Products",
+    }
+    
+
+    return render(request,"products/view.html", context)
+
+def sub_sub_catogary_product_view_by_color(request,slug, color):
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-2]
+    print(slug_type)
+    try:
+        sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
+    except Sub_Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
+    
+    if sub_sub_cat_query is not None:
+        queryset = Product_description.objects.filter(sub_sub_categary=sub_sub_cat_query, variation__title=color)
+    else:
+        queryset=Product_description.objects.all()
+    context = {
+          'qs': queryset ,
+          'sub_slug': slug_type,
          "title":"Products",
     }
     
@@ -159,39 +206,43 @@ def catogary_product_view_4(request):
 
 
 
+# def catogary_product_view_4(request):
+    
+#     query_4 = "Accessories"
+    
+#     print(query_4)
+#     if query_4 is not None:
+#         queryset = Product_description.objects.search(query_4)
+#     else:
+#         queryset=Product_description.objects.all()
+#     context = {
+#           'qs': queryset ,
+#           'acessories_category': query_4,
+#          "title":"Products",
+#     }
+    
+
+#     return render(request,"products/view.html", context)
 
 
-def catogary_product_view_3(request):
+def catogary_product_view_1(request, slug,*args, **kwargs):
     
-    query_3 = "Instruments"
+    try:
+        cat_query = Category.objects.get(slug=slug)
+    except Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
     
-    print(query_3)
-    if query_3 is not None:
-        queryset = Product_description.objects.search(query_3)
+    print(cat_query)
+    
+    if cat_query is not None:
+        queryset = Product_description.objects.filter(categary=cat_query)
     else:
         queryset=Product_description.objects.all()
     context = {
           'qs': queryset ,
-         "title":"Products",
-    }
-    
-
-    return render(request,"products/view.html", context)
-
-
-
-
-def catogary_product_view_1(request):
-    
-    query = "clothing"
-    
-    print(query)
-    if query is not None:
-        queryset = Product_description.objects.search(query)
-    else:
-        queryset=Product_description.objects.all()
-    context = {
-          'qs': queryset ,
+          
+          #'clothing_category': query,
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
@@ -203,22 +254,73 @@ def catogary_product_view_1(request):
 
     return render(request,"products/view.html", context)
 
-def catogary_product_view_2(request):
+
+def sub_catogary_product_view(request, slug,*args, **kwargs):
     
-    query_1 = "Novels"
+    try:
+        sub_cat_query = Sub_Category.objects.get(slug=slug)
+    except Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
     
-    print(query_1)
-    if query_1 is not None:
-        queryset = Product_description.objects.search(query_1)
+    print(sub_cat_query)
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-2]
+    print(slug_type)
+    if sub_cat_query is not None:
+        queryset = Product_description.objects.filter(sub_categary=sub_cat_query)
     else:
         queryset=Product_description.objects.all()
     context = {
           'qs': queryset ,
+          'slug': slug_type,
+          #'clothing_category': query,
          "title":"Products",
     }
-    
+    # def get_context_data(self,*args, **kwargs):
+    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     query=self.request.GET.get("query")
+    #     context['query']=query
+    #     #SearchQuery.objects.create(query=query)
+    #     return context
 
     return render(request,"products/view.html", context)
+
+
+def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
+    
+    try:
+        sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
+    except Sub_Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
+    
+    print(sub_sub_cat_query)
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-2]
+    print(slug_type)
+    if sub_sub_cat_query is not None:
+        queryset = Product_description.objects.filter(sub_sub_categary=sub_sub_cat_query)
+    else:
+        queryset=Product_description.objects.all()
+    context = {
+          'qs': queryset ,
+          'sub_slug': slug_type,
+          #'clothing_category': query,
+         "title":"Products",
+    }
+    # def get_context_data(self,*args, **kwargs):
+    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     query=self.request.GET.get("query")
+    #     context['query']=query
+    #     #SearchQuery.objects.create(query=query)
+    #     return context
+
+    return render(request,"products/view.html", context)
+
+
+
+
 
 
 class SupplierHomeView(LoginRequiredMixin, DetailView):

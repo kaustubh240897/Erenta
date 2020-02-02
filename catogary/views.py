@@ -1,41 +1,27 @@
-from django.shortcuts import render
-from products.models import Product_description
+from django.shortcuts import render,redirect
+from products.models import Product_description,Category
 from django.views.generic import ListView
 
 
 
 
-def catogary_product_view_3(request):
+def catogary_product_view(request, slug,*args, **kwargs):
     
-    query_3 = "Instruments"
-    
-    print(query_3)
-    if query_3 is not None:
-        queryset = Product_description.objects.search(query_3)
-    else:
-        queryset=Product_description.objects.all()
-    context = {
-          'qs': queryset ,
-         "title":"Products",
-    }
-    
-
-    return render(request,"catogary/view.html", context)
-
-
-
-
-def catogary_product_view_1(request):
-    
-    query = "clothing"
+    try:
+        query = Category.objects.get(slug=slug)
+    except Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
     
     print(query)
     if query is not None:
-        queryset = Product_description.objects.search(query)
+        queryset = Product_description.objects.filter(categary=query)
     else:
         queryset=Product_description.objects.all()
     context = {
           'qs': queryset ,
+          'q': query,
+          #'clothing_category': query,
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
@@ -45,23 +31,5 @@ def catogary_product_view_1(request):
     #     #SearchQuery.objects.create(query=query)
     #     return context
 
-    return render(request,"catogary/view.html", context)
-
-def catogary_product_view_2(request):
-    
-    query_1 = "Novels"
-    
-    print(query_1)
-    if query_1 is not None:
-        queryset = Product_description.objects.search(query_1)
-    else:
-        queryset=Product_description.objects.all()
-    context = {
-          'qs': queryset ,
-         "title":"Products",
-    }
-    
-
-    return render(request,"catogary/view.html", context)
-
+    return render(request,"products/view.html", context)
 

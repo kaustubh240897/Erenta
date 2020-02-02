@@ -40,7 +40,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query)|Q(registered_email=query)| Q(categary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
+        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
@@ -68,20 +68,68 @@ class ProductManager(models.Manager):
     
 
 
-CATEGARY = (
-    (('Clothing'), ('Clothing')),
-    (('Accessories'), ('Accessories')),
-    (('Books + novels'), ('Books + novels')),
-    (('Instruments'), ('Instruments'))
-)
+
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True)
+    featured = models.BooleanField(default=None)
+    active = models.BooleanField(default=True)
+    timestamp= models.DateTimeField(auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True)
+    
+    # def get_absolute_url_cat(self):
+    #     #return "/products/{slug}/".format(slug=self.slug)
+    #     return reverse ("products:query", kwargs={"slug":self.slug})
+
+    def __str__(self):
+        return self.title
+    
+
+class Sub_Category(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True)
+    featured = models.BooleanField(default=None)
+    active = models.BooleanField(default=True)
+    timestamp= models.DateTimeField(auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True)
+    
+    # def get_absolute_url_cat(self):
+    #     #return "/products/{slug}/".format(slug=self.slug)
+    #     return reverse ("products:query", kwargs={"slug":self.slug})
+
+    def __str__(self):
+        return self.title
+
+class Sub_Sub_Category(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True)
+    featured = models.BooleanField(default=None)
+    active = models.BooleanField(default=True)
+    timestamp= models.DateTimeField(auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True)
+    
+    # def get_absolute_url_cat(self):
+    #     #return "/products/{slug}/".format(slug=self.slug)
+    #     return reverse ("products:query", kwargs={"slug":self.slug})
+
+    def __str__(self):
+        return self.title
+
+    
 
 
 class Product_description(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product_name = models.CharField(max_length=100)
-    categary = models.CharField(choices=CATEGARY, default=1, max_length=50)
-    sub_categary = models.CharField(max_length=50,default=None,null=True)
+    categary = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True,null=True)
+    sub_categary = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,blank=True,null=True)
+    sub_sub_categary = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,blank=True,null=True) 
     description = models.TextField()
     quantity = models.IntegerField(default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)

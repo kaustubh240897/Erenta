@@ -14,6 +14,7 @@ def search_product_view(request):
     context = {
           'qs': queryset ,
          "title":"Products",
+         'query': query,
     }
     def get_context_data(self,*args, **kwargs):
         context=super(search_product_view ,self).get_context_data(*args, **kwargs)

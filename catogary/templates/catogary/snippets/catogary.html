@@ -1,12 +1,10 @@
 {% load static %}
-{% url 'catogary:query_3' as catogary_list_url_2 %}
-{% url 'catogary:query' as catogary_list_url_1 %}
-{% url 'catogary:query_1' as catogary_list_url %}
+
 <div class='container'>
  <div class='row'>
   <div class='card-columns'>
   <div class="card" style="width:300px">
- <a href="{{ catogary_list_url }}" ><img class="card-img-top" src="{% static 'img/b.jpg' %}"  alt="Card image"  ></a>
+ <a href="{% url 'catogary:query' 'booksnovels' %}" ><img class="card-img-top" src="{% static 'img/b.jpg' %}"  alt="Card image"  ></a>
   <div class="card-body" >
     <h4 class="card-title">Books/novels corner</h4>
     <p>Want to read latest and famous Novels</p>
@@ -16,7 +14,7 @@
     <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
   
   <div class="card" style="width:300px">
-  <a href="{{ catogary_list_url_1 }}" ><img class="card-img-top" src="{% static 'img/a.jpg' %}" alt="Card image"></a>
+  <a href="{% url 'catogary:query' 'men' %}" ><img class="card-img-top" src="{% static 'img/a.jpg' %}" alt="Card image"></a>
   <div class="card-body">
        <h4 class="card-title">Clothing</h4>
     <p class="card-text">Latest releases </p>
@@ -25,7 +23,7 @@
   
 
   <div class="card" style="width:300px">
-   <a href="{{ catogary_list_url_2 }}" ><img class="card-img-top" src="{% static 'img/c.jpg' %}" alt="Card image"></a>
+   <a href="{% url 'catogary:query' 'electronics' %}" ><img class="card-img-top" src="{% static 'img/c.jpg' %}" alt="Card image"></a>
   <div class="card-body">
     <h4 class="card-title">Musical Instruments</h4>
     <p class="card-text">Want to try Learn musical Instruments? </p>

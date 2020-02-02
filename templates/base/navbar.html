@@ -7,12 +7,74 @@
 {% url 'account:home' as account_url %}
 {% url 'cart:home' as cart_url %}
 
+
 <nav class="navbar navbar-expand-lg navbar-light bg-warning mx-auto  fixed-top " >
   <div class='container '>
   <a class="navbar-brand" href="{{ home_url }}" >ShopNow!</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
+  <div class="btn-group">
+  <button type="button" class="btn btn-secondry dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Categories
+  </button>
+  <div class="dropdown-menu">
+   <li><a class="dropdown-item" href="{% url 'products:query' 'men' %}">Men</a>
+    <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'menclothing' %}">Men's Clothing</a>
+      <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'blazers' %}">Blazer</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'suits' %}">Suit</a></li>
+     
+    </ul>
+    </li>
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'menfootwear' %}">Men's Footwear</a>
+      <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'menshoes' %}">Shoes</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a></li>
+     
+    </ul>
+    </li>
+     
+    </ul>
+  </li>
+   <li><a class="dropdown-item" href="{% url 'products:query' 'women' %}">Women</a>
+    <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'womenclothing' %}">Women's clothing</a>
+      <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'womenjackets' %}">Jackets</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'womendresses' %}">Dresses</a></li>
+     
+    </ul>
+    </li>
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'womenaccessories' %}">Women's Accessories</a>
+      <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'womenhandbags' %}">Handbag</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query2' 'womenwatches' %}">Watches</a></li>
+     
+    </ul>
+    </li>
+     
+    </ul>
+  </li> 
+    
+    <li><a class="dropdown-item" href="{% url 'products:query' 'booksnovels' %}">Books or Novels</a>
+    
+    </li>
+    <div class="dropdown-divider"></div>
+   <li><a class="dropdown-item" href="{% url 'products:query' 'electronics' %}">Electronics</a>
+     <ul class="dropright-menu">
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'fitnessband' %}">Fitness Band</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'laptops' %}">Laptops</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'mobiles' %}">Mobiles</a></li>
+     <li> <a class="dropright-item" href="{% url 'products:query1' 'playstations' %}">playstations</a></li>
+     
+    </ul>
+  </li> 
+  </div>
+</div>
+
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">

@@ -10,10 +10,11 @@
 
 
 {% if request.user.is_authenticated %}
-<div class='row'>
-  
-  <a class='list-group-item' href='{% url "account:user-update" %}'>
-    <img src="{% static 'img/a.jpg' %}" width=50px  class="rounded-circle" alt="...."> </a>{{ premium_content }} {{ user.full_name }}!
+<div class='col'>
+   {{ premium_content }} {{ user.full_name }}!
+  <a href='{% url "account:user-update" %}'>
+    <img src="{% static 'img/a.jpg' %}" width=50px height="50px" style="float: right;"  class="rounded-circle" alt="...."> </a>
+   
  
   
   

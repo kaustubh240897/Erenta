@@ -1,23 +1,72 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% url 'products:query_5' as category_list_url_5 %}
   <title>{{ title }}</title>
+    {% if qs.exists %}
+
   <div class='container'>
               <div class='row mb-3'>
-                Items are here-:
+
+       Items are here-:
           
             
-           
-            <div class='col-12'>
+        <div class='col-12'>
                 <hr> 
             </div>
            
     </div>
+    <div class="row">
+     <!-- <div class="dropdown">
+       <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter by Price
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="#">Low to high price</a>
+    <a class="dropdown-item" href="#">High to Low price</a>
+  </div>
+     </div> -->
+      {% if slug  %}
+      <div class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter by Color
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Red' %}">Red</a>
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">Black</a>
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">Green</a>
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Blue' %}">Blue</a>
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Mixed' %}">Mixed</a>
+    <a class="dropdown-item" href="{% url 'products:query_5' slug 'Other' %}">Other</a>
+
+  </div>
+      </div>
+      {% elif sub_slug %}
+
+      <div class="dropdown">
+    <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter by Color
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Red' %}">Red</a>
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Black' %}">Black</a>
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Green' %}">Green</a>
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Blue' %}">Blue</a>
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Mixed' %}">Mixed</a>
+    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Other' %}">Other</a>
+
+  </div>
+      </div>
+      {% endif %}
+
+    </div>
+    
          <div class='row'>
-            
+        
 
          {% for obj in qs %}
          <div class='col'>
+          
            {{ forloop.counter }}
           {% include 'products/snippets/card.html' with instance=obj %}
           {% if forloop.counter|divisibleby:3 %}
@@ -30,4 +79,7 @@
 
        </div>
      </div>
+     {% else %}
+     <h2>Oops There are no items in this category..</h2>
+   {% endif %}
 {% endblock %}
