@@ -12,11 +12,11 @@ from django.urls import reverse
 User = settings.AUTH_USER_MODEL
 
 # Create your models here.
-MY_CHOICES = ((1, 'S'),
-               (2, 'M'),
-               (3, 'L'),
-               (4, 'XL'),
-               (5, 'Not applicable'))
+# MY_CHOICES = ((1, 'S'),
+#                (2, 'M'),
+#                (3, 'L'),
+#                (4, 'XL'),
+#                (5, 'Not applicable'))
 
 
 def get_filename_ext(filepath):
@@ -131,13 +131,13 @@ class Product_description(models.Model):
     sub_categary = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,blank=True,null=True)
     sub_sub_categary = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,blank=True,null=True) 
     description = models.TextField()
-    quantity = models.IntegerField(default=1) 
+    #quantity = models.IntegerField(default=1) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
     discount_price = models.DecimalField(max_digits=15, decimal_places=2,blank=True,null=True)
-    size = MultiSelectField(choices=MY_CHOICES,default=5)
+    #size = MultiSelectField(choices=MY_CHOICES,default=5)
     #days = models.IntegerField( null=True, blank=True)
     brand = models.CharField(max_length=20, default=None,null=True)
-    registered_email = models.EmailField(null=True)
+    #registered_email = models.EmailField(null=True)
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
