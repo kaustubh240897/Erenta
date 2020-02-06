@@ -11,7 +11,7 @@
 <div class='row'>
     <div class='col'>
         <table class='table table-dark'>
-            <thead><th>Product_name</th><th>Order_id</th><th> quantity</th></thead>
+            <thead><th>Product_name</th><th>Order_id</th><th> status</th></thead>
 
             <tbody>
                 {% for object in object_list %}
@@ -22,7 +22,7 @@
                            {% if item.product.user == request.user %}  {{ item.product }}, {% elif not forloop.last %}   {% endif %}{% endfor %}</td>
                         
                         <td><a href='{{ object.get_absolute_url1 }}'>{{ object.order_id }}</a></td>
-                        <td>1</td>
+                        <td>{{ object.status }}</td>
                             
                          <!-- <td>{{ object.cart.products.size.all }}</td>  -->
                         

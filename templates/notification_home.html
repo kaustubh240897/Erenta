@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if notifications.count > 0 %}
+<h3>Notifications</h3>
+{% for n in notifications %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_notification' n.id %}">{{ n.title }}</a></li>
+</ul>
+{% endfor %}
+{% else %}
+<h3>There is no new notifications.</h3>
+
+{% endif %}
+
+
+{% endblock %}

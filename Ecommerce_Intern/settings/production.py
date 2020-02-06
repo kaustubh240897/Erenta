@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'catogary',
     'billing',
     'crispy_forms',
+    'notification',
     
 ]
 

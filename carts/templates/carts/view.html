@@ -10,7 +10,7 @@
       <th scope="col">#</th>
       <th scope="col">Product Name</th>
       <th scope="col">quantity</th>
-      <th scope="col">days</th>
+      <th scope="col">Start Date - End Date</th>
       <th scope="col">Price(in $)</th>
       
       
@@ -30,7 +30,8 @@
       
       </td>
       <td>{{ item.quantity }}</td>
-      <td>1</td>
+      <td>{{ item.start_date }} - {{ item.end_date }}</td>
+
       {% if item.product.discount_price %}
       <td>${{ item.product.discount_price }}
         <span class="badge badge-primary">Saving ${{ item.get_amount_saved }}</span></td>

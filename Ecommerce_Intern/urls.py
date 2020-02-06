@@ -27,7 +27,7 @@ from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
-from .views import home_page, about_page, contact_page
+from .views import home_page, about_page, contact_page,notification_page
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
 admin.site.site_title = 'ShopNow Administration'
@@ -36,7 +36,9 @@ admin.site.index_title = 'ShopNow Administration'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home_page, name='home'),
+    path('notification_page',notification_page,name='notification_page'),
     path('contact/',contact_page, name='contact'),
+    path('notification/', include(("notification.urls", 'notification'), namespace='notification')),
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
     path('about/',about_page, name='about'),
     path('accounts/',RedirectView.as_view(url='/account')),

@@ -17,7 +17,9 @@
            <form class='form' method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
              <input class='btn btn-dark btn-block' type='submit' value='Add to cart' />
               Quantity-: <input class='form-control' name='qty' type='number' value='1' />
-              
+              Start Date-: <input class='form-control' name='start_date' type='date' value='start_date' />
+              End Date-: <input class='form-control' name='end_date' type='date' value='end_date' />
+             
           {% if object.variation_set.all %}
 
              {% if object.variation_set.sizes %}
@@ -140,11 +142,6 @@
 
 
 
-
-
-
-
- 
- 
-
  {% endblock %}
+
+ 

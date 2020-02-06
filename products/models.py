@@ -209,6 +209,7 @@ class Variation(models.Model):
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     category = models.CharField(max_length=120, choices=VAR_CATEGORIES,default='size')
     title = models.CharField(max_length=120)
+    quantity = models.IntegerField(default=1) 
     image = models.ForeignKey(ProductImage,null=True,blank=True,on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
     active = models.BooleanField(default=True)

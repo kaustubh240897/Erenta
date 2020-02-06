@@ -11,7 +11,8 @@ from products.models import Product_description, Variation
 from otherdetails.models import OtherDetails
 from orders.models import Order
 from accounts.models import GuestEmail
-
+import datetime
+from datetime import timedelta
 from accounts.forms import LoginForm, GuestForm
 from django.contrib import messages
 # Create your views here.
@@ -142,6 +143,15 @@ def add_to_cart(request,id):
     product_variations = []
     if request.method == "POST":
         qty = request.POST['qty']
+        start_date = request.POST['start_date']
+        end_date = request.POST['end_date']
+        y, m, d = map(int, start_date.split('-'))
+        date1 = datetime.date(y, m, d)
+        y, m, d = map(int, end_date.split('-'))
+        date2 = datetime.date(y, m, d)
+        timedelta = date2-date1
+        days = timedelta.days
+        print(timedelta.days)
         if int(qty) >0:
             for item in request.POST:
                 key = item
@@ -157,6 +167,8 @@ def add_to_cart(request,id):
             if len(product_variations)>0:
                 cart_item.variations.add(*product_variations)
             cart_item.quantity=qty
+            cart_item.start_date = start_date
+            cart_item.end_date = end_date
             cart_item.save()
 
                 
