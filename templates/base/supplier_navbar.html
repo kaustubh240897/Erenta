@@ -5,6 +5,7 @@
 {% url 'logout' as logout_url %}
 {% url 'register' as register_url %}
 {% url 'account:home' as account_url %}
+{% url 'supplier_notification_page' as supplier_notification_url %}
 <!-- {% url 'cart:home' as cart_url %} -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary mx-auto  fixed-top " >
@@ -46,7 +47,11 @@
       <!-- <li class="nav-item">
         <a class="nav-link" href="{{ cart_url }}"><span class='navbar-cart-count'> {{ request.session.cart_items }}</span><i class="fa fa-shopping-cart" aria-hidden="true" ></i> </a>
       </li> -->
-
+     {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ supplier_notification_url }}"> {{ request.session.supplier_notification_count }}<i class="fa fa-bell" aria-hidden="true" ></i> </a>
+      </li>
+       {% endif %}
     </ul>
     {% include 'search/snippets/search-form.html' %}
   </div>

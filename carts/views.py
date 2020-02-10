@@ -49,11 +49,11 @@ def cart_home(request):
         new_total = 0.00
         for item in cart_obj.cartitem_set.all():
             if item.product.discount_price:
-                line_total = float(item.product.discount_price)* (item.quantity)
+                line_total = float(item.product.discount_price)* (item.quantity) * (item.days)
                 new_total += line_total
                 cart_obj.subtotal=new_total
             else:
-                line_total = float(item.product.cost_per_day)* (item.quantity)
+                line_total = float(item.product.cost_per_day)* (item.quantity) * (item.days)
                 new_total += line_total
                 print(new_total)
                 cart_obj.subtotal=new_total
@@ -169,6 +169,7 @@ def add_to_cart(request,id):
             cart_item.quantity=qty
             cart_item.start_date = start_date
             cart_item.end_date = end_date
+            cart_item.days = days
             cart_item.save()
 
                 

@@ -43,6 +43,7 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=1)
     start_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
     end_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
+    days  =   models.IntegerField(default = 1, null=True, blank=True)
     variations = models.ManyToManyField(Variation,blank=True)
     line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -55,13 +56,13 @@ class CartItem(models.Model):
             return self.product.product_name
     
     def get_amount_saved(self):
-        return self.quantity * (self.product.cost_per_day-self.product.discount_price)
+        return self.quantity * (self.product.cost_per_day-self.product.discount_price) * (self.days)
 
 def pre_save_cartitem_receiver(sender, instance,*args,**kwargs):
     if instance.product.discount_price:
-        instance.line_total= Decimal(instance.quantity)*(instance.product.discount_price)
+        instance.line_total= Decimal(instance.quantity)*(instance.product.discount_price) * Decimal(instance.days)
     else:
-        instance.line_total= Decimal(instance.quantity)*(instance.product.cost_per_day)
+        instance.line_total= Decimal(instance.quantity)*(instance.product.cost_per_day) * Decimal(instance.days)
 
 pre_save.connect(pre_save_cartitem_receiver , sender=CartItem)
 

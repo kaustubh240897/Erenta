@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
-from notification.models import Notification
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from django.views.generic import ListView
 
 def home_page(request):
@@ -28,14 +28,29 @@ def about_page(request):
 
 
 def notification_page(request):
-    request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() 
+    request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+    = request.user, viewed=False).count()
     n= Notification.objects.filter(user=request.user, viewed=False)
-    
+
+    n1 = Order_Notification.objects.filter(billing_profile__user=request.user,viewed=False)
+    # n2 = Order_Notification.objects.filter(billing_profile__order__cart__cartitem__product__user=request.user, viewed=False)
     context = {
        "title":"Notifications",
        "notifications": n ,
+       "order_notifications": n1,
     }
     return render(request,"notification_home.html",context)
+
+def supplier_notification_page(request):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() 
+    n2 = Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid',viewed=False)
+    
+    context = {
+       "title":"Notifications",
+       "supplier_order_notifications": n2,
+       
+    }
+    return render(request,"supplier_order_notification_home.html",context)
 
 
 def contact_page(request):
