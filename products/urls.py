@@ -21,7 +21,8 @@ urlpatterns = [
     # path('instruments',catogary_product_view_3 , name='query_3'),
     # path('Accessories',catogary_product_view_4 , name='query_4'),
     path('sub_category/<slug:slug>/<color>',sub_catogary_product_view_by_color , name='query_5'),
-    path('sub_sub_category/<slug:slug>/<color>',sub_sub_catogary_product_view_by_color,name='query_6')
+    path('sub_sub_category/<slug:slug>/<color>',sub_sub_catogary_product_view_by_color,name='query_6'),
+    
    
 
 ]

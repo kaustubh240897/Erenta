@@ -176,15 +176,17 @@ pre_save.connect(product_pre_save_receiver, sender=Product_description)
 
 
 class ProductImage(models.Model):
-    product=models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    product =models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=upload_image_path)
     featured = models.BooleanField(default=False)
     thumbnail = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 
     def __str__(self):
-        return self.product.product_name
+        return str(self.product.id)
+    
+
 
 
 class VariationManager(models.Manager):
@@ -209,7 +211,6 @@ class Variation(models.Model):
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     category = models.CharField(max_length=120, choices=VAR_CATEGORIES,default='size')
     title = models.CharField(max_length=120)
-    quantity = models.IntegerField(default=1) 
     image = models.ForeignKey(ProductImage,null=True,blank=True,on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
     active = models.BooleanField(default=True)
@@ -219,6 +220,19 @@ class Variation(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Quantity(models.Model):
+    product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    variations = models.ManyToManyField(Variation,blank=True)
+    quantity = models.IntegerField(default=1)
+    active = models.BooleanField(default=True)
+    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+
+    def __str__(self):
+        return u", ".join([a.title for a in self.variations.all()])
+
+
 
 
 

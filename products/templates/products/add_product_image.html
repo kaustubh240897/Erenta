@@ -1,0 +1,17 @@
+{% extends "supplier_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='container'>
+
+<h1>Add your Product Image</h1>
+</br>
+<form method='POST' enctype="multipart/form-data">{% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+     {{ form|crispy }}
+             
+<button type='submit' class='btn btn-success'>Save</button>
+</form>
+</div>
+{% endblock %}

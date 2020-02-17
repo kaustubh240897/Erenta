@@ -86,6 +86,9 @@ class Order(models.Model):
     def get_absolute_url1(self):
         return reverse("orders:supplierorderdetail", kwargs={'order_id':self.order_id})
 
+    def get_absolute_url2(self):
+        return reverse("orders:createddetail", kwargs={'order_id':self.order_id})
+
     def get_status(self):
         if self.status == "refunded":
             return "Refunded order"

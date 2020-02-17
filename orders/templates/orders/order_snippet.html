@@ -7,7 +7,10 @@
      {% for item in object.cart.cartitem_set.all %}
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div>
-        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name}} <b>(for {{ item.days }} days)</b></h6>
+        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name}} <b>(for {{ item.days }} days)[ {{ item.start_date }}-{{ item.end_date }} ]</b></h6>
+        {% if item.variations.all %} 
+        <ul>{% for subitem in item.variations.all %} 
+   <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
         <small class="text-muted">{{ item.product.description}}</small>
         </div>
         <span class="text-muted">${{ item.line_total }}</span>

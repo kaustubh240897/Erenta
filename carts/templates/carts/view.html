@@ -33,10 +33,10 @@
       <td>{{ item.start_date }} - {{ item.end_date }}<b>({{ item.days }} days)</b></td>
 
       {% if item.product.discount_price %}
-      <td>${{ item.product.discount_price }}
+      <td>${{ item.product.discount_price }} (price per unit per day)
         <span class="badge badge-primary">Saving ${{ item.get_amount_saved }}</span></td>
       {% else %}
-      <td>${{ item.product.cost_per_day }}</td>
+      <td>${{ item.product.cost_per_day }} (price per unit per day)</td>
       {% endif %}
       <td><a href='{% url "cart:remove_cart" item.id %}'><i class='fa fa-trash'></i></a></td>
       

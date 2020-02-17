@@ -150,8 +150,8 @@ def add_to_cart(request,id):
         y, m, d = map(int, end_date.split('-'))
         date2 = datetime.date(y, m, d)
         timedelta = date2-date1
-        days = timedelta.days
-        print(timedelta.days)
+        days = timedelta.days + 1
+        print(timedelta.days+1)
         if int(qty) >0:
             for item in request.POST:
                 key = item

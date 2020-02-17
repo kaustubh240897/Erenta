@@ -1,0 +1,39 @@
+{% extends "supplier_base.html" %}
+{% block content %}
+
+Welcome {{ request.user.full_name }}!
+</br>
+<div class='container'>
+<div class='row'>
+    <div class='col-12'>
+        <h1>Add your products</h1>
+        <hr/>
+    </div>
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Create new Products</h5>
+      <div class='list-group'>
+          <a class='list-group-item' href='{% url "add" %}'>create product </a>
+          
+      </div>
+      
+    
+  </div>
+</div>
+</div>
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Add more details(like size,color,images)</h5>
+        <a class='list-group-item' href='{% url "addproductdetails" %}'>Add details </a>
+    
+  </div>
+</div>
+</div>
+
+
+</div>
+</div>
+{% endblock %}

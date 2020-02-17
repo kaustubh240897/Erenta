@@ -4,13 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from otherdetails.models import OtherDetails
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -329,6 +329,47 @@ class SupplierHomeView(LoginRequiredMixin, DetailView):
         return self.request.user
     
 
+class SupplierAddProductView(LoginRequiredMixin, DetailView):
+    template_name = 'products/product_dashboard.html'
+    def get_object(self):
+        return self.request.user
+    
+
+class SupplierProductListView(LoginRequiredMixin,ListView):
+    model = Product_description
+    template_name='products/add_product_details.html'
+    context_object_name = 'qs'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['qs'] = Product_description.objects.filter(user = self.request.user)
+        return context
+
+class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
+    
+    model = ProductImage
+    form_class = ProductImageForm
+    template_name = 'products/add_product_image.html'
+
+    def form_valid(self,form):
+        try:
+            obj = form.save(commit=False)
+            id = self.kwargs.get('id')
+            obj.product = Product_description.objects.get(id=id)
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproduct")
+
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
+        return reverse("addproduct")
+
+        
+
+
 
 class AddProductView(LoginRequiredMixin,CreateView):
     
@@ -344,8 +385,8 @@ class AddProductView(LoginRequiredMixin,CreateView):
         
     
     def get_success_url(self):
-        messages.success(self.request, 'added Successfully !!!')
-        return reverse("supplier")
+        messages.success(self.request, 'added Successfully now add more details for your product !!!')
+        return reverse("addproduct")
 
         
         
@@ -363,7 +404,6 @@ class my_productsView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['qs'] = Product_description.objects.filter(user = self.request.user)
-        print(context['qs'])
         return context
     
     

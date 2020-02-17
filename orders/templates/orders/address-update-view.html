@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='container'>
+   <h4> {{ title }} </h4>
+   {% if type == 'shipping' %}
+   <h2>Shipping Address</h2>
+   {% else %}
+   <h2>Billing Address</h2>
+   {% endif %}
+<form  method='POST' >
+     {% csrf_token %}
+    
+    {% if address_type %}
+    <input type='hidden' name='address_type' value='{{ address_type }}' />  
+     {% endif %}
+
+     {{ form|crispy }}<br>
+<button type='submit' class='btn btn-success'> Save </button>
+</form>
+</div>
+{% endblock %}
