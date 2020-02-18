@@ -18,8 +18,8 @@
            </h6>
     <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
     <a href='{% url "productimage" instance.id %}' class="btn btn-primary"> Add more images. </a>
-    <a href="#" class="btn btn-warning"> Add more variations.(eg. size,color) </a>
-    <a href="#" class="btn btn-danger"> Add quantity of each product variations </a>
+    <a href='{% url "productvariations" instance.id %}' class="btn btn-warning"> Add more variations.(eg. size,color) </a>
+    <a href='{% url "productquantity" instance.id %}' class="btn btn-danger"> Add quantity of each product variations </a>
     
     
     

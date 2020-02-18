@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product_description,ProductImage
+from .models import Product_description,ProductImage,Variation,Quantity
 from otherdetails.models import OtherDetails
 
 
@@ -40,6 +40,21 @@ class ProductImageForm(forms.ModelForm):
     #         product.save()
     #     return product
     
+class ProductVariationForm(forms.ModelForm):
+    title = forms.CharField(label='title', required=True, widget=forms.TextInput(attrs={'placeholder': 'Please enter product variations like size or color one at a time.'})) 
+    
+
+    class Meta:
+        model = Variation
+        fields = ['category','title']
+
+class ProductQuantityForm(forms.ModelForm): 
+    
+
+    class Meta:
+        model = Quantity
+        fields = ['size','color','quantity']
+
 
 class ProductDetailChangeForm(forms.ModelForm):
     product_name = forms.CharField(label='product_name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))

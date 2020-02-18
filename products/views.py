@@ -4,13 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Quantity
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from otherdetails.models import OtherDetails
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -367,7 +367,50 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
         return reverse("addproduct")
 
-        
+class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
+    
+    model = Variation
+    form_class = ProductVariationForm
+    template_name = 'products/add_product_variations.html'
+
+    def form_valid(self,form):
+        try:
+            obj = form.save(commit=False)
+            id = self.kwargs.get('id')
+            obj.product = Product_description.objects.get(id=id)
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproduct")
+
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Variations added Successfully now add more details for your product !!!')
+        return reverse("productquantity")   
+
+class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
+    
+    model = Quantity
+    form_class = ProductQuantityForm
+    template_name = 'products/add_product_variations.html'
+
+    def form_valid(self,form):
+        try:
+            obj = form.save(commit=False)
+            id = self.kwargs.get('id')
+            obj.product = Product_description.objects.get(id=id)
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproduct")
+
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Variations added Successfully now add more details for your product !!!')
+        return reverse("addproduct")        
+
 
 
 

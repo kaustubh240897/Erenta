@@ -40,7 +40,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
+        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__title__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
@@ -219,18 +219,20 @@ class Variation(models.Model):
     objects = VariationManager()
 
     def __str__(self):
-        return self.title
+        return str(self.product.slug)
 
 
 class Quantity(models.Model):
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    variations = models.ManyToManyField(Variation,blank=True)
+    color = models.CharField(max_length=100,default=None)
+    size = models.CharField(max_length=100,default=None)
     quantity = models.IntegerField(default=1)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 
     def __str__(self):
-        return u", ".join([a.title for a in self.variations.all()])
+        return str(self.product.slug)
+        # return u", ".join([a.title for a in self.variations.all()])
 
 
 

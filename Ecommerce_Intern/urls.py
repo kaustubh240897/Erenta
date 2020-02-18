@@ -24,7 +24,7 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView
+from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
 from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page
@@ -72,7 +72,10 @@ urlpatterns = [
     path('businessdetailupdate/',BusinessDetailUpdateView.as_view(),name='businessdetailupdate'),
     path('add_product/',SupplierAddProductView.as_view(),name='addproduct'),
     path('add_product_details/',SupplierProductListView.as_view(),name='addproductdetails'),
-    path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage')
+    path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage'),
+    path('add_product_details/add_variations/<int:id>/',SupplierAddProductVariationsView.as_view(),name='productvariations'),
+    path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity')
+
 ]
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
