@@ -1,0 +1,25 @@
+{% extends "supplier_base.html" %}
+
+{% block content %}
+        <div class='row'>
+            <div class='col-12 my-3'>
+                    <h1>My Product Images</h1>
+                    <hr/>
+            </div>
+    {% for obj in qs %}
+        <div class='col'>
+        {{ forloop.counter }}
+    {{ obj.product }}
+       {{ obj.image }}
+       <div class="card" style="width: 18rem">
+       <img class='img-thumbnail' src='{{ obj.image.url }}' />
+       </div>
+       <a href="{% url 'products:imageupdate' obj.id %}" class="btn btn-primary">Update images! </a>
+
+        
+        </div>
+      {% empty %}
+      <p class='col-12'>   You have not created any products yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

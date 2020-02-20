@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>New title</title>
+        <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #007cae;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;  
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'>Invoice # {{ object }} </p>
+            </div>
+        <div>
+        <div class='details'>
+            Invoice id: {{ object }} <br/>
+            Bill to: {{ customer_name }} <br/>
+            Date: {{ today }}
+            Time: {{ time }}
+            <hr class='hrItem' />
+
+   {% for item in object.cart.cartitem_set.all %}
+     {% if item.product.user == user %}
+    <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name}}</h6>
+        <!-- <small class="text-muted">{{ item.product.description}}</small> -->
+        </div>
+        <span class="text-muted">Item total-:${{ item.line_total }}</span>
+    </li>
+    {% endif %}
+    {% endfor %}
+     <li class="list-group-item d-flex justify-content-between bg-light">
+        <div class="text-success">
+        <h6 class="my-0">Shipping Address</h6>
+        <small>{{ object.shipping_address.get_address }}</small>
+        </div>
+    </li>
+   <li class="list-group-item d-flex justify-content-between bg-light">
+        <div class="text-success">
+        <h6 class="my-0">Billing Address</h6>
+        <small>{{ object.billing_address.get_address }}</small>
+        </div>
+    </li>
+    <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div class="text-danger">
+        <h6 class="my-0">Customer's Email</h6>
+        <small>{{ object.billing_profile }}</small>
+        </div>
+    </li>
+    
+    </ul>
+    </div>
+        </div>
+    </div>
+    </body>
+</html>

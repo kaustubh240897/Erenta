@@ -3,9 +3,14 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
+from orders.models import Order
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from django.views.generic import ListView
-
+from django.views.generic import View
+from django.template.loader import get_template
+import datetime
+from django.utils import timezone
+from .utils import render_to_pdf #created in step 4
 def home_page(request):
     #print(request.session.get("first_name","Unknown"))
     
@@ -89,8 +94,65 @@ def contact_page(request):
 
 
 
-
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('order_id')
+        order= Order.objects.get(order_id=id)
+        template = get_template('billing/invoice.html')
+        context = {
+             'today': datetime.date.today(), 
+             'time': timezone.now(),
+             'amount': order.total,
+            'customer_name': order.billing_profile.user.full_name,
+            'object': Order.objects.get(order_id=id),
             
-               
+            
+        }
+        html = template.render(context)
+        pdf = render_to_pdf('billing/invoice.html',context)
+        if pdf:
+            response =  HttpResponse(pdf,content_type='application/pdf')
+            filename = "Invoice_%s.pdf" %("12345")
+            content = "inline; filename='%s'" %(filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" %(filename)
+            response['Content-Disposition']= content
+            return response
+
+        return HttpResponse("Not found")
+
+
+
+class GenerateSupplierPdf(View):
+    def get(self, request, *args, **kwargs):
+        id = self.kwargs.get('order_id')
+        order= Order.objects.get(order_id=id)
+        template = get_template('billing/supplier_invoice.html')
+        context = {
+             'today': datetime.date.today(), 
+             'time': timezone.now(),
+            'customer_name': order.billing_profile.user.full_name,
+            'object': Order.objects.get(order_id=id),
+            'user': self.request.user
+            
+            
+        }
+        html = template.render(context)
+        pdf = render_to_pdf('billing/supplier_invoice.html',context)
+        if pdf:
+            response =  HttpResponse(pdf,content_type='application/pdf')
+            filename = "Invoice_%s.pdf" %("12345")
+            content = "inline; filename='%s'" %(filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" %(filename)
+            response['Content-Disposition']= content
+            return response
+
+        return HttpResponse("Not found")
+
+
+
 
     

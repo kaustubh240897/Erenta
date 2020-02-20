@@ -48,7 +48,7 @@ class ProductVariationForm(forms.ModelForm):
         model = Variation
         fields = ['category','title']
 
-class ProductQuantityForm(forms.ModelForm): 
+class ProductQuantityForm(forms.ModelForm):
     
 
     class Meta:
@@ -70,7 +70,15 @@ class ProductDetailChangeForm(forms.ModelForm):
     
 
 
-        
+class ProductImageChangeForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['image']     
+
+class ProductQuantityChangeForm(forms.ModelForm):
+    class Meta:
+        model = Quantity
+        fields = ['size','color','quantity']       
 
 class RatingForm(forms.Form):
     name = forms.CharField(required=True,label='product_id')

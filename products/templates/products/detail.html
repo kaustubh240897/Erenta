@@ -17,8 +17,8 @@
            <form class='form' method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
              <input class='btn btn-dark btn-block' type='submit' value='Add to cart' />
               Quantity-: <input class='form-control' name='qty' type='number' value='1' />
-              Start Date-: <input class='form-control' name='start_date' type='date' value='start_date' />
-              End Date-: <input class='form-control' name='end_date' type='date' value='end_date' />
+              Start Date-: <input class='form-control' name='start_date' required='True' type='date' value='start_date' />
+              End Date-: <input class='form-control' name='end_date' required='True' type='date' value='end_date' />
              
           {% if object.variation_set.all %}
 
@@ -50,11 +50,11 @@
            </div>
          <hr/>
          
-
+            <div class="card" style="width: 18rem">
             {% if object.image %}
             <img src='{{ object.image.url }}' class='img-fluid' />
              {% endif %}  
-              
+            </div>
              {% for img in images %}
              <div class='col-xs-6 col-md-3'>
                <a href="#">
@@ -62,7 +62,7 @@
              </a>
              </div>
              {% endfor %}
-
+          
            {{ object.timestamp|timesince }} ago
            <h5>Brand-: {{ object.brand }}</h5>
            
@@ -101,7 +101,6 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">UserName</th>
-      <th scope="col">product name</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
     
@@ -121,7 +120,6 @@
       <td> {{ rev.email.full_name }}
       
       </td>
-      <td><a href='{{ rev.product_id.get_absolute_url }}'>{{ rev.product_id.product_name }} </a></td>
       <td>{{ rev.review }}</td>
       <td>{{ rev.rating }} out of 5</td>
      

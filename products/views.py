@@ -10,7 +10,7 @@ from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from otherdetails.models import OtherDetails
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -365,7 +365,7 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
-        return reverse("addproduct")
+        return reverse("addproductdetails")
 
 class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
     
@@ -387,7 +387,7 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Variations added Successfully now add more details for your product !!!')
-        return reverse("productquantity")   
+        return reverse("addproductdetails")   
 
 class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
     
@@ -429,7 +429,7 @@ class AddProductView(LoginRequiredMixin,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, 'added Successfully now add more details for your product !!!')
-        return reverse("addproduct")
+        return reverse("addproductdetails")
 
         
         
@@ -489,7 +489,101 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
         messages.success(self.request, 'Updated Successfully !!!')
         return reverse("supplier")
 
+
+class my_productsimageView(LoginRequiredMixin,ListView):
+    model = ProductImage
+    template_name='products/my_product_images.html'
+    context_object_name = 'qs'
+
+    def get_context_data(self, **kwargs):
+        slug = self.kwargs.get('slug')
+        context = super().get_context_data(**kwargs)
+        context['qs'] = ProductImage.objects.filter(product__slug = slug)
+        return context
+       
+
+class ProductImageUpdateView(LoginRequiredMixin,UpdateView):
+    form_class = ProductImageChangeForm
+    model = ProductImage
+    template_name = 'products/product-update-image-view.html'
     
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        id = self.kwargs.get('id')
+
+        #instance = get_object_or_404(Product, slug=slug, active=True)
+        try:
+            instance = ProductImage.objects.get(id=id, active=True)
+        except ProductImage.DoesNotExist:
+            raise Http404("Not found..")
+        except ProductImage.MultipleObjectsReturned:
+            qs = ProductImage.objects.filter(slug=slug, active=True)
+            instance = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
+        #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
+        return instance
+
+
+    
+    def get_context_data(self,*args,**kwargs):
+        context = super(ProductImageUpdateView,self).get_context_data(*args,**kwargs)
+        context['title']='Change your product images'
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Updated Successfully !!!')
+        return reverse("supplier")
+
+
+
+class my_productsquantityView(LoginRequiredMixin,ListView):
+    model = Quantity
+    template_name='products/my_product_quantity.html'
+    context_object_name = 'qs'
+
+    def get_context_data(self, **kwargs):
+        slug = self.kwargs.get('slug')
+        context = super().get_context_data(**kwargs)
+        context['qs1']=Variation.objects.filter(product__slug= slug)
+        context['qs'] = Quantity.objects.filter(product__slug = slug)
+        return context
+
+class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
+    form_class = ProductQuantityChangeForm
+    model = Quantity
+    template_name = 'products/product-update-image-view.html'
+    
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        id = self.kwargs.get('id')
+
+        #instance = get_object_or_404(Product, slug=slug, active=True)
+        try:
+            instance = Quantity.objects.get(id=id, active=True)
+        except Quantity.DoesNotExist:
+            raise Http404("Not found..")
+        except Quantity.MultipleObjectsReturned:
+            qs = Quantity.objects.filter(slug=slug, active=True)
+            instance = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
+        #object_viewed_signal.send(instance.__class__, instance-instance, request=request)
+        return instance
+
+
+    
+    def get_context_data(self,*args,**kwargs):
+        context = super(ProductQuantityUpdateView,self).get_context_data(*args,**kwargs)
+        context['title']='Update your product images'
+        context['title1']='Update your product quantity'
+        return context
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Updated Successfully !!!')
+        return reverse("supplier")
 
 
 

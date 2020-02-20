@@ -24,6 +24,9 @@
 <p>Shipping Total: {{ object.shipping_total }}</p>
 <p>Order Total: $ {{ object.total }}</p>
 <p>Order Status: {{ object.get_status }}</p>
+
+<a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
 </div>
 </div>
+
 {% endblock %}

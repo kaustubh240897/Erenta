@@ -27,7 +27,7 @@ from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
-from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page
+from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
 admin.site.site_title = 'ShopNow Administration'
@@ -74,7 +74,10 @@ urlpatterns = [
     path('add_product_details/',SupplierProductListView.as_view(),name='addproductdetails'),
     path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage'),
     path('add_product_details/add_variations/<int:id>/',SupplierAddProductVariationsView.as_view(),name='productvariations'),
-    path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity')
+    path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity'),
+    path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
+    path('<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf')
+
 
 ]
 

@@ -1,0 +1,26 @@
+{% extends "supplier_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class='container'>
+    <div class="col-12 col-md-6 mx-auto">
+        {% if title1 %} <h1 class='my-3'>{{ title1 }}</h1>
+        {% else %}
+      <h1>  {{ title }}</h1> {% endif %}
+    <form  method='POST' enctype="multipart/form-data"  action='{% if action_url %} {{ action_url }}{% endif %}'>
+     {% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+    
+
+     {{ form|crispy }}<br/>
+
+     
+<button type='submit' class='btn btn-success'> Save </button>
+
+</form>
+</div>
+</div>
+{% endblock %}

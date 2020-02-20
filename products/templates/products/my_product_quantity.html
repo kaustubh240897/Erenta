@@ -1,0 +1,43 @@
+{% extends "supplier_base.html" %}
+
+{% block content %}
+        <div class='row'>
+            <div class='col-12 my-3'>
+                    <h1>My Product Quantity</h1>
+                    <hr/>
+            </div>
+            <div class='container'>
+    <h2> Product variations available for this product.</h2>
+     {% for obj in qs1 %}
+     
+      <div class='col'>
+        {{ forloop.counter }}.
+       {{ obj.product }}
+       {{ obj.title }}
+       {{ obj.category }}
+      </div>
+       {% endfor %}
+    <hr/>
+    </br>
+        </div>
+      {% for obj in qs %}
+         <div class='container'>
+            <div class='col-12 my-3'>
+        {{ forloop.counter }}.
+       {{ obj.product }},
+       {{ obj.color }},
+       {{ obj.size }},
+       Available Quantity-: {{ obj.quantity }} only
+       
+       <a href="{% url 'products:quantityupdate' obj.id %}" class="btn btn-warning">Update Quantity! </a>
+
+        
+        
+         </div>
+         </div>
+      {% empty %}
+      <p class='col-12'>  You have not created any products yet.</p>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
