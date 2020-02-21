@@ -49,11 +49,16 @@ class ProductVariationForm(forms.ModelForm):
         fields = ['category','title']
 
 class ProductQuantityForm(forms.ModelForm):
+    #variations = forms.ModelMultipleChoiceField(queryset=Variation.objects.all())
     
 
     class Meta:
         model = Quantity
-        fields = ['size','color','quantity']
+        fields = []
+    
+    # def __init__(self,*args, **kwargs):
+    #     super(ProductQuantityForm, self).__init__(*args, **kwargs)
+    #     self.fields['variations'].queryset = Variation.objects.filter(id=id)
 
 
 class ProductDetailChangeForm(forms.ModelForm):
@@ -78,7 +83,7 @@ class ProductImageChangeForm(forms.ModelForm):
 class ProductQuantityChangeForm(forms.ModelForm):
     class Meta:
         model = Quantity
-        fields = ['size','color','quantity']       
+        fields = ['quantity']       
 
 class RatingForm(forms.Form):
     name = forms.CharField(required=True,label='product_id')

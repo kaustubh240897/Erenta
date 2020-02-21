@@ -25,8 +25,10 @@
             <div class='col-12 my-3'>
         {{ forloop.counter }}.
        {{ obj.product }},
-       {{ obj.color }},
-       {{ obj.size }},
+       {% for item in obj.variations.all %}
+       {{ item.title }} {{ item.category }},
+       {% endfor %}
+       
        Available Quantity-: {{ obj.quantity }} only
        
        <a href="{% url 'products:quantityupdate' obj.id %}" class="btn btn-warning">Update Quantity! </a>

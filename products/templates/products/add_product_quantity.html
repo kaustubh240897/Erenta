@@ -1,0 +1,48 @@
+{% extends "supplier_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='container'>
+
+<h1>{{ title }}</h1>
+</br>
+<form method='POST' enctype="multipart/form-data">{% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+     {{ form|crispy }}
+     
+       Quantity-: <input class='form-control'  name='qty' type='number' value='1' />
+     
+      {% if object %}
+         
+             
+             Size-:
+              <select class='form-control' name='size'>
+                {% for item in object %}
+                {% if item.category == 'size' %}
+                <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              
+            
+              
+             
+              Color-:
+              <select class='form-control' name='color'>
+                {% for item in object %}
+                {% if item.category == 'color' %}
+                <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              
+            
+
+
+          {% endif %} 
+                
+<button type='submit' class='btn btn-success'>Save</button>
+</form>
+</div>
+{% endblock %}

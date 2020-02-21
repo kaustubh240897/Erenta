@@ -219,13 +219,14 @@ class Variation(models.Model):
     objects = VariationManager()
 
     def __str__(self):
-        return str(self.product.slug)
+        return "%s %s" %(self.title, self.product.product_name)
 
 
 class Quantity(models.Model):
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    color = models.CharField(max_length=100,default=None)
-    size = models.CharField(max_length=100,default=None)
+    # color = models.CharField(max_length=100,default=None)
+    # size = models.CharField(max_length=100,default=None)
+    variations = models.ManyToManyField(Variation,blank=True) 
     quantity = models.IntegerField(default=1)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)

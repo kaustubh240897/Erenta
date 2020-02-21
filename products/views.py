@@ -393,14 +393,50 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
     
     model = Quantity
     form_class = ProductQuantityForm
-    template_name = 'products/add_product_variations.html'
+    template_name = 'products/add_product_quantity.html'
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierAddProductQuantityView, self).get_context_data(*args, **kwargs)
+        
+        id = self.kwargs.get('id')
+        product= Product_description.objects.get(id=id)
+        
+        context['title'] = 'Add Quantity Details'
+        
+        context['object']=Variation.objects.filter(product=product)
+        
+        return context
 
     def form_valid(self,form):
         try:
+            product_variations = []
+            
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
-            obj.product = Product_description.objects.get(id=id)
-            obj.save()
+            qty = self.request.POST['qty']
+            product_obj = Product_description.objects.get(id=id)
+            #obj.product = Product_description.objects.get(id=id)
+            if int(qty)>0:
+                for item in self.request.POST:
+                    key = item
+                    val = self.request.POST[key]
+                    try:
+                        v = Variation.objects.get(product=product_obj, category__iexact=key, title__iexact=val)
+                        product_variations.append(v)
+                        print(v)
+                    except:
+                        pass
+                quantity_item= Quantity.objects.create(product=product_obj)
+                
+                if len(product_variations)>0:
+                    obj.variation_set=quantity_item.variations.add(*product_variations)
+                quantity_item.quantity = qty
+                quantity_item.product = Product_description.objects.get(id=id)
+                quantity_item.save()
+            else:
+                messages.warning(self.request, "OOps! you entered wrong quantity.")
+                return redirect("addproductdetails")
+
+            #obj.save()
             return HttpResponseRedirect(self.get_success_url())
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
