@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
 from orders.models import Order
-from notification.models import Notification,Order_Notification,Supplier_Order_Notification
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Low_Quantity_Notification
 from django.views.generic import ListView
 from django.views.generic import View
 from django.template.loader import get_template
@@ -47,12 +47,14 @@ def notification_page(request):
     return render(request,"notification_home.html",context)
 
 def supplier_notification_page(request):
-    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() 
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     n2 = Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid',viewed=False)
+    n3 = Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False)
     
     context = {
        "title":"Notifications",
        "supplier_order_notifications": n2,
+       "low_quantity_notification":n3,
        
     }
     return render(request,"supplier_order_notification_home.html",context)

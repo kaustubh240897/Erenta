@@ -3,7 +3,7 @@ from django.views.generic import CreateView
 from django.shortcuts import render, redirect,HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
-from .models import Cart,CartItem
+from .models import Cart,CartItem,Quantity
 from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
@@ -128,7 +128,7 @@ def add_to_cart(request,id):
 
     product_id=request.POST.get('product_id',None)
     
-    
+
     try:
         product_obj = Product_description.objects.get(id=id)
             
@@ -141,6 +141,7 @@ def add_to_cart(request,id):
     print(cart_id)
     
     product_variations = []
+    product_variations_id = []
     if request.method == "POST":
         qty = request.POST['qty']
         start_date = request.POST['start_date']
@@ -159,33 +160,67 @@ def add_to_cart(request,id):
                 try:
                     v = Variation.objects.get(product=product_obj, category__iexact=key, title__iexact=val)
                     product_variations.append(v)
-                    print(v)
+                    product_variations_id.append(v.id)
+                    print("id dekhne ki kosis",v.id)
                 except:
                     pass
+            # check wheather inventory have the item quantity
+            id_list2=[]
+            q= Quantity.objects.filter(product__id=id)
+            # if q.count() == 1:
+            #     for c in q:
+            #         q1 = Quantity.objects.get(id=c.id)
+            #         if q1.quantity-int(qty) >= 0:
+            #             cart_item= CartItem.objects.create(cart_id=cart_id, product_id=id)
+            #             if len(product_variations)>0:
+            #                 cart_item.variations.add(*product_variations)
+            #             cart_item.quantity=qty
+            #             cart_item.start_date = start_date
+            #             cart_item.end_date = end_date
+            #             cart_item.days = days
+            #             cart_item.save()
+            #             messages.success(request, 'added Successfully !!!')
+            #             return redirect("cart:home")
+            #         else:
+            #             messages.warning(request, 'sorry quantity is too low for this item !!!')
+            #             return redirect("cart:home")
+            if q.count()==0:
+                messages.warning(request, 'sorry no items left !!!')
+                return redirect("cart:home")
+                        
+            else: 
+                for y in q:
+                    id_list2=[]
+                    j=y.variations.all()
+                    j1 = y.id
+                    print("quantity model ki id",j1)
+                    for z in j:
+                        k=z.id
+                        id_list2.append(k)
+                        print("quantity model ke variation ki id",id_list2)
+                        print("donolist",product_variations)
+                        if(product_variations_id==id_list2):
+                            j2 = j1
+                            q1 = Quantity.objects.get(id=j2)
+                            if q1.quantity-int(qty) >= 0:
+                                cart_item= CartItem.objects.create(cart_id=cart_id, product_id=id)
+                                if len(product_variations)>0:
+                                    cart_item.variations.add(*product_variations)
+                                cart_item.quantity=qty
+                                cart_item.start_date = start_date
+                                cart_item.end_date = end_date
+                                cart_item.days = days
+                                cart_item.save()
+                                
+                                messages.success(request, 'added Successfully !!!')
+                                return redirect("cart:home")
+                            else:
+                                messages.warning(request, 'sorry quantity is too low for this item !!!')
+                                return redirect("cart:home")
 
-            cart_item= CartItem.objects.create(cart_id=cart_id, product_id=id)
-            if len(product_variations)>0:
-                cart_item.variations.add(*product_variations)
-            cart_item.quantity=qty
-            cart_item.start_date = start_date
-            cart_item.end_date = end_date
-            cart_item.days = days
-            cart_item.save()
+                            
 
-                
-            
-                # if request.is_ajax():
-                #     print("ajax request")
-                #     json_data = {
-                #         "added": added,
-                #         "removed": not added,
-                #         "cartItemCount":cart_obj.cartitem_set.count()
-                #     }
-                #     return JsonResponse(json_data, status=200)
-            messages.success(request, 'added Successfully !!!')
-            return redirect("cart:home")
-    
-    messages.success(request, 'error occured !!!')
+    messages.warning(request, 'you added some invalid field ,error occured or product quantity is empty !!!')
     return redirect("cart:home")
 
 

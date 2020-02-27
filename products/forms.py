@@ -1,5 +1,6 @@
 from django import forms
-from .models import Product_description,ProductImage,Variation,Quantity
+from .models import Product_description,ProductImage,Variation
+from carts.models import Quantity
 from otherdetails.models import OtherDetails
 
 
@@ -47,6 +48,7 @@ class ProductVariationForm(forms.ModelForm):
     class Meta:
         model = Variation
         fields = ['category','title']
+    
 
 class ProductQuantityForm(forms.ModelForm):
     #variations = forms.ModelMultipleChoiceField(queryset=Variation.objects.all())

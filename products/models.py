@@ -215,28 +215,11 @@ class Variation(models.Model):
     price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
-
+    
     objects = VariationManager()
 
     def __str__(self):
         return "%s %s" %(self.title, self.product.product_name)
-
-
-class Quantity(models.Model):
-    product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    # color = models.CharField(max_length=100,default=None)
-    # size = models.CharField(max_length=100,default=None)
-    variations = models.ManyToManyField(Variation,blank=True) 
-    quantity = models.IntegerField(default=1)
-    active = models.BooleanField(default=True)
-    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
-
-    def __str__(self):
-        return str(self.product.slug)
-        # return u", ".join([a.title for a in self.variations.all()])
-
-
-
 
 
 class Contact(models.Model):

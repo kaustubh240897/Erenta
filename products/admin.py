@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Product_description,Contact,User_Review,Supplier_Review,ProductImage,Variation,Category,Sub_Category,Sub_Sub_Category,Quantity
+from .models import Product_description,Contact,User_Review,Supplier_Review,ProductImage,Variation,Category,Sub_Category,Sub_Sub_Category
+#from carts.models import Quantity
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
     list_display= ['__str__', 'slug']
@@ -20,6 +21,6 @@ admin.site.register(Variation)
 admin.site.register(Category)
 admin.site.register(Sub_Category)
 admin.site.register(Sub_Sub_Category)
-admin.site.register(Quantity)
+#admin.site.register(Quantity)
 
 

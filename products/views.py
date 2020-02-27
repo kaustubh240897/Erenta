@@ -4,7 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Quantity
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation
+from carts.models import Quantity
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
@@ -378,8 +379,14 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
             obj.product = Product_description.objects.get(id=id)
-            obj.save()
-            return HttpResponseRedirect(self.get_success_url())
+            
+            if Variation.objects.filter(product__id=id,category=self.request.POST['category'],title=self.request.POST['title']).count()==0:
+                obj.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                messages.warning(self.request, "This category of product already exists.")
+                return redirect("addproduct")
+
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
             return redirect("addproduct")
@@ -425,19 +432,27 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                         print(v)
                     except:
                         pass
-                quantity_item= Quantity.objects.create(product=product_obj)
-                
-                if len(product_variations)>0:
-                    obj.variation_set=quantity_item.variations.add(*product_variations)
-                quantity_item.quantity = qty
-                quantity_item.product = Product_description.objects.get(id=id)
-                quantity_item.save()
+                #print("111111qqqqq",Quantity.objects.filter(product__id=id,variations__title__iexact=self.request.POST[key]).count())
+                if Quantity.objects.filter(product__id=id,variations__title__iexact=self.request.POST[key]).count()==0:
+                    quantity_item= Quantity.objects.create(product=product_obj)
+                    
+                    if len(product_variations)>0:
+                        obj.variation_set=quantity_item.variations.add(*product_variations)
+                    quantity_item.quantity = qty
+                    quantity_item.product = Product_description.objects.get(id=id)
+                    quantity_item.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                else:
+                    messages.warning(self.request, "OOps! you already entered this item quantity.")
+                    return redirect("addproductdetails")
+
+
             else:
                 messages.warning(self.request, "OOps! you entered wrong quantity.")
                 return redirect("addproductdetails")
 
             #obj.save()
-            return HttpResponseRedirect(self.get_success_url())
+            
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
             return redirect("addproduct")

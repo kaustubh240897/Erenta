@@ -1,0 +1,13 @@
+{% extends "supplier_base.html" %}
+{% block content %}
+
+
+
+<div class="list-group">
+  <li class="list-group-item list-group-item-action active">
+    {{ low_quantity_notification.title }}
+  </li>
+  <list class="list-group-item list-group-item-action">{{ low_quantity_notification.message }}</list>
+  </div>
+<button><a href='{% url "notification:delete_supplier_quantity_notification" low_quantity_notification.id %}'>Mark as read</a></button>
+{% endblock %}

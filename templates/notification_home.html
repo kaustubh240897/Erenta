@@ -5,13 +5,13 @@
 <h3>Notifications</h3>
 {% for n in notifications %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_notification' n.id %}">{{ n.title }}</a></li>
+<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_notification' n.id %}">{{ n.title }} {{ n.timestamp }}</a></li>
 </ul>
 {% endfor %}
 
 {% for n1 in order_notifications %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_order_notification' n1.id %}">{{ n1.title }}</a></li>
+<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_order_notification' n1.id %}">{{ n1.title }} {{ n1.timestamp }}</a></li>
 </ul>
 {% endfor %}
 
