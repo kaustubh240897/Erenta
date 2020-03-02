@@ -158,33 +158,37 @@ def post_save_cartitem_receiver(sender,instance,*args,**kwargs):
             print("cart product variation id",id_list)
         id_list1=[]
         q= Quantity.objects.filter(product__id=instance.product.id)
-        # if q.count() == 1:
-        #     for c in q:
-        #         qs = Quantity.objects.get(id=c.id)
-        #         print("qqqqqqqqqqqqqqqqqqqq",qs.quantity)
-        #         print("qqqqqqqqqqqqqqqqqqqc",instance.quantity)
-        #         qs.quantity = qs.quantity+(1)-int(instance.quantity)
-        #         qs.save()
-        #         break
-                
         if q.count()>0:
-            for y in q:
-                id_list1=[]
-                j=y.variations.all()
-                j1 = y.id
-                print("quantity model ki id",j1)
-                for z in j:
-                    k=z.id
-                    id_list1.append(k)
-                    print("quantity model ke variation ki id",id_list1)
-                    if(id_list==id_list1):
-                        j2 = j1
-                        q1 = Quantity.objects.get(id=j2)
-                        print("qqqqqqqqqqqqqqqqqqqq",q1.quantity)
-                        print("qqqqqqqqqqqqqqqqqqqc",instance.quantity)
-                        q1.quantity = q1.quantity+(1/2)-int(instance.quantity)
-                        q1.save()
-                        break
+            for z in q:
+                x = z.variations.all()
+                break
+
+            if x.count()==0:
+                for c in q:
+                    qs = Quantity.objects.filter(id=c.id).first()
+                    print("qqqqqqqqqqqqqqqqqqqc",instance.quantity)
+                    qs.quantity = qs.quantity-int(instance.quantity)
+                    qs.save()
+                    break
+                    
+            else:
+                for y in q:
+                    id_list1=[]
+                    j=y.variations.all()
+                    j1 = y.id
+                    print("quantity model ki id",j1)
+                    for z in j:
+                        k=z.id
+                        id_list1.append(k)
+                        print("quantity model ke variation ki id",id_list1)
+                        if(id_list==id_list1):
+                            j2 = j1
+                            q1 = Quantity.objects.get(id=j2)
+                            print("qqqqqqqqqqqqqqqqqqqq",q1.quantity)
+                            print("qqqqqqqqqqqqqqqqqqqc",instance.quantity)
+                            q1.quantity = q1.quantity+(1/2)-int(instance.quantity)
+                            q1.save()
+                            break
     else:
         variation1 = instance.variations.all()
         id_list = []
