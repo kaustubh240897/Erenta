@@ -120,6 +120,7 @@ class RequestRefundView(View):
             # edit the order
             try:
                 order=Order.objects.get(order_id=order_id)
+                #order.status = refunded
                 order.refund_requested = True
                 order.save()
                 #store the refund

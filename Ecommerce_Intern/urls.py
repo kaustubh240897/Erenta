@@ -27,6 +27,7 @@ from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
+from analytics.views import SalesView
 from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
@@ -45,6 +46,7 @@ urlpatterns = [
     path('accounts/',RedirectView.as_view(url='/account')),
     path('accounts/',include(("accounts.passwords.urls"))),
     path('account/',include(("accounts.urls", 'accounts'), namespace='account')),
+    path('manage/sales/',SalesView.as_view(),name='sales-analytics'),
     path('login/',LoginView.as_view(), name='login'),
     path('loginsupplier/',SupplierLoginView.as_view(), name='login1'),
     #path('api/cart/',cart_detail_api_view, name='api_cart'),

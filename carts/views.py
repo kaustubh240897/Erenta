@@ -198,7 +198,9 @@ def add_to_cart(request,id):
                         k=z.id
                         id_list2.append(k)
                         print("quantity model ke variation ki id",id_list2)
-                        print("donolist",product_variations)
+                        print("donolist",product_variations_id)
+                        product_variations_id = sorted(product_variations_id)
+                        id_list2 = sorted(id_list2)
                         if(product_variations_id==id_list2):
                             j2 = j1
                             q1 = Quantity.objects.get(id=j2)
