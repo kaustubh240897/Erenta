@@ -3,8 +3,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact
-from orders.models import Order
-from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Low_Quantity_Notification
+from orders.models import Order,Low_Quantity_Notification
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from django.views.generic import ListView
 from django.views.generic import View
 from django.template.loader import get_template
@@ -53,7 +53,7 @@ def supplier_notification_page(request):
     
     context = {
        "title":"Notifications",
-       "supplier_order_notifications": n2,
+       "supplier_order_notifications":n2,
        "low_quantity_notification":n3,
        
     }

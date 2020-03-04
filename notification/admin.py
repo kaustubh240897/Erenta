@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Notification,Order_Notification,Supplier_Order_Notification,Low_Quantity_Notification
+from .models import Notification,Order_Notification,Supplier_Order_Notification
+from orders.models import Low_Quantity_Notification
 
 # Register your models here.
 admin.site.register(Notification)

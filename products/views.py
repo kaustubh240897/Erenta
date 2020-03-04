@@ -433,7 +433,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                     except:
                         pass
                 #print("111111qqqqq",Quantity.objects.filter(product__id=id,variations__title__iexact=self.request.POST[key]).count())
-                if Quantity.objects.filter(product__id=id):
+                if Product_description.objects.get(id=id):
                     quantity_item= Quantity.objects.create(product=product_obj)
                     
                     if len(product_variations)>0:

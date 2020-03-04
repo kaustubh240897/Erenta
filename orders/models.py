@@ -1,12 +1,16 @@
 from django.db import models
 import math
-from carts.models import Cart,Coupon
+import datetime
+from django.utils import timezone
+from carts.models import Cart,Coupon,Quantity
 from django.urls import reverse
 from django.conf import settings
 from billing.models import BillingProfile
 from products.models import Product_description
 from addresses.models import Address
 from django.db.models.signals import pre_save , post_save
+from django.dispatch import receiver
+from django.db.models import Sum,Avg,Count
 from Ecommerce_Intern.utils import unique_order_id_generator
 from accounts.models import User
 User = settings.AUTH_USER_MODEL
@@ -20,6 +24,64 @@ ORDER_STATUS_CHOICES = (
 )
 
 class OrderManagerQuerySet(models.query.QuerySet):
+    def recent(self):
+        return self.order_by("-updated","-timestamp")
+    
+    def get_sales_breakdown(self):
+        recent = self.recent().not_refunded().not_created()
+        recent_data = recent.totals_data()
+        recent_cart_data = recent.carts_data()
+                                                                  
+        shipped= recent.not_refunded().not_created().by_status(status="shipped")
+        shipped_data = shipped.totals_data()
+        paid = recent.not_refunded().not_created().by_status(status="paid")
+        paid_data = paid.totals_data()
+        data = {
+            'recent' : recent,
+            'recent_data': recent_data,
+            'recent_cart_data': recent_cart_data,
+            'shipped': shipped,
+            'shipped_data': shipped_data,
+            'paid': paid,
+            'paid_data': paid_data
+        }
+        return data
+
+    
+    def by_weeks_range(self, weeks_ago=1, number_of_weeks=1):
+        if number_of_weeks > weeks_ago:
+            number_of_weeks = weeks_ago
+        days_ago_start = weeks_ago * 7
+        days_ago_end = days_ago_start - (number_of_weeks * 7)
+        start_date = timezone.now() - datetime.timedelta(days=days_ago_start)
+        end_date = timezone.now() - datetime.timedelta(days=days_ago_end)
+        return self.by_range(start_date,end_date=end_date)
+    
+    def by_range(self, start_date, end_date=None):
+        if end_date is None:
+            return self.filter(updated__gte=start_date)
+        return self.filter(updated__gte=start_date).filter(updated__lte=end_date)
+
+
+    def by_date(self):
+        now = timezone.now()
+        return self.filter(updated__day=now.day)
+    
+    def totals_data(self):
+        return self.aggregate(Sum("total"), Avg("total"))
+    
+    def carts_data(self):
+        return self.aggregate(Sum("cart__cartitem__product__cost_per_day"),
+                              Avg("cart__cartitem__product__cost_per_day"),
+                              Count("cart__cartitem__product")
+                              )
+    
+    def by_status(self, status='shipped'):
+        return self.filter(status=status)
+    
+    def not_refunded(self):
+        return self.exclude(status='refunded')
+
     def by_request(self,request):
         billing_profile,created=BillingProfile.objects.new_or_get(request)
         return self.filter(billing_profile=billing_profile)
@@ -101,7 +163,7 @@ class Order(models.Model):
         cart_total=self.cart.total
         shipping_total=self.shipping_total
         
-        new_total = math.fsum([cart_total, shipping_total])
+        new_total = math.fsum([float(cart_total), shipping_total])
         #new_total = new_total- self.coupon.amount
         formatted_total = format(new_total, '.2f')
         self.total=formatted_total
@@ -162,3 +224,26 @@ class Refund(models.Model):
 
     def __str__(self):
         return "%s requested refund on %s" %(self.pk, self.timestamp)
+
+
+
+
+class Low_Quantity_Notification(models.Model):
+    title = models.CharField(max_length=100)
+    message = models.TextField()
+    viewed = models.BooleanField(default=False)
+    quantity = models.IntegerField(default=1)
+    product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    timestamp= models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s has only %s left" %(self.product, self.quantity)
+
+
+@receiver(post_save, sender=Quantity)
+def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
+    if int(instance.quantity) <= 3:
+        Low_Quantity_Notification.objects.create(quantity=instance.quantity,
+                                        product = instance.product,
+                                        title = ("your product %s's quantity is low" %(instance.product)),
+                                        message = "Add the quantity")

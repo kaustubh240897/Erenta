@@ -1,8 +1,11 @@
+import datetime
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count,Avg,Sum
 from django.views.generic import TemplateView
 from django.shortcuts import render
-
+from orders.models import Order
+from django.utils import timezone
 # Create your views here.
 
 class SalesView(LoginRequiredMixin,TemplateView):
@@ -15,4 +18,12 @@ class SalesView(LoginRequiredMixin,TemplateView):
         return super(SalesView,self).dispatch(*args,**kwargs)
     
     def get_context_data(self, *args, **kwargs):
-        return super(SalesView,self).get_context_data(*args,**kwargs)
+        context = super(SalesView,self).get_context_data(*args,**kwargs)
+        # two_weeks_ago = timezone.now() - datetime.timedelta(days=14)
+        # one_week_ago = timezone.now() - datetime.timedelta(days=7)
+        qs = Order.objects.all().by_weeks_range(weeks_ago=10, number_of_weeks=10)   #(start_date=two_weeks_ago, end_date=one_week_ago)
+        context['today'] = qs.by_range(start_date=timezone.now().date()).get_sales_breakdown()
+        context['this_week'] = qs.by_weeks_range(weeks_ago=1,number_of_weeks=1).get_sales_breakdown()
+        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown()
+        
+        return context 

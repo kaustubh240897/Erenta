@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-from .models import Notification,Order_Notification,Supplier_Order_Notification,Low_Quantity_Notification
+from .models import Notification,Order_Notification,Supplier_Order_Notification
+from orders.models import Low_Quantity_Notification
 
 # Create your views here.
 
