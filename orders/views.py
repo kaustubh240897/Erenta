@@ -170,71 +170,71 @@ class AddCouponView(View):
                 return redirect("cart:checkout")
 
 
-def created_order_checkout_home(request,order_id):
+# def created_order_checkout_home(request,order_id):
     
-    #created_order_cart_obj = Cart.objects.get(id=id)
-    #cart_obj = Cart.objects.get(request)
-    order_obj=None
-    #print(created_order_cart_obj)
-    # if cart_created or cart_obj.cartitem_set.count()==0:
-    #     return redirect("cart:home")
+#     #created_order_cart_obj = Cart.objects.get(id=id)
+#     #cart_obj = Cart.objects.get(request)
+#     order_obj=None
+#     #print(created_order_cart_obj)
+#     # if cart_created or cart_obj.cartitem_set.count()==0:
+#     #     return redirect("cart:home")
     
-    login_form = LoginForm()
-    guest_form = GuestForm()
-    address_form = AddressForm()
-    billing_address_id  = request.session.get("billing_address_id",None)
-    shipping_address_id = request.session.get("shipping_address_id",None)
-    #billing_address_form = AddressForm()
-    # try:
-    #     bill_id = request.session['bill_id']
-    # except:
-    #     bill_id=None 
-    billing_profile = BillingProfile.objects.get(user=request.user)
-    address_qs = None
-    has_card = False
-    if billing_profile is not None:
-        if request.user.is_authenticated:
-            address_qs = Address.objects.filter(billing_profile=billing_profile)
-        order_obj = Order.objects.get(order_id=order_id)
-        if shipping_address_id:
-            order_obj.shipping_address = Address.objects.get(id=shipping_address_id)
-            del request.session["shipping_address_id"]
-        if billing_address_id:
-            order_obj.billing_address = Address.objects.get(id=billing_address_id)
-            del request.session["billing_address_id"]
-        if shipping_address_id or billing_address_id:
-            order_obj.save()
-        has_card = billing_profile.has_card
-    if request.method =="POST":
-        "check that order is done"
+#     login_form = LoginForm()
+#     guest_form = GuestForm()
+#     address_form = AddressForm()
+#     billing_address_id  = request.session.get("billing_address_id",None)
+#     shipping_address_id = request.session.get("shipping_address_id",None)
+#     #billing_address_form = AddressForm()
+#     # try:
+#     #     bill_id = request.session['bill_id']
+#     # except:
+#     #     bill_id=None 
+#     billing_profile = BillingProfile.objects.get(user=request.user)
+#     address_qs = None
+#     has_card = False
+#     if billing_profile is not None:
+#         if request.user.is_authenticated:
+#             address_qs = Address.objects.filter(billing_profile=billing_profile)
+#         order_obj = Order.objects.get(order_id=order_id)
+#         if shipping_address_id:
+#             order_obj.shipping_address = Address.objects.get(id=shipping_address_id)
+#             del request.session["shipping_address_id"]
+#         if billing_address_id:
+#             order_obj.billing_address = Address.objects.get(id=billing_address_id)
+#             del request.session["billing_address_id"]
+#         if shipping_address_id or billing_address_id:
+#             order_obj.save()
+#         has_card = billing_profile.has_card
+#     if request.method =="POST":
+#         "check that order is done"
 
-        is_prepared = order_obj.check_done()
-        if is_prepared:
-            did_charge,crg_msg = billing_profile.charge(order_obj)
-            if did_charge:
-                order_obj.mark_paid()
-                request.session['cart_items']=0
-                del request.session['cart_id']
-                # for guest users
-                if not billing_profile.user:
-                    billing_profile.set_cards_inactive()
-                return redirect("cart:success")
-            else:
-                print(crg_msg)
-                return redirect("cart:checkout")
-    context = {
-        "object": order_obj,
-        "billing_profile": billing_profile,
-        "login_form": login_form,
-        "guest_form": guest_form,
-        "address_form": address_form,
-        "address_qs" : address_qs,
-        "has_card"   : has_card,
-        "publish_key": STRIPE_PUB_KEY,
-        "d": "difference ke liye",
+#         is_prepared = order_obj.check_done()
+#         if is_prepared:
+#             did_charge,crg_msg = billing_profile.charge(order_obj)
+#             if did_charge:
+#                 order_obj.mark_paid()
+#                 request.session['cart_items']=0
+#                 del request.session['cart_id']
+#                 # for guest users
+#                 if not billing_profile.user:
+#                     billing_profile.set_cards_inactive()
+#                 return redirect("cart:success")
+#             else:
+#                 print(crg_msg)
+#                 return redirect("cart:checkout")
+#     context = {
+#         "object": order_obj,
+#         "billing_profile": billing_profile,
+#         "login_form": login_form,
+#         "guest_form": guest_form,
+#         "address_form": address_form,
+#         "address_qs" : address_qs,
+#         "has_card"   : has_card,
+#         "publish_key": STRIPE_PUB_KEY,
+#         "d": "difference ke liye",
         
-    }
-    return render(request,"carts/checkout.html", context)
+#     }
+#     return render(request,"carts/checkout.html", context)
 
 
 def shipping_address_update_view(request,order_id):

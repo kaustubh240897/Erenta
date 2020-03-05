@@ -9,23 +9,27 @@
 
  <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-         <h1>Order {{ object.order_id }}</h1>
+        <h2>Your had Created this order on {{ object.timestamp }} but not Ordered yet!</h2>
+         <h4>Order {{ object.order_id }}</h4>
           <hr/>
     </div>
 </div>
 
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-<p>Items:  {% for item in object.cart.cartitem_set.all %}<a href='{{ item.product.get_absolute_url }}'> {{ item.product }} </a>(Product_id-: {{ item.product.slug }}){% if not forloop.last %}, {% endif %}{% endfor %}     <a href="/reviews/"> <button class='btn btn-primary'>Rate us!</button></a></p>
+<p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }}
+ <p><div class="card" style="width: 18rem">
+{% if item.product.image %}
+<img src='{{ item.product.image.url }}' class='img-fluid' />
+    {% endif %}
+    </div>
+<a href='{{ item.product.get_absolute_url }}'>  <button class='btn btn-warning'>  Add to cart Now?</button> 
+</a>{% endfor %} </p>
 <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
 <p>Billing Address: {{ object.billing_address.get_address }}</p>
-<p>User's Email: {{ object.billing_profile }}</p>
-<p>Subtotal: {{ object.cart.total }}</p>
-<p>Shipping Total: {{ object.shipping_total }}</p>
-<p>Order Total: $ {{ object.total }}</p>
-<p>Order Status: {{ object.status }}</p>
+
 {% include 'orders/order_snippet.html' %}
-<td><a class='btn btn-lg btn-black btn-primary' href='{% url "orders:created_orders" object.order_id %}'>Proceed to Complete your Order</a></td>
+
 </div>
 </div>
 

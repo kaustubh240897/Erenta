@@ -45,8 +45,8 @@
         <div class='details'>
             Invoice id: {{ object }} <br/>
             Bill to: {{ customer_name }} <br/>
-            Date: {{ today }}
-            Time: {{ time }}
+            Date Time: {{ time }}
+            
             <hr class='hrItem' />
 
    {% for item in object.cart.cartitem_set.all %}

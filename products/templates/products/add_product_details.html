@@ -1,6 +1,7 @@
 {% extends "supplier_base.html" %}
 
 {% block content %}
+<div class='container'>
         <div class='row'>
             <div class='col-12 my-3'>
                     <h1>Add more product details</h1>
@@ -14,5 +15,6 @@
       {% empty %}
       <p class='col-12'>   You have not created any products yet.</p>
     {% endfor %}
+</div>
 </div>
 {% endblock %}

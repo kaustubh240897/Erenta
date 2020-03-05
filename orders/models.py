@@ -47,7 +47,6 @@ class OrderManagerQuerySet(models.query.QuerySet):
         }
         return data
 
-    
     def by_weeks_range(self, weeks_ago=1, number_of_weeks=1):
         if number_of_weeks > weeks_ago:
             number_of_weeks = weeks_ago

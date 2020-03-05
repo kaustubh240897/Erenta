@@ -5,7 +5,7 @@
   
   {% endif %}
   <div class="card-body">
-    <h5 class="card-title"> {{ instance.product_name }}</h5>
+    <h5 class="card-title"> {{ instance.product_name|capfirst }}</h5>
      <h6 class="card-title"> {% if instance.discount_price %}
             <strike> ${{ instance.cost_per_day }}</strike> ${{ instance.discount_price }}/day ({{ instance.get_amount_percent_saved }}% Off)
            {% else %}

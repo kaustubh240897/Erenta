@@ -14,7 +14,7 @@ Welcome {{ request.user.full_name }}!
   <div class="card-body">
     <h5 class="card-title">Create new Products</h5>
       <div class='list-group'>
-          <a class='list-group-item' href='{% url "add" %}'>create product </a>
+          <a class='list-group-item' href='{% url "add" %}'>create new product </a>
           
       </div>
       
@@ -26,8 +26,8 @@ Welcome {{ request.user.full_name }}!
 <div class='col-12 col-md-3 my-3'>
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Add more details(like size,color,images)</h5>
-        <a class='list-group-item' href='{% url "addproductdetails" %}'>Add details </a>
+    <h5 class="card-title">Add more product details (like size,color,images)</h5>
+        <a class='list-group-item' href='{% url "addproductdetails" %}'>Add product details </a>
     
   </div>
 </div>

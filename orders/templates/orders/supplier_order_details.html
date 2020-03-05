@@ -26,11 +26,16 @@
      {% if item.product.user == request.user %}
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div>
-        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name}}</h6>
+        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name|capfirst }}</h6>
         <small class="text-muted">{{ item.product.description}}</small>
         </div>
         <span class="text-muted">${{ item.line_total }}</span>
     </li>
+    <div class="card" style="width: 18rem">
+      {% if item.product.image %}
+      <img src='{{ item.product.image.url }}' class='img-fluid' />
+      </div>
+    {% endif %}
     {% endif %}
     {% endfor %}
     <li class="list-group-item d-flex justify-content-between bg-light">

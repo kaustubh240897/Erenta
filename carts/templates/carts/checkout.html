@@ -82,22 +82,21 @@
        {% else %}
 
        <h1> Finalize Checkout </h1>
-       <p>Items:  {% for item in object.cart.cartitem_set.all %}<li><ul><a href='{{ item.product.get_absolute_url }}'> {{ item.product }} </a></ul> {% if item.variations.all %} 
-        <ul>{% for subitem in item.variations.all %} 
-        <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
-       {% endfor %}</li> </p>
-       {% if d %}
-      <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
-       <p>Billing Address: {{ object.billing_address.get_address }}</p>
-       {% else %}
+      <p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }} 
+      <p> <div class="card" style="width: 18rem">
+      {% if item.product.image %}
+      <img src='{{ item.product.image.url }}' class='img-fluid' />
+    {% endif %}
+    </div>
+     {% endfor %}     
+     </p>
+      
        <p>Shipping Address: {{ object.shipping_address.get_address }}(<a href='{% url "orders:update_address" object.order_id %}'>Edit your shipping Address?</a>)</p>
        <p>Billing Address: {{ object.billing_address.get_address }}(<a href='{% url "orders:update_billingaddress" object.order_id %}'>Edit your billing Address?</a>)</p>
        
-       {% endif %}
+       
        <p>Payment Method: {{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</p> 
-       <p> Cart Total: {{ object.cart.total }}</p>
-       <p>Shipping Total: {{ object.shipping_total }}</p>
-       <p>Order Total: {{ object.total }}</p>
+       
        
       {% include 'orders/order_snippet.html' %}
        
