@@ -1,5 +1,6 @@
 from django import forms
 from .models import Product_description,ProductImage,Variation
+from tags.models import Tag
 from carts.models import Quantity
 from otherdetails.models import OtherDetails
 
@@ -31,6 +32,11 @@ class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
         fields = ['image']
+
+class ProductTagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = ['tag_name']
 
     # def save(self, commit=True):
     #     # Save the provided password in hashed format

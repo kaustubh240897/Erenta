@@ -2,8 +2,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div class='container'>
-
+{% if alag %}
+<h1> Add your Product Tags </h1>
+{% else %}
 <h1>Add your Product Image</h1>
+{% endif %}
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
      {% if next_url %}

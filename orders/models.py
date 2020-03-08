@@ -47,6 +47,27 @@ class OrderManagerQuerySet(models.query.QuerySet):
         }
         return data
 
+    def get_sales_breakdown_supplier(self):
+        recent = self.recent().not_refunded().not_created()
+        recent_data = recent.totals_data()
+        recent_cart_data = recent.supplier_linetotal_data()
+                                                                  
+        shipped= recent.not_refunded().not_created().by_status(status="shipped")
+        shipped_cart_data = shipped.supplier_linetotal_data()
+        paid = recent.not_refunded().not_created().by_status(status="paid")
+        paid_cart_data = paid.supplier_linetotal_data()
+        
+        data = {
+            'recent' : recent,
+            'recent_data': recent_data,
+            'recent_cart_data': recent_cart_data,
+            'shipped': shipped,
+            'shipped_cart_data': shipped_cart_data,
+            'paid': paid,
+            'paid_cart_data': paid_cart_data
+        }
+        return data
+
     def by_weeks_range(self, weeks_ago=1, number_of_weeks=1):
         if number_of_weeks > weeks_ago:
             number_of_weeks = weeks_ago
@@ -69,10 +90,19 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def totals_data(self):
         return self.aggregate(Sum("total"), Avg("total"))
     
+    
+    # def supplier_data(self,request):
+    #     return self.filter(cart__cartitem__product__user=self.request.user)
+    
     def carts_data(self):
         return self.aggregate(Sum("cart__cartitem__product__cost_per_day"),
                               Avg("cart__cartitem__product__cost_per_day"),
                               Count("cart__cartitem__product")
+                              )
+    def supplier_linetotal_data(self):
+        return self.aggregate(Sum("cart__cartitem__line_total"),
+                              Avg("cart__cartitem__line_total"),
+                              Count("cart__cartitem__line_total")
                               )
     
     def by_status(self, status='shipped'):

@@ -6,12 +6,13 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
 from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation
 from carts.models import Quantity
+from tags.models import Tag
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from otherdetails.models import OtherDetails
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm,ProductTagForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -368,6 +369,36 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
         return reverse("addproductdetails")
 
+
+class SupplierTagView(LoginRequiredMixin,CreateView):
+    
+    model = Tag
+    form_class = ProductTagForm
+    template_name = 'products/add_product_image.html'
+
+    def form_valid(self,form):
+        try:
+            obj = form.save(commit=False)
+            id = self.kwargs.get('id')
+            obj.product_name = Product_description.objects.get(id=id)
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproduct")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['alag'] = "alag" 
+        return context
+
+    def get_success_url(self):
+        messages.success(self.request, 'Tag added Successfully now, you can add more tags for your product again !!!')
+        return reverse("addproductdetails")
+
+
+
+
 class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
     
     model = Variation
@@ -393,7 +424,7 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
 
     
     def get_success_url(self):
-        messages.success(self.request, 'Variations added Successfully now add more details for your product !!!')
+        messages.success(self.request, 'Variations added Successfully, You can add more(unique) variations again !!!')
         return reverse("addproductdetails")   
 
 class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
@@ -459,8 +490,8 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
 
     
     def get_success_url(self):
-        messages.success(self.request, 'Variations added Successfully now add more details for your product !!!')
-        return reverse("addproduct")        
+        messages.success(self.request, 'Quantity added Successfully. !!!')
+        return reverse("addproductdetails")        
 
 
 

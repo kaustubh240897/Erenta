@@ -24,10 +24,10 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView
+from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
-from analytics.views import SalesView,SalesAjaxView
+from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
 from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
@@ -48,6 +48,8 @@ urlpatterns = [
     path('account/',include(("accounts.urls", 'accounts'), namespace='account')),
     path('manage/sales/',SalesView.as_view(),name='sales-analytics'),
     path('manage/sales/data/',SalesAjaxView.as_view(),name='sales-analytics-data'),
+    path('supplier/sales/',Supplier_SalesView.as_view(),name='supplier-sales-analytics'),
+    path('supplier/sales/data/',Supplier_SalesAjaxView.as_view(),name='supplier-analytics-data'),
     path('login/',LoginView.as_view(), name='login'),
     path('loginsupplier/',SupplierLoginView.as_view(), name='login1'),
     #path('api/cart/',cart_detail_api_view, name='api_cart'),
@@ -78,6 +80,7 @@ urlpatterns = [
     path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage'),
     path('add_product_details/add_variations/<int:id>/',SupplierAddProductVariationsView.as_view(),name='productvariations'),
     path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity'),
+    path('add_product_details/add_tags/<int:id>/',SupplierTagView.as_view(),name='producttags'),
     path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
     path('<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf')
 

@@ -40,7 +40,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__title__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__product_name__icontains=query)
+        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__title__icontains=query) | Q(sub_categary__title__icontains=query) | Q(sub_sub_categary__title__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__tag_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
