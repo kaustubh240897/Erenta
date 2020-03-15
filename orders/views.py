@@ -116,7 +116,7 @@ class RequestRefundView(View):
         if form.is_valid():
             order_id = form.cleaned_data.get('order_id')
             reason = form.cleaned_data.get('reason')
-            email   = form.cleaned_data.get('email')
+            
             # edit the order
             try:
                 order=Order.objects.get(order_id=order_id)
@@ -127,7 +127,7 @@ class RequestRefundView(View):
                 refund = Refund()
                 refund.order = order
                 refund.reason = reason
-                refund.email  = email
+                refund.email  = self.request.user
                 refund.save()
                 messages.info(self.request, "Your request has received.")
                 return redirect("refund")

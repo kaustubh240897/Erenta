@@ -1,5 +1,26 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+
+{% block javascript %}
+<script>
+$(function(){
+    var dtToday = new Date();
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate()+1;
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+    // alert(maxDate);
+    $('#txtDate').attr('min', maxDate);
+    $('#txtDate1').attr('min', maxDate);
+});
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div class='container'>
@@ -9,16 +30,17 @@
     <div class='row'>
         <div class='col-sm-12'>
            <div class='col-sm-8 pull-left'>
-           <h1>{{ object.product_name }}
+           <h1>{{ object.product_name|capfirst }}
           
          </h1> 
          </div>
          <div class='col-sm-4 col-xs-6 pull-right'>
            <form class='form' method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
              <input class='btn btn-dark btn-block' type='submit' value='Add to cart' />
-              Quantity-: <input class='form-control' name='qty' type='number' value='1' />
-              Start Date-: <input class='form-control' name='start_date' required='True' type='date' value='start_date' min="start_date" max="2020-12-31" />
-              End Date-: <input class='form-control' name='end_date' required='True' type='date' value='end_date' />
+              Quantity-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
+              Start Date-: 
+             <input class='form-control' type="date" name='start_date' required='True' value='start_date' id="txtDate" />
+              End Date-: <input class='form-control' type="date" name='end_date' required='True' value='end_date' id="txtDate1" />
              
           {% if object.variation_set.all %}
 
@@ -47,7 +69,45 @@
            </form>
          </br>
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
-           </div>
+           <h3> Variations available</h3>
+          
+             {% for obj in qs %}
+             {% if obj.quantity > 5 %}
+             <div class='container'>
+            <div class='col-12 my-3'>
+            {{ forloop.counter }}.
+            {% if obj.variations.all %}
+            {% for item in obj.variations.all %}
+            {{ item.title|capfirst }} {{ item.category|capfirst }}
+            {% if not forloop.last %} , {% endif %}
+            {% endfor %}
+            {% else %}
+            as shown in image.
+            {% endif %}
+            
+            </div>
+            </div>
+             {% else %}
+         <div class='container'>
+            <div class='col-12 my-3'>
+            {{ forloop.counter }}.
+            {% if obj.variations.all %}
+            {% for item in obj.variations.all %}
+            {{ item.title|capfirst }} {{ item.category|capfirst }}
+            {% if not forloop.last %} , {% endif %}
+            {% endfor %}
+            {% else %}
+            as shown in image
+            {% endif %}
+       
+            <font color="red">Available Quantity-: {{ obj.quantity }} only </font>
+            </div>
+            </div>
+            {% endif %}
+             {% empty %}
+            <p class='col-12'>  Sorry no products left yet.</p>
+            {% endfor %}
+          </div>
          <hr/>
          
             <div class="card" style="width: 18rem">
@@ -73,8 +133,9 @@
            {% endif %}
             {{ object.description|linebreaks }}<br/>
        
-
+        
         </div>
+       
 
 
        
@@ -85,13 +146,13 @@
     
       
     </br>
-    {{ all }}
+    <!-- {{ all }} -->
 
 
 </div>
 </div>
 </div>
-</div>
+
 
 
  <h1>Our Customers Rating and Reviews.</h1>
@@ -138,7 +199,7 @@
 <p class='lead'>Not Reviewed yet!</p>
  {% endif %}
 
-
+</div>
 
  {% endblock %}
 

@@ -57,7 +57,7 @@
          <div class='row'>
          </br>
         
-         {% for obj in qs %}
+         {% for obj in products %}
          <div class='col'>
           {{ forloop.counter }}
           {% include 'products/snippets/card.html' with instance=obj %}
@@ -69,6 +69,43 @@
           
      {% endfor %}
 
-       </div>
-     </div>
+      </div>
+     
+    </div>
+    
+    
+    
+    
+    
+    {% if products.has_other_pages %}
+  <ul class="pagination justify-content-center">
+    {% if products.has_previous %}
+      <li class='page-item'><a class='page-link' href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class='page-item'><span class='current'>&laquo;</span></li>
+    {% endif %}
+    {% for i in products.paginator.page_range %}
+      {% if products.number == i %}
+        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if products.has_next %}
+      <li class='page-item'><a class='page-link' href="?page={{ products.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class='page-item'><span class='step-links'>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+    
+
+ 
+
+
+
+
+
 {% endblock %}

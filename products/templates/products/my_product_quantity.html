@@ -29,7 +29,11 @@
        {{ item.title }} {{ item.category }},
        {% endfor %}
        
-       Available Quantity-: {{ obj.quantity }} only
+       {% if obj.quantity > 8 %}
+        Available Quantity-: {{ obj.quantity }} only 
+       {% else %}
+       <font color="red">Available Quantity-: {{ obj.quantity }} only </font>
+       {% endif %}
        
        <a href="{% url 'products:quantityupdate' obj.id %}" class="btn btn-warning">Update Quantity! </a>
 

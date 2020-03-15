@@ -2,11 +2,13 @@ from django.db.models import Q
 from django.conf import settings
 import random
 import os
+from django.contrib import messages
 from django.db import models
 from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save,post_save
 from Ecommerce_Intern.utils import unique_slug_generator
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 #from django.contrib.auth import get_user_model
 
 User = settings.AUTH_USER_MODEL
@@ -120,7 +122,11 @@ class Sub_Sub_Category(models.Model):
     def __str__(self):
         return self.title
 
-    
+def validate_image(image):
+        file_size = image.file.size
+        limit_mb = 1
+        if file_size > limit_mb * 1024 * 1024:
+            raise ValidationError("Max size of file is %s MB" % limit_mb)
 
 
 class Product_description(models.Model):
@@ -138,7 +144,7 @@ class Product_description(models.Model):
     #days = models.IntegerField( null=True, blank=True)
     brand = models.CharField(max_length=20, default=None,null=True)
     #registered_email = models.EmailField(null=True)
-    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, validators=[validate_image])
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
     timestamp= models.DateTimeField(auto_now_add=True)
@@ -155,6 +161,8 @@ class Product_description(models.Model):
     def get_absolute_url1(self):
         return reverse("update",kwargs={"slug":self.slug})
     
+    
+    
     def get_amount_percent_saved(self):
         return format((((self.cost_per_day-self.discount_price)/(self.cost_per_day))*100),'.2f')
 
@@ -162,7 +170,8 @@ class Product_description(models.Model):
         return self.product_name
     
     class Meta:
-        unique_together=('product_name','slug') 
+        unique_together=('product_name','slug')
+        ordering = ['id'] 
 
 
     @property
@@ -177,7 +186,7 @@ pre_save.connect(product_pre_save_receiver, sender=Product_description)
 
 class ProductImage(models.Model):
     product =models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_image_path)
+    image = models.ImageField(upload_to=upload_image_path,validators=[validate_image])
     featured = models.BooleanField(default=False)
     thumbnail = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
@@ -252,6 +261,20 @@ class User_Review(models.Model):
 
     def __str__(self):
         return f"{self.product_id}"
+    
+    # def get_absolute_url_review(self):
+    #     return reverse("review",kwargs={"product_id":self.product_id})
+
+class Product_Refund(models.Model):
+    product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    email = models.ForeignKey(User,on_delete=models.CASCADE)
+    reason = models.TextField()
+    accepted = models.BooleanField(default=False)
+    timestamp= models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product_id}"
+
     
 
 class Supplier_Review(models.Model):

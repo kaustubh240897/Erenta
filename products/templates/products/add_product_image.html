@@ -6,6 +6,9 @@
 <h1> Add your Product Tags </h1>
 {% else %}
 <h1>Add your Product Image</h1>
+<br/>
+<h6>Note: Image size should be less than 1 MB.</h6>
+<h6>Note: You can add only 3 images.</h6>
 {% endif %}
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}

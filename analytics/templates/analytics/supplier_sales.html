@@ -80,7 +80,7 @@
       <hr/>
         <p>Recent Total: ${{ today.recent_cart_data.cart__cartitem__line_total__sum }}</p>
         <ol>
-        {% for order in today.recent %}
+        {% for order in today.recent.distinct %}
          <li class='my-3'>Order #{{ order.order_id }}
          
           {% for item in order.cart.cartitem_set.all %}
@@ -98,7 +98,7 @@
        <hr/>
         <p>Recent Total: ${{ this_week.recent_cart_data.cart__cartitem__line_total__sum }}</p>
         <ol>
-        {% for order in this_week.recent %}
+        {% for order in this_week.recent.distinct %}
          <li class='my-3'>Order #{{ order.order_id }}
            {% for item in order.cart.cartitem_set.all %}
           {% if item.product.user == request.user %}
@@ -129,7 +129,7 @@
     <div class='col'>
         <p>Recent Orders Total: ${{ last_four_weeks.recent_cart_data.cart__cartitem__line_total__sum }}</p>
          <p>Shipped Orders Total: {% if last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum %}
-             ${{ last_four_weeks.shipped_cart_data.cart__sum }}
+             ${{ last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum }}
                                   {% endif %}
             </p>
             <p>Paid Orders Total: 

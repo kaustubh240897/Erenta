@@ -110,6 +110,9 @@ class OrderManagerQuerySet(models.query.QuerySet):
     
     def not_refunded(self):
         return self.exclude(status='refunded')
+    
+    def not_product_refunded(self):
+        return self.exclude(cart__cartitem__refund_requested='True')
 
     def by_request(self,request):
         billing_profile,created=BillingProfile.objects.new_or_get(request)
@@ -246,6 +249,7 @@ post_save.connect(post_save_order, sender=Order)
 
 class Refund(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    email = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
     reason = models.TextField()
     accepted = models.BooleanField(default=False)
     timestamp= models.DateTimeField(auto_now_add=True)

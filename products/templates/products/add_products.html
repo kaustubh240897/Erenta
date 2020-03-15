@@ -4,8 +4,12 @@
 <div class='container'>
 
 <h1>Add your Products</h1>
+<h6>Note: Image size should be less than 1 MB.</h6>
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
+       {% if form.errors %}
+       <h6>Sorry your image size is greater than 1 MB.please upload image less than 1 MB.</h6>
+       {% endif %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}

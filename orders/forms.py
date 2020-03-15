@@ -7,5 +7,5 @@ class RefundForm(forms.Form):
     reason  =forms.CharField(widget=forms.Textarea(attrs={
         'rows': 4
     }))
-    email   = forms.EmailField()
+    
 

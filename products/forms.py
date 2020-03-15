@@ -1,9 +1,11 @@
 from django import forms
-from .models import Product_description,ProductImage,Variation
+from .models import Product_description,ProductImage,Variation,Product_Refund
 from tags.models import Tag
 from carts.models import Quantity
 from otherdetails.models import OtherDetails
-
+# from django.template.defaultfilters import filesizeformat
+# from django.utils.translation import ugettext_lazy as _
+# from django.conf import settings
 
 
 
@@ -15,7 +17,16 @@ class ProductForm(forms.ModelForm):
         fields = ['product_name','categary','sub_categary','sub_sub_categary','brand','description','cost_per_day','discount_price','image']
     
     
-    
+    # def clean_content(self):
+    #     image = self.cleaned_data['image']
+    #     content_type = image.content_type.split('/')[0]
+    #     if content_type in settings.CONTENT_TYPES:
+    #         if content._size > settings.MAX_UPLOAD_SIZE:
+    #             raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image._size)))
+    #     else:
+    #         raise forms.ValidationError(_('File type is not supported'))
+    #     return image
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(ProductForm, self).save(commit=False)
@@ -26,12 +37,12 @@ class ProductForm(forms.ModelForm):
         return user
 
 
-class ProductImageForm(forms.ModelForm): 
-    
-
+class ProductImageForm(forms.ModelForm):
     class Meta:
         model = ProductImage
         fields = ['image']
+
+    
 
 class ProductTagForm(forms.ModelForm):
     class Meta:
@@ -94,7 +105,7 @@ class ProductQuantityChangeForm(forms.ModelForm):
         fields = ['quantity']       
 
 class RatingForm(forms.Form):
-    name = forms.CharField(required=True,label='product_id')
+    # name = forms.CharField(required=True,label='product_id')
     rating  = forms.ChoiceField(choices=[(x, x) for x in range(1, 6)])
     review  =forms.CharField(required=True,widget=forms.Textarea(attrs={
         'rows': 4
@@ -108,4 +119,8 @@ class SupplierRatingForm(forms.Form):
     }))
 
 
-    
+
+class ProductRefundForm(forms.Form):
+    reason  =forms.CharField(widget=forms.Textarea(attrs={
+        'rows': 4
+    }))

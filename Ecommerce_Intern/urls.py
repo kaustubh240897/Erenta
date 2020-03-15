@@ -24,7 +24,7 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView
+from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
 from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
@@ -72,7 +72,8 @@ urlpatterns = [
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
     #path('products/<slug:slug>/',ProductDetailSlugView.as_view(),name='other'),
     path('request-refund/',RequestRefundView.as_view(),name='refund'),
-    path('reviews/',ReviewView.as_view(),name='review'),
+    path('reviews/<slug:slug>/',ReviewView.as_view(),name='review'),
+    path('product-refund/<int:id>/<slug:slug>/',ProductRefundView.as_view(),name='product-refund'),
     path('supplierreviews/',SupplierReviewView.as_view(),name='supplierreview'),
     path('businessdetailupdate/',BusinessDetailUpdateView.as_view(),name='businessdetailupdate'),
     path('add_product/',SupplierAddProductView.as_view(),name='addproduct'),

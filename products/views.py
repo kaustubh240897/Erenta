@@ -4,30 +4,39 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation
-from carts.models import Quantity
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Product_Refund
+from carts.models import Quantity,CartItem
 from tags.models import Tag
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 from otherdetails.models import OtherDetails
-from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm,ProductTagForm
+from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm,ProductTagForm,ProductRefundForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from carts.forms import OtherDetailForm
 from accounts.models import User
 from django.http import HttpResponseRedirect
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
     queryset = Product_description.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 6)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     context = {
         'qs': queryset ,
-         "title":"Products",
+        "title":"Products",
+        'products': products
     }
     return render(request,"products/product_list.html", context)
 
@@ -78,6 +87,8 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         product_id = Product_description.objects.get(slug=slug)
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Details'
+        context['qs1']=Variation.objects.filter(product__slug= slug)
+        context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.get(slug=slug)
         context['images']=ProductImage.objects.filter(product=product)
         context['reviews']=User_Review.objects.filter(product_id=product_id)
@@ -358,8 +369,13 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
             obj.product = Product_description.objects.get(id=id)
-            obj.save()
-            return HttpResponseRedirect(self.get_success_url())
+            if ProductImage.objects.filter(product__id=id).count() < 3:
+                obj.save()
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                messages.warning(self.request, "You cannot add more than 3 images.")
+                return redirect("addproduct")
+            
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
             return redirect("addproduct")
@@ -439,7 +455,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
         product= Product_description.objects.get(id=id)
         
         context['title'] = 'Add Quantity Details'
-        
+        context['qs']=Quantity.objects.filter(product__id= id)
         context['object']=Variation.objects.filter(product=product)
         
         return context
@@ -611,7 +627,7 @@ class ProductImageUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self,*args,**kwargs):
         context = super(ProductImageUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='Change your product images'
+        context['title']='Update your product images'
         return context
     
     def get_success_url(self):
@@ -659,7 +675,7 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self,*args,**kwargs):
         context = super(ProductQuantityUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='Update your product images'
+        # context['title']='Update your product images'
         context['title1']='Update your product quantity'
         return context
     
@@ -680,12 +696,12 @@ class ReviewView(View):
     def post(self,*args, **kwargs):
         form = RatingForm(self.request.POST)
         if form.is_valid():
-            name = form.cleaned_data.get('name')
+            slug = self.kwargs.get('slug')
             rating = form.cleaned_data.get('rating')
             review   = form.cleaned_data.get('review')
             # edit the order
             try:
-                product_id=Product_description.objects.get(slug=name)
+                product_id=Product_description.objects.get(slug=slug)
                 product_id.save()
                 #store the refund
                 reviews = User_Review()
@@ -695,10 +711,52 @@ class ReviewView(View):
                 reviews.review  = review
                 reviews.save()
                 messages.info(self.request, "Your review has received.")
-                return redirect("review")
+                return redirect("orders:list")
             except ObjectDoesNotExist:
                 messages.warning(self.request, "This product does not exist.")
-                return redirect("review")
+                return redirect("orders:list")
+
+
+
+
+
+class ProductRefundView(View):
+    def get(self, *args, **kwargs):
+        form = ProductRefundForm()
+        context={
+            'form': form
+        }
+        return render(self.request, "products/review.html" ,context)
+    def post(self,*args, **kwargs):
+        form = ProductRefundForm(self.request.POST)
+        if form.is_valid():
+            slug = self.kwargs.get('slug')
+            id = self.kwargs.get('id')
+            reason = form.cleaned_data.get('reason')
+            
+            # edit the order
+            try:
+                product_id=Product_description.objects.get(slug=slug)
+                product_id.save()
+                product_item=CartItem.objects.get(id=id)
+                #order.status = refunded
+                product_item.refund_requested = True
+                #product_item.line_total = None
+                product_item.save()
+                #store the refund
+                reviews = Product_Refund()
+                reviews.product_id = product_id
+                reviews.email = self.request.user
+                reviews.reason = reason
+                reviews.save()
+                messages.info(self.request, "Your refund request has been received.")
+                return redirect("orders:list")
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "This product does not exist.")
+                return redirect("orders:list")
+
+
+
 
 
 class SupplierReviewView(View):

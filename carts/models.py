@@ -48,6 +48,8 @@ class CartItem(models.Model):
     days  =   models.IntegerField(default = 1, null=True, blank=True)
     variations = models.ManyToManyField(Variation,blank=True)
     line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
+    refund_requested   = models.BooleanField(default=False)
+    refund_granted     = models.BooleanField(default=False) 
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     

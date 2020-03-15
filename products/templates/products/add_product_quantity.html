@@ -9,6 +9,32 @@
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
+     <h4>Available quantity of each variations of this product.</h4>
+     <h6>Note: You can update quantity in <a href="{% url 'myproduct' %}">Myproduct </a> section in dashboard, donot repeat same variation for quantity.  </h6>
+     
+      Variations:
+     {% for obj in qs %}
+         <div class='container'>
+            <div class='col-12 my-3'>
+        {{ forloop.counter }}.
+      {{ obj.product|capfirst }}
+      
+       {% for item in obj.variations.all %}
+       {{ item.title|capfirst }} {{ item.category|capfirst }},
+       {% endfor %}
+       {% if obj.quantity > 8 %}
+        Available Quantity-: {{ obj.quantity }} only 
+       {% else %}
+       <font color="red">Available Quantity-: {{ obj.quantity }} only </font>
+       {% endif %}
+       </div>
+       </div>
+       {% empty %}
+      <p class='col-12'>  You have not created any products yet.</p>
+       {% endfor %}
+       <hr/>
+
+
      {{ form|crispy }}
      
        Quantity-: <input class='form-control'  name='qty' type='number' value='1' />

@@ -16,14 +16,16 @@
 
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-<p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }} (Product_id-: {{ item.product.slug }})
+<p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }} 
 <p> <div class="card" style="width: 18rem">
 {% if item.product.image %}
 <img src='{{ item.product.image.url }}' class='img-fluid' />
     {% endif %}
     </div>
+    <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-primary'>Request Refund!</button></a></p>
+    <a href="{% url 'review' item.product.slug %}"> <button class='btn btn-primary'>Rate the product!</button></a></p>
 {% endfor %}     
-<a href="/reviews/"> <button class='btn btn-primary'>Rate the products!</button></a></p>
+
 <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
 <p>Billing Address: {{ object.billing_address.get_address }}</p>
 <p>Your Email: {{ object.billing_profile }}</p>
