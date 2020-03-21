@@ -7,9 +7,10 @@ from .models import Cart,CartItem,Quantity
 from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from products.models import Product_description, Variation
 from otherdetails.models import OtherDetails
-from orders.models import Order
+from orders.models import Order,Low_Quantity_Notification
 from accounts.models import GuestEmail
 import datetime
 from datetime import timedelta
@@ -124,6 +125,7 @@ def remove_cart(request,id):
 
 
 def add_to_cart(request,id):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     request.session.set_expiry(1200000)
 
     product_id=request.POST.get('product_id',None)
@@ -239,6 +241,9 @@ def add_to_cart(request,id):
 
 
 def checkout_home(request):
+    request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+    = request.user, viewed=False).count()
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj=None
     if cart_created or cart_obj.cartitem_set.count()==0:
@@ -301,6 +306,8 @@ def checkout_home(request):
 
 
 def checkout_done_view(request):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
+    
     return render(request, "carts/checkout-done.html", {})
 
 

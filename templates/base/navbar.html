@@ -16,7 +16,11 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="btn-group">
+  
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <div class="btn-group">
   <button type="button" class="btn btn-secondry dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     Categories
   </button>
@@ -76,9 +80,6 @@
   </div>
 </div>
 
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.path == home_url %}active {% endif %} ">
         <a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
       </li>

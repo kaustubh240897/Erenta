@@ -22,7 +22,16 @@
 <img src='{{ item.product.image.url }}' class='img-fluid' />
     {% endif %}
     </div>
+    {% if item.refund_requested %}
+    <b>Refund is requested please wait.</b>
+    {% elif item.refund_granted %}
+    <b>Refund is granted successfully.</b>
+    {% else %}
+    {% if time %}
     <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-primary'>Request Refund!</button></a></p>
+    {% endif %}
+    {% endif %}
+    
     <a href="{% url 'review' item.product.slug %}"> <button class='btn btn-primary'>Rate the product!</button></a></p>
 {% endfor %}     
 

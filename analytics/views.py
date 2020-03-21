@@ -1,10 +1,13 @@
 import datetime
+from django.views.generic import ListView
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count,Avg,Sum
 from django.views.generic import TemplateView,View
 from django.shortcuts import render
 from orders.models import Order
+from products.models import Product_description
+from .models import ObjectViewed,View_Count
 from django.utils import timezone
 # Create your views here.
 
@@ -133,4 +136,9 @@ class Supplier_SalesView(LoginRequiredMixin,TemplateView):
         context['this_week'] = qs.by_weeks_range(weeks_ago=1,number_of_weeks=1).get_sales_breakdown_supplier()
         context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown_supplier()
         
-        return context 
+        return context
+
+
+
+    
+        

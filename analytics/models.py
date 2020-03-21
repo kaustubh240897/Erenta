@@ -4,11 +4,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-
+from products.models import Product_description
 from accounts.signals import user_logged_in
 from .signals import object_viewed_signal
 from .utils import get_client_ip
-
+from django.dispatch import receiver
 User = settings.AUTH_USER_MODEL
 
 
@@ -129,3 +129,35 @@ def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
 
 
 user_logged_in.connect(user_logged_in_receiver)
+
+
+
+class View_Count(models.Model):
+    views = models.IntegerField(default=0)
+    product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    def __str__(self):
+        return str(self.product)
+    
+    class Meta:
+        ordering = ['-views']
+
+
+@receiver(post_save, sender=ObjectViewed)
+def create_message(sender, instance,created,**kwargs):
+    # products = Product_description.objects.all()
+    # for p in products:
+    #     product_views = ObjectViewed.objects.filter(object_id=p.id)
+    #     if View_Count.objects.filter(product=p).count()==1:
+    #         View_Count.objects.filter(product=p).update(views=product_views.count())
+    #     elif View_Count.objects.filter(product=p).count()==0:
+    #         View_Count.objects.get_or_create(views = product_views.count(),
+    #                                         product = p)
+    product_views = ObjectViewed.objects.filter(object_id=instance.object_id)
+    if View_Count.objects.filter(product__id=instance.object_id).count()==1:
+        View_Count.objects.filter(product__id=instance.object_id).update(views=product_views.count())
+    elif View_Count.objects.filter(product__id=instance.object_id).count()==0:
+        View_Count.objects.get_or_create(views=product_views.count(),product=instance.content_object)
+

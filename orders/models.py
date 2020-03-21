@@ -2,7 +2,7 @@ from django.db import models
 import math
 import datetime
 from django.utils import timezone
-from carts.models import Cart,Coupon,Quantity
+from carts.models import Cart,Coupon,Quantity,CartItem
 from django.urls import reverse
 from django.conf import settings
 from billing.models import BillingProfile
@@ -280,3 +280,56 @@ def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
                                         product = instance.product,
                                         title = ("your product %s's quantity is low" %(instance.product)),
                                         message = "Add the quantity")
+
+
+
+
+def post_save_order_quantity_receiver(sender,instance,*args,**kwargs):
+    if instance.status == 'paid':
+        cart1 = instance.cart
+        cart_items = CartItem.objects.filter(cart=cart1)
+
+        for qtyy in cart_items:
+            id_list = []
+            for x in qtyy.variations.all():
+                i = x.id
+                id_list.append(i)
+                print("cart product variation id",id_list)
+            id_list1=[]
+            q= Quantity.objects.filter(product__cartitem__cart=instance.cart)
+            if q.count()>0:
+                for z in q:
+                    x = z.variations.all()
+                    break
+
+                if x.count()==0:
+                    for c in q:
+                        qs = Quantity.objects.filter(id=c.id).first()
+                        print("qqqqqqqqqqqqqqqqqqqc",qtyy.quantity)
+                        qs.quantity = qs.quantity-int(qtyy.quantity)
+                        qs.save()
+                        break
+                        
+                        
+                else:
+                    for y in q:
+                        id_list1=[]
+                        j=y.variations.all()
+                        j1 = y.id
+                        print("quantity model ki id",j1)
+                        for z in j:
+                            k=z.id
+                            id_list1.append(k)
+                            print("quantity model ke variation ki id",id_list1)
+                            if(id_list==id_list1):
+                                j2 = j1
+                                q1 = Quantity.objects.get(id=j2)
+                                print("qqqqqqqqqqqqqqqqqqqq",q1.quantity)
+                                print("qqqqqqqqqqqqqqqqqqqc",qtyy.quantity)
+                                q1.quantity = q1.quantity+(1/2)-int(qtyy.quantity)
+                                q1.save()
+                                break
+    
+    
+    
+post_save.connect(post_save_order_quantity_receiver , sender=Order)

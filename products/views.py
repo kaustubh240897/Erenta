@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect ,get_object_or_404
 from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Product_Refund
 from carts.models import Quantity,CartItem
 from tags.models import Tag
+from analytics.models import View_Count
 from accounts.models import User
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
@@ -90,6 +91,19 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['qs1']=Variation.objects.filter(product__slug= slug)
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.get(slug=slug)
+        context['similar_products']= View_Count.objects.filter(product__sub_sub_categary=product.sub_sub_categary).exclude(product__slug=slug)[:5]
+        qq = ProductImage.objects.filter(product=product)
+        if qq.count()==3:
+            context['images0'] = qq[0]
+            context['images1'] = qq[1]
+            context['images2'] = qq[2]
+        elif qq.count()==2:
+            context['images0'] = qq[0]
+            context['images1'] = qq[1]
+        elif qq.count()==1:
+            context['images0'] = qq[0]
+
+
         context['images']=ProductImage.objects.filter(product=product)
         context['reviews']=User_Review.objects.filter(product_id=product_id)
         return context

@@ -8,10 +8,15 @@ from notification.models import Notification,Order_Notification,Supplier_Order_N
 from django.views.generic import ListView
 from django.views.generic import View
 from django.template.loader import get_template
+from analytics.models import View_Count
 import datetime
 from django.utils import timezone
 from .utils import render_to_pdf #created in step 4
+
+
 def home_page(request):
+    # request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+    # = request.user, viewed=False).count()
     #print(request.session.get("first_name","Unknown"))
     
 
@@ -19,6 +24,7 @@ def home_page(request):
        "title":"Shop Now!",
        "content" : "Welcome to shopnow!",
        "premium_content": "Welcome",
+       "trending": View_Count.objects.all()[:6]
       
     }
     

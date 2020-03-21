@@ -12,7 +12,7 @@ from django.contrib import messages
 from products.models import Product_description
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
-
+import datetime
 from django.conf import settings
 from django.views.generic import CreateView
 from django.shortcuts import HttpResponseRedirect
@@ -39,6 +39,15 @@ class OrderListView(LoginRequiredMixin,ListView):
         return Order.objects.by_request(self.request).not_created()
 
 class OrderDetailView(LoginRequiredMixin,DetailView):
+    def get_context_data(self, *args, **kwargs):
+        context = super(OrderDetailView, self).get_context_data(*args, **kwargs)
+        order_id = self.kwargs.get('order_id')
+        # context['form'] = OtherDetailForm(initial={'post': self.object })
+        context['title'] = 'Order Detail'
+        
+        context['time']=Order.objects.filter(order_id=order_id,updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
+        return context
+
     def get_object(self):
         qs = Order.objects.by_request(
             self.request

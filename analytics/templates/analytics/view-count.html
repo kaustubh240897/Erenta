@@ -1,0 +1,18 @@
+{% block content %}
+
+    <div class='row'>
+         </br>
+    {% for object in trending %}
+    <div class='col'>
+                    
+                        {{ forloop.counter }}.
+                         {% include 'analytics/trending_card.html' with instance=object %}
+    </div>
+          
+          
+     {% endfor %}
+
+</div>
+
+
+{% endblock %}
