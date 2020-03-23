@@ -147,36 +147,66 @@ class RequestRefundView(View):
 
 
 def get_coupon(request, code):
-    try:
+    if Coupon.objects.get(code=code):
         coupon = Coupon.objects.get(code=code)
         return coupon
-    except ObjectDoesNotExist:
+    else:
         messages.info(request,"Your coupon does not exist")
         return redirect("cart:checkout")
 
 
-class AddCouponView(View):
-    def get(self, *args, **kwargs):
-        order = Order.objects.get(billing_profile__user=self.request.user)
-        form = CouponForm()
-        context={
-            'couponform': form
-        }
-        return render(self.request, "order_snippet.html" ,context)
-    def post(self, *args, **kwargs):
-        form = CouponForm(self.request.POST or None)
+def add_coupon(request, cart):
+    if request.method == "POST":
+        form = CouponForm(request.POST or None)
         if form.is_valid():
+            print("ok")
             try:
                 code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    billing_profile=self.request.user)
-                order.coupon = get_coupon(self.request, code)
-                order.save()
-                messages.success(self.request, "Successfully added coupon")
-                return redirect("cart:checkout")
+                cart_ = Cart.objects.get(id=cart)
+                if not cart_.coupon:
+                    cart_.coupon = get_coupon(request,code)
+                    cart_.save()
+                    messages.success(request,"successfully added coupon")
+                    return redirect("cart:checkout")
+                else:
+                    messages.warning(request,"Already added coupon")
+                    return redirect("cart:checkout")
+
+                
             except ObjectDoesNotExist:
-                messages.info(self.request, "You do not have an active order")
+                messages.info(request,"you donot have an valid code")
                 return redirect("cart:checkout")
+        else:
+            messages.info(request,"you donot have an Valid coupon")
+            return redirect("cart:checkout")
+
+    
+
+
+
+
+# class AddCouponView(View):
+#     def get(self, *args, **kwargs):
+#         order = Order.objects.get(billing_profile__user=self.request.user)
+#         form = CouponForm()
+#         context={
+#             'couponform': form
+#         }
+#         return render(self.request, "order_snippet.html" ,context)
+#     def post(self, *args, **kwargs):
+#         form = CouponForm(self.request.POST or None)
+#         if form.is_valid():
+#             try:
+#                 code = form.cleaned_data.get('code')
+#                 order = Order.objects.get(
+#                     billing_profile=self.request.user)
+#                 order.coupon = get_coupon(self.request, code)
+#                 order.save()
+#                 messages.success(self.request, "Successfully added coupon")
+#                 return redirect("cart:checkout")
+#             except ObjectDoesNotExist:
+#                 messages.info(self.request, "You do not have an active order")
+#                 return redirect("cart:checkout")
 
 
 # def created_order_checkout_home(request,order_id):

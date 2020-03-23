@@ -77,6 +77,7 @@ class Cart(models.Model):
     #items = models.ManyToManyField(CartItem, null=True, blank=True)
     #products = models.ManyToManyField(Product_description,blank=True)
     #other = models.ManyToManyField(OtherDetails,blank=True)
+    coupon  = models.ForeignKey('Coupon',on_delete=models.CASCADE,blank=True,null=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
     total = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -105,6 +106,7 @@ class Cart(models.Model):
 def pre_save_cart_receiver(sender, instance,*args,**kwargs):
     if instance.subtotal > 0:
         instance.total=format((Decimal(instance.subtotal) * Decimal(1.1)),'.2f')
+        #instance.total =  format((Decimal(instance.total)-Decimal(instance.coupon.amount)),'.2f')
     else:
         instance.total=0.00
 pre_save.connect(pre_save_cart_receiver , sender=Cart)

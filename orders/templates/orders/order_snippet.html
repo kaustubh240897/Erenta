@@ -16,13 +16,13 @@
         <span class="text-muted">${{ item.line_total }}</span>
     </li>
     {% endfor %}
-    {% if object.coupon %}
+    {% if object.cart.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Promo code</h6>
-        <small>{{ object.coupon.code }}</small>
+        <small>{{ object.cart.coupon.code }}</small>
         </div>
-        <span class="text-success">-${{ object.coupon.amount }}</span>
+        <span class="text-success">-${{ object.cart.coupon.amount }}</span>
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
@@ -40,10 +40,11 @@
     </ul>
 
     
-    <form class="card p-2" action="{% url 'orders:add-coupon' %}" method="POST">
+    <form class="card p-2" action="{% url 'orders:add-coupon' object.cart %}" method="POST">
         {% csrf_token %}
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2">
+            <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2"> -->
+            {{ couponform.code }}
             <div class="input-group-append">
             <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
             </div>

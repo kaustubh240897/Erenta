@@ -3,6 +3,7 @@ from django.views.generic import CreateView
 from django.shortcuts import render, redirect,HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
+from .forms import CouponForm
 from .models import Cart,CartItem,Quantity
 from addresses.forms import AddressForm
 from addresses.models import Address
@@ -299,6 +300,7 @@ def checkout_home(request):
         "address_qs" : address_qs,
         "has_card"   : has_card,
         "publish_key": STRIPE_PUB_KEY,
+        "couponform" : CouponForm()
         
     }
     return render(request,"carts/checkout.html", context)

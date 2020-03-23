@@ -154,7 +154,6 @@ class Order(models.Model):
     shipping_address   = models.ForeignKey(Address, related_name="shipping_address", null=True,blank=True, on_delete=models.CASCADE)
     billing_address    = models.ForeignKey(Address, related_name="billing_address", null=True,blank=True, on_delete=models.CASCADE)
     cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    coupon             = models.ForeignKey(Coupon,on_delete=models.CASCADE,blank=True,null=True)
     status             = models.CharField(max_length=120, default='created')
     shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
     total              = models.DecimalField(default=0.00,max_digits=50,decimal_places=2)
@@ -201,6 +200,15 @@ class Order(models.Model):
         self.total=formatted_total
         self.save()
         return new_total
+    
+    def update_coupon(self):
+        coupon_total=self.cart.coupon.amount
+        total = self.total
+        new_coupon_total = total-coupon_total
+        formatted_total = format(new_coupon_total, '.2f')
+        self.total = formatted_total
+        self.save()
+        return new_coupon_total
      
     def check_done(self):
         billing_profile = self.billing_profile
@@ -237,6 +245,19 @@ def post_save_cart_total(sender,created,instance,*args,**kwargs):
             order_obj.update_total()
 
 post_save.connect(post_save_cart_total, sender=Cart)
+
+def post_save_coupon_total(sender,created,instance,*args,**kwargs):
+    if instance.coupon:
+        cart_obj =instance
+        cart_total=cart_obj.total
+        cart_id = cart_obj.id
+        qs= Order.objects.filter(cart__id=cart_id)
+        if qs.count()==1:
+            order_obj=qs.first()
+            order_obj.update_coupon()
+
+
+post_save.connect(post_save_coupon_total, sender=Cart)
 
 def post_save_order(sender,instance,created,*args,**kwargs):
     if created:
