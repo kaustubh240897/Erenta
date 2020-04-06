@@ -5,7 +5,166 @@
 
 </br>
   <title>{{ title }}</title>
-     <div class='container'>
+  <div class="container-fluid p-0">
+        
+						<nav class="navbar navbar-expand-lg navbar-light bg-light">
+						 
+						  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						    <span class="navbar-toggler-icon"></span>
+						  </button>
+
+						  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+						    <ul class="navbar-nav mr-auto">
+						      
+						      <li class="nav-item dropdown col-md-3">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'men' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      MEN
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'menaccessories' %}">Accessories</a></li>
+                                    
+                                    
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menclothing' %}">
+                                            Clothing
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url 'products:query2' 'blazers' %}">Blazers</a></li>
+                                            <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'suits' %}">Suits</a></li>
+                                           
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menfootwear' %}">
+                                            Footwear
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url 'products:query2' 'menshoes' %}">Shoes</a></li>
+                                            <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a></li>
+                                           
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        </ul>
+                                    </li>
+                                </ul>
+                    
+                  </li>
+                <li class="nav-item dropdown col-md-3">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'women' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      WOMEN
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'womenaccessories' %}"> Accessories</a></li>
+                                    
+                                    
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenclothing' %}">
+                                            Clothing
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url 'products:query2' 'womenjackets' %}">Jackets</a></li>
+                                            <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womendresses' %}">Dress</a></li>
+                                           
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenfootwear' %}">
+                                            Footwear
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="{% url 'products:query2' 'womensandals' %}">Sandals</a></li>
+                                            <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'heels' %}">Heels</a></li>
+                                           
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        </ul>
+                                    </li>
+                                </ul>
+                    
+                  </li>
+						      <li class="nav-item dropdown col-md-3">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'booksnovels' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      BOOKS
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="#">Japnese Novels</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'products:query' 'booksnovels' %}">English Novels</a></li>
+                          </ul>
+						      </li>
+                                   
+						      <li class="nav-item dropdown col-md-3">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'electronics' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      ELECTRONICS
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'fitnessband' %}">Fitness-band</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'mobiles' %}">Mobiles</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'laptops' %}">Laptops</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'playstations' %}">Playstations</a></li>
+                                    
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        
+                                </ul>
+                    
+                  </li>
+                  <li class="nav-item dropdown col-md-3">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'gadgets' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      GADGETS
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="#">Drones</a></li>
+                                    <li><a class="dropdown-item" href="#">Cameras</a></li>
+                                    
+                                    
+                                          
+                                            <!-- <li><a class="dropdown-item" href="#"></a></li> -->
+                                        
+                                </ul>
+                    
+                  </li>
+                 <li class="nav-item dropdown col-md-6">
+                     
+                    
+                     <a class="nav-link dropdown-toggle" href="{% url 'products:query' 'music' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      MUSIC
+                    </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    <li><a class="dropdown-item" href="{% url 'products:query1' 'guitars' %}">Guitars</a></li>
+                                    <li><a class="dropdown-item" href="#">Piano</a></li>
+                                    <li><a class="dropdown-item" href="#">Drums</a></li>
+                                    <li><a class="dropdown-item" href="#">flutes</a></li>
+                                    
+                                </ul>
+                    
+                  </li>
+                 
+             
+						      
+						      
+						    </ul>
+						    
+              </div>
+              	</nav>
+
+    </div>
+    
+                    
+     <!-- <div class='container'>
        <div class="row">
        <div class="dropdown">
   <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,26 +211,38 @@
 
   </div>
   </div>
-       </div>     
+       </div> 
+     </div>    
       
-         <div class='row'>
-         </br>
+          -->
         
-         {% for obj in products %}
-         <div class='col'>
-          {{ forloop.counter }}
-          {% include 'products/snippets/card.html' with instance=obj %}
-          {% if forloop.counter|divisibleby:3 %}
-                   </div> </div> <div class='row'> <div class='col-12'> <hr/> </div> 
-          {% else %}
-           </div>
-          {% endif %}
-          
-     {% endfor %}
+        
+    <div class="container" style="background-color:white;">
+  <br/>
+   <!-- <section class="text-center"> -->
 
-      </div>
-     
-    </div>
+    <div class="row wow fadeIn">
+
+          <!--Grid column-->
+           {% for obj in products %}
+          <div class="col-lg-4 col-md-6 col-sm-4" style="display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;flex: 0 1 calc(25% - 1em);" >
+   
+    
+                    
+                  {{ forloop.counter }}.
+                  {% include 'products/snippets/card.html' with instance=obj %}
+                   {% if forloop.counter|divisibleby:3 %}
+                  <div>  <hr/> </div>
+                  
+                  {% endif %}
+                  </div>
+          
+          
+           {% endfor %}
+     </div>
+    
     
     
     
@@ -99,7 +270,7 @@
   </ul>
 {% endif %}
 
-
+</div>
     
 
  

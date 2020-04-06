@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<div class="card" style="width: 18rem">
+<!-- <div class="card" style="width: 18rem">
    {% if instance.product.image %}
   <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" alt="{{ instance.product.title }} logo">
   </a>
@@ -21,4 +21,62 @@
     
     
   </div>
-</div>
+</div> -->
+
+
+        <!--Grid row-->
+        
+
+            <!--Card-->
+            <div class="card" style="width: 17.5rem">
+
+              <!--Card image-->
+              <div class="view overlay">
+                 {% if instance.product.image %}
+                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style="height: 19rem;" alt="{{ instance.product.title }} logo">
+                   </a>
+                  {% else %}
+                  <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
+                  {% endif %}
+               
+                <a>
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+
+              <!--Card content-->
+              <div class="card-body text-center">
+                <!--Category & Title-->
+        
+                  
+                 <h5 class="card-title text-grey"> {{ instance.product.categary|capfirst }}</h5>
+                 <h6 class="text-grey"><p class="card-text">{{ instance.product.brand }}</p></h6>
+              
+                <h4>
+                  <strong>
+                    <a href="{{ instance.product.get_absolute_url }}"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
+                      <span class="badge badge-pill badge-primary">bestseller</span>
+                      <span class="badge badge-pill badge-danger">NEW</span>
+                    
+                  </strong>
+                </h4>
+
+                <h6 class="font-weight-bold blue-text">
+                <strong>  {% if instance.product.discount_price %}
+            <strike> ${{ instance.product.cost_per_day }}</strike> ${{ instance.product.discount_price }}/day ({{ instance.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ instance.product.cost_per_day }}/day
+           {% endif %}
+           
+           </strong>
+                </h6>
+
+              </div>
+              <!--Card content-->
+
+            </div>
+            <!--Card-->
+
+          
+     

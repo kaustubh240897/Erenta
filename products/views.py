@@ -27,7 +27,7 @@ User = settings.AUTH_USER_MODEL
 def product_list_view(request):
     queryset = Product_description.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, 6)
+    paginator = Paginator(queryset, 9)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:
@@ -91,7 +91,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['qs1']=Variation.objects.filter(product__slug= slug)
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.get(slug=slug)
-        context['similar_products']= View_Count.objects.filter(product__sub_sub_categary=product.sub_sub_categary).exclude(product__slug=slug)[:5]
+        context['similar_products']= View_Count.objects.filter(product__sub_sub_categary=product.sub_sub_categary).exclude(product__slug=slug)[:6]
         qq = ProductImage.objects.filter(product=product)
         if qq.count()==3:
             context['images0'] = qq[0]

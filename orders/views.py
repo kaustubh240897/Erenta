@@ -162,15 +162,21 @@ def add_coupon(request, cart):
             print("ok")
             try:
                 code = form.cleaned_data.get('code')
-                cart_ = Cart.objects.get(id=cart)
-                if not cart_.coupon:
-                    cart_.coupon = get_coupon(request,code)
-                    cart_.save()
-                    messages.success(request,"successfully added coupon")
-                    return redirect("cart:checkout")
+                order_ = Order.objects.filter(billing_profile__user=request.user, cart__coupon__code=code)
+                if order_.count()==0:
+                    cart_ = Cart.objects.get(id=cart)
+                    if not cart_.coupon:
+                        cart_.coupon = get_coupon(request,code)
+                        cart_.save()
+                        messages.success(request,"successfully added coupon")
+                        return redirect("cart:checkout")
+                    else:
+                        messages.warning(request,"Already added coupon")
+                        return redirect("cart:checkout")
                 else:
-                    messages.warning(request,"Already added coupon")
+                    messages.warning(request,"Sorry! You had already added this coupon code in previous orders.")
                     return redirect("cart:checkout")
+
 
                 
             except ObjectDoesNotExist:
