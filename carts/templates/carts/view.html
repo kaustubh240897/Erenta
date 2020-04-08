@@ -2,9 +2,11 @@
 
 
 {% block content %}
-<h1> Cart </h1>
+<br/>
+<div class='container'>
+<h3 class='text-center'> Cart </h3>
 {% if cart.cartitem_set.exists %}
-<table class="table">
+<table class="table col-lg-12 col-md-12 col-sm-12">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -12,6 +14,7 @@
       <th scope="col">quantity</th>
       <th scope="col">Start Date - End Date</th>
       <th scope="col">Price(in $)</th>
+      <th scope="col"></th>
       
       
       
@@ -24,9 +27,9 @@
 
     
       <th scope="row">{{ forloop.counter }}</th>
-      <td><a href='{{ item.product.get_absolute_url }}'> {{ item.product.product_name }} </a> {% if item.variations.all %} 
+      <td><a href='{{ item.product.get_absolute_url }}'> <img style="width: 50px; height:50px" src='{{ item.product.image.url }}' /> {{ item.product.product_name }} </a> {% if item.variations.all %} 
         <ul>{% for subitem in item.variations.all %} 
-  <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
+  <li>{{ subitem.title|capfirst }} {{ subitem.category }} {% endfor %}</li></ul>{% endif %}
       
       </td>
       <td>{{ item.quantity }}</td>
@@ -34,11 +37,11 @@
 
       {% if item.product.discount_price %}
       <td>${{ item.product.discount_price }} (price per unit per day)
-        <span class="badge badge-primary">Saving ${{ item.get_amount_saved }}</span></td>
+        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span></td>
       {% else %}
       <td>${{ item.product.cost_per_day }} (price per unit per day)</td>
       {% endif %}
-      <td><a href='{% url "cart:remove_cart" item.id %}'><i class='fa fa-trash'></i></a></td>
+      <td><a href='{% url "cart:remove_cart" item.id %}'><i class='fa fa-trash' style="color: black;"></i></a></td>
       
     </tr>
      
@@ -53,13 +56,15 @@
     <tr>
       <td colspan="4"></td>
       
-       <td><b>Total(Including all taxes)</b> <b>$ {{ cart.total }}+ $15(Shipping total)</b></td>
+       <td><b>Total(Including all taxes)</b> <br/>
+        <b>$ {{ cart.total }} + $15(Shipping total)</b></td>
     </tr>
-
+    <tr>
     <td colspan="4"></td>
       
        <td><a class='btn btn-lg btn-black btn-primary' href='/'>Continue Shopping</a>
         <a class='btn btn-lg btn-black btn-warning' href='{% url "cart:checkout" %}'>Proceed to Checkout</a></td>
+        </tr>
     </tr>
 
 
@@ -70,4 +75,5 @@
    {% else %}
    <p class='lead'>Cart is empty keep shopping!</p>
  {% endif %}
+ </div>
 {% endblock %}

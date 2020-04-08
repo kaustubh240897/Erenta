@@ -2,10 +2,10 @@
 
 {% block content %}
 </br>
-<div class='container'>
+<div class='container' style="background-color: #263238; color:white">
 
 <div class='col-10 col-md-6 mx-auto'>
-    <h1>Add Payment Method</h1>
+    <h2 class='text-center'>Add the card</h2>
     <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add new Card'>
 </div>
     <!-- <div class='stripe-payment-form'></div> -->

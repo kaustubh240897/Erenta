@@ -61,11 +61,15 @@
 
     </div>
     
-         <div class='row'>
+         <div class='row wow fadeIn'>
         
 
          {% for obj in qs %}
-         <div class='col'>
+
+          <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
+   
           
            {{ forloop.counter }}
           {% include 'products/snippets/card.html' with instance=obj %}

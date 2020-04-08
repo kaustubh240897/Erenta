@@ -14,7 +14,7 @@
   <p class='lead'>Login</p>
     {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
 </div>
- <p class='lead'>or</p>
+ <!-- <p class='lead'>or</p>
 <div class='col-8 col-md-8'>
 </br>
      <p class='lead'> Continue as Guest</p>
@@ -22,7 +22,7 @@
 
     
      {% include 'accounts/snippets/form.html' with form=guest_form  next_url=request.build_absolute_uri action_url=guest_register_url %}
-    </div>
+    </div> -->
     </div>
 
 {% else %}
@@ -76,34 +76,94 @@
        {% if not has_card %}
        <!-- enter credit card-->
       </br>
-       <h2>Payment</h2>
-       <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
+      <div style='background-color: #263238; color:white'>
+       <h2 class='text-center'>Payment</h2>
+       <div class='stripe-payment-form'  data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
+       </div>
 
        {% else %}
 
-       <h1> Finalize Checkout </h1>
-      <p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }} 
-      <p> <div class="card" style="width: 18rem">
-      {% if item.product.image %}
-      <img src='{{ item.product.image.url }}' class='img-fluid' />
+       <h2 class='text-center'> Finalize Checkout </h2>
+    
+      <div class="col-md-12 mb-4">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-muted">Your cart</span>
+    <span class="badge badge-secondary badge-pill">{{ request.session.cart_items }}</span>
+    </h4>
+    <ul class="list-group mb-3 z-depth-1">
+     {% for item in object.cart.cartitem_set.all %}
+    <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+        <h6 class="my-0"> {% if item.product.image %}
+      <img style="width:50px; height:50px !important;" src='{{ item.product.image.url }}' class='img-fluid' />
+      {% endif %}
+      {{ item.quantity }} x {{ item.product.product_name}} <b>({{ item.days }} days)[ {{ item.start_date }}-{{ item.end_date }} ]</b></h6>
+        {% if item.variations.all %} 
+        <ul>{% for subitem in item.variations.all %} 
+   <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
+        <small class="text-muted">{{ item.product.description}}</small>
+        </div>
+        <span class="text-muted">${{ item.line_total }}</span>
+    </li>
+    {% endfor %}
+     <li class="list-group-item d-flex justify-content-between">
+        <span>Shipping Address : {{ object.shipping_address.get_address }}</span>
+        
+      <strong><a href='{% url "orders:update_address" object.order_id %}'>Edit your shipping Address?</a></strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Billing Address : {{ object.billing_address.get_address }} </span>
+        
+      <strong><a href='{% url "orders:update_billingaddress" object.order_id %}'>Edit your billing Address?</a></strong>
+    </li>
+     <li class="list-group-item d-flex justify-content-between">
+        <span>Payment Method : {{ billing_profile.default_card }}</span>
+        
+      <strong><a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a></strong>
+    </li>
+    {% if object.cart.coupon %}
+    <li class="list-group-item d-flex justify-content-between bg-light">
+        <div class="text-success">
+        <h6 class="my-0">Promo code</h6>
+        <small>{{ object.cart.coupon.code }}</small>
+        </div>
+        <span class="text-success">-${{ object.cart.coupon.amount }}</span>
+    </li>
     {% endif %}
-    </div>
-     {% endfor %}     
-     </p>
-      
-       <p>Shipping Address: {{ object.shipping_address.get_address }}(<a href='{% url "orders:update_address" object.order_id %}'>Edit your shipping Address?</a>)</p>
-       <p>Billing Address: {{ object.billing_address.get_address }}(<a href='{% url "orders:update_billingaddress" object.order_id %}'>Edit your billing Address?</a>)</p>
-       
-       
-       <p>Payment Method: {{ billing_profile.default_card }} (<a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)</p> 
-       
-       
-      {% include 'orders/order_snippet.html' %}
-       
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Cart Total (USD)</span>
+        <strong>${{ object.cart.total }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Shipping Total (USD)</span>
+        <strong>+ ${{ object.shipping_total }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Order Total (USD)</span>
+        <strong>= ${{ object.total }}</strong>
+    </li>
+    </ul>
+
+    
+    <form class="card p-2" action="{% url 'orders:add-coupon' object.cart %}" method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+            <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2"> -->
+            {{ couponform.code }}
+            <div class="input-group-append">
+            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+            </div>
+        </div>
+    </form>
+    
+
+</div>
+       <div class='text-center'>
        <form class='form' method="POST" action="">{% csrf_token %}
          <button type='submit' class='btn btn-success'>Checkout finally</button>
-
+     
        </form>
+       </div>
        
        {% endif %}
 

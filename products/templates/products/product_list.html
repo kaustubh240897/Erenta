@@ -225,13 +225,11 @@
 
           <!--Grid column-->
            {% for obj in products %}
-          <div class="col-lg-4 col-md-6 col-sm-4" style="display: flex;
+          <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;flex: 0 1 calc(25% - 1em);" >
+        justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
    
     
-                    
-                  {{ forloop.counter }}.
                   {% include 'products/snippets/card.html' with instance=obj %}
                    {% if forloop.counter|divisibleby:3 %}
                   <div>  <hr/> </div>

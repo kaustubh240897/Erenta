@@ -24,7 +24,7 @@ def home_page(request):
        "title":"Shop Now!",
        "content" : "Welcome to shopnow!",
        "premium_content": "Welcome",
-       "trending": View_Count.objects.all()[:6]
+       "trending": View_Count.objects.all()[:8]
       
     }
     

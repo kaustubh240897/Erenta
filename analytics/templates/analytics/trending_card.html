@@ -28,12 +28,26 @@
         
 
             <!--Card-->
-            <div class="card" style="width: 17.5rem">
+            <style>
+              @media screen and (max-width: 992px) {
+                #car {
+                  width: 17rem;
+                }
+              }
+
+              /* On screens that are 600px or less, set the background color to olive */
+              @media screen and (max-width: 600px) {
+                #car {
+                  width: 10rem;
+  }
+}
+            </style>
+            <div id=car class="card">
 
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.product.image %}
-                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style="height: 19rem;" alt="{{ instance.product.title }} logo">
+                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style="height: 19rem" alt="{{ instance.product.title }} logo">
                    </a>
                   {% else %}
                   <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>

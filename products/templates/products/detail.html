@@ -224,7 +224,7 @@ function showSlides(n) {
                 
               </div>
             <br/>
-             <div class="text-center" style="background-color: grey; color: white; width:25rem;align-content: center;">
+             <div class="text-center" style="background-color: #007b5e; color: white; width:25rem;align-content: center;">
             <h3 class="text-center">About Item</h3>
             
                {{ object.description|linebreaks }}<br/>
@@ -242,7 +242,7 @@ function showSlides(n) {
           <br/>
         <br/>
         <br/>
-          <div class="card" style="z-index: -1; width: 25rem; background-color: grey;">
+          <div class="card" style="z-index: -1; width: 25rem; background-color:#263238;">
           <div class="card-body text-center" style="color: white;">
             
            <p>Posted : {{ object.timestamp|timesince }} ago</p>
@@ -260,7 +260,7 @@ function showSlides(n) {
 
 
         
-          <div style=" background-color: white; width: 25rem ">
+          <div style=" background-color: lavender; width: 25rem ">
            <form class='form' style="padding: 60px; width:25rem; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
             
               Quantity-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
@@ -300,14 +300,14 @@ function showSlides(n) {
 
           {% endif %}
           <br/>
-           <input class='btn btn-dark btn-block' type='submit' value='Add to cart' />
+           <input class='btn btn-light btn-block' style="background-color: #263238;  ; color:white;" type='submit' value='Add to cart' />
            </form>
           </br>
           
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
            <h3 class='text-center'> Variations available</h3>
            
-            <table class="table" style="background-color: grey; color: white;">
+            <table class="table" style="background-color: #263238; color: white;">
             <thead>
               <tr>
                 <th>#</th>
@@ -335,13 +335,13 @@ function showSlides(n) {
           
             <!-- {% if not forloop.last %} , {% endif %} -->
             {% endfor %}
-          <td>  <font color="green">Sufficient</font> </td>
+          <td>  <font color="orange">Sufficient</font> </td>
            
 
             {% else %}
             <td> NA(as in fig.)</td>
             <td>NA(as in fig.) </td>
-             <td>  <font color="green">Sufficient</font> </td>
+             <td>  <font color="orange">Sufficient</font> </td>
             {% endif %}
             
            
@@ -358,7 +358,7 @@ function showSlides(n) {
             {% else %}
             <td> NA(as in fig.)</td>
             <td>NA(as in fig.) </td>
-             <td>  <font color="green">Sufficient</font> </td>
+             <td><font color="orange">Sufficient </font> </td>
             {% endif %}
        
           <td> <font color="red">({{ obj.quantity }} left only) </font> </td>
@@ -480,12 +480,11 @@ function showSlides(n) {
 
           <!--Grid column-->
            {% for object in similar_products %}
-          <div class="col-lg-4 col-md-8 col-sm-6 mb-6">
-   
-    
-                    
-                  {{ forloop.counter }}.
-                  {% include 'analytics/trending_card.html' with instance=object %}
+          <div class="col-lg-4 col-md-4 col-sm-4 mb-3" style="display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;flex: 0 1 calc(25% - 1em); align-content: center;">
+  
+       {% include 'analytics/trending_card.html' with instance=object %}
     </div>
           
           

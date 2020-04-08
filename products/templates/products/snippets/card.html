@@ -22,14 +22,30 @@
     
   </div>
 </div> -->
+<style>
+              @media screen and (max-width: 992px) {
+                #car1 {
+                  width: 17 rem;
+                
+                  
+                }
+              }
 
-  <div class="card" style="width:13.1rem; display: flex;
-   justify-content: space-between">
+              /* On screens that are 600px or less, set the background color to olive */
+              @media screen and (max-width: 600px) {
+                #car1 {
+                  width: 11rem;
+                  
+            }
+          }
+            </style>
+
+        <div id=car1 class="card">
 
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.image %}
-                 <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" style="height: 14rem" alt="{{ instance.title }} logo">
+                 <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" style="height: 19rem" alt="{{ instance.title }} logo">
                    </a>
                   {% else %}
                   <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
