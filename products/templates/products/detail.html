@@ -245,7 +245,10 @@ function showSlides(n) {
           <div class="card" style="z-index: -1; width: 25rem; background-color:#263238;">
           <div class="card-body text-center" style="color: white;">
             
-           <p>Posted : {{ object.timestamp|timesince }} ago</p>
+           <p>Posted : {{ object.timestamp|timesince }} ago   {% if object.updated|timesince <= '4 weeks' %}
+                      <span class="badge badge-pill badge-danger">NEW</span>
+            {% endif %}</p>
+           
            <h5>Brand : {{ object.brand }}</h5>
            <br/>
            {% if object.discount_price %}

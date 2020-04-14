@@ -70,8 +70,10 @@
                 <h4>
                   <strong>
                     <a href="{{ instance.product.get_absolute_url }}"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
-                      <span class="badge badge-pill badge-primary">bestseller</span>
+                      <span class="badge badge-pill badge-primary">Trending</span>
+                      {% if instance.updated|timesince <= '4 weeks' %}
                       <span class="badge badge-pill badge-danger">NEW</span>
+                      {% endif %}
                     
                   </strong>
                 </h4>

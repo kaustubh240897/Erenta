@@ -60,6 +60,9 @@
       {% endif %}
 
     </div>
+    <br/>
+    <div class="container" style="background-color: #263238;">
+      <br/>
     
          <div class='row wow fadeIn'>
         
@@ -71,19 +74,19 @@
         justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
    
           
-           {{ forloop.counter }}
+       
           {% include 'products/snippets/card.html' with instance=obj %}
-          {% if forloop.counter|divisibleby:3 %}
-                   </div> </div> <div class='row'> <div class='col-12'> <hr/> </div> 
-          {% else %}
-           </div>
-          {% endif %}
-          
+         
+      </div>
      {% endfor %}
 
-       </div>
+     
      </div>
+
      {% else %}
      <h2>Oops There are no items in this category..</h2>
    {% endif %}
+
+    </div>
+    </div>
 {% endblock %}

@@ -9,39 +9,28 @@
 
  <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-         <h2> Your Order {{ object.order_id }}</h2>
+         <h2> Your Order Id -: {{ object.order_id }}</h2>
           <hr/>
     </div>
 </div>
 
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-<p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }} 
-<p> <div class="card" style="width: 18rem">
-{% if item.product.image %}
-<img src='{{ item.product.image.url }}' class='img-fluid' />
-    {% endif %}
-    </div>
-    {% if item.refund_requested %}
-    <b>Refund is requested please wait.</b>
-    {% elif item.refund_granted %}
-    <b>Refund is granted successfully.</b>
-    {% else %}
-    {% if time %}
-    <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-primary'>Request Refund!</button></a></p>
-    {% endif %}
-    {% endif %}
-    
-    <a href="{% url 'review' item.product.slug %}"> <button class='btn btn-primary'>Rate the product!</button></a></p>
-{% endfor %}     
 
-<p>Shipping Address: {{ object.shipping_address.get_address }}</p>
-<p>Billing Address: {{ object.billing_address.get_address }}</p>
-<p>Your Email: {{ object.billing_profile }}</p>
-<p>Order Status: {{ object.get_status }}</p>
+
+
 {% include 'orders/order_snippet.html' %}
-
+<div class='text-center'>
 <a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+{% if object.refund_requested %}
+<p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
+{% elif object.status == 'refunded' or object.refund_granted %}
+<p> <strong>Status : Refund is granted. </strong> </p>
+{% elif object.status == 'paid' %}
+<a  href='{% url "refund" object.order_id %}'><button class='btn btn-danger'>Refund Order</button></a>
+
+{% endif %}
+</div>
 </div>
 </div>
 

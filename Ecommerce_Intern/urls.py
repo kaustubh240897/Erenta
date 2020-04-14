@@ -28,7 +28,7 @@ from products.views import SupplierHomeView,AddProductView,my_productsView,Produ
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
 from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
-from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf
+from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf,landing_page
 from orders.views import RequestRefundView
 admin.site.site_header = 'ShopNow Administration'
 admin.site.site_title = 'ShopNow Administration'
@@ -36,9 +36,10 @@ admin.site.index_title = 'ShopNow Administration'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',home_page, name='home'),
-    path('notification_page',notification_page,name='notification_page'),
-    path('supplier_notification_page',supplier_notification_page,name='supplier_notification_page'),
+    path('', landing_page, name='landing-page'),
+    path('home/',home_page, name='home'),
+    path('notification_page/',notification_page,name='notification_page'),
+    path('supplier_notification_page/',supplier_notification_page,name='supplier_notification_page'),
     path('contact/',contact_page, name='contact'),
     path('notification/', include(("notification.urls", 'notification'), namespace='notification')),
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
@@ -71,7 +72,7 @@ urlpatterns = [
     path('myproduct/',my_productsView.as_view(), name='myproduct'),
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
     #path('products/<slug:slug>/',ProductDetailSlugView.as_view(),name='other'),
-    path('request-refund/',RequestRefundView.as_view(),name='refund'),
+    path('request-refund/<order_id>',RequestRefundView.as_view(),name='refund'),
     path('reviews/<slug:slug>/',ReviewView.as_view(),name='review'),
     path('product-refund/<int:id>/<slug:slug>/',ProductRefundView.as_view(),name='product-refund'),
     path('supplierreviews/',SupplierReviewView.as_view(),name='supplierreview'),

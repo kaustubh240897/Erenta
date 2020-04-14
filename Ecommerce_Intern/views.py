@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
-from products.models import Product_description,Contact
+from products.models import Product_description,Contact,Subscribers
 from orders.models import Order,Low_Quantity_Notification
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from django.views.generic import ListView
@@ -112,6 +113,7 @@ class GeneratePdf(View):
              'time': timezone.now(),
              'amount': order.total,
             'customer_name': order.billing_profile.user.full_name,
+            'email': order.billing_profile.user,
             'object': Order.objects.get(order_id=id),
             
             
@@ -159,6 +161,32 @@ class GenerateSupplierPdf(View):
             return response
 
         return HttpResponse("Not found")
+
+
+
+def landing_page(request):
+    if request.method=="POST":
+        if request.POST.get("form_type") == '1':
+            name=request.POST.get('name')
+            email=request.POST.get('email')
+            subject=request.POST.get('subject')
+            message=request.POST.get('message')
+            contact = Contact(name=name, email=email, subject=subject, message=message)
+            contact.save()
+            messages.success(request, 'Thank you !!!')
+
+        elif request.POST.get("form_type")=='2':
+            email = request.POST.get('email')
+            subs = Subscribers(email=email)
+            subs.save()
+            messages.success(request, 'Thank you !!!')
+    
+    
+    
+    return render(request,"landing_page.html")
+
+        
+
 
 
 

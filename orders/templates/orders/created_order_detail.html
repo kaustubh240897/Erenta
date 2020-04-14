@@ -10,23 +10,14 @@
  <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
         <h2>Your had Created this order on {{ object.timestamp }} but not Ordered yet!</h2>
-         <h4>Order {{ object.order_id }}</h4>
+         <h4 class='text-center'>Order {{ object.order_id }}</h4>
           <hr/>
     </div>
 </div>
 
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-<p>Items:  {% for item in object.cart.cartitem_set.all %} </p>{{ item.product|capfirst }}
- <p><div class="card" style="width: 18rem">
-{% if item.product.image %}
-<img src='{{ item.product.image.url }}' class='img-fluid' />
-    {% endif %}
-    </div>
-<a href='{{ item.product.get_absolute_url }}'>  <button class='btn btn-warning'>  Add to cart Now?</button> 
-</a>{% endfor %} </p>
-<p>Shipping Address: {{ object.shipping_address.get_address }}</p>
-<p>Billing Address: {{ object.billing_address.get_address }}</p>
+
 
 {% include 'orders/order_snippet.html' %}
 

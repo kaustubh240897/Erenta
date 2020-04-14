@@ -24,6 +24,7 @@ from addresses.models import Address
 from products.models import  Variation
 from accounts.models import GuestEmail
 from accounts.forms import LoginForm, GuestForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 import stripe
@@ -34,17 +35,21 @@ stripe.api_key =  STRIPE_SECRET_KEY
 
 
 class OrderListView(LoginRequiredMixin,ListView):
+    model = Order
+    template_name = 'orders/order_list.html'
     def get_queryset(self):
         
         return Order.objects.by_request(self.request).not_created()
 
 class OrderDetailView(LoginRequiredMixin,DetailView):
+    model = Order
+    template_name = 'orders/order_detail.html'
     def get_context_data(self, *args, **kwargs):
         context = super(OrderDetailView, self).get_context_data(*args, **kwargs)
         order_id = self.kwargs.get('order_id')
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Order Detail'
-        
+        context['paid'] = 'Paid'
         context['time']=Order.objects.filter(order_id=order_id,updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
         return context
 
@@ -123,7 +128,8 @@ class RequestRefundView(View):
     def post(self,*args, **kwargs):
         form = RefundForm(self.request.POST)
         if form.is_valid():
-            order_id = form.cleaned_data.get('order_id')
+            #order_id = form.cleaned_data.get('order_id')
+            order_id = self.kwargs.get('order_id')
             reason = form.cleaned_data.get('reason')
             
             # edit the order
@@ -139,10 +145,10 @@ class RequestRefundView(View):
                 refund.email  = self.request.user
                 refund.save()
                 messages.info(self.request, "Your request has received.")
-                return redirect("refund")
+                return redirect("orders:list")
             except ObjectDoesNotExist:
                 messages.warning(self.request, "This order does not exist.")
-                return redirect("refund")
+                return redirect("orders:list")
 
 
 

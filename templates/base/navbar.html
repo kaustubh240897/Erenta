@@ -105,7 +105,7 @@
                                 <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
                                   
                                        <li class="dropdown-submenu">
-                                        <a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'men' %}">
+                                        <a class="dropdown-item col-md-6 col-sm-6" style="background-color: gray;"  tabindex="1" href="{% url 'products:query' 'men' %}">
                                             MEN
                                         </a>
                                         <ul class="dropdown-menu">
@@ -201,14 +201,16 @@
                   </li>
                 
 
+       
+      {% if request.user.is_authenticated %}
         <li class="nav-item">
-           {% if request.user.is_authenticated %}
-        <a class="nav-link dropdown-toggle"  id="ham" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle"  id="ham" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           SETTINGS
         </a>
         
+        
         <div class="dropdown-menu col-md-4 col-sm-6" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item {% if request.path == account_url %} active {% endif %}" href="{% url 'account:home' %}">Accounts</a>
+          <a class="dropdown-item col-md-6 {% if request.path == account_url %} active {% endif %}" style="background-color: gray;" href="{% url 'account:home' %}">Accounts</a>
           <a class="dropdown-item"  href="#">abc</a>
           <div class="dropdown-divider"></div>
            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
@@ -226,11 +228,12 @@
         <a class="nav-link" id="ham" href="{% url 'login' %}">LOGIN</a>
       </li>
       {% endif %}
-    </li>
-                  
+    
+  
     <!-- Links -->
-   
+    </ul>
   </div>
+  
   
   <!-- Collapsible content -->
 

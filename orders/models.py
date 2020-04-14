@@ -187,7 +187,9 @@ class Order(models.Model):
             return "Refunded order"
         elif self.status == "shipped":
             return "Shipped"
-        return "Shipping soon :)"
+        elif self.status == 'created':
+            return 'Unpaid'
+        return "Ship soon :)"
         
 
     def update_total(self):

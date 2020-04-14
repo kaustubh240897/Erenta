@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product_description,Contact,User_Review,Supplier_Review,ProductImage,Variation,Category,Sub_Category,Sub_Sub_Category
+from .models import Product_description,Contact,User_Review,Supplier_Review,ProductImage,Variation,Category,Sub_Category,Sub_Sub_Category,Product_Refund,Subscribers
 #from carts.models import Quantity
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
@@ -14,6 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product_description, ProductAdmin)
 admin.site.register(Contact)
+admin.site.register(Subscribers)
 admin.site.register(User_Review)
 admin.site.register(Supplier_Review)
 admin.site.register(ProductImage)
@@ -21,6 +22,7 @@ admin.site.register(Variation)
 admin.site.register(Category)
 admin.site.register(Sub_Category)
 admin.site.register(Sub_Sub_Category)
+admin.site.register(Product_Refund)
 #admin.site.register(Quantity)
 
 

@@ -37,7 +37,9 @@ def product_list_view(request):
     context = {
         'qs': queryset ,
         "title":"Products",
-        'products': products
+        'products': products,
+        'trending': View_Count.objects.all()[:5]
+        
     }
     return render(request,"products/product_list.html", context)
 

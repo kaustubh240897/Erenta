@@ -171,7 +171,7 @@ class Product_description(models.Model):
     
     class Meta:
         unique_together=('product_name','slug')
-        ordering = ['id'] 
+        ordering = ['?'] 
 
 
     @property
@@ -238,6 +238,11 @@ class Contact(models.Model):
     subject = models.CharField(max_length=70)
     message = models.CharField(max_length=500)
 
+    def __str__(self):
+        return self.email
+
+class Subscribers(models.Model):
+    email = models.EmailField()
     def __str__(self):
         return self.email
 

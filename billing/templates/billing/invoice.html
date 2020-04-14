@@ -39,24 +39,31 @@
     <body>
         <div class='wrapper'>
             <div class='header'>
-                <p class='title'>Invoice # {{ invoice_id }} </p>
+                <p class='title'>Invoice # {{ object }} </p>
             </div>
         <div>
         <div class='details'>
             Invoice id: {{ object }} <br/>
             Bill to: {{ customer_name }} <br/>
+            Email : {{ email }} <br/>
             Total Amount: ${{ amount }} <br/>
             Date: {{ today }}
             Time: {{ time }}
             <hr class='hrItem' />
 
-<p>Items:  {% for item in object.cart.cartitem_set.all %}{{ item.product }} {% if not forloop.last %}, {% endif %}{% endfor %} </p>
-<p>Shipping Address: {{ object.shipping_address.get_address }}</p>
-<p>Billing Address: {{ object.billing_address.get_address }}</p>
-<p>User's Email: {{ object.billing_profile }}</p>
-<p>Subtotal: {{ object.cart.total }}</p>
-<p>Shipping Total: {{ object.shipping_total }}</p>
-<p>Order Total: $ {{ object.total }}</p>
+<p><strong>Items</strong><hr/> {% for item in object.cart.cartitem_set.all %} {{ item.quantity }} X {{ item.product }} :  {% if item.product.discount_price %}
+           <h4> Cost per unit : <strike> ${{ item.product.cost_per_day }}</strike> ${{ item.product.discount_price }}/day ({{ item.product.get_amount_percent_saved }}% Off)</h4>
+           {% else %}
+           <h4> Cost per unit : ${{ item.product.cost_per_day }}/day</h4>
+           {% endif %} 
+            Days: {{ item.days }}<br/> Total : ${{ item.line_total }} <br/> <hr/>{% endfor %} </p>
+            <p>Shipping Address: {{ object.shipping_address.get_address }}</p>
+            <p>Billing Address: {{ object.billing_address.get_address }}</p>
+            <p>User's Email: {{ object.billing_profile }}</p>
+            <p> Subtotal : ${{ object.cart.subtotal }}</p>
+            <p>Total(Including tax): ${{ object.cart.total }}</p>
+            <p>Shipping Total: ${{ object.shipping_total }}</p>
+            <strong>Order Total: $ {{ object.total }}</strong>
 
         </div>
     </div>
