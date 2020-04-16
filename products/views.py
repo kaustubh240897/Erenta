@@ -70,7 +70,7 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(Product_description, model_queryset=False)[:10]
+        views = request.user.objectviewed_set.by_model(Product_description, model_queryset=False).distinct()[:10]
         return views
 
 

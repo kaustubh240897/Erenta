@@ -25,6 +25,18 @@ Welcome {{ request.user.full_name }}!
 <div class='col-12 col-md-3 my-3'>
 <div class="card" style="background-color: #263238;">
   <div class="card-body">
+    <h5 class="card-title text-center">Add new card</h5>
+        <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "billing-payment-method" %}'>Payment Methods </a>
+    
+  </div>
+</div>
+</div>
+
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card" style="background-color: #263238;">
+  <div class="card-body">
     <h5 class="card-title text-center">Support</h5>
       <div class='list-group'>
           <a class='list-group-item' style="background-color: #263238; color:white" href='{% url "about" %}'>About </a>
@@ -54,7 +66,7 @@ Welcome {{ request.user.full_name }}!
      <div class='list-group'>
           <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:list" %}'>My paid Orders </a>
           <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:created" %}'>My created(unpaid) Orders </a>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "billing-payment-method" %}'>Payment Methods </a>
+         
             <!-- <a class='list-group-item' href='#'>Addresses </a> -->
       </div>
     

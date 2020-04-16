@@ -32,6 +32,16 @@ body, html {
 
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
+  {% if messages %}
+        {% for message in messages %}
+        <div class="w3-center w3-bar w3 w3-card" style=" background-color: aqua; color:black" role="alert">
+          {{ message }}
+          <button type="button" class="w3-close close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+    {% endif %}
   <div class="w3-bar w3 w3-card" style="background-color:#263238; color:white" id="myNavbar">
     <a href="{{ home_url }}" class="w3-bar-item w3-button w3-wide">Erenta</a>
     <!-- Right-sided navbar links -->
@@ -43,16 +53,7 @@ body, html {
       <a href="{{ home_url }}" class="w3-bar-item w3-button"><i class="fa fa-play"></i> START RENTING</a>
     </div>
     <!-- Hide right-floated links on small screens and replace them with a menu icon -->
-{% if messages %}
-        {% for message in messages %}
-        <div class="w3-center w3-bar w3 w3-card" style=" background-color: aqua; color:black" role="alert">
-          {{ message }}
-          <button type="button" class="w3-close close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endfor %}
-    {% endif %}
+
     <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
       <i class="fa fa-bars"></i>
     </a>
@@ -66,7 +67,7 @@ body, html {
  <!--  <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a> -->
   <a href="#work" onclick="w3_close()" class="w3-bar-item w3-button">PRODUCTS</a>
  <a href="#subscribe" onclick="w3_close()" class="w3-bar-item w3-button">SUBSCRIBE</a>
-  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+  <a href="{{ home_url }}" onclick="w3_close()" class="w3-bar-item w3-button">START RENTING </a>
 </nav>
 
 <!-- Header with full-height image -->
@@ -75,7 +76,7 @@ body, html {
     <span class="w3-jumbo w3-hide-small" style="color:red">Rent something that matters</span><br>
     <span class="w3-xxlarge w3-hide-large w3-hide-medium" style="color:red">Rent something that matters</span><br> 
     <!-- <span class="w3-large">Stop wasting valuable time with projects that just isn't you.</span> -->
-    <p><a href="{{ home_url }}" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn more and start renting today</a></p>
+    <p><a href="{{ home_url }}" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn more and start renting now</a></p>
   </div> 
   <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
     <i class="fa fa-facebook-official w3-hover-opacity"></i>
@@ -90,24 +91,44 @@ body, html {
 <!-- About Section -->
 
 <div class="w3-container" style="padding:128px 16px" id="about">
-  <h3 class="w3-center">ABOUT THE SERVICE</h3>
-  <p>Erenta is an online peer to peer rental platform. We offer gaming, sports and adventure equipments, accessories and electronics on rent in Tokyo in affordable prices. When you choose renting over buying from stores you get to use quality products and still save money.</P>
-  <p class="w3-center w3-large">Key features of our service</p>
+  <h3 class="w3-center"><b>ABOUT THE SERVICE </b></h3>
+  <h4> <b>What is Erenta? </b></h4>
+  <p>Erenta is trusted marketplace for renting VideoGames, Sports and adventure equipments, Accessories and Electronic items. We connect people who need things with the people who have them So it is an online peer to peer rental platform. </p>
+  <h4><b> Why use Erenta as borrower?</b></h4> 
+  <p> When you choose our service over buying from stores you get the following benefits -:</p>
+  <ol>
+  <li>Avoid unnecessry buying items which you use few times, Accept renting it takes fraction of cost and save money.</li>
+  <li>Live lighter, Save the planet by reducing waste. By opting to borrow, not buy, you’re putting the brakes on unnecessary manufacturing and carbon-intensive distribution systems. It is the responsible choice.</li>
+  <li>Quality and different varieties of products.</li>
+  <li>Catch up with your passion,hobby and get things done. You can rent things in affordable prices, Whether you want to do photography or play with playstation or going on hiking trip or going to play or learn new outdoor sports these are few screnrios where our service comes in the role.</li>
+</ol>
+<h4><b> How renting works?</b></h4>
+<ol>
+  <li>Find What you are looking for, from category section or by search bar.</li>
+  <li>Book the item for your chosen dates and let us verify you. we will just once ask some documents for proof.</li>
+  <li>Arrange collection from your lender and enjoy your rental.</li>
+  <li>Return the item to the lender and leave the review on our platform. we are always happy to hear your experience.</li>
+</ol>
+<h4> <b> Documents required? </b></h4>
+<p>Every user submits ID card as part of our Smart Verification process, so that you can rent in confidence.</p>
+<br/>
+
+  <p class="w3-center w3-large"> <b>Key features of our service </b></p>
   <div class="w3-row-padding w3-center" style="margin-top:64px">
     <div class="w3-quarter">
       <i class="fa fa-diamond w3-margin-bottom w3-jumbo w3-center"></i>
       <p class="w3-large">Service</p>
-      <p>We rent wide range of products to users and we list quality product on our platform.</p>
+      <p>We rent wide range of products to users and we list quality products on our platform.   </p>
     </div>
     <div class="w3-quarter">
       <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
       <p class="w3-large">Passion</p>
-      <p>We have passion for our customer satisfaction.</p>
+      <p>We have passion for our customer satisfaction and we are trying hard to keep our community safe.</p>
     </div>
     <div class="w3-quarter">
       <i class="fa fa-lock w3-margin-bottom w3-jumbo"></i>
       <p class="w3-large">Secure</p>
-      <p>We provide fully secured flawless payment methods on our platform.</p>
+      <p>We provide fully secured flawless payment methods on our platform and we allow only approved users on our platform.</p>
     </div>
     <div class="w3-quarter">
       <i class="fa fa-phone w3-margin-bottom w3-jumbo"></i>
@@ -123,7 +144,22 @@ body, html {
     <div class="w3-col m6">
       <h3>Join with us for business.</h3>
       <p> Your items are not just meant to lie in the attic, but can be a source of some extra bucks in the pocket. Every item, new or used, has a value. you can easily list your items and start earning.</p>
-      <p><a href="/businessdetailupdate/" class="w3-button w3-black"><i class="fa fa-th"> </i> List your Item</a></p>
+      <h4><b> Why use Erenta as a lender?</b></h4> 
+      <p> When you choose our service you get the following benefits -:</p>
+      <ol>
+      <li>You quickly make your money back on item by lending it out through Erenta.</li>
+      <li>By sharing with each other that we develop meaningful relationships and create effective local communities. It built trust and social barriers fall dowm. </li>
+      <li>By giving a quality product, reliable and convenient service with good communication the borrower will see you again.</li>
+      <li>Make world a efficient place for everyone.</li>
+    </ol>
+    <h4><b> How lending works?</b></h4>
+    <ol>
+      <li>List your items for free. Upload images, product description, pricing and quantity.</li>
+      <li>See the incoming requests and respond it.</li>
+      <li>Arrange a convenient time to ship or exchange the item with borrower.</li>
+      <li>Get paid within a week through our secured payment system and enjoy.</li>
+    </ol>
+      <p><a href="/businessdetailupdate/" class="w3-button w3-black"><i class="fa fa-th"> </i> List your Item now</a></p>
     </div>
     <div class="w3-col m6">
       <img class="w3-image w3-round-large" src="{% static 'img/shopNow.png' %}"  alt="Buildings" width="700" height="394">

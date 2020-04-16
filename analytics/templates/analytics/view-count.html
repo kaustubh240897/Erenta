@@ -1,9 +1,10 @@
 {% block content %}
-<div class="container" style="background-color:white">
-
+<div class="container" style="background-color:#263238">
+ <br/>
    <!-- <section class="text-center"> -->
 
     <div class="row wow fadeIn">
+          
 
           <!--Grid column-->
            {% for object in trending %}
@@ -25,7 +26,8 @@
  <div class="wrapper">
   <a href="{% url 'products:list' %}" ><button type="button" class="btn btn-primary btn-lg">See More </button></a>
  </div>
-
+<br/>
 </div>
+
 
 {% endblock %}
