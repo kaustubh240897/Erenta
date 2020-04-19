@@ -1,0 +1,14 @@
+Hello, 
+
+Please verify your account for {{ email }} by clicking the link below:
+
+
+
+{{ path }}
+
+
+Once you activate, you can login!
+
+Thank you,
+
+Erenta

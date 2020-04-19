@@ -76,7 +76,7 @@
        {% if not has_card %}
        <!-- enter credit card-->
       </br>
-      <div style='background-color: #263238; color:white'>
+      <div class='container' style='background-color: #263238; color:white'>
        <h2 class='text-center'>Payment</h2>
        <div class='stripe-payment-form'  data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
        </div>

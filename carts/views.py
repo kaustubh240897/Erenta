@@ -251,7 +251,7 @@ def checkout_home(request):
         return redirect("cart:home")
     
     
-    login_form = LoginForm()
+    login_form = LoginForm(request=request)
     guest_form = GuestForm()
     address_form = AddressForm()
     billing_address_id  = request.session.get("billing_address_id",None)
