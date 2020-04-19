@@ -32,7 +32,7 @@ EMAIL_HOST_PASSWORD =  os.environ.get('EMAIL_HOST_PASSWORD', 'It12345cse')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Erenta <kaustubh.dwi@gmail.com>'
-BASE_URL = 'https://rent-now.herokuapp.com/'
+BASE_URL = 'https://rent-now.herokuapp.com'
 
 MANAGERS = (
     ('kd12345', "kaustubh.dwi@gmail.com"),
