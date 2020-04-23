@@ -4,12 +4,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.contrib import messages
 from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import CreateView,FormView,DetailView,View,UpdateView
 from django.utils.http import is_safe_url
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,BusinessDetailUpdateForm,ReactivationEmailForm
-from .models import GuestEmail,Supplier,EmailActivation
+from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,BusinessDetailUpdateForm,ReactivationEmailForm,SupplierpersonaldetailForm,SupplierbankdetailForm,BankDetailUpdateForm
+from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail,User
 from .signals import user_logged_in
 from django.db import IntegrityError
 from django.http import Http404
@@ -20,6 +20,17 @@ from Ecommerce_Intern.mixins import NextUrlMixin, RequestFormAttachMixin
 # @login_required  #/accounts/login/?next=/some/path/
 # def account_home_view(request):
 #     return render(request,"accounts/home.html",{})
+
+
+@login_required
+def join_us_page(request):
+    context = {
+       "title":"E-renta: Start lending",
+       'personal_details': Supplier.objects.filter(email=request.user),
+       'bank_details': Bank_Account_Detail.objects.filter(email=request.user)
+       
+    }
+    return render(request,"accounts/join_us.html",context)
 
 
  
@@ -117,10 +128,13 @@ class UserDetailUpdateView(LoginRequiredMixin,UpdateView):
         return self.request.user
     def get_context_data(self,*args,**kwargs):
         context = super(UserDetailUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='your details'
+        context['title']='Your profile details'
+        #context['instance'] = User.objects.filter(email=self.request.user)
+        
         return context
     def get_success_url(self):
-        return reverse("account:home")
+        messages.success(self.request, 'Your details updated successfully')
+        return reverse("account:user-update")
 
 
 
@@ -203,16 +217,109 @@ class BusinessDetailUpdateView(LoginRequiredMixin,UpdateView):
     
     
     def get_object(self):
-        obj,created= Supplier.objects.get_or_create(email=self.request.user)
+        try:
+            obj= Supplier.objects.get(email=self.request.user)
+        except Supplier.DoesNotExist:
+            raise Http404("Your personal details not found..!")
+        except Supplier.MultipleObjectsReturned:
+            qs = Supplier.objects.filter(email=self.request.user, active=True)
+            obj = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
         return obj
 
     def get_context_data(self,*args,**kwargs):
         context = super(BusinessDetailUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='Register/Update your details'
+        context['title']='Update your personal details'
         return context
     def get_success_url(self):
-        messages.success(self.request, 'Your details registered/updated successfully!') 
+        messages.success(self.request, 'Your details updated successfully!') 
         return reverse("supplier")
+
+
+
+
+class BankDetailUpdateView(LoginRequiredMixin,UpdateView):
+    form_class = BankDetailUpdateForm
+    template_name = 'accounts/business-detail-update-view.html'
+    
+    
+    def get_object(self):
+        try:
+            obj= Bank_Account_Detail.objects.get(email=self.request.user)
+        except Bank_Account_Detail.DoesNotExist:
+            raise Http404("Your bank details not found..!")
+        except Supplier.MultipleObjectsReturned:
+            qs = Bank_Account_Detail.objects.filter(email=self.request.user, active=True)
+            obj = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
+        return obj
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(BankDetailUpdateView,self).get_context_data(*args,**kwargs)
+        context['title']='Update your bank details'
+        return context
+    def get_success_url(self):
+        messages.success(self.request, 'Your details updated successfully!') 
+        return reverse("supplier")
+
+
+
+
+class AddSupplierpersonaldetailView(LoginRequiredMixin,CreateView):
+    
+    model = Supplier
+    form_class = SupplierpersonaldetailForm
+    template_name = 'accounts/supplier_personal_details.html'
+    def form_valid(self,form):
+        obj = form.save(commit=False)
+        if Supplier.objects.filter(email=self.request.user).count()==1:
+            return HttpResponseRedirect(self.get_success_url1())
+        else:
+            obj.email = self.request.user # logged in user is available on a view func's `request` instance
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+    
+        
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Your personal details added successfully !!!')
+        return reverse("addsupplierbankdetail")
+    
+    def get_success_url1(self):
+        messages.warning(self.request, "Your personal details are already exist")
+        return reverse("addsupplierbankdetail")
+
+
+
+class AddSupplierbankdetailView(LoginRequiredMixin,CreateView):
+    
+    model = Bank_Account_Detail
+    form_class = SupplierbankdetailForm
+    template_name = 'accounts/supplier_bank_details.html'
+    def form_valid(self,form):
+        obj = form.save(commit=False)
+        if Bank_Account_Detail.objects.filter(email=self.request.user):
+            return HttpResponseRedirect(self.get_success_url1())
+        else:
+            obj.email = self.request.user # logged in user is available on a view func's `request` instance
+            #obj.supplier = self.request.user
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+    
+        
+    
+    def get_success_url(self):
+        messages.success(self.request, 'Your bank details have added successfully !!!')
+        return reverse("supplier")
+    
+    def get_success_url1(self):
+        messages.warning(self.request, "Your bank details are already exists")
+        return reverse("supplier")
+
+
+
 
 
 

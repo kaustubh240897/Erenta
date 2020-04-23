@@ -3,8 +3,11 @@
 {% block content %}
 
 <div class='container'>
+    <div class='text-left'>
+        <h5>Step 1 of 2</h5>
+    </div>
     <div class="col-12 col-md-6 mx-auto">
-        {% if title %} <h1 class='my-3'>{{ title }}</h1> {% endif %}
+    <h2 class='my-3 text-center'>Personal details</h2>
 <form  method='POST' action='{% if action_url %} {{ action_url }}{% endif %}'>
      {% csrf_token %}
      {% if next_url %}
@@ -13,11 +16,10 @@
     
 
      {{ form|crispy }}<br/>
-     <label for='email'>Email</label>
-     <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
      
-<button type='submit' class='btn btn-success'> Update </button>
-
+    <div class='text-center'>
+<button type='submit' class='btn btn-success'> Continue </button>
+    </div>
 </form>
 </div>
 </div>

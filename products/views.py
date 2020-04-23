@@ -8,7 +8,8 @@ from .models import Product_description,User_Review,Supplier_Review,ProductImage
 from carts.models import Quantity,CartItem
 from tags.models import Tag
 from analytics.models import View_Count
-from accounts.models import User
+#from accounts.forms import SupplierpersonaldetailForm, SupplierbankdetailForm
+from accounts.models import User,Supplier,Bank_Account_Detail
 from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
@@ -25,7 +26,7 @@ User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
-    queryset = Product_description.objects.all()
+    queryset = Product_description.objects.all().order_by('?')
     page = request.GET.get('page', 1)
     paginator = Paginator(queryset, 16)
     try:
@@ -354,6 +355,14 @@ def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
 
 class SupplierHomeView(LoginRequiredMixin, DetailView):
     template_name = 'products/dashboard.html'
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(SupplierHomeView, self).get_context_data(*args, **kwargs)
+    #     context['personal_details']=Supplier.objects.filter(email=self.request.user)
+    #     context['form'] = SupplierpersonaldetailForm()
+        
+    #     return context
+    
     def get_object(self):
         return self.request.user
     
@@ -535,15 +544,27 @@ class AddProductView(LoginRequiredMixin,CreateView):
     template_name = 'products/add_products.html'
     def form_valid(self,form):
         obj = form.save(commit=False)
-        obj.user = self.request.user # logged in user is available on a view func's `request` instance
-        obj.save()
-        return HttpResponseRedirect(self.get_success_url())
-    
-        
-    
+        if Supplier.objects.filter(email=self.request.user).count()==0:
+            return HttpResponseRedirect(self.get_success_url1())
+        elif Bank_Account_Detail.objects.filter(email=self.request.user).count()==0:
+            return HttpResponseRedirect(self.get_success_url2())
+        else:
+            obj.user = self.request.user # logged in user is available on a view func's `request` instance
+            obj.save()
+            return HttpResponseRedirect(self.get_success_url())
+
+
     def get_success_url(self):
         messages.success(self.request, 'added Successfully now add more details for your product !!!')
         return reverse("addproductdetails")
+    
+    def get_success_url1(self):
+        messages.success(self.request, 'Please add your personal details first !!!')
+        return reverse("addsupplierpersonaldetail")
+    
+    def get_success_url2(self):
+        messages.success(self.request, 'Please add your bank details first !!!')
+        return reverse("addsupplierbankdetail")
 
         
         

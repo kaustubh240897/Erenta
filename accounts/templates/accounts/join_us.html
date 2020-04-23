@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<br/>
+<div class='container-fluid' style = "background-color: #263238; color: white">
+<h2 class='text-center'>" Some people earned more than <font size=10 >&yen </font>70000/month on E-renta.”</h2>
+<h6 class='text-center'>- by e-renta team</h6>
+<br/>
+<div class='text-center'>
+{% if personal_details and bank_details %}
+    <a href="{% url 'supplier' %}"><button type='submit' class='btn btn-warning btn-lg'> Welcome, Go to dashboard  </button> </a>
+   
+{% elif personal_details and not bank_details %}
+    <a href="{% url 'addsupplierbankdetail' %}"><button type='submit' class='btn btn-warning btn-lg'> Start as lender  </button> </a>
+    
+    <h6 class='text-center mt-4'>It only take 5 minutes to setup your account.</h6>
+    
+{% else %}
+    <a href="{% url 'addsupplierpersonaldetail' %}"><button type='submit' class='btn btn-warning btn-lg'> Start as lender  </button> </a>
+    
+    <h6 class='text-center mt-4'>It only take 5 minutes to setup your account.</h6>
+   
+{% endif %}
+
+</div>
+<br/>
+</div>
+<div class="text-center">
+<h2 style="color: #263238;"><b> Why use Erenta as a lender?</b></h2> 
+<br/>
+    <strong> <p> When you choose our service you get the following benefits -:</p> </strong>
+<br/>
+      <ol>
+          <div class="row">
+              
+              <div class="col-lg-3">
+      <li><h5>You quickly make your money back on item by lending it out through Erenta.</h5></li>
+      </div>
+      <div class='col-lg-3'>
+      <li><h5>By sharing with each other that we develop meaningful relationships and create effective local communities. It built trust and social barriers fall down.</h5> </li>
+      </div>
+      <div class='col-lg-3'>
+      <li> <h5>By giving a quality product, reliable and convenient service with good communication the borrower will see you again.</h5></li>
+      </div>
+      <div class='col-lg-3'>
+      <li><h5>Make world a efficient place for everyone and get paid within 10 days. </h5></li>
+      </div>
+              
+          </div>
+    </ol>
+</div>
+{% endblock %}

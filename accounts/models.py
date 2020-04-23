@@ -1,4 +1,6 @@
 from datetime import timedelta
+import random
+import os
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
@@ -14,9 +16,17 @@ from django.contrib.auth.models import (
 from django.core.mail import send_mail
 from Ecommerce_Intern.utils import random_string_generator,unique_key_generator
 from django.template.loader import get_template
+from django.core.exceptions import ValidationError
 
 #send_mail(subject, message, from_email, recipient_list, html_message)
 DEFAULT_ACTIVATION_DAYS = getattr(settings, 'DEFAULT_ACTIVATION_DAYS', 7)
+
+ACCOUNT_TYPE = (
+    (('Overdraft Account'), ('Overdraft Account')),
+    (('Saving Account'), ('Saving Account')),
+    (('Current Account'), ('Current Account'))
+)
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name, password=None, is_active=True, is_staff=False , is_admin=False):
@@ -59,14 +69,38 @@ class UserManager(BaseUserManager):
         )
         return user
 
+def get_filename_ext(filepath):
+    base_name=os.path.basename(filepath)
+    name, ext=os.path.splitext(base_name)
+    return name,ext
+
+
+def upload_image_path(instance, filename):
+    
+    new_filename=random.randint(1,399900000)
+    name,ext=get_filename_ext(filename)
+    final_filename='{new_filename} {ext}'.format(new_filename=new_filename, ext=ext)
+    return "products/{new_filename}/{final_filename}".format(
+        new_filename=new_filename,
+        final_filename=final_filename
+        )
 # Create your models here.
+def validate_image(image):
+        file_size = image.file.size
+        limit_mb = 1
+        if file_size > limit_mb * 1024 * 1024:
+            raise ValidationError("Max size of file is %s MB" % limit_mb)
+
 class User(AbstractBaseUser):
     email = models.EmailField(max_length=255,unique=True,null=True)
     full_name = models.CharField(max_length=255,blank=True,null=True)
+    profile_image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, validators=[validate_image])
     is_active = models.BooleanField(default=True) # can login
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    update    = models.DateTimeField(auto_now=True)
+
     #confirm = models.BooleanField(default = True)  # confirmed email or not
     #confirmed_date = models.DateTimeField(default=True) 
 
@@ -236,27 +270,44 @@ class GuestEmail(models.Model):
 
 
 class Supplier(models.Model):
-    # email = models.EmailField(max_length=255,unique=True)
-    # full_name = models.CharField(max_length=255,blank=True,null=True)
-    # password1 = models.CharField(max_length=16,null=True)
-    # password2 = models.CharField(max_length=16,null=True)
-     
-    Shop_name = models.CharField(max_length=100,blank=True,unique=True,null=True)
+    Nick_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    Shop_name = models.CharField(max_length=100,blank=True,null=True)
     email     = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
     Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
     Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
     Postal_code = models.IntegerField(blank=True,null=True)
     City = models.CharField(max_length=55,blank=True,null=True)
-    Mobile_number = models.IntegerField(blank=True,null=True)
-    Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
-    bank_account_number = models.IntegerField(blank=True, null=True)
+    Country = models.CharField(max_length=20, blank=True, null=True)
+    Mobile_number = models.PositiveIntegerField(blank=True,null=True)
+    receive_message_time = models.CharField(max_length=50, null=True, blank=True)
+    #Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
+    #bank_account_number = models.IntegerField(blank=True, null=True)
     is_supplier = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True) # can login
     timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
-        return '%s %s'%(self.Shop_name, self.email)
+        return '%s %s %s %s'%(self.Nick_name,self.Mobile_number, self.Shop_name, self.email)
+
+class Bank_Account_Detail(models.Model):
+    Account_holder_name = models.CharField(max_length=100)
+    Account_number = models.PositiveIntegerField()
+    IFSC_code = models.CharField(max_length=20)
+    Account_type = models.CharField(choices=ACCOUNT_TYPE, max_length=25)
+    email = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
+    supplier = models.OneToOneField(Supplier,on_delete=models.CASCADE, blank=True, null=True)
+    is_active = models.BooleanField(default=True) # can login
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return '%s %s'%(self.email, self.Account_holder_name)
+
+
+
     
 
 

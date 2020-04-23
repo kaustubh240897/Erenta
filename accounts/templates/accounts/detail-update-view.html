@@ -1,23 +1,41 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
 
 <div class='container'>
     <div class="col-12 col-md-6 mx-auto">
-        {% if title %} <h1 class='my-3'>{{ title }}</h1> {% endif %}
-<form  method='POST' action='{% if action_url %} {{ action_url }}{% endif %}'>
+        {% if title %} <h2 class='my-3 text-center'>{{ title }}</h2> {% endif %}
+       
+<form  method='POST' enctype="multipart/form-data" action='{% if action_url %} {{ action_url }}{% endif %}'>
      {% csrf_token %}
+     {% if form.errors %}
+       <h6>Sorry your image size is greater than 1 MB.please upload image less than 1 MB.</h6>
+       {% endif %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
+    <div class='text-center'>
+       
+        {% if object.profile_image %}
+                <img src="{{ object.profile_image.url }}" class="rounded-circle z-depth-0"
+                  alt="avatar image" height="100" width="100" />
+            
+                  {% else %}
+                  <img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
+                  alt="avatar image" height="100" width="100" />
+        {% endif %}
+                <h6>Note: Please upload image less than 1 MB in size.</h6>
     
+    </div>
 
      {{ form|crispy }}<br/>
      <label for='email'>Email</label>
      <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
-     
+<div class='text-center'>
 <button type='submit' class='btn btn-success'> Save </button>
 <a href='{% url "password_change" %}' >Change Password</a>
+</div>
 </form>
 </div>
 </div>

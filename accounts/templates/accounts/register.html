@@ -4,7 +4,7 @@
 </br>
 
 <div class='container' style="background-color: #263238; color: white">
-     <h2 class="text-center">E-renta Sign Up</h2>
+     <h2 class="text-center">E-renta Sign Up | <a href="{% url 'login' %}">Login</a></h2>
 </br>
 <form method='POST'>{% csrf_token %}
      {% if next_url %}

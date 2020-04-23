@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django import forms
-from .models import Supplier,EmailActivation
+from .models import Supplier,EmailActivation,Bank_Account_Detail
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.safestring import mark_safe
 from django.urls import reverse
@@ -55,7 +55,7 @@ class UserDetailChangeForm(forms.ModelForm):
     full_name = forms.CharField(label='Name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
     class Meta:
         model = User
-        fields = ['full_name']
+        fields = ['profile_image','full_name']
 
 
 class UserAdminChangeForm(forms.ModelForm):
@@ -206,9 +206,45 @@ class BusinessDetailUpdateForm(forms.ModelForm):
     Postal_code = forms.CharField(label='Postal code',required=True ,widget=forms.NumberInput)
     City        = forms.CharField(label='City',required=True ,widget=forms.TextInput)
     Mobile_number = forms.CharField(label='Mobile number',required=True ,widget=forms.NumberInput)
+    receive_message_time = forms.CharField(label='Message Timing(timing to receive users messages)', required=False, widget=forms.TextInput(attrs={'placeholder':'ex-: anytime or 9:00 AM to 5:00 PM'})) 
     # password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = Supplier
-        fields = ['Shop_name','Address_Line1','Address_Line2','Postal_code','City','Mobile_number','bank_account_number','Shop_registration_number']
+        fields = ['Shop_name','Address_Line1','Address_Line2','Postal_code','City','Mobile_number','receive_message_time']
+
+class BankDetailUpdateForm(forms.ModelForm): 
+    Account_holder_name = forms.CharField(label='Account holder name',required=True ,widget=forms.TextInput)
+    Account_number = forms.CharField(label='Account number',required=True ,widget=forms.TextInput)
+    IFSC_code = forms.CharField(label='IFSC Code',required=True ,widget=forms.TextInput)
+
+    class Meta:
+        model = Bank_Account_Detail
+        fields = ['Account_holder_name','Account_number','IFSC_code','Account_type']
+
+
+class SupplierpersonaldetailForm(forms.ModelForm):
+    Nick_name = forms.CharField(label='Nick name',required=True ,widget=forms.TextInput)
+    Shop_name = forms.CharField(label='Shop name(if any)', widget=forms.TextInput)
+    Address_Line1 = forms.CharField(label='Address Line 1',required=True ,widget=forms.TextInput)
+    Address_Line2 = forms.CharField(label='Address Line 2' ,widget=forms.TextInput)
+    Postal_code = forms.CharField(label='Postal code',required=True ,widget=forms.NumberInput)
+    City        = forms.CharField(label='City',required=True ,widget=forms.TextInput)
+    Country = forms.CharField(label='Country', required=True, widget=forms.TextInput)
+    Mobile_number = forms.CharField(label='Mobile number',required=True ,widget=forms.NumberInput)
+
+    class Meta:
+        model = Supplier
+        fields = ['Nick_name', 'Shop_name','Address_Line1','Address_Line2','Postal_code','City','Country','Mobile_number'] 
+
+
+
+class SupplierbankdetailForm(forms.ModelForm):
+    Account_holder_name = forms.CharField(label='Account holder name',required=True, widget=forms.TextInput)
+    Account_number = forms.CharField(label='Account number', required=True, widget=forms.TextInput)
+    IFSC_code = forms.CharField(label='IFSC Code', required=True,widget=forms.TextInput)
+    
+    class Meta:
+        model = Bank_Account_Detail
+        fields = ['Account_holder_name', 'Account_number', 'IFSC_code', 'Account_type', ]
 

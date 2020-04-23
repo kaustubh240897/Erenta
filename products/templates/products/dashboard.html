@@ -1,12 +1,11 @@
 {% extends "supplier_base.html" %}
 {% block content %}
-
 Welcome {{ request.user.full_name }}!
 </br>
 <div class='container'>
 <div class='row'>
     <div class='col-12'>
-        <h1>Dashboard</h1>
+        <h2 class='text-center'>Dashboard</h2>
         <hr/>
     </div>
 <div class='col-12 col-md-3 my-3'>
@@ -22,18 +21,6 @@ Welcome {{ request.user.full_name }}!
   </div>
 </div>
 </div>
-
-<div class='col-12 col-md-3 my-3'>
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Business info(add/update)</h5>
-        <a class='list-group-item' href='{% url "businessdetailupdate" %}'>Add/Update your business details </a>
-    
-  </div>
-</div>
-</div>
-
-
 
 
 <div class='col-12 col-md-3 my-3'>
@@ -53,16 +40,7 @@ Welcome {{ request.user.full_name }}!
 
 
 
-<div class='col-12 col-md-3 my-3'>
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Personal Info</h5>
-        <a class='list-group-item' href='{% url "account:user-update" %}'>Update details </a>
-          <a class='list-group-item' href='{% url "password_change" %}'> ChangePassword </a>
-    
-  </div>
-</div>
-</div>
+
 
 
 
@@ -89,7 +67,18 @@ Welcome {{ request.user.full_name }}!
 </div>
 
 
-
+<div class='col-12 col-md-3 my-3'>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Your Account Information</h5>
+        <a class='list-group-item' href='{% url "account:user-update" %}'>Update Profile details </a>
+        <a class='list-group-item' href='{% url "businessdetailupdate" %}'>Update Personal details. </a>
+        <a class='list-group-item' href='{% url "bankdetailupdate" %}'>Update Bank details. </a>
+       
+    
+  </div>
+</div>
+</div>
 
 
 

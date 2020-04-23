@@ -22,7 +22,7 @@ from django.contrib.auth.views import LogoutView
 from addresses.views import checkout_address_create_view, checkout_address_reuse_view
 #from carts.views import cart_home
 #from products.views import ProductDetailSlugView
-from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView
+from accounts.views import LoginView,RegisterView,guest_register_view,SupplierLoginView,BusinessDetailUpdateView,join_us_page,AddSupplierbankdetailView,AddSupplierpersonaldetailView,BankDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview
 from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView
 #from carts.views import cart_detail_api_view
@@ -44,6 +44,7 @@ urlpatterns = [
     path('notification/', include(("notification.urls", 'notification'), namespace='notification')),
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
     path('about/',about_page, name='about'),
+    path('join-us/',join_us_page,name='join_us'),
     path('accounts/',RedirectView.as_view(url='/account')),
     path('accounts/',include(("accounts.passwords.urls"))),
     path('account/',include(("accounts.urls", 'accounts'), namespace='account')),
@@ -77,6 +78,9 @@ urlpatterns = [
     path('product-refund/<int:id>/<slug:slug>/',ProductRefundView.as_view(),name='product-refund'),
     path('supplierreviews/',SupplierReviewView.as_view(),name='supplierreview'),
     path('businessdetailupdate/',BusinessDetailUpdateView.as_view(),name='businessdetailupdate'),
+    path('bankdetailupdate/',BankDetailUpdateView.as_view(),name='bankdetailupdate'),
+    path('addpersonaldetails/',AddSupplierpersonaldetailView.as_view(),name='addsupplierpersonaldetail'),
+    path('addbankaccountdetails/',AddSupplierbankdetailView.as_view(),name='addsupplierbankdetail'),
     path('add_product/',SupplierAddProductView.as_view(),name='addproduct'),
     path('add_product_details/',SupplierProductListView.as_view(),name='addproductdetails'),
     path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage'),

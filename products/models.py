@@ -171,7 +171,7 @@ class Product_description(models.Model):
     
     class Meta:
         unique_together=('product_name','slug')
-        ordering = ['?'] 
+        
 
 
     @property

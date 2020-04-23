@@ -11,37 +11,36 @@
                 <hr/>
             </div>
             
-            {% else %}
-              
-           <!-- <div class='col-12 col-md-6 mx-auto py-5'>
-              {% include 'search/snippets/search-form.html' %}
-            
-            </div> -->
-            <div class='col-12'>
-                <hr> 
-            </div>
+          
+           
            {% endif %}
     </div>
-         <div class='row wow fadeIn'>
-            
+        
 
-         {% for obj in qs %}
-           <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
+        <div class="container" style="background-color: #263238;">
+  <br/>
+   <!-- <section class="text-center"> -->
+
+    <div class="row">
+
+          <!--Grid column-->
+           {% for obj in qs %}
+          <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
+        justify-content: space-between;flex: 0 1 calc(30% - 5em);" >
    
-          
-          {% include 'products/snippets/card.html' with instance=obj %}
-          {% if forloop.counter|divisibleby:3 %}
-                   </div> </div> <div class='row'> <div class='col-12'> <hr/> </div> 
-          {% else %}
+    
+                  {% include 'products/snippets/card.html' with instance=obj %}
+                 
+                  </div>
+            {% empty %}
+            <div class='text-center'>
+           <h4 class='text-white'>Sorry!! no products are matching to your query. </h4>
            </div>
-          {% endif %}
-          {% empty %}
-          <p class='col-md-6'>Sorry!! No Products related to your query.</p>
           
-     {% endfor %}
-
-       </div>
+           {% endfor %}
+         
+     </div>
+     </div>
      </div>
 {% endblock %}

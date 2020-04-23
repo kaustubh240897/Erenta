@@ -10,7 +10,7 @@ def search_product_view(request):
     if query is not None:
         queryset = Product_description.objects.search(query)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.all().order_by('?')
     context = {
           'qs': queryset ,
          "title":"Products",

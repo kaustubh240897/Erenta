@@ -61,12 +61,16 @@
                              
               
             </div>
-              <div class="col-md-2 col-sm-4 col-4 text-left text-right">
-            <a class="nav-link" href='{% url "account:user-update" %}'>
-          <img src="{% static 'img/a.jpg' %}" class="rounded-circle z-depth-0"
-            alt="avatar image" height="50" width="50">
-        </a>
-      </div>
+            <a href="{% url 'accounts:user-update' %}">
+              {% if request.user.profile_image %}
+                <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" />
+            
+                  {% else %}
+                  <img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" />
+                  {% endif %}
+              </a>
        
   <!-- Navbar brand -->
   <!-- <a class="navbar-brand" href="#">E-renta</a>

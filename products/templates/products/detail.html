@@ -410,8 +410,15 @@ function showSlides(n) {
       {% for rev in reviews %}
      <strong>{{ forloop.counter }}.</strong>
 
-      <img src="{% static 'img/kd.jpg' %}" class="rounded-circle z-depth-0"
-            alt="avatar image" height="50" width="50"> 
+      
+       {% if rev.email.profile_image %}
+                <img src="{{ rev.email.profile_image.url }}" class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" />
+            
+                  {% else %}
+                  <img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" />
+      {% endif %}
       , {{ rev.email.full_name }} ,
       
        {% ifequal rev.rating '1' %}
