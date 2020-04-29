@@ -556,7 +556,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                             messages.warning(self.request,'Oops! You had already entered this item\'s (with same color and size *if applied) quantity, You can update it in myproduct section in dashboard.')
                             return redirect("addproductdetails")
                     elif self.request.POST.get('color',False) or self.request.POST.get('size',False):
-                        if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',True)).count()+ Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('size',True)).count() == 0:
+                        if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',False)).count() + Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('size',False)).count() == 0:
                             quantity_item= Quantity.objects.create(product=product_obj)
                             
                             if len(product_variations)>0:
