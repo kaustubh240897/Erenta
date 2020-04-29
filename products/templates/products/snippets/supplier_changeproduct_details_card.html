@@ -1,12 +1,14 @@
 {% load staticfiles %}
-<div class="container">
-<div class="card" style="width: 20rem ">
+
+<div class="container" style="background-color: #263238; color: white;">
+ <br/>
    {% if instance.image %}
-  <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
+  <a href='{% url "myproduct" %}' ><img src="{{ instance.image.url }}" class="card-img-top " title='Update the product details, Click here' style="height:100px;width:100px" alt="{{ instance.title }} logo">
   </a>
   {% else %}
   <img class='image-responsive' src='{% static "img/placeholder.png" %}'/>
   {% endif %}
+  
   <div class="card-body">
     <h5 class="card-title"></h5>
     <h5 class="card-title"> {{ instance.product_name|capfirst }}</h5>
@@ -17,13 +19,17 @@
            {% endif %}
            </h6>
     <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
-    <a href='{% url "productimage" instance.id %}' class="btn btn-primary"> Add more images. </a>
-    <a href='{% url "productvariations" instance.id %}' class="btn btn-warning"> Add more variations.(eg. size,color) </a>
-    <a href='{% url "productquantity" instance.id %}' class="btn btn-danger"> Add quantity of each product variations </a>
-    <a href='{% url "producttags" instance.id %}' class="btn btn-success"> Add product tags(for better placing of product) </a>
+    
+   <font color='yellow'>If already added the images, quantity, tags, color and sizes below?, then <a  href='{% url "myproduct" %}'>  update these details here. </a> </font>
+   <br/>
+   <br/>
+    1.<a href='{% url "productimage" instance.id %}'  class=" btn btn-primary mx-1"> Add more images <i title="Add more images for better showup to users" class="fas fa-question-circle"></i> </a>
+    2.<a href='{% url "productvariations" instance.id %}' class=" btn btn-warning mx-1"> Add sizes and colors <i title="Add color and size of product for better placing of product."  class="fas fa-question-circle"></i> </a>
+    3.<a href='{% url "productquantity" instance.id %}' class=" btn btn-danger mx-1"> Add quantity <i title='Add quantity for each variations of product.' class="fas fa-question-circle"></i> </a> </a>
+    4.<a href='{% url "producttags" instance.id %}' class="btn btn-success mx-1"> Add product tags <i title='Add all the product tags that can be possible for the product.' class="fas fa-question-circle"></i> </a> </a>
     
     
     
   </div>
-</div>
+
 </div>

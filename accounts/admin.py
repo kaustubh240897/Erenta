@@ -8,6 +8,7 @@ from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail
 
 User = get_user_model()
 class UserAdmin(BaseUserAdmin):
+    
     # The forms to add and change user instances
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
@@ -20,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Full_name', {'fields': ('full_name',)}),
-        ('Permissions', {'fields': ('admin','staff','is_active')}),
+        ('Permissions', {'fields': ('admin','staff','is_superuser','is_active','groups','user_permissions')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -32,14 +33,14 @@ class UserAdmin(BaseUserAdmin):
     )
     search_fields = ('email','full_name')
     ordering = ('email',)
-    filter_horizontal = ()
+    filter_horizontal = ('groups','user_permissions')
 
 
 admin.site.register(User, UserAdmin)
 
    
 # Remove Group Model from admin. We're not using it.
-admin.site.unregister(Group)
+#admin.site.unregister(Group)
    
     # class Meta:
     #     model = User

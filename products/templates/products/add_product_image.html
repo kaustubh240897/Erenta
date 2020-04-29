@@ -1,23 +1,45 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class='container'>
-{% if alag %}
-<h1> Add your Product Tags </h1>
-{% else %}
-<h1>Add your Product Image</h1>
+{% if request.user == name.user %}
 <br/>
-<h6>Note: Image size should be less than 1 MB.</h6>
-<h6>Note: You can add only 3 images.</h6>
+<div class='container' style="background-color: #263238; color:white">
+{% if alag %}
+Step 4 of 4:
+<h1 class='text-center'> Add your Product Tags </h1>
+{% else %}
+Step 1 of 4:
+<h1 class='text-center'>Add Product's Images</h1>
+<br/>
+<font color='red'><h6 class='text-center'>Note 1: Image size should be less than 1 MB.</h6> </font>
+<font color='yellow'><h6 class='text-center'>Note 2: You can add only max 3 images, One image at a time.</h6></font>
 {% endif %}
 </br>
+
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
+     <div class='col-12 text-center'>
      {{ form|crispy }}
-             
-<button type='submit' class='btn btn-success'>Save</button>
+     </div>
+ <div class='text-center'>
+<button type='submit' class='btn btn-success'>Add More</button>
+ </div>
+ <br/>
 </form>
+
+<div class='text-right'>
+    {% if alag %}
+<a href='{% url "addproductdetails" %}' ><button class='btn btn-warning'>Completed --></button></a>
+    {% else %}
+<a href='{% url "productvariations" name.id %}' ><button class='btn btn-warning'>Next page --></button></a>
+ {% endif %}
 </div>
+<br/>
+</div>
+
+{% else %}
+<h2 class='text-center'> Oops! Access denied.</h2>
+{% endif %}
 {% endblock %}

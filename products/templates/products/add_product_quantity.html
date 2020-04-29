@@ -1,21 +1,20 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class='container'>
-
-<h1>{{ title }}</h1>
+<br/>
+{% if request.user == name.user %}
+<div class='container' style='background-color:#263238; color:white'>
+Step 3 of 4:
+<h2 class='text-center'>{{ title }}</h2>
 </br>
-<form method='POST' enctype="multipart/form-data">{% csrf_token %}
-     {% if next_url %}
-     <input type='hidden' name='next' value='{{ next_url }}' />
-     {% endif %}
-     <h4>Available quantity of each variations of this product.</h4>
-     <h6>Note: You can update quantity in <a href="{% url 'myproduct' %}">Myproduct </a> section in dashboard, donot repeat same variation for quantity.  </h6>
-     
-      Variations:
+   {% if qs %}
+    <font color='yellow'><h6 class='text-center'>Note: You can Update quantity of each size and color in <a title='click here' href="{% url 'myproduct' %}">Myproduct </a> section in dashboard, <b style='color:red'>Donot repeat same Size and Color </b> shown below to add quantity.  </h6> </font>
+   {% endif %}  
+    <div class='container text-center' style='background-color: skyblue;'>
+      <strong>  <font color='black'> <h4 class='text-center'>Available quantity of each variations of this product.</h4>Variations</font>  </strong>
      {% for obj in qs %}
-         <div class='container'>
-            <div class='col-12 my-3'>
+         
+          <strong><div class='col-12 my-3'>
         {{ forloop.counter }}.
       {{ obj.product|capfirst }}
       
@@ -23,22 +22,30 @@
        {{ item.title|capfirst }} {{ item.category|capfirst }},
        {% endfor %}
        {% if obj.quantity > 8 %}
-        Available Quantity-: {{ obj.quantity }} only 
+      <font color='green'> Available Quantity-: {{ obj.quantity }} only  </font>
        {% else %}
        <font color="red">Available Quantity-: {{ obj.quantity }} only </font>
        {% endif %}
        </div>
-       </div>
+      
        {% empty %}
-      <p class='col-12'>  You have not created any products yet.</p>
+      <p class='col-12'>  You have not added quantity yet.</p>
+      </strong>
        {% endfor %}
+       <br/>
+      </div>
        <hr/>
 
+<form method='POST' enctype="multipart/form-data">{% csrf_token %}
+     {% if next_url %}
+     <input type='hidden' name='next' value='{{ next_url }}' />
+     {% endif %}
+    
 
      {{ form|crispy }}
      
        Quantity-: <input class='form-control'  name='qty' type='number' value='1' />
-     
+      <br/>
       {% if object %}
          
              
@@ -53,7 +60,7 @@
               
             
               
-             
+            <br/>
               Color-:
               <select class='form-control' name='color'>
                 {% for item in object %}
@@ -67,8 +74,18 @@
 
 
           {% endif %} 
-                
-<button type='submit' class='btn btn-success'>Save</button>
-</form>
-</div>
-{% endblock %}
+              <br/>
+              <div class='text-center'>
+    <button type='submit' class='btn btn-success'>Add more</button>
+              </div>
+              <br/>
+    </form>
+    <div class='text-right'>
+    <a href='{% url "producttags" name.id %}' ><button class='btn btn-warning'>Next page --></button></a>
+    </div>
+    <br/>
+    </div>
+    {% else %}
+    <h2 class='text-center'> Oops! permission denied.</h2>
+    {% endif %}
+    {% endblock %}

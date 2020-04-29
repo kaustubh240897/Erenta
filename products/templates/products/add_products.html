@@ -1,9 +1,15 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class='container'>
+<style>
+.lg {
+  background-color:#293238 !important; color:white
+}
+</style>
+<br/>
+<div class='container lg'>
 
-<h1>Add your Products</h1>
+<h1 class='text-center'>Add your Products</h1>
 <h6>Note: Image size should be less than 1 MB.</h6>
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
@@ -14,8 +20,10 @@
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
      {{ form|crispy }}
-             
-<button type='submit' class='btn btn-success'>Submit</button>
+<div class='text-center'>
+<button type='submit' class='btn-lg btn btn-success'>Submit</button>
+</div>
+<br/>
 </form>
 </div>
 {% endblock %}

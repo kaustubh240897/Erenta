@@ -107,7 +107,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
             context['images0'] = qq[0]
 
 
-        context['images']=ProductImage.objects.filter(product=product)
+        context['images']= qq
         context['reviews']=User_Review.objects.filter(product_id=product_id)
         return context
     
@@ -356,12 +356,11 @@ def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
 class SupplierHomeView(LoginRequiredMixin, DetailView):
     template_name = 'products/dashboard.html'
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(SupplierHomeView, self).get_context_data(*args, **kwargs)
-    #     context['personal_details']=Supplier.objects.filter(email=self.request.user)
-    #     context['form'] = SupplierpersonaldetailForm()
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierHomeView, self).get_context_data(*args, **kwargs)
+        context['title'] = 'Supplier dashboard'
         
-    #     return context
+        return context
     
     def get_object(self):
         return self.request.user
@@ -380,7 +379,7 @@ class SupplierProductListView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['qs'] = Product_description.objects.filter(user = self.request.user)
+        context['qs'] = Product_description.objects.filter(user = self.request.user).order_by('-timestamp')
         return context
 
 class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
@@ -388,27 +387,37 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
     model = ProductImage
     form_class = ProductImageForm
     template_name = 'products/add_product_image.html'
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierAddProductImageView, self).get_context_data(*args, **kwargs)
+        id = self.kwargs.get('id')
+        context['name'] = Product_description.objects.get(id=id)
+        return context
 
     def form_valid(self,form):
         try:
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
             obj.product = Product_description.objects.get(id=id)
-            if ProductImage.objects.filter(product__id=id).count() < 3:
-                obj.save()
-                return HttpResponseRedirect(self.get_success_url())
+            if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
+                if ProductImage.objects.filter(product__id=id).count() < 3:
+                    obj.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                else:
+                    messages.warning(self.request, "You cannot add more than 3 images.")
+                    return redirect("addproductdetails")
             else:
-                messages.warning(self.request, "You cannot add more than 3 images.")
-                return redirect("addproduct")
+                messages.warning(self.request, "You are not authorized to add the image.")
+                return redirect("addproductdetails")
+
             
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
-            return redirect("addproduct")
+            return redirect("addproductdetails")
 
     
     def get_success_url(self):
         messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
-        return reverse("addproductdetails")
+        return reverse("productimage", kwargs={'id': self.kwargs.get('id')})
 
 
 class SupplierTagView(LoginRequiredMixin,CreateView):
@@ -417,25 +426,38 @@ class SupplierTagView(LoginRequiredMixin,CreateView):
     form_class = ProductTagForm
     template_name = 'products/add_product_image.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierTagView, self).get_context_data(*args, **kwargs)
+        id = self.kwargs.get('id')
+        context['alag'] = "alag" 
+        context['name'] = Product_description.objects.get(id=id)
+        return context
+
     def form_valid(self,form):
         try:
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
             obj.product_name = Product_description.objects.get(id=id)
-            obj.save()
-            return HttpResponseRedirect(self.get_success_url())
+            if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
+                if Tag.objects.filter(product_name__id=id).count() < 20:
+                    obj.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                else:
+                    messages.warning(self.request, "Sorry, You can not add more tags limit exceeded.")
+                    return redirect("addproductdetails")
+            else:
+                messages.warning(self.request, "You are not authorized to add the image.")
+                return redirect("addproductdetails")
+
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
-            return redirect("addproduct")
+            return redirect("addproductdetails")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['alag'] = "alag" 
-        return context
+    
 
     def get_success_url(self):
         messages.success(self.request, 'Tag added Successfully now, you can add more tags for your product again !!!')
-        return reverse("addproductdetails")
+        return reverse("producttags", kwargs={'id': self.kwargs.get('id')})
 
 
 
@@ -446,27 +468,40 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
     form_class = ProductVariationForm
     template_name = 'products/add_product_variations.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierAddProductVariationsView, self).get_context_data(*args, **kwargs)
+        id = self.kwargs.get('id')
+        context['name'] = Product_description.objects.get(id=id)
+        return context
+
     def form_valid(self,form):
         try:
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
             obj.product = Product_description.objects.get(id=id)
-            
-            if Variation.objects.filter(product__id=id,category=self.request.POST['category'],title=self.request.POST['title']).count()==0:
-                obj.save()
-                return HttpResponseRedirect(self.get_success_url())
+            if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
+                if Variation.objects.filter(product__id=id).count() < 25:
+                    if Variation.objects.filter(product__id=id,category__iexact=self.request.POST['category'],title__iexact=self.request.POST['title']).count()==0:
+                        obj.save()
+                        return HttpResponseRedirect(self.get_success_url())
+                    else:
+                        messages.warning(self.request, "This category of product already exists.")
+                        return redirect("addproductdetails")
+                else:
+                    messages.warning(self.request, " Sorry!, You had crossed the limit for adding variations for a item.")
+                    return redirect("addproductdetails")
             else:
-                messages.warning(self.request, "This category of product already exists.")
-                return redirect("addproduct")
+                messages.warning(self.request, "You are not authorized to add the variations.")
+                return redirect("addproductdetails")
 
         except ObjectDoesNotExist:
             messages.warning(self.request, "your product does not exist.")
-            return redirect("addproduct")
+            return redirect("addproductdetails")
 
     
     def get_success_url(self):
         messages.success(self.request, 'Variations added Successfully, You can add more(unique) variations again !!!')
-        return reverse("addproductdetails")   
+        return reverse("productvariations", kwargs={'id': self.kwargs.get('id')})
 
 class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
     
@@ -478,7 +513,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
         
         id = self.kwargs.get('id')
         product= Product_description.objects.get(id=id)
-        
+        context['name'] = Product_description.objects.get(id=id)
         context['title'] = 'Add Quantity Details'
         context['qs']=Quantity.objects.filter(product__id= id)
         context['object']=Variation.objects.filter(product=product)
@@ -494,34 +529,68 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
             qty = self.request.POST['qty']
             product_obj = Product_description.objects.get(id=id)
             #obj.product = Product_description.objects.get(id=id)
-            if int(qty)>0:
-                for item in self.request.POST:
-                    key = item
-                    val = self.request.POST[key]
-                    try:
-                        v = Variation.objects.get(product=product_obj, category__iexact=key, title__iexact=val)
-                        product_variations.append(v)
-                        print(v)
-                    except:
-                        pass
-                #print("111111qqqqq",Quantity.objects.filter(product__id=id,variations__title__iexact=self.request.POST[key]).count())
-                if Product_description.objects.get(id=id):
-                    quantity_item= Quantity.objects.create(product=product_obj)
+            if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
+                if int(qty)>0:
+                    for item in self.request.POST:
+                        key = item
+                        val = self.request.POST[key]
+                        try:
+                            v = Variation.objects.get(product=product_obj, category__iexact=key, title__iexact=val)
+                            product_variations.append(v)
+                            print(v)
+                        except:
+                            pass
                     
-                    if len(product_variations)>0:
-                        obj.variation_set=quantity_item.variations.add(*product_variations)
-                    quantity_item.quantity = qty
-                    quantity_item.product = Product_description.objects.get(id=id)
-                    quantity_item.save()
-                    return HttpResponseRedirect(self.get_success_url())
+
+                    if self.request.POST.get('color',False) and self.request.POST.get('size',False):
+                        if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',False)).filter(product__id = id, variations__title__iexact = self.request.POST.get('size',False)).count()==0:
+                            quantity_item= Quantity.objects.create(product=product_obj)
+                            
+                            if len(product_variations)>0:
+                                obj.variation_set=quantity_item.variations.add(*product_variations)
+                            quantity_item.quantity = qty
+                            quantity_item.product = Product_description.objects.get(id=id)
+                            quantity_item.save()
+                            return HttpResponseRedirect(self.get_success_url())
+                        else:
+                            messages.warning(self.request,'Oops! You had already entered this item\'s (with same color and size *if applied) quantity, You can update it in myproduct section in dashboard.')
+                            return redirect("addproductdetails")
+                    elif self.request.POST.get('color',False) or self.request.POST.get('size',False):
+                        if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',True)).count()+ Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('size',True)).count() == 0:
+                            quantity_item= Quantity.objects.create(product=product_obj)
+                            
+                            if len(product_variations)>0:
+                                obj.variation_set=quantity_item.variations.add(*product_variations)
+                            quantity_item.quantity = qty
+                            quantity_item.product = Product_description.objects.get(id=id)
+                            quantity_item.save()
+                            return HttpResponseRedirect(self.get_success_url())
+                        else:
+                            messages.warning(self.request, "OOps!  You had already entered this item\'s (with same color and size *if applied) quantity, You can update it in myproduct section in dashboard.")
+                            return redirect("addproductdetails")
+                    else:
+                        if Quantity.objects.filter(product__id = id).count() == 0:
+                            quantity_item= Quantity.objects.create(product=product_obj)
+                            
+                            if len(product_variations)>0:
+                                obj.variation_set=quantity_item.variations.add(*product_variations)
+                            quantity_item.quantity = qty
+                            quantity_item.product = Product_description.objects.get(id=id)
+                            quantity_item.save()
+                            return HttpResponseRedirect(self.get_success_url())
+                        else:
+                            messages.warning(self.request, "OOps! You had already entered this item\'s (with same color and size *if applied) quantity, You can update it in myproduct section in dashboard.")
+                            return redirect("addproductdetails")
+
+
+
                 else:
-                    messages.warning(self.request, "OOps! you already entered this item quantity.")
+                    messages.warning(self.request, "OOps! you entered wrong quantity.")
                     return redirect("addproductdetails")
-
-
             else:
-                messages.warning(self.request, "OOps! you entered wrong quantity.")
+                messages.warning(self.request, "You are not authorized to add the quantity.")
                 return redirect("addproductdetails")
+
 
             #obj.save()
             
@@ -532,7 +601,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Quantity added Successfully. !!!')
-        return reverse("addproductdetails")        
+        return reverse("productquantity", kwargs={'id': self.kwargs.get('id')})      
 
 
 
@@ -617,12 +686,12 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self,*args,**kwargs):
         context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']='Change your product details'
+        context['title']="Change your product's details"
         return context
     
     def get_success_url(self):
         messages.success(self.request, 'Updated Successfully !!!')
-        return reverse("supplier")
+        return reverse("myproduct")
 
 
 class my_productsimageView(LoginRequiredMixin,ListView):

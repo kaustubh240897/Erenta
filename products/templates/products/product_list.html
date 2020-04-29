@@ -175,9 +175,11 @@
 
           <!--Grid column-->
            {% for obj in products %}
-          <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;flex: 0 1 calc(30% - 5em);" >
+          <div class="col-lg-3 col-md-3 col-sm-4 mb-4" style="display: flex;
+        flex-wrap: wrap; flex-grow: 1;
+        flex-basis: 100px; flex-shrink: inherit;
+
+        justify-content: space-between;flex: calc(30% - 5em);" >
    
     
                   {% include 'products/snippets/card.html' with instance=obj %}

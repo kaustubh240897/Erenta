@@ -1,20 +1,68 @@
+
 {% extends "supplier_base.html" %}
+{% load static %}
 {% block content %}
-Welcome {{ request.user.full_name }}!
+<title>{{ title }}</title>
+<strong>Welcome {{ request.user.full_name }}! </strong>
 </br>
+<style>
+body, html {
+  height: 100%;
+}
+.bg {
+  /* The image used */
+  background-image: url('{% static "img/accessories.jpg" %}');
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.lg {
+  background-color:#293238 !important; color:white
+}
+</style>
+<div class='bg'>
 <div class='container'>
 <div class='row'>
     <div class='col-12'>
-        <h2 class='text-center'>Dashboard</h2>
+        <h2 class='text-center text-white'>Dashboard</h2>
         <hr/>
     </div>
+
+
 <div class='col-12 col-md-3 my-3'>
-<div class="card">
+<div class="card lg">
   <div class="card-body">
-    <h5 class="card-title">Support</h5>
+    <h5 class="card-title text-center">Add New Products</h5>
+      <strong> <a class='list-group-item' href='{% url "addproduct" %}'>Add new Product details </a></strong>
+    
+  </div>
+</div>
+</div>
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card lg" >
+  <div class="card-body">
+    <h5 class="card-title text-center">My Products(want to see or update?)</h5>
+      <strong> <a class='list-group-item' href='{% url "myproduct" %}'>My Products </a></strong>
+    
+  </div>
+</div>
+</div>
+
+
+<div class='col-12 col-md-3 my-3'>
+<div class="card lg" >
+  <div class="card-body">
+    <h5 class="card-title text-center">Support</h5>
       <div class='list-group'>
-          <a class='list-group-item' href='{% url "about" %}'>About </a>
-          <a class='list-group-item' href='{% url "contact" %}'>Contact </a>
+        <strong> <a class='list-group-item' href='{% url "about" %}'>About </a> </strong>
+        <strong> <a class='list-group-item' href='{% url "contact" %}'>Contact </a> </strong>
       </div>
       
     
@@ -24,12 +72,12 @@ Welcome {{ request.user.full_name }}!
 
 
 <div class='col-12 col-md-3 my-3'>
-<div class="card">
+<div class="card lg" >
   <div class="card-body">
-    <h5 class="card-title">Orders and Sales</h5>
+    <h5 class="card-title text-center">Orders and Sales</h5>
      <div class='list-group'>
-          <a class='list-group-item' href='{% url "orders:orders" %}'>My Orders </a>
-           <a class='list-group-item' href='{% url "supplier-sales-analytics" %}'>My Sales </a>
+        <strong> <a class='list-group-item' href='{% url "orders:orders" %}'>My Orders </a></strong>
+        <strong>  <a class='list-group-item' href='{% url "supplier-sales-analytics" %}'>My Sales </a></strong>
           
             <!-- <a class='list-group-item' href='#'>Addresses </a> -->
       </div>
@@ -45,35 +93,16 @@ Welcome {{ request.user.full_name }}!
 
 
 
-<div class='col-12 col-md-3 my-3'>
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Add New Products</h5>
-        <a class='list-group-item' href='{% url "addproduct" %}'>Add new Product details </a>
-    
-  </div>
-</div>
-</div>
+
 
 
 <div class='col-12 col-md-3 my-3'>
-<div class="card">
+<div class="card lg" >
   <div class="card-body">
-    <h5 class="card-title">My Products(want to see or update?)</h5>
-        <a class='list-group-item' href='{% url "myproduct" %}'>My Products </a>
-    
-  </div>
-</div>
-</div>
-
-
-<div class='col-12 col-md-3 my-3'>
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Your Account Information</h5>
-        <a class='list-group-item' href='{% url "account:user-update" %}'>Update Profile details </a>
-        <a class='list-group-item' href='{% url "businessdetailupdate" %}'>Update Personal details. </a>
-        <a class='list-group-item' href='{% url "bankdetailupdate" %}'>Update Bank details. </a>
+    <h5 class="card-title text-center">Your Account Information</h5>
+      <strong> <a class='list-group-item' href='{% url "account:user-update" %}'>Update Profile details </a> </strong>
+      <strong> <a class='list-group-item' href='{% url "businessdetailupdate" %}'>Update Personal details. </a> </strong>
+      <strong>  <a class='list-group-item' href='{% url "bankdetailupdate" %}'>Update Bank details. </a> </strong>
        
     
   </div>
@@ -83,6 +112,7 @@ Welcome {{ request.user.full_name }}!
 
 
 
+</div>
 </div>
 </div>
 {% endblock %}

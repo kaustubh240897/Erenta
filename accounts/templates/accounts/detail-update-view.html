@@ -2,8 +2,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-<div class='container'>
+<br/>
+<div class='container' style='background-color:#263238 ; color: white'>
     <div class="col-12 col-md-6 mx-auto">
         {% if title %} <h2 class='my-3 text-center'>{{ title }}</h2> {% endif %}
        
@@ -33,9 +33,10 @@
      <label for='email'>Email</label>
      <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
 <div class='text-center'>
-<button type='submit' class='btn btn-success'> Save </button>
-<a href='{% url "password_change" %}' >Change Password</a>
+<button type='submit' class='btn-lg btn btn-success'> Save </button>
+<a href='{% url "password_change" %}' >Change Password?</a>
 </div>
+<br/>
 </form>
 </div>
 </div>

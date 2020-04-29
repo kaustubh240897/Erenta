@@ -45,6 +45,7 @@ class ProductImageForm(forms.ModelForm):
     
 
 class ProductTagForm(forms.ModelForm):
+    tag_name = forms.CharField(label='Tag name', required=True, widget=forms.TextInput(attrs={'placeholder': 'Enter tag name relevent to the product eg-: electronic item, gadget, games, men\'s watch.'})) 
     class Meta:
         model = Tag
         fields = ['tag_name']
@@ -59,7 +60,7 @@ class ProductTagForm(forms.ModelForm):
     #     return product
     
 class ProductVariationForm(forms.ModelForm):
-    title = forms.CharField(label='title', required=True, widget=forms.TextInput(attrs={'placeholder': 'Please enter product variations like size or color one at a time.'})) 
+    title = forms.CharField(label='Title', required=True, widget=forms.TextInput(attrs={'placeholder': 'Please enter size: (eg-: Large, Medium(for clothing) or 100 cm screen (for electronics items)) or Enter color: (eg-: Black, blue)  '})) 
     
 
     class Meta:
@@ -81,10 +82,10 @@ class ProductQuantityForm(forms.ModelForm):
 
 
 class ProductDetailChangeForm(forms.ModelForm):
-    product_name = forms.CharField(label='product_name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
+    product_name = forms.CharField(label='product name', required=False, widget=forms.TextInput(attrs={"class":'form-control'}))
     description = forms.CharField(label='description',widget=forms.Textarea(attrs={'placeholder': 'Please enter the  description'}))
     #quantity = forms.IntegerField(label='quantity', required=False, widget=forms.NumberInput(attrs={"class":'form-control'}))
-    cost_per_day = forms.DecimalField(label='cost_per_day', required=False, widget=forms.NumberInput(attrs={"class":'form-control'}))
+    cost_per_day = forms.DecimalField(label='cost/day', required=False, widget=forms.NumberInput(attrs={"class":'form-control'}))
     # image = forms.FileField(widget=forms.ClearableFileInput(attrs={"class":'form-control'}))
 
 

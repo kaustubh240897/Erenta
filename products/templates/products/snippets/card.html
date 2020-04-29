@@ -23,18 +23,23 @@
   </div>
 </div> -->
 <style>
-              @media screen and (max-width: 992px) {
+              @media screen and ( max-width: 992px) {
                 #car1 {
-                  width: 17 rem;
+                  width: 15em ;
                 
                   
                 }
+              }
+              @media only screen and (min-width: 1200px) {
+                #car1 {
+                  width: 15rem ;
+              }
               }
 
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
                 #car1 {
-                  width: 11rem;
+                  width: 9rem ;
                   
             }
           }
@@ -45,10 +50,10 @@
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.image %}
-                 <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" style="height: 15rem" alt="{{ instance.title }} logo">
+                 <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" style="height: 15rem;" alt="{{ instance.title }} logo">
                    </a>
                   {% else %}
-                  <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
+                  <img class='card-img-top' style="height: 15rem" src='{% static "img/placeholder.png" %}'/>
                   {% endif %}
                
                 <a>
@@ -62,10 +67,10 @@
                 <!--Category & Title-->
         
                   
-                 <h5 class="card-title text-grey"> {{ instance.categary|capfirst }}</h5>
-                 <h6 class="text-grey"><p class="card-text">{{ instance.brand|capfirst }}</p></h6>
+                 <h6 class="card-title text-grey"> {{ instance.categary|capfirst }},{{ instance.brand|capfirst }}</h6>
+                
               
-                <h4>
+                <h5>
                   <strong>
                     <a href="{{ instance.get_absolute_url }}"><div class="text-grey">{{ instance.product_name|capfirst }}</div></a>
                      {% for t in trending %}
@@ -73,12 +78,14 @@
                       <span class="badge badge-pill badge-primary">Trending</span>
                       {% endif %}
                       {% endfor %}
-                      {% if instance.updated|timesince <= '4 weeks' %}
+                      {% if 'days' in instance.updated|timesince or 'minutes' in instance.updated|timesince or 'hours' in 'instance.updated|timesince' %}
+                     
                       <span class="badge badge-pill badge-danger">NEW</span>
+                    
                       {% endif %}
                     
                   </strong>
-                </h4>
+                </h5>
 
                 <h6 class="font-weight-bold blue-text">
                 <strong>  {% if instance.discount_price %}

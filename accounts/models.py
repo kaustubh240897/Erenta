@@ -11,12 +11,13 @@ from django.db.models.signals import pre_save, post_save
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 from django.core.mail import send_mail
 from Ecommerce_Intern.utils import random_string_generator,unique_key_generator
 from django.template.loader import get_template
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator
 
 #send_mail(subject, message, from_email, recipient_list, html_message)
 DEFAULT_ACTIVATION_DAYS = getattr(settings, 'DEFAULT_ACTIVATION_DAYS', 7)
@@ -91,7 +92,7 @@ def validate_image(image):
         if file_size > limit_mb * 1024 * 1024:
             raise ValidationError("Max size of file is %s MB" % limit_mb)
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(max_length=255,unique=True,null=True)
     full_name = models.CharField(max_length=255,blank=True,null=True)
     profile_image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, validators=[validate_image])
@@ -119,11 +120,11 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.email
 
-    def has_perm(self, perm, obj=None):
-        return True
+    # def has_perm(self, perm, obj=None):
+    #     return True
     
-    def has_module_perms(self, app_label):
-        return True
+    # def has_module_perms(self, app_label):
+    #     return True
     
     @property
     def is_staff(self):
@@ -293,7 +294,7 @@ class Supplier(models.Model):
 
 class Bank_Account_Detail(models.Model):
     Account_holder_name = models.CharField(max_length=100)
-    Account_number = models.PositiveIntegerField()
+    Account_number = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999999)])
     IFSC_code = models.CharField(max_length=20)
     Account_type = models.CharField(choices=ACCOUNT_TYPE, max_length=25)
     email = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)

@@ -2,8 +2,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
-<div class='container'>
+<br/>
+<div class='container' style='background-color: #263238; color:white'>
     <div class="col-12 col-md-6 mx-auto">
         {% if title %} <h1 class='my-3'>{{ title }}</h1> {% endif %}
     <form  method='POST' enctype="multipart/form-data"  action='{% if action_url %} {{ action_url }}{% endif %}'>
@@ -16,9 +16,10 @@
      {{ form|crispy }}<br/>
      <label for='email'>Email</label>
      <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
-     
-<button type='submit' class='btn btn-success'> Save </button>
-
+<div class='text-center'>
+<button type='submit' class='btn btn-success'> Update </button>
+</div>
+<br/>
 </form>
 </div>
 </div>

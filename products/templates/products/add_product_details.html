@@ -1,19 +1,24 @@
 {% extends "supplier_base.html" %}
 
 {% block content %}
+
 <div class='container'>
         <div class='row'>
             <div class='col-12 my-3'>
-                    <h1>Add more product details</h1>
+                    <h2 class='text-center'>Add product's details</h2>
                     <hr/>
             </div>
     {% for obj in qs %}
-        <div class='col'>
+        <div class='col-12'>
         {{ forloop.counter }}
         {% include 'products/snippets/supplier_changeproduct_details_card.html' with instance=obj %}  
+        <hr/>
+        
         </div>
+         
       {% empty %}
-      <p class='col-12'>   You have not created any products yet.</p>
+      <p class='col-12 text-center'>  Sorry! You have not created any products yet.</p>
+      
     {% endfor %}
 </div>
 </div>

@@ -31,14 +31,20 @@
             <style>
               @media screen and (max-width: 992px) {
                 #car {
-                  width: 17rem;
+                  width: 15rem;
                 }
               }
+               @media only screen and (min-width: 1200px) {
+                #car {
+                  width: 15rem ;
+              }
+              }
+
 
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
                 #car {
-                  width: 10rem;
+                  width: 8.35rem;
   }
 }
             </style>
@@ -47,7 +53,7 @@
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.product.image %}
-                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style="height: 19rem" alt="{{ instance.product.title }} logo">
+                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style='height:15rem' alt="{{ instance.product.title }} logo">
                    </a>
                   {% else %}
                   <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
@@ -64,19 +70,18 @@
                 <!--Category & Title-->
         
                   
-                 <h5 class="card-title text-grey"> {{ instance.product.categary|capfirst }}</h5>
-                 <h6 class="text-grey"><p class="card-text">{{ instance.product.brand }}</p></h6>
+                 <h6 class="card-title text-grey"> {{ instance.product.categary|capfirst }}, {{ instance.product.brand }}</h6>
               
-                <h4>
+                <h5>
                   <strong>
                     <a href="{{ instance.product.get_absolute_url }}"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
                       <span class="badge badge-pill badge-primary">Trending</span>
-                      {% if instance.updated|timesince <= '4 weeks' %}
+                     {% if 'weeks' in instance.updated|timesince or 'minutes' in instance.updated|timesince or 'hours' in 'instance.updated|timesince' %}
                       <span class="badge badge-pill badge-danger">NEW</span>
                       {% endif %}
                     
                   </strong>
-                </h4>
+                </h5>
 
                 <h6 class="font-weight-bold blue-text">
                 <strong>  {% if instance.product.discount_price %}

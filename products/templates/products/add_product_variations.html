@@ -1,17 +1,34 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class='container'>
+<br/>
 
-<h1>Add your Product Details</h1>
+{% if request.user == name.user %}
+<div class='container' style="background-color: #263238; color:white">
+Step 2 of 4:
+
+
+<h2 class='text-center'>Add Variations</h2>
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
      {{ form|crispy }}
-             
-<button type='submit' class='btn btn-success'>Save</button>
-</form>
+     <font color='orange'><strong>Note-: Please add one title at a time.</strong> </font>
+<div class='text-center'>
+<button type='submit' class='btn btn-success'>Add More</button>
+
 </div>
+<br/>
+</form>
+<div class='text-right'>
+<a href='{% url "productquantity" name.id %}' ><button class='btn btn-warning'>Next page --></button></a>
+</div>
+<br/>
+</div>
+{% else %}
+<h2 class='text-center'>Oops!, Permission denied.</h2>
+{% endif %}
+
 {% endblock %}

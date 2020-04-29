@@ -144,7 +144,7 @@ class Product_description(models.Model):
     #days = models.IntegerField( null=True, blank=True)
     brand = models.CharField(max_length=20, default=None,null=True)
     #registered_email = models.EmailField(null=True)
-    image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, validators=[validate_image])
+    image = models.ImageField(upload_to=upload_image_path, validators=[validate_image])
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
     timestamp= models.DateTimeField(auto_now_add=True)
@@ -212,7 +212,7 @@ class VariationManager(models.Manager):
 VAR_CATEGORIES = (
     ('size','size'),
     ('color','color'),
-    ('package','package'),
+    
 
 )
 
