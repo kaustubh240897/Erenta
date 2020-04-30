@@ -1,6 +1,7 @@
 from django.views.generic import ListView,DetailView,View,CreateView,FormView
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
@@ -546,7 +547,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                         if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',False)).filter(product__id = id, variations__title__iexact = self.request.POST.get('size',False)).count()==0:
                             quantity_item= Quantity.objects.create(product=product_obj)
                             
-                            if len(product_variations)>0:
+                            if len(product_variations) > 0:
                                 obj.variation_set=quantity_item.variations.add(*product_variations)
                             quantity_item.quantity = qty
                             quantity_item.product = Product_description.objects.get(id=id)
@@ -555,11 +556,11 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                         else:
                             messages.warning(self.request,'Oops! You had already entered this item\'s (with same color and size *if applied) quantity, You can update it in myproduct section in dashboard.')
                             return redirect("addproductdetails")
-                    elif self.request.POST.get('color',False) or self.request.POST.get('size',False):
-                        if Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',False)).count() + Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('size',False)).count() == 0:
+                    elif Q(self.request.POST.get('color',False)) | Q(self.request.POST.get('size',False)):
+                        if (Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('color',False)).count()) + (Quantity.objects.filter(product__id = id, variations__title__iexact = self.request.POST.get('size',False)).count()) == 0:
                             quantity_item= Quantity.objects.create(product=product_obj)
                             
-                            if len(product_variations)>0:
+                            if len(product_variations) > 0:
                                 obj.variation_set=quantity_item.variations.add(*product_variations)
                             quantity_item.quantity = qty
                             quantity_item.product = Product_description.objects.get(id=id)
@@ -572,7 +573,7 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
                         if Quantity.objects.filter(product__id = id).count() == 0:
                             quantity_item= Quantity.objects.create(product=product_obj)
                             
-                            if len(product_variations)>0:
+                            if len(product_variations) > 0:
                                 obj.variation_set=quantity_item.variations.add(*product_variations)
                             quantity_item.quantity = qty
                             quantity_item.product = Product_description.objects.get(id=id)
