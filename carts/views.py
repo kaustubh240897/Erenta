@@ -156,7 +156,7 @@ def add_to_cart(request,id):
         timedelta = date2-date1
         days = timedelta.days + 1
         print(timedelta.days+1)
-        if int(qty) >0:
+        if int(qty) >0 and int(timedelta.days) >= 0:
             for item in request.POST:
                 key = item
                 val = request.POST[key]
@@ -230,7 +230,9 @@ def add_to_cart(request,id):
             else:
                 messages.warning(request, 'sorry no items left !!!')
                 return redirect("cart:home")
-                            
+        else:
+            messages.warning(request, 'Oops!!! you added some invalid date field or quantity.Please check and fill again!')
+            return redirect("cart:home")                    
 
     messages.warning(request, 'Sorry!!! you added some invalid field Or This color or size of product not left !!!')
     return redirect("cart:home")
