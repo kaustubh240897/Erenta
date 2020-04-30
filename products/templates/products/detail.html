@@ -4,9 +4,22 @@
 {% block javascript %}
 <script>
 $(function(){
-    var dtToday = new Date();
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate()+1;
+    var dtToday = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+    var dtToday1 = new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000);
+    var month1 =  dtToday1.getMonth()+1;
+    var day1 = dtToday1.getDate();
+    var year1 = dtToday1.getFullYear();
+    if(month1 < 10)
+        month1 = '0' + month1.toString();
+    if(day1 < 10)
+        day1 = '0' + day1.toString();
+    var maxDate1 = year1 + '-' + month1 + '-' + day1;
+    $('#txtDate').attr('max', maxDate1);
+
+
+
+    var month = dtToday.getMonth()+1;
+    var day = dtToday.getDate();
     var year = dtToday.getFullYear();
     if(month < 10)
         month = '0' + month.toString();
@@ -490,9 +503,12 @@ function showSlides(n) {
 
           <!--Grid column-->
            {% for object in similar_products %}
-          <div class="col-lg-4 col-md-4 col-sm-4 mb-3" style="display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;flex: 0 1 calc(25% - 1em); align-content: center;">
+         <div class="col-lg-3 col-md-3 col-sm-4 mb-4" style="display: flex;
+        flex-wrap: wrap; flex-grow: 1;
+        flex-basis: 100px; flex-shrink: inherit;
+
+        justify-content: space-between;flex: calc(30% - 5em);" >
+   
   
        {% include 'analytics/trending_card.html' with instance=object %}
     </div>
