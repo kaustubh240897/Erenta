@@ -5,18 +5,15 @@
 
 <div class='container'>
 
-    <h2>Request Refund</h2>
+    <h2 class='text-center'>Request Refund</h2>
+   <font color='red'> <strong><p>** You will not get the refund now according to our cancellation policy, Thank you.</p></strong> </font>
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-    
+    <div class='text-center'>
         <button type='submit' class="btn btn-primary">Submit</button>
+    </div>
     </form>
-
-
-
-
-
 
 </div>
 

@@ -15,6 +15,8 @@
         <ul>{% for subitem in item.variations.all %} 
    <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
         <small class="text-muted">{{ item.product.description}}</small>
+    
+    
         <div class='row'>
             {% if item.refund_requested %}
             <b>Refund is requested, It will take upto 7 days. Please wait.</b>
@@ -23,7 +25,7 @@
             {% elif object.refund_requested or object.refund_granted %}
             <b>See below for status.</b>
             {% else %}
-            {% if time %}
+            {% if time or object.status == 'paid' %}
             <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-danger btn-sm' style="margin-right: 5px;margin-left: 5px;">Request Refund</button></a></p>
             {% endif %}
             {% endif %}
@@ -34,9 +36,16 @@
     {% endif %}
         </div>
         </div>
+        <div class='col-4'>
+        <span class='text-muted'> Status : </span>
+     <font color="green"> <strong> {{ item.status }} </strong></font>
+        </div>
+        <div>
+        <br/>
         <span class="text-muted">${{ item.line_total }}</span>
+     </div>
     </li>
-    
+    <hr/>
     {% endfor %}
       <li class="list-group-item d-flex justify-content-between">
         <span>Shipping Address :</span>

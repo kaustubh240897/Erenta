@@ -22,7 +22,7 @@ def home_page(request):
     
 
     context = {
-       "title":"Shop Now!",
+       "title":"Erenta!",
        "content" : "Welcome to shopnow!",
        "premium_content": "Welcome",
        "trending": View_Count.objects.all()[:8]

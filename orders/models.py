@@ -269,6 +269,11 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
+def post_save_cartitem_status(sender,instance,*args,**kwargs):
+    if instance.status == 'paid':
+        CartItem.objects.filter(cart=instance.cart).update(status='paid')
+post_save.connect(post_save_cartitem_status, sender=Order)
+
 
 class Refund(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)

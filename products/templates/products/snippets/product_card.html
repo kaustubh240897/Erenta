@@ -14,9 +14,9 @@
            {% endif %}
            </h6>
     <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
-    <a href="{{ instance.get_absolute_url1 }}" class="btn btn-warning">Update product details! </a>
-    <a href="{% url 'products:image' instance.slug %}" class="btn btn-primary">Update images! </a>
-    <a href="{% url 'products:quantity' instance.slug %}" class="btn btn-success">Update Quantity! </a>
+    <a href="{{ instance.get_absolute_url1 }}" class="btn btn-warning mb-2">Update product details! </a>
+    <a href="{% url 'products:image' instance.slug %}" class="btn btn-primary mb-2">Update images! </a>
+    <a href="{% url 'products:quantity' instance.slug %}" class="btn btn-success mb-2">Update Quantity! </a>
 
     
     

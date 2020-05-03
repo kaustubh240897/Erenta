@@ -1,25 +1,37 @@
 {% extends "supplier_base.html" %}
 
 {% block content %}
-        <div class='row'>
-            <div class='col-12 my-3'>
-                    <h1>My Product Images</h1>
+<br/>
+{% if request.user == name.user %}
+ <h2 class='text-center'>Update Images</h2>
                     <hr/>
-            </div>
+<div class='container' style='background-color: #263238; color:white'>
+        <div class='row'>
+           
+                   
+           
     {% for obj in qs %}
-        <div class='col'>
-        {{ forloop.counter }}
-    {{ obj.product }}
-       {{ obj.image }}
-       <div class="card" style="width: 18rem">
+        <div class='col-lg-4 col-md-6 col-sm-12'>
+        {{ forloop.counter }}.
+        {{ obj.product }}
+        {{ obj.image }}
+       <div class="card" style="width: 18rem; height:18rem">
        <img class='img-thumbnail' src='{{ obj.image.url }}' />
        </div>
-       <a href="{% url 'products:imageupdate' obj.id %}" class="btn btn-primary">Update images! </a>
-
+       <br/>
+       <div class='text-left mx-4'>
+       <a href="{% url 'products:imageupdate' obj.id %}" class="btn btn-primary">Update image </a>
+       </div>
+      </div>  
         
-        </div>
+        <br/>
       {% empty %}
-      <p class='col-12'>   You have not created any products yet.</p>
+      <p class='col-12 text-white text-center'> You have not created any products yet.</p>
     {% endfor %}
 </div>
+<br/>
+</div>
+{% else %}
+<h2 class='text-center mt-4'>Oops! Access Denied.</h2>
+{% endif %}
 {% endblock %}

@@ -44,20 +44,6 @@ def product_list_view(request):
     }
     return render(request,"products/product_list.html", context)
 
-# def product_detail_view(request, slug, *args, **kwargs):
-    
-#     instance = Product_description.objects.get_by_slug(slug=slug)
-#     if instance is None:
-#         raise Http404("product doesnot exist")
-
-    
-
-
-#     context = {
-#         'object': instance,
-#          "title":"Products_details",
-#     }
-#     return render(request,"products/product_detail.html", context)
 
 class UserProductHistoryView(LoginRequiredMixin ,ListView):
     template_name = "products/user-history.html"
@@ -391,6 +377,7 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         context = super(SupplierAddProductImageView, self).get_context_data(*args, **kwargs)
         id = self.kwargs.get('id')
         context['name'] = Product_description.objects.get(id=id)
+        context['product_images'] = ProductImage.objects.filter(product__id=id)
         return context
 
     def form_valid(self,form):
@@ -431,6 +418,7 @@ class SupplierTagView(LoginRequiredMixin,CreateView):
         id = self.kwargs.get('id')
         context['alag'] = "alag" 
         context['name'] = Product_description.objects.get(id=id)
+        context['tags'] = Tag.objects.filter(product_name__id=id)
         return context
 
     def form_valid(self,form):
@@ -472,6 +460,7 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
         context = super(SupplierAddProductVariationsView, self).get_context_data(*args, **kwargs)
         id = self.kwargs.get('id')
         context['name'] = Product_description.objects.get(id=id)
+        context['qs1']=Variation.objects.filter(product__id= id)
         return context
 
     def form_valid(self,form):
@@ -687,7 +676,9 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self,*args,**kwargs):
         context = super(ProductDetailUpdateView,self).get_context_data(*args,**kwargs)
-        context['title']="Change your product's details"
+        slug = self.kwargs.get('slug')
+        context['title']="Change product's details"
+        context['name'] = Product_description.objects.get(slug=slug)
         return context
     
     def get_success_url(self):
@@ -704,6 +695,7 @@ class my_productsimageView(LoginRequiredMixin,ListView):
         slug = self.kwargs.get('slug')
         context = super().get_context_data(**kwargs)
         context['qs'] = ProductImage.objects.filter(product__slug = slug)
+        context['name'] = Product_description.objects.get(slug=slug)
         return context
        
 
@@ -734,7 +726,9 @@ class ProductImageUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self,*args,**kwargs):
         context = super(ProductImageUpdateView,self).get_context_data(*args,**kwargs)
+        id = self.kwargs.get('id')
         context['title']='Update your product images'
+        context['name'] = ProductImage.objects.get(id=id)
         return context
     
     def get_success_url(self):
@@ -753,6 +747,7 @@ class my_productsquantityView(LoginRequiredMixin,ListView):
         context = super().get_context_data(**kwargs)
         context['qs1']=Variation.objects.filter(product__slug= slug)
         context['qs'] = Quantity.objects.filter(product__slug = slug)
+        context['name'] = Product_description.objects.get(slug=slug)
         return context
 
 class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
@@ -783,7 +778,9 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self,*args,**kwargs):
         context = super(ProductQuantityUpdateView,self).get_context_data(*args,**kwargs)
         # context['title']='Update your product images'
+        id = self.kwargs.get('id')
         context['title1']='Update your product quantity'
+        context['name'] = Quantity.objects.get(id=id)
         return context
     
     def get_success_url(self):
@@ -831,7 +828,8 @@ class ProductRefundView(View):
     def get(self, *args, **kwargs):
         form = ProductRefundForm()
         context={
-            'form': form
+            'form': form,
+            'product_refund': 'product_refund'
         }
         return render(self.request, "products/review.html" ,context)
     def post(self,*args, **kwargs):

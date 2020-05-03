@@ -5,12 +5,20 @@
 
 <div class='container'>
 
-    <h2>Give us the feedback.</h2>
+   
+{% if product_refund %}
+ <h2 class='text-center'>Request the refund this product.</h2>
+ <font color='green'> <strong><p>** You will get refund within 7 days and for more details please refer refund policy, Thank you.</p></strong> </font>
+ {% else %}
+ <h2 class='text-center'>Give us the feedback.</h2>
+ {% endif %}
+
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-    
+    <div class='text-center'>
         <button type='submit' class="btn btn-primary">Submit</button>
+    </div>
     </form>
 
 

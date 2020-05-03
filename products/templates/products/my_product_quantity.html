@@ -1,49 +1,58 @@
 {% extends "supplier_base.html" %}
 
 {% block content %}
+{% if request.user == name.user %}
         <div class='row'>
             <div class='col-12 my-3'>
-                    <h1>My Product Quantity</h1>
+                    <h2 class='text-center'>My Product Quantity</h2>
                     <hr/>
             </div>
-            <div class='container'>
-    <h2> Product variations available for this product.</h2>
+      <div class='container' style='background-color:teal; color:white'>
+    <h4 class='text-center'> Product's colors and sizes available now.</h4>
      {% for obj in qs1 %}
      
-      <div class='col'>
-        {{ forloop.counter }}.
+      <div class='col text-left'>
+    <strong> {{ forloop.counter }}.
+
        {{ obj.product }}
-       {{ obj.title }}
-       {{ obj.category }}
+       {{ obj.title }} {{ obj.category }}
+      
+      </strong>
       </div>
        {% endfor %}
+    
     <hr/>
     </br>
         </div>
-      {% for obj in qs %}
-         <div class='container'>
+    
+         <div class='container' style='background-color: #263238; color:white'>
+           <h4 class='text-center'> Available Product quantity (for each variations).</h4>
+            {% for obj in qs %}
             <div class='col-12 my-3'>
-        {{ forloop.counter }}.
+      <strong>  {{ forloop.counter }}.
        {{ obj.product }},
        {% for item in obj.variations.all %}
-       {{ item.title }} {{ item.category }},
+       {{ item.title }} {{ item.category }}, 
        {% endfor %}
        
        {% if obj.quantity > 8 %}
-        Available Quantity-: {{ obj.quantity }} only 
+      <font color="green"> Available Quantity-: {{ obj.quantity }} only </font>
        {% else %}
-       <font color="red">Available Quantity-: {{ obj.quantity }} only </font>
+       <font color="red">Available Quantity-: {{ obj.quantity }} only </font> 
        {% endif %}
-       
-       <a href="{% url 'products:quantityupdate' obj.id %}" class="btn btn-warning">Update Quantity! </a>
-
-        
-        
+      
+      </strong>
+       <a href="{% url 'products:quantityupdate' obj.id %}" class=" btn btn-success">Update Quantity? </a>
          </div>
-         </div>
+      <br/>
       {% empty %}
       <p class='col-12'>  You have not created any products yet.</p>
     {% endfor %}
+  <hr/>
+    <strong>Note: If quantity for any size and color not available, Then <a href='{% url "addproductdetails" %}'> Add here.</a>  </strong>
     </div>
 </div>
+{% else %}
+<h2 class='text-center mt-4'>Oops! Access Denied.</h2>
+{% endif %}
 {% endblock %}

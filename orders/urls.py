@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view
+from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view,update_status_to_shipped_view, update_status_to_returned_view
 
 urlpatterns = [
    
@@ -14,6 +14,8 @@ urlpatterns = [
     #path('created_orders/<order_id>/',created_order_checkout_home,name='created_orders'),
     path('update_address/<order_id>/',shipping_address_update_view,name='update_address'),
     path('update_billingaddress/<order_id>/',billing_address_update_view,name='update_billingaddress'),
+    path('update_status_to_shipped/<order_id>/<cartitem_id>/',update_status_to_shipped_view,name='update_status_to_shipped'),
+    path('update_status_to_returned/<order_id>/<cartitem_id>/',update_status_to_returned_view,name='update_status_to_returned'),
     
 
 

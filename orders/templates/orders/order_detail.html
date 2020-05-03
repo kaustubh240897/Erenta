@@ -26,8 +26,9 @@
 <p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
 {% elif object.status == 'refunded' or object.refund_granted %}
 <p> <strong>Status : Refund is granted. </strong> </p>
-{% elif object.status == 'paid' %}
-<a  href='{% url "refund" object.order_id %}'><button class='btn btn-danger'>Refund Order</button></a>
+{% elif cancel_time and object.status == 'shipped' %}
+
+<a  href='{% url "refund" object.order_id %}'><button class='btn btn-danger'>Cancel Order</button></a>
 
 {% endif %}
 </div>

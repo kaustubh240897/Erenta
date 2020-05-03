@@ -37,9 +37,24 @@ stripe.api_key =  STRIPE_SECRET_KEY
 class OrderListView(LoginRequiredMixin,ListView):
     model = Order
     template_name = 'orders/order_list.html'
-    def get_queryset(self):
-        
-        return Order.objects.by_request(self.request).not_created()
+    
+    # def get_queryset(self):
+    #     return Order.objects.by_request(self.request).not_created()
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(OrderListView, self).get_context_data(*args, **kwargs)
+        queryset = Order.objects.filter(billing_profile__email=self.request.user).not_created()
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(queryset, 10)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        context['products'] = products
+        return context
+
 
 class OrderDetailView(LoginRequiredMixin,DetailView):
     model = Order
@@ -51,6 +66,7 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
         context['time']=Order.objects.filter(order_id=order_id,updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
+        context['cancel_time']=Order.objects.filter(order_id=order_id,updated__lte=datetime.datetime.now() - datetime.timedelta(hours=24))
         return context
 
     def get_object(self):
@@ -99,6 +115,19 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
         return (all_orders)
         # return Order.objects.all().not_created()
         #return Order.objects.all().not_created().cart.products.all.filter(registered_email=self.request.user)
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
+        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user).not_created().distinct()
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(queryset, 10)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        context['products'] = products
+        return context
 
 
 class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
@@ -286,6 +315,28 @@ def add_coupon(request, cart):
         
 #     }
 #     return render(request,"carts/checkout.html", context)
+
+def update_status_to_shipped_view(request, order_id, cartitem_id):
+    try:
+        item_status = CartItem.objects.get(id=cartitem_id)
+        item_status.status = 'shipped'
+        item_status.save()
+        messages.success(request, "Item's status has been updated successfully, Thank you for shipping the Item.")
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(order_id,)))
+    except ObjectDoesNotExist:
+        messages.info(request, "You do not have an active order")
+        return redirect("orders:orders")
+
+def update_status_to_returned_view(request, order_id, cartitem_id):
+    try:
+        item_status = CartItem.objects.get(id=cartitem_id)
+        item_status.status = 'returned back'
+        item_status.save()
+        messages.success(request, "Item's status has been updated successfully, Thank you for receiving the Item.")
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(order_id,)))
+    except ObjectDoesNotExist:
+        messages.info(request, "You do not have an active order")
+        return redirect("orders:orders")
 
 
 def shipping_address_update_view(request,order_id):

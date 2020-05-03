@@ -4,20 +4,40 @@
 <br/>
 
 {% if request.user == name.user %}
+{% if qs1 %}
+    <div class='container' style='background-color:teal; color:white'>
+    
+    <h4 class='text-center'> Product's colors and sizes added till now.</h4>
+     {% for obj in qs1 %}
+     
+      <div class='col text-left'>
+    <strong> {{ forloop.counter }}.
+
+       {{ obj.product }}
+       {{ obj.title }} {{ obj.category }}
+      
+      </strong>
+      </div>
+       {% endfor %}
+    
+    <hr/>
+    </br>
+        </div>
+{% endif %}
 <div class='container' style="background-color: #263238; color:white">
-Step 2 of 4:
 
 
-<h2 class='text-center'>Add Variations</h2>
+ Step 2 of 4:
+<h2 class='text-center'>Add colors and sizes</h2>
 </br>
 <form method='POST' enctype="multipart/form-data">{% csrf_token %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
      {{ form|crispy }}
-     <font color='orange'><strong>Note-: Please add one title at a time.</strong> </font>
+     <font color='orange'><strong>Note-: Please add one name at a time.</strong> </font>
 <div class='text-center'>
-<button type='submit' class='btn btn-success'>Add More</button>
+<button type='submit' class='btn btn-success'>Add it</button>
 
 </div>
 <br/>

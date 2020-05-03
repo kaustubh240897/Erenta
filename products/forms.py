@@ -60,7 +60,7 @@ class ProductTagForm(forms.ModelForm):
     #     return product
     
 class ProductVariationForm(forms.ModelForm):
-    title = forms.CharField(label='Title', required=True, widget=forms.TextInput(attrs={'placeholder': 'Please enter size: (eg-: Large, Medium(for clothing) or 100 cm screen (for electronics items)) or Enter color: (eg-: Black, blue)  '})) 
+    title = forms.CharField(label='Size or Color name', required=True, widget=forms.TextInput(attrs={'placeholder': 'Please enter size: (eg-: Large, Medium(for clothing) or 100 cm screen (for electronics items)) or Enter color: (eg-: Black, blue)  '})) 
     
 
     class Meta:
