@@ -126,7 +126,7 @@ def remove_cart(request,id):
 
 
 def add_to_cart(request,id):
-    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
+    #request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     request.session.set_expiry(1200000)
 
     product_id=request.POST.get('product_id',None)
@@ -244,9 +244,9 @@ def add_to_cart(request,id):
 
 
 def checkout_home(request):
-    request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
-    = request.user, viewed=False).count()
-    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
+    # request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+    # = request.user, viewed=False).count()
+    # request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     cart_obj, cart_created = Cart.objects.new_or_get(request)
     order_obj=None
     if cart_created or cart_obj.cartitem_set.count()==0:

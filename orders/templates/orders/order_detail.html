@@ -9,7 +9,7 @@
 
  <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-         <h2> Your Order Id -: {{ object.order_id }}</h2>
+         <h2 class='text-center'> Your Order Id -: {{ object.order_id }}</h2>
           <hr/>
     </div>
 </div>
@@ -26,7 +26,7 @@
 <p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
 {% elif object.status == 'refunded' or object.refund_granted %}
 <p> <strong>Status : Refund is granted. </strong> </p>
-{% elif cancel_time and object.status == 'shipped' %}
+{% elif cancel_time and order_status %}
 
 <a  href='{% url "refund" object.order_id %}'><button class='btn btn-danger'>Cancel Order</button></a>
 

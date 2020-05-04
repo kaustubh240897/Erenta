@@ -25,7 +25,7 @@
             {% elif object.refund_requested or object.refund_granted %}
             <b>See below for status.</b>
             {% else %}
-            {% if time or object.status == 'paid' %}
+            {% if time or item.status == 'paid' %}
             <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-danger btn-sm' style="margin-right: 5px;margin-left: 5px;">Request Refund</button></a></p>
             {% endif %}
             {% endif %}
@@ -59,10 +59,10 @@
         <span>Your Email :  </span>
         <strong>{{ object.billing_profile }}</strong>
     </li>
-     <li class="list-group-item d-flex justify-content-between">
+     <!-- <li class="list-group-item d-flex justify-content-between">
         <span>Order's Status : </span>
      <font color="green"> <strong> {{ object.get_status }} </strong></font>
-    </li>
+    </li> -->
     {% if object.cart.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">

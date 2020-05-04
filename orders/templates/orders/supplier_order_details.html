@@ -9,7 +9,7 @@
 
  <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-         <h1>Order {{ object.order_id }}</h1>
+         <h2 class='text-center'>Order {{ object.order_id }}</h2>
           <hr/>
     </div>
 </div>
@@ -24,20 +24,29 @@
     <ul class="list-group mb-3 z-depth-1">
      {% for item in object.cart.cartitem_set.all %}
      {% if item.product.user == request.user %}
+        {% if item.product.image %}
+        <img style="width:4rem !important; height:4rem !important;"  src='{{ item.product.image.url }}' class='img-fluid' />
+        {% endif %}
     <li class="list-group-item d-flex justify-content-between lh-condensed">
+
         <div>
         <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name|capfirst }}</h6>
         <small class="text-muted">{{ item.product.description}}</small>
         </div>
+         
+     <div>
         <span class="text-muted">${{ item.line_total }}</span>
+        </div>
+       
     </li>
-    <div class="card" style="width: 18rem">
-      {% if item.product.image %}
-      <img src='{{ item.product.image.url }}' class='img-fluid' />
-      </div>
-    {% endif %}
-    Status: {{ item.status }}  <a href='{% url "orders:update_status_to_shipped" object.order_id item.id %}'> Update status to Shipped?</a>
-     <a href='{% url "orders:update_status_to_returned" object.order_id item.id %}'> Update status to returned back?</a>
+    <div>
+        <strong> <font color='green'>Status: {{ item.status }} </font> {% if item.status == 'paid' %}  <a class='mx-4' title='If this Item is Shipped to the customer then click it' href='{% url "orders:update_status_to_shipped" object.order_id item.id %}'> Update status to Shipped?</a> {% endif %}
+     {% if item.status == 'shipped' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" object.order_id item.id %}'> Update status to returned back?</a> </strong> {% endif %}
+        <hr/> 
+       </div>
+        
+    
+    
     {% endif %}
     {% endfor %}
     <li class="list-group-item d-flex justify-content-between bg-light">
@@ -58,16 +67,18 @@
         <small>{{ object.billing_profile }}</small>
         </div>
     </li>
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
+    <!-- <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div class="text-danger">
         <h6 class="my-0">Order's Status</h6>
         <small>{{ object.status }}</small> 
         </div>
-    </li>
+    </li> -->
     </ul>
     </div>
+    <div class='text-center'>
 <a href="/supplierreviews/"> <button class='btn btn-primary'>Rate your customer!</button></a>
 <a href="{% url 'supplierpdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+</div>
 </div>
 </div>
 

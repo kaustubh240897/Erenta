@@ -78,7 +78,7 @@
                       <span class="badge badge-pill badge-primary">Trending</span>
                       {% endif %}
                       {% endfor %}
-                      {% if 'days' in instance.updated|timesince or 'minutes' in instance.updated|timesince or 'hours' in 'instance.updated|timesince' %}
+                      {% if 'days' in instance.updated|timesince or 'day' in instance.updated|timesince or 'hour' in instance.updated|timesince or 'minutes' in instance.updated|timesince or 'hours' in 'instance.updated|timesince' %}
                      
                       <span class="badge badge-pill badge-danger">NEW</span>
                     

@@ -65,6 +65,7 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
+        context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
         context['time']=Order.objects.filter(order_id=order_id,updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
         context['cancel_time']=Order.objects.filter(order_id=order_id,updated__lte=datetime.datetime.now() - datetime.timedelta(hours=24))
         return context
