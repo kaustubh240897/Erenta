@@ -9,6 +9,47 @@
         <h2 class='text-center'>Orders</h2>
     </div>
 </div>
+<div class='container' style='background-color: black;'>
+  <div class='row'>
+    {% if paid_orders %}
+    <div class='col-3 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-3 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:list' %}">Paid orders</a> </strong>
+</div>
+{% if shipped_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:shippedlist' %}">Shipped orders</a> </strong>
+</div>
+{% if refund_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:refundedlist' %}">Refunded orders</a> </strong>
+</div>
+{% if returned_orders %}
+    <div class='col-3 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-3 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:returnedlist' %}">Retruned back orders after rental timeperiod</a> </strong>
+</div>
+  {% if cancelled_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+      
+<strong><a href="{% url 'orders:cancelledlist' %}">Cancelled orders</a> </strong>
+</div>
+
+</div>
+</div>
 <div class='row'>
     <div class='col'>
         <table class='table table-dark'>
@@ -23,7 +64,7 @@
                          {% for item in object.cart.cartitem_set.all %} {{ item.quantity}} X {{ item.product }} {% if not forloop.last %} , {% endif %}
                          {% endfor %}
                         </td>
-                        <td>{{ object.get_status }}</td>
+                        <td>{{ object.status }}</td>
                         <td>$ {{ object.total }}</td>
                         <td> {{ object.timestamp }}</td>
                         <td><a class='btn btn-sm  btn-primary' href='{{ object.get_absolute_url }}'>View your Order</a></td>
@@ -36,7 +77,6 @@
         </table>
     </div>
 </div>
-
 
 
   {% if products.has_other_pages %}

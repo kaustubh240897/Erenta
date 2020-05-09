@@ -8,6 +8,52 @@
         <h2 class='text-center'>Orders</h2>
     </div>
 </div>
+<div class='container' style='background-color: black;'>
+  <div class='row'>
+    {% if paid_orders %}
+    <div class='col-3 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-3 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:orders' %}">Paid orders</a> </strong>
+</div>
+{% if shipped_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:shippedsupplierorders' %}">Shipped orders</a>  </strong>
+</div>
+{% if refund_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:refundedsupplierorders' %}">Refunded orders</a>  </strong>
+</div>
+{% if returned_orders %}
+    <div class='col-3 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-3 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:returnedsupplierorders' %}">Return back orders after timeperiod</a> </strong>
+</div>
+  {% if cancelled_orders %}
+    <div class='col-2 text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-2 text-center'>
+      {% endif %}
+      
+<strong><a href="{% url 'orders:cancelsupplierorders' %}">Cancelled orders</a> </strong>
+</div>
+
+</div>
+</div>
+
+
+
+
+ 
 <div class='row'>
     <div class='col'>
         <table class='table table-dark'>

@@ -274,17 +274,33 @@ def post_save_cartitem_status(sender,instance,*args,**kwargs):
         CartItem.objects.filter(cart=instance.cart).update(status='paid')
 post_save.connect(post_save_cartitem_status, sender=Order)
 
+def post_save_order_status(sender,instance,*args,**kwargs):
+    qs = CartItem.objects.filter(cart=instance.cart).count()
+    qs1 = CartItem.objects.filter(cart=instance.cart, status='shipped').count()
+    if qs == qs1:
+        Order.objects.filter(cart=instance.cart).update(status='shipped')
 
-class Refund(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    email = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
+post_save.connect(post_save_order_status, sender=CartItem)
+
+def post_save_order_return_status(sender,instance,*args,**kwargs):
+    qs = CartItem.objects.filter(cart=instance.cart).count()
+    qs1 = CartItem.objects.filter(cart=instance.cart, status='returned back').count()
+    if qs == qs1:
+        Order.objects.filter(cart=instance.cart).update(status='returned back')
+
+post_save.connect(post_save_order_return_status, sender=CartItem)
+
+
+class Cancel_Item(models.Model):
+    product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    email = models.ForeignKey(User,on_delete=models.CASCADE)
     reason = models.TextField()
     accepted = models.BooleanField(default=False)
     timestamp= models.DateTimeField(auto_now_add=True)
 
-
     def __str__(self):
-        return "%s requested refund on %s" %(self.pk, self.timestamp)
+        return f"{self.product_id}"
+
 
 
 

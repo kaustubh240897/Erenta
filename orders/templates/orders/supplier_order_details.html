@@ -41,14 +41,14 @@
     </li>
     <div>
         <strong> <font color='green'>Status: {{ item.status }} </font> {% if item.status == 'paid' %}  <a class='mx-4' title='If this Item is Shipped to the customer then click it' href='{% url "orders:update_status_to_shipped" object.order_id item.id %}'> Update status to Shipped?</a> {% endif %}
-     {% if item.status == 'shipped' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" object.order_id item.id %}'> Update status to returned back?</a> </strong> {% endif %}
+     {% if item.status == 'shipped' or item.status == 'refund requested' or item.status == 'cancellation request' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" object.order_id item.id %}'> Update status to returned back?</a> </strong> {% endif %}
         <hr/> 
        </div>
         
-    
-    
     {% endif %}
     {% endfor %}
+     {% for item in object.cart.cartitem_set.all %}
+     {% if item.product.user == request.user and forloop.counter == 1 %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Shipping Address</h6>
@@ -67,6 +67,7 @@
         <small>{{ object.billing_profile }}</small>
         </div>
     </li>
+   
     <!-- <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div class="text-danger">
         <h6 class="my-0">Order's Status</h6>
@@ -79,9 +80,10 @@
 <a href="/supplierreviews/"> <button class='btn btn-primary'>Rate your customer!</button></a>
 <a href="{% url 'supplierpdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
 </div>
+  {% endif %}
+  {% endfor %}
 </div>
 </div>
-
 
     
 {% endblock %}

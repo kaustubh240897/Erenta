@@ -18,7 +18,7 @@
     
     
         <div class='row'>
-            {% if item.refund_requested %}
+            {% if item.refund_requested and not item.refund_granted %}
             <b>Refund is requested, It will take upto 7 days. Please wait.</b>
             {% elif item.refund_granted %}
             <b>Refund is granted successfully.</b>
@@ -29,10 +29,11 @@
             <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-danger btn-sm' style="margin-right: 5px;margin-left: 5px;">Request Refund</button></a></p>
             {% endif %}
             {% endif %}
-    
+           
     <a href="{% url 'review' item.product.slug %}"> <button class='btn btn-primary btn-sm'> Rate the product</button></a>
+    
     {% if not paid %}
-    <a href='{{ item.product.get_absolute_url }}'>  <button class='btn btn-warning btn-sm' style="margin-left: 5px;">  Add to cart Now?</button> </a>
+    <a href='{{ item.product.get_absolute_url }}'  target="_blank">  <button class='btn btn-warning btn-sm' style="margin-left: 5px;">  Add to cart Now?</button> </a>
     {% endif %}
         </div>
         </div>
@@ -43,7 +44,21 @@
         <div>
         <br/>
         <span class="text-muted">${{ item.line_total }}</span>
+         <div>
+         <br/>
+         <br/>
+         <br/>
+         <br/>
+     {% if cancel_time and item.status == 'shipped' and not item.cancel_request %}
+        <a  href='{% url "refund" item.id item.product.slug %}'><button class='btn-sm btn btn-danger'>Cancel Item</button></a>
+    {% elif item.status == 'cancellation request' and item.cancel_request and not item.cancel_granted %}
+   <b><p>Cancel request has been initiated.</p> </b>
+   {% elif item.cancel_granted %}
+   <b><p>Cancellation has been done.</p> </b>
+        {% endif %}
+    </div>
      </div>
+    
     </li>
     <hr/>
     {% endfor %}

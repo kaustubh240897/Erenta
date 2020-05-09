@@ -848,6 +848,7 @@ class ProductRefundView(View):
                 product_item=CartItem.objects.get(id=id)
                 #order.status = refunded
                 product_item.refund_requested = True
+                product_item.status = 'refund requested'
                 #product_item.line_total = None
                 product_item.save()
                 #store the refund

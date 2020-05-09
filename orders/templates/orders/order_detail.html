@@ -3,8 +3,6 @@
 
 {% block content %}
 
-
-
  <br/>
 
  <div class='row'>
@@ -22,13 +20,11 @@
 {% include 'orders/order_snippet.html' %}
 <div class='text-center'>
 <a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
-{% if object.refund_requested %}
+{% if object.refund_requested and not object.refund_granted %}
 <p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
 {% elif object.status == 'refunded' or object.refund_granted %}
 <p> <strong>Status : Refund is granted. </strong> </p>
-{% elif cancel_time and order_status %}
 
-<a  href='{% url "refund" object.order_id %}'><button class='btn btn-danger'>Cancel Order</button></a>
 
 {% endif %}
 </div>

@@ -50,7 +50,9 @@ class CartItem(models.Model):
     line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
     status             = models.CharField(max_length=50, default='created')
     refund_requested   = models.BooleanField(default=False)
-    refund_granted     = models.BooleanField(default=False) 
+    refund_granted     = models.BooleanField(default=False)
+    cancel_request     = models.BooleanField(default=False)
+    cancel_granted    = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     

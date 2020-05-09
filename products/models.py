@@ -8,6 +8,8 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import pre_save,post_save
 from Ecommerce_Intern.utils import unique_slug_generator
 from django.urls import reverse
+from django.db.models import Sum,Avg,Count
+from decimal import Decimal
 from django.core.exceptions import ValidationError
 #from django.contrib.auth import get_user_model
 
@@ -137,7 +139,8 @@ class Product_description(models.Model):
     sub_categary = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=True,blank=True)
     sub_sub_categary = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,null=True,blank=True) 
     description = models.TextField()
-    #quantity = models.IntegerField(default=1) 
+    #quantity = models.IntegerField(default=1)
+    rating = models.DecimalField(max_digits=3,decimal_places=1,default=0.0) 
     cost_per_day = models.DecimalField(max_digits=15, decimal_places=2 , null=True)
     discount_price = models.DecimalField(max_digits=15, decimal_places=2,blank=True,null=True)
     #size = MultiSelectField(choices=MY_CHOICES,default=5)
@@ -259,7 +262,7 @@ RATING = (
 class User_Review(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     email     = models.ForeignKey(User,on_delete=models.CASCADE)
-    rating    = models.CharField(choices=RATING, default=5, max_length=10)
+    rating    = models.IntegerField(choices=RATING, default=5)
     review = models.TextField()
     timestamp= models.DateTimeField(auto_now_add=True)
     
@@ -269,6 +272,14 @@ class User_Review(models.Model):
     
     # def get_absolute_url_review(self):
     #     return reverse("review",kwargs={"product_id":self.product_id})
+
+def post_save_review(sender,instance,created,*args,**kwargs):
+    if created:
+        rt = User_Review.objects.filter(product_id__slug=instance.product_id.slug).aggregate(Avg("rating"))
+        print(sum(rt.values()))
+        
+        Product_description.objects.filter(slug=instance.product_id.slug).update(rating=sum(rt.values()))
+post_save.connect(post_save_review, sender=User_Review)
 
 class Product_Refund(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)

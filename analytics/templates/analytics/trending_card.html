@@ -53,7 +53,7 @@
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.product.image %}
-                 <a href="{{ instance.product.get_absolute_url }}" ><img src="{{ instance.product.image.url }}" class="card-img-top" style='height:15rem' alt="{{ instance.product.title }} logo">
+                 <a href="{{ instance.product.get_absolute_url }}" target="_blank"><img src="{{ instance.product.image.url }}" class="card-img-top" style='height:15rem' alt="{{ instance.product.title }} logo">
                    </a>
                   {% else %}
                   <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
@@ -74,7 +74,7 @@
               
                 <h5>
                   <strong>
-                    <a href="{{ instance.product.get_absolute_url }}"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
+                    <a href="{{ instance.product.get_absolute_url }}" target="_blank"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
                       <span class="badge badge-pill badge-primary">Trending</span>
                    {% if 'days' in instance.product.updated|timesince or 'minutes' in instance.product.updated|timesince or 'hours' in 'instance.product.updated|timesince' %}
                      
