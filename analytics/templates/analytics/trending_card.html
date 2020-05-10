@@ -47,6 +47,10 @@
                   width: 8.35rem;
   }
 }
+        .checked {
+          color: orange;
+        }
+    
             </style>
             <div id=car class="card">
 
@@ -69,7 +73,45 @@
               <div class="card-body text-center">
                 <!--Category & Title-->
         
-                  
+         {% if instance.product.rating >= 1 %}
+              ({{ instance.product.rating }})
+              {% endif %}
+                {% if instance.product.rating >= 1 and instance.product.rating < 2 %}
+          <span class="fa fa-star checked"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            {% endif %}
+
+            {% if instance.product.rating >= 2 and instance.product.rating < 3 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if instance.product.rating >= 3 and instance.product.rating < 4 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if instance.product.rating >= 4 and instance.product.rating < 4.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if  instance.product.rating >= 4.5 and instance.product.rating <= 5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        {% endif %}                  
                  <h6 class="card-title text-grey"> {{ instance.product.categary|capfirst }}, {{ instance.product.brand }}</h6>
               
                 <h5>

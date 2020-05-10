@@ -227,42 +227,66 @@ For better experience please Login.
     	</div>
     	<!-- /firstslider -->
       
-    </br>
-  </br>
+  <br/>
+  <style>
+  .responsive {
+  position: relative !important;
+  
+  width: 100%;
+  max-width: 400px;
+  height: auto !important;
+}
+ @media only screen and (min-width: 1200px) {
+                .carr {
+                  padding-top: 4rem !important;
+              }
+              }
+ @media screen and (max-width: 992px) {
+                .carr {
+                  padding-top: 8rem !important;
+                }
+              }
+
+ @media screen and (max-width: 600px) {
+                .carr {
+                 padding-top: 6rem !important;
+  }
+} 
+
+  </style>
       <h2 class="text-center"> Popular Categories </h2>
-    </br>
     	<!-- second slider -->
 
     	<div class="container-fluid">
-    		<div class="site-slider-two px-md-4">
+    		<div class="site-slider-two">
     			<div class="row slider-two text-center">
-    				<div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/videogame.jpg' %}" alt="Product 1"/>
+    				<div class="col-md-2 product">
+    					<img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/>
     				<a href="{% url 'products:query1' 'playstations' %}">	<button class="btn-dark btn btn-sm">Playstation</button></a>
     				</div>
-    				<div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/accessories.jpg' %}" alt="Product 2"/>
+    				<div class="col-md-2 product">
+    					<img src="{% static 'img/accessories.jpg' %}" class="responsive carr" alt="Product 2"/>
     				<a href="{% url 'products:query1' 'menaccessories' %}"><button class="btn-dark btn btn-sm">Accessories</button></a>
     				</div>
-    				<div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/books.jpg' %}" alt="Product 3"/>
+    				<div class="col-md-2 product">
+    					<img src="{% static 'img/books.jpg' %}" class="responsive carr" alt="Product 3"/>
     				<a href="{% url 'products:query' 'booksnovels' %}">	<button class="btn-dark btn btn-sm">Books</button></a>
     				</div>
-    				<div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/clothing.jpg' %}" alt="Product 4"/>
+    				<div class="col-md-2 product">
+    					<img src="{% static 'img/clothing.jpg' %}" class="responsive carr" alt="Product 4"/>
     				<a href="{% url 'products:query1' 'menclothing' %}"><button class="btn-dark btn btn-sm">Clothing</button></a>
     				</div>
-    				<div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/electronics.jpg' %}" alt="Product 5"/>
+    				<div class="col-md-2 product">
+    					<img src="{% static 'img/electronics.jpg' %}" class="responsive carr" alt="Product 5"/>
     			  <a href="{% url 'products:query' 'electronics' %}"><button class="btn-dark btn btn-sm">Electronics</button></a>
     				</div>
             
-            <div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/furniture.jpg' %}" alt="Product 7"/>
+            <div class="col-md-2 product">
+    					<img src="{% static 'img/furniture.jpg' %}" class="responsive carr" alt="Product 7"/>
     				 <a href="{% url 'products:query' 'furniture' %}">	<button class="btn-dark btn btn-sm">Furniture</button></a>
             </div>
-            <div class="col-md-2 product pt-md-5 pt-4">
-    					<img src="{% static 'img/music.jpg' %}" alt="Product 7"/>
+            <div class="col-md-2 product">
+    					<img src="{% static 'img/music.jpg' %}" class="responsive carr" alt="Product 7"/>
     				 <a href="{% url 'products:query' 'music' %}"><button class="btn-dark btn btn-sm">Music</button></a>
     				</div>
     			</div>

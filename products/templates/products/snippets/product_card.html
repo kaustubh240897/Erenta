@@ -6,6 +6,45 @@
   
   {% endif %}
   <div class="card-body">
+       {% if instance.rating >= 1 %}
+              ({{ instance.rating }})
+              {% endif %}
+                {% if instance.rating >= 1 and instance.rating < 2 %}
+          <span class="fa fa-star checked"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            {% endif %}
+
+            {% if instance.rating >= 2 and instance.rating < 3 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if instance.rating >= 3 and instance.rating < 4 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if instance.rating >= 4 and instance.rating < 4.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if  instance.rating >= 4.5 and instance.rating <= 5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        {% endif %}                  
     <h5 class="card-title"> {{ instance.product_name|capfirst }}</h5>
      <h6 class="card-title"> {% if instance.discount_price %}
             <strike> ${{ instance.cost_per_day }}</strike> ${{ instance.discount_price }}/day ({{ instance.get_amount_percent_saved }}% Off)

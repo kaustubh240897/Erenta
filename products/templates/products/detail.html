@@ -434,7 +434,7 @@ function showSlides(n) {
       {% endif %}
       , {{ rev.email.full_name }} ,
       
-       {% ifequal rev.rating '1' %}
+       {% ifequal rev.rating 1 %}
        <span class="fa fa-star checked"></span>
         <span class="fa fa-star-o"></span>
         <span class="fa fa-star-o"></span>
@@ -442,28 +442,28 @@ function showSlides(n) {
         <span class="fa fa-star-o"></span>
         {% endifequal %}
 
-        {% ifequal rev.rating '2' %}
+        {% ifequal rev.rating 2 %}
        <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star-o"></span>
       <span class="fa fa-star-o"></span>
       <span class="fa fa-star-o"></span>
         {% endifequal %}
-       {% ifequal rev.rating '3' %}
+       {% ifequal rev.rating 3 %}
        <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star-o"></span>
       <span class="fa fa-star-o"></span>
         {% endifequal %}
-       {% ifequal rev.rating '4' %}
+       {% ifequal rev.rating 4 %}
        <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star-o"></span>
         {% endifequal %}
-      {% if rev.rating == '5' %}
+      {% if rev.rating == 5 %}
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>
       <span class="fa fa-star checked"></span>

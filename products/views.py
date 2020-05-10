@@ -82,7 +82,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.get(slug=slug)
-        context['similar_products']= View_Count.objects.filter(product__categary=product.categary).exclude(product__slug=slug)[:8]
+        context['similar_products']= View_Count.objects.filter(product__sub_categary=product.sub_categary).exclude(product__slug=slug)[:8]
         qq = ProductImage.objects.filter(product=product)
         if qq.count()==3:
             context['images0'] = qq[0]
