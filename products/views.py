@@ -82,7 +82,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.get(slug=slug)
-        context['similar_products']= View_Count.objects.filter(product__sub_categary=product.sub_categary).exclude(product__slug=slug)[:8]
+        context['similar_products']= View_Count.objects.filter(product__sub_category=product.sub_category).exclude(product__slug=slug)[:8]
         qq = ProductImage.objects.filter(product=product)
         if qq.count()==3:
             context['images0'] = qq[0]
@@ -155,10 +155,10 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
 
 # pricing sort
 
-# def sort_product_view_increase(self,categary,request):
-#     categary = self.request.get(categary)
-#     categary= Product_description.objects.get(categary=categary)
-#     queryset1 = Product_description.objects.filter(categary=categary).order_by('cost_per_day')
+# def sort_product_view_increase(self,category,request):
+#     category = self.request.get(category)
+#     category= Product_description.objects.get(category=category)
+#     queryset1 = Product_description.objects.filter(category=category).order_by('cost_per_day')
     
 #     context = {
 #           'qs1': queryset1 ,
@@ -176,7 +176,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
 
 
 
-def sub_catogary_product_view_by_color(request,slug, color):
+def sub_category_product_view_by_color(request,slug, color):
     slug_type = request.build_absolute_uri().split('/')
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
@@ -187,7 +187,7 @@ def sub_catogary_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_categary=sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(sub_category=sub_cat_query, variation__title=color)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -199,7 +199,7 @@ def sub_catogary_product_view_by_color(request,slug, color):
 
     return render(request,"products/view.html", context)
 
-def sub_sub_catogary_product_view_by_color(request,slug, color):
+def sub_sub_category_product_view_by_color(request,slug, color):
     slug_type = request.build_absolute_uri().split('/')
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
@@ -210,7 +210,7 @@ def sub_sub_catogary_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_sub_categary=sub_sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(sub_sub_category=sub_sub_cat_query, variation__title=color)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -224,7 +224,7 @@ def sub_sub_catogary_product_view_by_color(request,slug, color):
 
 
 
-# def catogary_product_view_4(request):
+# def category_product_view_4(request):
     
 #     query_4 = "Accessories"
     
@@ -243,7 +243,7 @@ def sub_sub_catogary_product_view_by_color(request,slug, color):
 #     return render(request,"products/view.html", context)
 
 
-def catogary_product_view_1(request, slug,*args, **kwargs):
+def category_product_view_1(request, slug,*args, **kwargs):
     
     try:
         cat_query = Category.objects.get(slug=slug)
@@ -254,7 +254,7 @@ def catogary_product_view_1(request, slug,*args, **kwargs):
     print(cat_query)
     
     if cat_query is not None:
-        queryset = Product_description.objects.filter(categary=cat_query)
+        queryset = Product_description.objects.filter(category=cat_query)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -264,7 +264,7 @@ def catogary_product_view_1(request, slug,*args, **kwargs):
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
-    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
     #     query=self.request.GET.get("query")
     #     context['query']=query
     #     #SearchQuery.objects.create(query=query)
@@ -273,7 +273,7 @@ def catogary_product_view_1(request, slug,*args, **kwargs):
     return render(request,"products/view.html", context)
 
 
-def sub_catogary_product_view(request, slug,*args, **kwargs):
+def sub_category_product_view(request, slug,*args, **kwargs):
     
     try:
         sub_cat_query = Sub_Category.objects.get(slug=slug)
@@ -286,7 +286,7 @@ def sub_catogary_product_view(request, slug,*args, **kwargs):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_categary=sub_cat_query)
+        queryset = Product_description.objects.filter(sub_category=sub_cat_query)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -296,7 +296,7 @@ def sub_catogary_product_view(request, slug,*args, **kwargs):
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
-    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
     #     query=self.request.GET.get("query")
     #     context['query']=query
     #     #SearchQuery.objects.create(query=query)
@@ -305,7 +305,7 @@ def sub_catogary_product_view(request, slug,*args, **kwargs):
     return render(request,"products/view.html", context)
 
 
-def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
+def sub_sub_category_product_view(request, slug,*args, **kwargs):
     
     try:
         sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
@@ -318,7 +318,7 @@ def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_sub_categary=sub_sub_cat_query)
+        queryset = Product_description.objects.filter(sub_sub_category=sub_sub_cat_query)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -328,7 +328,7 @@ def sub_sub_catogary_product_view(request, slug,*args, **kwargs):
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
-    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
     #     query=self.request.GET.get("query")
     #     context['query']=query
     #     #SearchQuery.objects.create(query=query)

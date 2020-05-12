@@ -9,12 +9,12 @@ from otherdetails.models import OtherDetails
 
 
 
-class ProductForm(forms.ModelForm): 
+class ProductForm(forms.ModelForm):
     
 
     class Meta:
         model = Product_description
-        fields = ['product_name','categary','sub_categary','sub_sub_categary','brand','description','cost_per_day','discount_price','image']
+        fields = ['product_name','category','sub_category','sub_sub_category','brand','description','cost_per_day','discount_price','Current_City','image']
     
     
     # def clean_content(self):

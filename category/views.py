@@ -5,7 +5,7 @@ from django.views.generic import ListView
 
 
 
-def catogary_product_view(request, slug,*args, **kwargs):
+def category_product_view(request, slug,*args, **kwargs):
     
     try:
         query = Category.objects.get(slug=slug)
@@ -15,7 +15,7 @@ def catogary_product_view(request, slug,*args, **kwargs):
     
     print(query)
     if query is not None:
-        queryset = Product_description.objects.filter(categary=query)
+        queryset = Product_description.objects.filter(category=query)
     else:
         queryset=Product_description.objects.all()
     context = {
@@ -25,7 +25,7 @@ def catogary_product_view(request, slug,*args, **kwargs):
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):
-    #     context=super(catogary_product_view ,self).get_context_data(*args, **kwargs)
+    #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
     #     query=self.request.GET.get("query")
     #     context['query']=query
     #     #SearchQuery.objects.create(query=query)

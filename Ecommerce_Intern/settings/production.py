@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'addresses',
     'otherdetails',
     'analytics',
-    'catogary',
+    'category',
     'billing',
     'crispy_forms',
     'notification',

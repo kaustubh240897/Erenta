@@ -16,11 +16,10 @@ from django.core.exceptions import ValidationError
 User = settings.AUTH_USER_MODEL
 
 # Create your models here.
-# MY_CHOICES = ((1, 'S'),
-#                (2, 'M'),
-#                (3, 'L'),
-#                (4, 'XL'),
-#                (5, 'Not applicable'))
+MY_CHOICES = ((1, 'Tokyo'),
+               (2, 'Osaka'),
+               (3, 'Kyoto'))
+               
 
 
 def get_filename_ext(filepath):
@@ -44,7 +43,7 @@ class ProductQuerySet(models.query.QuerySet):
        return self.filter(active=True)
 
     def search(self, query):
-        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(categary__title__icontains=query) | Q(sub_categary__title__icontains=query) | Q(sub_sub_categary__title__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__tag_name__icontains=query)
+        lookups = Q(product_name__icontains=query)| Q(variation__title__icontains=query) | Q(description__icontains=query) |Q(brand__icontains=query) | Q(category__title__icontains=query) | Q(sub_category__title__icontains=query) | Q(sub_sub_category__title__icontains=query) | Q(cost_per_day__icontains=query) | Q(tag__tag_name__icontains=query)
         return self.filter(lookups).distinct()
 
 
@@ -135,9 +134,10 @@ class Product_description(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product_name = models.CharField(max_length=100)
-    categary = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
-    sub_categary = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=True,blank=True)
-    sub_sub_categary = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,null=True,blank=True) 
+    Current_City = models.CharField(choices=MY_CHOICES, max_length=30, default=1)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
+    sub_category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=True,blank=True)
+    sub_sub_category = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,null=True,blank=True) 
     description = models.TextField()
     #quantity = models.IntegerField(default=1)
     rating = models.DecimalField(max_digits=3,decimal_places=1,default=0.0) 
