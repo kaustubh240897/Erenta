@@ -7,7 +7,7 @@ class RequestFormAttachMixin(object):
         return kwargs
 
 class NextUrlMixin(object):
-    default_next = "/home"
+    default_next = ""
     def get_next_url(self):
         request = self.request
         next_ = request.GET.get('next')

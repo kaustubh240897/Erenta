@@ -20,12 +20,17 @@ def home_page(request):
     # = request.user, viewed=False).count()
     #print(request.session.get("first_name","Unknown"))
     
+    city_name = request.build_absolute_uri().split('/')
+    city_name = city_name[len(city_name)-2]
+    request.session['city_names'] = city_name
+    c = request.session['city_names']
+    print(c)
 
     context = {
        "title":"Erenta!",
        "content" : "Welcome to shopnow!",
        "premium_content": "Welcome",
-       "trending": View_Count.objects.all()[:8]
+       "trending": View_Count.objects.all().filter(product__Current_City__iexact=c)[:8]
       
     }
     

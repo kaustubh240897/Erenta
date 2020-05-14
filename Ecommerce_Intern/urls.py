@@ -37,7 +37,9 @@ admin.site.index_title = 'ShopNow Administration'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', landing_page, name='landing-page'),
-    path('home/',home_page, name='home'),
+    path('home/Tokyo/',home_page, name='home'),
+    path('home/Osaka/',home_page, name='home1'),
+    path('home/Kyoto/',home_page, name='home2'),
     path('notification_page/',notification_page,name='notification_page'),
     path('supplier_notification_page/',supplier_notification_page,name='supplier_notification_page'),
     path('contact/',contact_page, name='contact'),

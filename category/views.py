@@ -15,9 +15,9 @@ def category_product_view(request, slug,*args, **kwargs):
     
     print(query)
     if query is not None:
-        queryset = Product_description.objects.filter(category=query)
+        queryset = Product_description.objects.filter(product__Current_City__iexact= request.session['city_names'],category=query)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(product__Current_City__iexact= request.session['city_names'])
     context = {
           'qs': queryset ,
           'q': query,

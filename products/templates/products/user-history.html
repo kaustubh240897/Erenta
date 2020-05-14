@@ -9,14 +9,17 @@
                     <hr/>
             </div>
     {% for obj in object_list %}
+    {% if obj.content_object.Current_City == request.session.city_names %}
+        
           <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
         flex-wrap: wrap;
         justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
-        <div style='color: white;'>
-        {{ forloop.counter }}
-        </div>
+        
+        
         {% include 'products/snippets/card.html' with instance=obj.content_object %}  
+     
         </div>
+           {% endif %}
     {% endfor %}
 </div>
 </div>

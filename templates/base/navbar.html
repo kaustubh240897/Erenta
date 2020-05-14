@@ -33,7 +33,15 @@
   </button>
   
   <div class=" text-white">
+    {% if request.session.city_names == 'Tokyo' %}
             <h2 class="site-title"><a class="navbar text-white" href="{{ home_url }}">E-renta</a></h2>
+    {% elif request.session.city_names == 'Osaka' %}
+             <h2 class="site-title"><a class="navbar text-white" href="{% url 'home1' %}">E-renta</a></h2>
+    {% elif request.session.city_names == 'Kyoto' %}
+              <h2 class="site-title"><a class="navbar text-white" href="{% url 'home2' %}">E-renta</a></h2>
+    {% else %}
+             <h2 class="site-title"><a class="navbar text-white">E-renta</a></h2>
+    {% endif %}
             
            
   </div>
@@ -61,6 +69,36 @@
                              
               
             </div>
+             <!-- Trigger/Open The Modal -->
+<a style='color:white' title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
+     
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+          {% if request.session.cart_items %}
+            
+          <h3 class='text-center'> You already have Items in your cart.</h3>
+          <h3 class='text-center'><a href='{% url "cart:remove_all" %}'>Clear the cart?</a> </h3>
+            {% else %}
+           
+            <div class='row'>
+              <div class='col-4'>
+                <h3><a href='{% url "home" %}'><i class="fas fa-map-marker-alt"></i> Tokyo</a></h3>
+              </div>
+               <div class='col-4'>
+                <h3><a href='{% url "home1" %}'><i class="fas fa-map-marker-alt"></i> Osaka</a></h3>
+               </div>
+                <div class='col-4'>
+                <h3><a href='{% url "home2" %}'><i class="fas fa-map-marker-alt"></i> Kyoto</a></h3>
+              </div>
+            </div>
+           {% endif %}
+          </div>
+
+        </div> 
             <a href="{% url 'accounts:user-update' %}">
               {% if request.user.profile_image %}
                 <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0"

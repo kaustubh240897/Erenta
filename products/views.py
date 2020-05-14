@@ -27,7 +27,7 @@ User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
-    queryset = Product_description.objects.all().order_by('?')
+    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names']).order_by('?')
     page = request.GET.get('page', 1)
     paginator = Paginator(queryset, 16)
     try:
@@ -40,7 +40,7 @@ def product_list_view(request):
         'qs': queryset ,
         "title":"Products",
         'products': products,
-        'trending': View_Count.objects.all()[:7]
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
         
     }
     return render(request,"products/product_list.html", context)
@@ -81,8 +81,8 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['qs1']=Variation.objects.filter(product__slug= slug)
         context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
         context['qs'] = Quantity.objects.filter(product__slug = slug)
-        context['all']=Product_description.objects.get(slug=slug)
-        context['similar_products']= View_Count.objects.filter(product__sub_category=product.sub_category).exclude(product__slug=slug)[:8]
+        context['all']=Product_description.objects.filter(Current_City__iexact= self.request.session['city_names'], slug=slug)
+        context['similar_products']= View_Count.objects.filter(product__Current_City__iexact= self.request.session['city_names'], product__sub_category=product.sub_category).exclude(product__slug=slug)[:8]
         qq = ProductImage.objects.filter(product=product)
         if qq.count()==3:
             context['images0'] = qq[0]
@@ -187,9 +187,9 @@ def sub_category_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_category=sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title=color)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
           'qs': queryset ,
           'slug': slug_type,
@@ -204,15 +204,15 @@ def sub_sub_category_product_view_by_color(request,slug, color):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     try:
-        sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
+        sub_sub_cat_query = Sub_Sub_Category.objects.filter(slug=slug)
     except Sub_Sub_Category.DoesNotExist:
         print("Product does not exist now!")
         return redirect("products:list")
     
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_sub_category=sub_sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title=color)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
           'qs': queryset ,
           'sub_slug': slug_type,
@@ -254,9 +254,9 @@ def category_product_view_1(request, slug,*args, **kwargs):
     print(cat_query)
     
     if cat_query is not None:
-        queryset = Product_description.objects.filter(category=cat_query)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], category=cat_query)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
           'qs': queryset ,
           
@@ -286,9 +286,9 @@ def sub_category_product_view(request, slug,*args, **kwargs):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_category=sub_cat_query)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
           'qs': queryset ,
           'slug': slug_type,
@@ -318,9 +318,9 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(sub_sub_category=sub_sub_cat_query)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_sub_category=sub_sub_cat_query)
     else:
-        queryset=Product_description.objects.all()
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
           'qs': queryset ,
           'sub_slug': slug_type,

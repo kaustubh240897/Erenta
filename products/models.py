@@ -16,9 +16,9 @@ from django.core.exceptions import ValidationError
 User = settings.AUTH_USER_MODEL
 
 # Create your models here.
-MY_CHOICES = ((1, 'Tokyo'),
-               (2, 'Osaka'),
-               (3, 'Kyoto'))
+MY_CHOICES = (('Tokyo', 'Tokyo'),
+               ('Osaka', 'Osaka'),
+               ('Kyoto', 'Kyoto'))
                
 
 
@@ -134,7 +134,7 @@ class Product_description(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     product_name = models.CharField(max_length=100)
-    Current_City = models.CharField(choices=MY_CHOICES, max_length=30, default=1)
+    Current_City = models.CharField(max_length=30, default='Tokyo')
     category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
     sub_category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=True,blank=True)
     sub_sub_category = models.ForeignKey(Sub_Sub_Category,on_delete=models.CASCADE,null=True,blank=True) 

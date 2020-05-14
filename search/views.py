@@ -8,9 +8,9 @@ def search_product_view(request):
     query = method_dict.get('q', None)
     print(query)
     if query is not None:
-        queryset = Product_description.objects.search(query)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names']).search(query)
     else:
-        queryset=Product_description.objects.all().order_by('?')
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names']).order_by('?')
     context = {
           'qs': queryset ,
          "title":"Products",

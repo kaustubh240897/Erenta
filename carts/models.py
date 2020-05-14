@@ -73,6 +73,18 @@ def pre_save_cartitem_receiver(sender, instance,*args,**kwargs):
 
 pre_save.connect(pre_save_cartitem_receiver , sender=CartItem)
 
+def post_save_city_validate(sender,created, instance, *args, **kwargs):
+    if created:
+        qs = CartItem.objects.filter(cart = instance.cart)
+        for q in qs:
+            if not q.product.Current_City == instance.product.Current_City:
+                q.cart = None
+                q.save()
+                
+post_save.connect(post_save_city_validate , sender=CartItem)
+
+
+
 
 
 class Cart(models.Model):

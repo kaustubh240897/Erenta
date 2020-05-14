@@ -59,6 +59,15 @@ def cart_home(request):
                 new_total += line_total
                 print(new_total)
                 cart_obj.subtotal=new_total
+
+        # for validating the city of item
+        qs = CartItem.objects.filter(cart = the_id)
+        for q in qs:
+            if not q.product.Current_City == request.session['city_names']:
+                q.cart = None
+                q.save()
+                messages.warning(request, 'You have chosen item from differnt city!!')
+        ## for validating the city of item
         request.session['cart_items']=cart_obj.cartitem_set.count()
         cart_obj.save()
     else:
@@ -108,6 +117,14 @@ def cart_home(request):
 #     cart_obj.save()
 
 #     return redirect("cart:home")
+
+def remove_all_items(request):
+    cartitem_obj = CartItem.objects.filter(cart=request.session['cart_id'])
+    for i in cartitem_obj:
+        i.cart = None
+        i.save()
+    messages.success(request, "All items removed successfully.")
+    return redirect("cart:home")
 
 def remove_cart(request,id):
     # try:
@@ -247,7 +264,18 @@ def checkout_home(request):
     # request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
     # = request.user, viewed=False).count()
     # request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
+    
+    
+    
     cart_obj, cart_created = Cart.objects.new_or_get(request)
+    # for validating the city of item
+    qs = CartItem.objects.filter(cart = request.session['cart_id'])
+    for q in qs:
+        if not q.product.Current_City == request.session['city_names']:
+            q.cart = None
+            q.save()
+            messages.warning(request, 'You have chosen item from differnt city !!!')
+    ## for validating the city of item
     order_obj=None
     if cart_created or cart_obj.cartitem_set.count()==0:
         return redirect("cart:home")
