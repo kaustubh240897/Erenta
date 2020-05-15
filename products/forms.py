@@ -10,6 +10,12 @@ from otherdetails.models import OtherDetails
 
 
 class ProductForm(forms.ModelForm):
+    MY_CHOICES = (
+        ('Tokyo', 'Tokyo'),
+        ('Osaka', 'Osaka'),
+        ('Kyoto', 'Kyoto'),
+               )
+    Current_City = forms.ChoiceField(choices=MY_CHOICES)
     
 
     class Meta:

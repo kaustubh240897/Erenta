@@ -224,12 +224,17 @@ class BankDetailUpdateForm(forms.ModelForm):
 
 
 class SupplierpersonaldetailForm(forms.ModelForm):
+    MY_CHOICES = (
+        ('Tokyo', 'Tokyo'),
+        ('Osaka', 'Osaka'),
+        ('Kyoto', 'Kyoto'),
+               )
     Nick_name = forms.CharField(label='Nick name',required=True ,widget=forms.TextInput)
     Shop_name = forms.CharField(label='Shop name(if any)', widget=forms.TextInput)
     Address_Line1 = forms.CharField(label='Address Line 1',required=True ,widget=forms.TextInput)
     Address_Line2 = forms.CharField(label='Address Line 2' ,widget=forms.TextInput)
     Postal_code = forms.CharField(label='Postal code',required=True ,widget=forms.NumberInput)
-    City        = forms.CharField(label='City',required=True ,widget=forms.TextInput)
+    City        = forms.ChoiceField(choices = MY_CHOICES)
     Country = forms.CharField(label='Country', required=True, widget=forms.TextInput)
     Mobile_number = forms.CharField(label='Mobile number',required=True ,widget=forms.NumberInput)
 
