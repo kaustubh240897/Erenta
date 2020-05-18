@@ -40,7 +40,7 @@ class Order_Notification(models.Model):
     viewed = models.BooleanField(default=False)
     status = models.CharField(max_length=120, default='created')
     order_id  = models.CharField( max_length=120, blank=True)
-    cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart               = models.ForeignKey(Cart,null=True, blank=True, on_delete=models.CASCADE)
     billing_profile = models.ForeignKey(BillingProfile,null=True,blank=True, on_delete=models.CASCADE)
     timestamp= models.DateTimeField(auto_now_add=True)
 
@@ -83,7 +83,7 @@ class Supplier_Order_Notification(models.Model):
     seen   = models.BooleanField(default=False)
     status = models.CharField(max_length=120, default='created')
     order_id  = models.CharField( max_length=120, blank=True)
-    cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart               = models.ForeignKey(Cart,null=True, blank=True, on_delete=models.CASCADE)
     billing_profile = models.ForeignKey(BillingProfile,null=True,blank=True, on_delete=models.CASCADE)
     timestamp= models.DateTimeField(auto_now_add=True)
 
@@ -102,7 +102,7 @@ def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
 
 class Order_current_status(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    cart   = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart   = models.ForeignKey(Cart,null=True,blank=True, on_delete=models.CASCADE)
     viewed = models.BooleanField(default=False)
     supplier_viewed = models.BooleanField(default=False)
     seen   = models.BooleanField(default=False)
