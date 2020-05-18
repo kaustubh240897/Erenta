@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class='container' style='background-color: white;'>
+  
+  <br/>
+
+  
+<div class='text-center'>  <h3> Status -: {{ order_item_status.status }} </h3> </div>
+ <br/>
+  <list class="list-group-item list-group-item-action">Dear {{ order_item_status.user.full_name }}, <a href="{% url 'orders:list' %}">Your product item {{ order_item_status.product }} </a>  {% for item in order_item_status.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  has been {{ order_item_status.status }} successfully.
+<div class='text-right'> <a href='{% url "notification:delete_order_item_status" order_item_status.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
+</list>
+  </div>
+
+{% endblock %}

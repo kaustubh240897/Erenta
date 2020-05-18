@@ -53,7 +53,7 @@
 <div class='row'>
     <div class='col'>
         <table class='table table-dark'>
-            <thead><th>#</th><th>Order Id</th><th>Products</th><th> Status</th><th>Total</th><th>Date</th><th>View</th></thead>
+            <thead><th>#</th><th>Order Id</th><th>Products</th><th>Total</th><th>Date</th><th>View</th></thead>
 
             <tbody>
                 {% for object in products %}
@@ -64,7 +64,7 @@
                          {% for item in object.cart.cartitem_set.all %} {{ item.quantity}} X {{ item.product }} {% if not forloop.last %} , {% endif %}
                          {% endfor %}
                         </td>
-                        <td>{{ object.status }}</td>
+                        
                         <td>$ {{ object.total }}</td>
                         <td> {{ object.timestamp }}</td>
                         <td><a class='btn btn-sm  btn-primary' href='{{ object.get_absolute_url }}'>View your Order</a></td>

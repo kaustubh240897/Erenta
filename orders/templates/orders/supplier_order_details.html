@@ -2,28 +2,29 @@
 
 
 {% block content %}
-
-
-
- <br/>
-
- <div class='row'>
+<div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
          <h2 class='text-center'>Order {{ object.order_id }}</h2>
+         <h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-muted">Your order details</span>
+    
+    </h4>
           <hr/>
     </div>
 </div>
 
+ {% for item in object.cart.cartitem_set.all %}
+     {% if item.product.user == request.user %}
+
+ <br/>
+
+ 
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
         <div class="col-md-12 mb-4">
-    <h4 class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted">Your order details</span>
     
-    </h4>
     <ul class="list-group mb-3 z-depth-1">
-     {% for item in object.cart.cartitem_set.all %}
-     {% if item.product.user == request.user %}
+    
         {% if item.product.image %}
         <img style="width:4rem !important; height:4rem !important;"  src='{{ item.product.image.url }}' class='img-fluid' />
         {% endif %}
@@ -45,10 +46,7 @@
         <hr/> 
        </div>
         
-    {% endif %}
-    {% endfor %}
-     {% for item in object.cart.cartitem_set.all %}
-     {% if item.product.user == request.user and forloop.counter == 1 %}
+    
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Shipping Address</h6>
@@ -74,16 +72,18 @@
         <small>{{ object.status }}</small> 
         </div>
     </li> -->
+      
     </ul>
     </div>
+  
     <div class='text-center'>
 <a href="/supplierreviews/"> <button class='btn btn-primary'>Rate your customer!</button></a>
 <a href="{% url 'supplierpdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
 </div>
-  {% endif %}
+ 
+</div>
+</div>
+ {% endif %}
   {% endfor %}
-</div>
-</div>
-
     
 {% endblock %}

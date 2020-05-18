@@ -309,6 +309,7 @@ class Low_Quantity_Notification(models.Model):
     title = models.CharField(max_length=100)
     message = models.TextField()
     viewed = models.BooleanField(default=False)
+    seen = models.BooleanField(default=False)
     quantity = models.IntegerField(default=1)
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     timestamp= models.DateTimeField(auto_now_add=True)
@@ -319,12 +320,12 @@ class Low_Quantity_Notification(models.Model):
 
 @receiver(post_save, sender=Quantity)
 def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
-    if int(instance.quantity) <= 3:
+    if int(instance.quantity) <= 5:
         Low_Quantity_Notification.objects.create(quantity=instance.quantity,
                                         product = instance.product,
-                                        title = ("your product %s's quantity is low" %(instance.product)),
-                                        message = "Add the quantity")
-
+                                        title = ("Low quantity, You have only  %d %s ramaining." %(instance.quantity, instance.product)),
+                                        message = "Add the quantity now."
+        )
 
 
 

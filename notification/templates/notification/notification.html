@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+<div class='container' style='background-color: white;'>
+  
+  <br/>
 
-<div class="list-group">
-  <li class="list-group-item list-group-item-action active">
-    {{ notification.title }}
-  </li>
-  <list class="list-group-item list-group-item-action">{{ notification.message }}</list>
+
+  
+<div class='text-center'>  <h3> {{ notification.title }} </h3> </div>
+ <br/>
+  <list class="list-group-item list-group-item-action">Dear {{ notification.user.full_name }}, Welcome to Erenta and {{ notification.message }}
+<div class='text-right'> <a href='{% url "notification:delete_notification" notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
+</list>
   </div>
-<button><a href='{% url "notification:delete_notification" notification.id %}'>Mark as read</a></button>
+
 
 
 

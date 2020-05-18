@@ -1,22 +1,54 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% if supplier_order_notifications.count > 0 or low_quantity_notification.count > 0 %}
-<h3>Notifications</h3>
+{% if supplier_order_notifications.count > 0 or low_quantity_notification.count > 0 or item_current_status.count > 0%}
+<h3 class='text-center'>Notifications</h3>
+<hr/>
+<div class='container' style='background-color: white;'>
 {% for n2 in supplier_order_notifications %}
+
+{% if n2.seen %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:supplier_order_notification' n2.id %}">{{ n2.title }} {{ n2.timestamp }}</a></li>
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear lender, Congrates you received an Order (Id-: {{ n2.order_id }}).</font> </a> <div class='text-right'>{{ n2.timestamp }} </div></li>
 </ul>
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear lender, Congrates you received an Order (Id-: {{ n2.order_id }}). </font> </a> <div class='text-right'>{{ n2.timestamp }} </div> </strong></li>
+</ul>
+{% endif %}
 {% endfor %}
 
-{% for n3 in  low_quantity_notification %}
+{% for n3 in low_quantity_notification %}
+{% if n3.seen %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:supplier_quantity_notification' n3.id %}">{{ n3.title }} {{ n3.timestamp }}</a></li>
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font> </a><div class='text-right'>{{ n3.timestamp }} </div></li>
 </ul>
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font></a> <div class='text-right'>{{ n3.timestamp }} </div></strong></li>
+</ul>
+{% endif %}
 {% endfor %}
+
+{% for n4 in item_current_status %}
+{% if n4.supplier_seen %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
+        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></li>
+</ul>
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
+        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></strong></li>
+</ul>
+{% endif %}
+
+
+{% endfor %}
+</div>
 {% else %}
 <h3>There is no new notifications.</h3>
-
+</div>
 {% endif %}
 
 

@@ -1,25 +1,55 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% if order_notifications.count > 0 or notifications.count > 0  %}
-<h3>Notifications</h3>
+{% if order_notifications.count > 0 or notifications.count > 0 or item_current_status.count > 0 %}
+<h3 class='text-center'>Notifications</h3>
+<hr/>
+<div class='container' style='background-color: white;'>
 {% for n in notifications %}
+{% if n.seen %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_notification' n.id %}">{{ n.title }} {{ n.timestamp }}</a></li>
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right'>{{ n.timestamp }} </div></li>
 </ul>
+
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"> <span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right'>{{ n.timestamp }} </div> </strong></li>
+</ul>
+{% endif %}
 {% endfor %}
 
 {% for n1 in order_notifications %}
+{% if n1.seen %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-primary"><a href="{% url 'notification:show_order_notification' n1.id %}">{{ n1.title }} {{ n1.timestamp }}</a></li>
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right'>{{ n1.timestamp }} </div></li>
 </ul>
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right'>{{ n1.timestamp }} </div></strong></li>
+</ul>
+{% endif %}
 {% endfor %}
 
+{% for n2 in item_current_status %}
+{% if n2.seen %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
+        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right'>{{ n2.timestamp }} </div></li>
+</ul>
+{% else %}
+<ul class="list-group">
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
+        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right'>{{ n2.timestamp }} </div></strong></li>
+</ul>
+{% endif %}
+{% endfor %}
 
+</div>
 {% else %}
 <h3>There is no new notifications.</h3>
-
+</div>
 {% endif %}
+
 
 
 {% endblock %}

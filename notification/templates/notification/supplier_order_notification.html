@@ -1,13 +1,17 @@
 {% extends "supplier_base.html" %}
 {% block content %}
 
+<div class='container' style='background-color: white;'>
+  
+  <br/>
 
+  <div class='text-center'>  <h3> OrderId -: {{ supplier_order_notification.order_id }} </h3> </div>
+ <br/>
 
-<div class="list-group">
-  <li class="list-group-item list-group-item-action active">
-    {{ supplier_order_notification.title }}
-  </li>
-  <list class="list-group-item list-group-item-action">{{ supplier_order_notification.message }}</list>
+ <list class="list-group-item list-group-item-action">Dear lender, Congrates you received an Order<a href="{% url 'orders:orders' %}"> (OrderId-: {{ supplier_order_notification.order_id }} click here) </a> successfully.
+<div class='text-right'> <a href='{% url "notification:supplier_order_notification" supplier_order_notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
+</list>
   </div>
-<button><a href='{% url "notification:delete_supplier_order_notification" supplier_order_notification.id %}'>Mark as read</a></button>
+
+
 {% endblock %}
