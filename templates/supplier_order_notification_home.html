@@ -9,11 +9,11 @@
 
 {% if n2.seen %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear lender, Congrates you received an Order (Id-: {{ n2.order_id }}).</font> </a> <div class='text-right'>{{ n2.timestamp }} </div></li>
+<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} .</font> </a> <div class='text-right'>{{ n2.timestamp }} </div></li>
 </ul>
 {% else %}
 <ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear lender, Congrates you received an Order (Id-: {{ n2.order_id }}). </font> </a> <div class='text-right'>{{ n2.timestamp }} </div> </strong></li>
+<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} . </font> </a> <div class='text-right'>{{ n2.timestamp }} </div> </strong></li>
 </ul>
 {% endif %}
 {% endfor %}
@@ -34,12 +34,12 @@
 {% if n4.supplier_seen %}
 <ul class="list-group">
 <li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></li>
+        {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></li>
 </ul>
 {% else %}
 <ul class="list-group">
 <li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></strong></li>
+        {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></strong></li>
 </ul>
 {% endif %}
 

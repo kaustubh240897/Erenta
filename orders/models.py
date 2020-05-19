@@ -269,11 +269,6 @@ post_save.connect(post_save_order, sender=Order)
 
 
 
-def post_save_cartitem_status(sender,instance,*args,**kwargs):
-    if instance.status == 'paid':
-        CartItem.objects.filter(cart=instance.cart).update(status='paid')
-post_save.connect(post_save_cartitem_status, sender=Order)
-
 def post_save_order_status(sender,instance,*args,**kwargs):
     qs = CartItem.objects.filter(cart=instance.cart).count()
     qs1 = CartItem.objects.filter(cart=instance.cart, status='shipped').count()

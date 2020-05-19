@@ -1,17 +1,19 @@
 {% extends "supplier_base.html" %}
 {% block content %}
-
+{% if supplier_order_notification.product.user == request.user %}
 <div class='container' style='background-color: white;'>
   
   <br/>
 
-  <div class='text-center'>  <h3> OrderId -: {{ supplier_order_notification.order_id }} </h3> </div>
+  <div class='text-center'>  <h3> OrderId -: {{ supplier_order_notification.product }} </h3> </div>
  <br/>
 
- <list class="list-group-item list-group-item-action">Dear lender, Congrates you received an Order<a href="{% url 'orders:orders' %}"> (OrderId-: {{ supplier_order_notification.order_id }} click here) </a> successfully.
+ <list class="list-group-item list-group-item-action">Dear {{ supplier_order_notification.product.user.full_name }}, Congrates you received an Order<a href="{% url 'orders:orders' %}"> of  {{ supplier_order_notification.product }}  {% for item in supplier_order_notification.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %} {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  </a>.
 <div class='text-right'> <a href='{% url "notification:supplier_order_notification" supplier_order_notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
 </list>
   </div>
 
-
+{% else %}
+<h3 class='text-center'> You are not authenticated to see this content.</h3>
+{% endif %}
 {% endblock %}

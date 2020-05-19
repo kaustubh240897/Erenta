@@ -1,7 +1,7 @@
 {% extends "supplier_base.html" %}
 {% block content %}
 
-
+{% if low_quantity_notification.product.user == request.user %}
 
 <div class='container' style='background-color: white;'>
   
@@ -14,5 +14,7 @@
 <div class='text-right'> <a href='{% url "notification:delete_supplier_quantity_notification" low_quantity_notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
 </list>
   </div>
-
+{% else %}
+<h3 class='text-center'> You are not authenticated to see this content.</h3>
+{% endif %}
 {% endblock %}

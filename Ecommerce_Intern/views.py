@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
@@ -43,10 +45,10 @@ def about_page(request):
     }
     return render(request,"home_page.html",context)
 
-
+@login_required
 def notification_page(request):
     request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
-    = request.user, viewed=False).count()
+    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count()
     n= Notification.objects.filter(user=request.user, viewed=False)
 
     n1 = Order_Notification.objects.filter(billing_profile__user=request.user,viewed=False)
@@ -60,11 +62,12 @@ def notification_page(request):
     }
     return render(request,"notification_home.html",context)
 
+@login_required
 def supplier_notification_page(request):
-    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(billing_profile__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
-    n2 = Supplier_Order_Notification.objects.filter(billing_profile__user=request.user,status='paid',viewed=False)
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count() + Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).count()
+    n2 = Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid',viewed=False)
     n3 = Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False)
-    n4 = Order_current_status.objects.filter(user=request.user, supplier_viewed=False)
+    n4 = Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False)
 
     
     context = {
@@ -113,7 +116,7 @@ def contact_page(request):
 
 
 
-class GeneratePdf(View):
+class GeneratePdf(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('order_id')
         order= Order.objects.get(order_id=id)
@@ -143,8 +146,7 @@ class GeneratePdf(View):
         return HttpResponse("Not found")
 
 
-
-class GenerateSupplierPdf(View):
+class GenerateSupplierPdf(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('order_id')
         order= Order.objects.get(order_id=id)

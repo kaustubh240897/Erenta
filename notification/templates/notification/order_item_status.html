@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-
+{% if order_item_status.user == request.user %}
 <div class='container' style='background-color: white;'>
   
   <br/>
@@ -13,5 +13,7 @@
 <div class='text-right'> <a href='{% url "notification:delete_order_item_status" order_item_status.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
 </list>
   </div>
-
+{% else %}
+<h3> You are not authenticated to see this content.</h3>
+{% endif %}
 {% endblock %}

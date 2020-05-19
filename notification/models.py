@@ -77,26 +77,21 @@ def create_paid_ordersuccess_msg(sender,instance,created, **kwargs):
 
 
 class Supplier_Order_Notification(models.Model):
-    title = models.CharField(max_length=256)
-    message = models.TextField()
     viewed = models.BooleanField(default=False)
     seen   = models.BooleanField(default=False)
     status = models.CharField(max_length=120, default='created')
-    order_id  = models.CharField( max_length=120, blank=True)
-    cart               = models.ForeignKey(Cart,null=True, blank=True, on_delete=models.CASCADE)
-    billing_profile = models.ForeignKey(BillingProfile,null=True,blank=True, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product_description,null=True,blank=True,on_delete=models.CASCADE)
+    cart    = models.ForeignKey(Cart,null=True, blank=True, on_delete=models.CASCADE)
     timestamp= models.DateTimeField(auto_now_add=True)
 
 
-@receiver(post_save, sender=Order)
+@receiver(post_save, sender=CartItem)
 def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
     if instance.status == 'paid':
-        Supplier_Order_Notification.objects.get_or_create(billing_profile = instance.billing_profile,
+        Supplier_Order_Notification.objects.get_or_create(product = instance.product,
                                 status = instance.status,
-                                order_id = instance.order_id,
                                 cart = instance.cart,
-                                title = "you got an order",
-                                message = "Dear User Thanks for being here.")
+                            )
 
 
 

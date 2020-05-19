@@ -2,9 +2,7 @@
 {% block content %}
 
 
-
-
-
+{% if order_notification.billing_profile.user == request.user %}
 
 <div class='container' style='background-color: white;'>
   
@@ -17,5 +15,7 @@
 <div class='text-right'> <a href='{% url "notification:delete_order_notification" order_notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
 </list>
   </div>
-
+{% else %}
+<h3 class='text-center'> Oops! you are not authenticated for this content. </h3>
+{% endif %}
 {% endblock %}

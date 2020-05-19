@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if notification.user == request.user %}
 <div class='container' style='background-color: white;'>
   
   <br/>
@@ -12,7 +13,10 @@
 <div class='text-right'> <a href='{% url "notification:delete_notification" notification.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
 </list>
   </div>
+{% else %}
 
+<h3 class='text-center'>Oops! You are not authenticated for this content.</h3>
+{% endif %}
 
 
 

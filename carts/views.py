@@ -312,6 +312,9 @@ def checkout_home(request):
             did_charge,crg_msg = billing_profile.charge(order_obj)
             if did_charge:
                 order_obj.mark_paid()
+                for t in qs:
+                    t.status = 'paid'
+                    t.save()
                 request.session['cart_items']=0
                 del request.session['cart_id']
                 # for guest users
