@@ -4,6 +4,8 @@ from django.views.generic import ListView
 # Create your views here.
 
 def search_product_view(request):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     method_dict=request.GET
     query = method_dict.get('q', None)
     print(query)
@@ -28,6 +30,8 @@ def search_product_view(request):
 
 
 def search_product_view_for_supplier(request):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     method_dict=request.GET
     query = method_dict.get('q', None)
     print(query)

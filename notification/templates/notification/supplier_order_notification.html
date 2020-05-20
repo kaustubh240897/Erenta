@@ -5,7 +5,7 @@
   
   <br/>
 
-  <div class='text-center'>  <h3> OrderId -: {{ supplier_order_notification.product }} </h3> </div>
+  <div class='text-center'>  <h3> Item -: {{ supplier_order_notification.product }} </h3> </div>
  <br/>
 
  <list class="list-group-item list-group-item-action">Dear {{ supplier_order_notification.product.user.full_name }}, Congrates you received an Order<a href="{% url 'orders:orders' %}"> of  {{ supplier_order_notification.product }}  {% for item in supplier_order_notification.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %} {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  </a>.

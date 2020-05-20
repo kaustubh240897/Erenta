@@ -27,6 +27,8 @@ User = settings.AUTH_USER_MODEL
 
 # Create your views here.
 def product_list_view(request):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names']).order_by('?')
     page = request.GET.get('page', 1)
     paginator = Paginator(queryset, 16)
@@ -63,6 +65,7 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
 
 class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
+    
     queryset = Product_description.objects.all()
     
     template_name = "products/detail.html"
@@ -139,6 +142,8 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
+        if self.request.session.get('city_names',None) == None:
+            self.request.session['city_names'] = "Tokyo"
 
         #instance = get_object_or_404(Product, slug=slug, active=True)
         try:
@@ -177,6 +182,9 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
 
 
 def sub_category_product_view_by_color(request,slug, color):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
+    
     slug_type = request.build_absolute_uri().split('/')
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
@@ -200,6 +208,8 @@ def sub_category_product_view_by_color(request,slug, color):
     return render(request,"products/view.html", context)
 
 def sub_sub_category_product_view_by_color(request,slug, color):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     slug_type = request.build_absolute_uri().split('/')
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
@@ -244,6 +254,8 @@ def sub_sub_category_product_view_by_color(request,slug, color):
 
 
 def category_product_view_1(request, slug,*args, **kwargs):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     
     try:
         cat_query = Category.objects.get(slug=slug)
@@ -274,6 +286,8 @@ def category_product_view_1(request, slug,*args, **kwargs):
 
 
 def sub_category_product_view(request, slug,*args, **kwargs):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     
     try:
         sub_cat_query = Sub_Category.objects.get(slug=slug)
@@ -306,6 +320,8 @@ def sub_category_product_view(request, slug,*args, **kwargs):
 
 
 def sub_sub_category_product_view(request, slug,*args, **kwargs):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     
     try:
         sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)

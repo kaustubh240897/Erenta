@@ -6,6 +6,8 @@ from django.views.generic import ListView
 
 
 def category_product_view(request, slug,*args, **kwargs):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
     
     try:
         query = Category.objects.get(slug=slug)
