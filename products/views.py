@@ -831,6 +831,7 @@ class ReviewView(View):
                 reviews.email = self.request.user
                 reviews.rating = rating
                 reviews.review  = review
+                #reviews.reviewed = True
                 reviews.save()
                 messages.info(self.request, "Your review has received.")
                 return redirect("orders:list")

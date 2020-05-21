@@ -262,8 +262,9 @@ RATING = (
 class User_Review(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     email     = models.ForeignKey(User,on_delete=models.CASCADE)
-    rating    = models.IntegerField(choices=RATING, default=5)
+    rating    = models.IntegerField(default=5)
     review = models.TextField()
+    reviewed = models.BooleanField(default=False)
     timestamp= models.DateTimeField(auto_now_add=True)
     
 
@@ -298,6 +299,7 @@ class Supplier_Review(models.Model):
     email     = models.ForeignKey(User,default=None,on_delete=models.CASCADE)
     rating    = models.CharField(choices=RATING, default=5, max_length=10)
     review = models.TextField()
+    reviewed = models.BooleanField(default=False)
     timestamp= models.DateTimeField(auto_now_add=True)
     
 
