@@ -55,10 +55,10 @@
               <!--Card image-->
               <div class="view overlay">
                  {% if instance.image %}
-                 <a href="{{ instance.get_absolute_url }}" target="_blank" ><img src="{{ instance.image.url }}" class="card-img-top" style="height: 15rem;" alt="{{ instance.title }} logo">
+                 <a href="{{ instance.get_absolute_url }}" target="_blank" ><img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
                    </a>
                   {% else %}
-                  <img class='card-img-top' style="height: 15rem" src='{% static "img/placeholder.png" %}'/>
+                  <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
                   {% endif %}
                
                 <a>

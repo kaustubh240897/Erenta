@@ -21,18 +21,17 @@
   <div class='container-fluid'>
     <!--Navbar-->
 
-
-
-
 <!--Navbar-->
-<nav class="navbar navbar-dark  indigo darken">
-  
+<nav class="navbar navbar-dark indigo darken">
+<div class='row text-white'>
+<div class="col-2 mt-2 mx-1">
 <button class="navbar-toggler third-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent22"
     aria-controls="navbarSupportedContent22" aria-expanded="false" aria-label="Toggle navigation">
     <div class="animated-icon3"><span></span><span></span><span></span></div>
   </button>
   
-  <div class=" text-white">
+</div> 
+<div class=col-2>
     {% if request.session.city_names == 'Tokyo' %}
             <h2 class="site-title"><a class="navbar text-white" href="{{ home_url }}">E-renta</a></h2>
     {% elif request.session.city_names == 'Osaka' %}
@@ -43,11 +42,11 @@
              <h2 class="site-title"><a class="navbar text-white">E-renta</a></h2>
     {% endif %}
             
-           
+        
   </div>
-
+</div>
   <!-- <div class="col-md-4 col-sm-6 col-6 text-center"> -->
-     {% include 'search/snippets/search-form.html' %}
+    
             <!-- <form class="form-inline" >
                   <input class="w-75 h-25 p-2.8 form-control" type="search" placeholder="Search" aria-label="Search">
                   <button class="h-25 p-2.8 btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
@@ -59,16 +58,7 @@
   
   <!-- </div> -->
   	
-           <div class="col-md-3 col-sm-5 col-5 text-right text-white">
-                {% if request.user.is_authenticated %}
-                <a class="text-white" href="{{ notification_url }}"> {{ request.session.notification_count }}  <i class="fas fa-bell p-2"></i></a>
-               {% endif %}
-                
-                <a class="text-white" href="{{ cart_url }}"> {{ request.session.cart_items }} <i class="fas fa-shopping-basket p-2"></i></a>
-
-                             
-              
-            </div>
+          
              <!-- Trigger/Open The Modal -->
 <a style='color:white' title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
      
@@ -99,9 +89,23 @@
           </div>
 
         </div> 
+        
+          <div class='col-sm-12 col-lg-5 col-md-8'>
+         {% include 'search/snippets/search-form.html' %}
+          </div>
+          <div class='col-sm-12 col-lg-4 col-md-4 text-right'>
+                {% if request.user.is_authenticated %}
+                <a class="text-white text-center" href="{{ notification_url }}"> {{ request.session.notification_count }}  <i class="fas fa-bell p-2"></i></a>
+               {% endif %}
+                
+                <a class="text-white text-center" href="{{ cart_url }}"> {{ request.session.cart_items }} <i class="fas fa-shopping-basket p-2"></i></a>
+
+                             
+              
+           
             <a href="{% url 'accounts:user-update' %}">
               {% if request.user.profile_image %}
-                <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0"
+                <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0 text-right"
                   alt="avatar image" height="50" width="50" />
             
                   {% else %}
@@ -109,6 +113,8 @@
                   alt="avatar image" height="50" width="50" />
                   {% endif %}
               </a>
+              
+              </div>
        
   <!-- Navbar brand -->
   <!-- <a class="navbar-brand" href="#">E-renta</a>

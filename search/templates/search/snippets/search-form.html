@@ -1,10 +1,44 @@
-<div class='col-lg-6 col-md-6 col-sm-12'>
-            <form method='GET' action='{% url "search:query" %}' class="form-inline my-2 my-lg-0 search-form" >
+<style>
+  
+input[type=text] {
+  width: 130px;
+  box-sizing: border-box !important;
+  border: 2px solid #ccc !important;
+  border-radius: 4px  !important;
+  font-size: 16px  !important;
+  background-color: white  !important;
+  background-position: 10px 10px  !important;
+  background-repeat: no-repeat !important;
+  -webkit-transition: width 0.5s ease-in-out  !important;
+  transition: width 0.5s ease-in-out  !important;
+}
+
+input[type=text]:focus {
+  width: 80%  !important;
+
+}
+.button1{
+  max-width: 8%;
+  
+}
+@media screen and (max-width: 600px) {
+                .button1 {
+                 max-width: 15% !important;
+                }
+                 .ww {
+                   width: 50% !important;
+                 }
+                 
+  
+} 
+</style>
+
+            <form method='GET' action='{% url "search:query" %}' class="form-inline search-form" >
                
-                  <input class="w-75 h-25 p-2.8 form-control" type="search" placeholder="Search" name='q' aria-label="Search" value='{{ request.GET.q }}'>
-                  <button class="h-25 p-2.8 btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                  <input class=" form-control ww" type="text" placeholder="Search" name='q' aria-label="Search" value='{{ request.GET.q }}'>
+                  <button class="button1 btn btn-outline-success" type="submit"><i class="fa fa-search text-center"></i></button>
                
                 </form>
-  </div>
+  
   
   

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from products.models import Product_description
 from django.views.generic import ListView
+from analytics.models import View_Count
 # Create your views here.
 
 def search_product_view(request):
@@ -17,6 +18,7 @@ def search_product_view(request):
           'qs': queryset ,
          "title":"Products",
          'query': query,
+         'trending':View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     def get_context_data(self,*args, **kwargs):
         context=super(search_product_view ,self).get_context_data(*args, **kwargs)
