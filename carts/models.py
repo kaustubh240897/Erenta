@@ -94,6 +94,7 @@ class Cart(models.Model):
     #other = models.ManyToManyField(OtherDetails,blank=True)
     coupon  = models.ForeignKey('Coupon',on_delete=models.CASCADE,blank=True,null=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
+    shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -102,6 +103,9 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+    def tax(self):
+        return Decimal(self.total) - Decimal(self.subtotal) - Decimal(self.shipping_total)
     
 
 
@@ -120,7 +124,7 @@ class Cart(models.Model):
     
 def pre_save_cart_receiver(sender, instance,*args,**kwargs):
     if instance.subtotal > 0:
-        instance.total=format((Decimal(instance.subtotal) * Decimal(1.1)),'.2f')
+        instance.total=format((Decimal(instance.subtotal) * Decimal(1.1)) + Decimal(instance.shipping_total),'.2f')
         #instance.total =  format((Decimal(instance.total)-Decimal(instance.coupon.amount)),'.2f')
     else:
         instance.total=0.00

@@ -155,7 +155,7 @@ class Order(models.Model):
     billing_address    = models.ForeignKey(Address, related_name="billing_address", null=True,blank=True, on_delete=models.CASCADE)
     cart               = models.ForeignKey(Cart, on_delete=models.CASCADE)
     status             = models.CharField(max_length=120, default='created')
-    shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
+    #shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
     total              = models.DecimalField(default=0.00,max_digits=50,decimal_places=2)
     active             = models.BooleanField(default=True)
     being_delivered    = models.BooleanField(default=False)
@@ -194,9 +194,8 @@ class Order(models.Model):
 
     def update_total(self):
         cart_total=self.cart.total
-        shipping_total=self.shipping_total
-        
-        new_total = math.fsum([float(cart_total), shipping_total])
+        #shipping_total=self.shipping_total
+        new_total = float(cart_total)
         #new_total = new_total- self.coupon.amount
         formatted_total = format(new_total, '.2f')
         self.total=formatted_total

@@ -32,15 +32,15 @@
     <div class='row'>
        <div class='col-12'>
        </br>
-          <p class='lead'>Shipping Address</p>
+          <p class='lead text-center'><strong>Shipping Address </strong></p>
           <hr/>
        </div>
-             <div class='col-6'>
+             <div class='col-lg-6 col-sm-12 col-md-6'>
     {% url "checkout_address_create" as checkout_address_create %}
 
     {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='shipping' %}
              </div>
-    <div class='col-6'>
+    <div class='col-lg-6 col-md-6 col-sm-12'>
       {% url 'checkout_address_reuse' as checkout_address_reuse %}
       {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
      </div>
@@ -55,17 +55,17 @@
     <div class='row'>
       <div class='col-12'>
       </br>
-          <p class='lead'>Billing Address</p>
+        <p class='lead text-center'> <strong>Billing Address </strong></p>
           <hr/>
       </div>
-       <div class='col-6'>
+       <div class='col-lg-6 col-md-6 col-sm-12'>
         
     {% url "checkout_address_create" as checkout_address_create %}
 
     {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='billing' %}
     
        </div>
-    <div class='col-6'>
+    <div class='col-lg-6 col-md-6 col-sm-12'>
        {% url 'checkout_address_reuse' as checkout_address_reuse %}
    {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
       </div>
@@ -131,15 +131,19 @@
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
-        <span>Cart Total (USD)</span>
-        <strong>${{ object.cart.total }}</strong>
+        <span>Cart Subtotal</span>
+        <strong>${{ object.cart.subtotal }}</strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
-        <span>Shipping Total (USD)</span>
-        <strong>+ ${{ object.shipping_total }}</strong>
+        <span>Shipping Total </span>
+        <strong>+ ${{ object.cart.shipping_total }}</strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
-        <span>Order Total (USD)</span>
+        <span>Tax</span>
+        <strong>${{ object.cart.tax }}</strong>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Order Total</span>
         <strong>= ${{ object.total }}</strong>
     </li>
     </ul>
