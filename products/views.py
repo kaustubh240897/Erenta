@@ -264,6 +264,8 @@ def category_product_view_1(request, slug,*args, **kwargs):
         return redirect("products:list")
     
     print(cat_query)
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-2]
     
     if cat_query is not None:
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], category=cat_query)
@@ -272,7 +274,7 @@ def category_product_view_1(request, slug,*args, **kwargs):
     context = {
           'qs': queryset ,
           
-          #'clothing_category': query,
+         'cat_slug': slug_type,
          "title":"Products",
     }
     # def get_context_data(self,*args, **kwargs):

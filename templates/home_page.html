@@ -21,176 +21,6 @@ For better experience please Login.
 {% endif %}
    
     	<!--first slider -->
-    	<div class="container-fluid p-0">
-        	<div class="container-fluid p-0">
-						<nav class="navbar navbar-expand-lg navbar-light bg-light">
-						 
-						  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						    <span class="navbar-toggler-icon"></span>
-						  </button>
-
-						  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-						    <ul class="navbar-nav mr-auto">
-						      
-						      <li class="nav-item">
-						        
-						         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      CATEGORIES
-                    </a>
-                                <ul class="dropdown-menu col-md-2 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
-                                       <li class="dropdown-submenu">
-                                       <a class="dropdown-item"  tabindex="1" href="{% url 'products:query' 'men' %}">
-                                            MEN
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                          <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menaccessories' %}">Accessories</a></li>
-                                            <li class='dropdown-submenu'>
-                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menclothing' %}">
-                                                Clothing
-                                              </a>
-                                            <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'blazers' %}">Blazer</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'suits' %}">Suit</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menfootwear' %}">
-                                                    Footwear
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'menshoes' %}">Shoes</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a></li>
-                                                </ul>
-                                            </li>
-                                            
-                                           
-                                        </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'booksnovels' %}">Books or Novels</a></li>
-                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'furniture' %}">Furniture</a></li>
-                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'music' %}">Music</a></li>
-                                     
-                                    
-                                   
-
-                                    <li class='dropdown-submenu'><a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'electronics' %}">Electronics
-
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                            <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'fitnessband' %}">
-                                                Fitness band
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'laptops' %}">
-                                                Laptops
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'mobiles' %}">
-                                                Mobiles
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'playstations' %}">
-                                                Playstations
-                                              </a>
-                                              </li>
-                                    </ul>
-
-                                  </li>
-                                   <li class="dropdown-submenu">
-                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'women' %}">
-                                            WOMEN
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenfootwear' %}">Footwear</a></li>
-                                            <li class='dropdown-submenu'>
-                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenclothing' %}">
-                                                Women's clothing
-                                              </a>
-                                          
-                                            <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item"  tabindex="-1"href="{% url 'products:query2' 'womenjackets' %}">Jackets</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womendresses' %}">Dresses</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenaccessories' %}">
-                                                    Women's Accessories
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenhandbags' %}">Handbag</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenwatches' %}">Watch</a></li>
-                                                </ul>
-                                            </li>
-                                          
-                                           
-                                        </ul>
-                                    </li>
-                                   
-                                 
-                                   
-                                </ul>
-
-                     
-
-                  </li>
-                  <li class="nav-item active">
-                    {% if request.session.city_names == 'Tokyo' %}
-                    <a class="nav-link" href="{% url 'home' %}">HOME <span class="sr-only">(current)</span></a>
-                    {% elif request.session.city_names == 'Osaka' %}
-                    <a class="nav-link" href="{% url 'home1' %}">HOME <span class="sr-only">(current)</span></a>
-                    {% elif request.session.city_names == 'Kyoto' %}
-                    <a class="nav-link" href="{% url 'home2' %}">HOME <span class="sr-only">(current)</span></a>
-                    
-                    {% endif %}
-						      </li>
-						      <li class="nav-item">
-						        <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
-						      </li>
-						       <li class="nav-item">
-						        <a class="nav-link" href="{% url 'products:list' %}">COLLECTION</a>
-						      </li>
-						       
-                  <li class="nav-item dropdown">
-                     {% if request.user.is_authenticated %}
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          SETTINGS
-        </a>
-        
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item {% if request.path == account_url %} active {% endif %}" href="{% url 'account:home' %}">Accounts</a>
-          <a class="dropdown-item"  href="{% url 'home' %}">About us</a>
-          <div class="dropdown-divider"></div>
-           <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-        </div>
-      </li>
-        {% else %}
-      
-     
-      
-    
-      <li class="nav-item {% if request.path == register_url %}active {% endif %}">
-        <a class="nav-link" href="{% url 'register' %}">REGISTER</a>
-      </li>
-      <li class="nav-item {% if request.path == login_url %}active {% endif %}">
-        <a class="nav-link" href="{% url 'login' %}">LOGIN</a>
-      </li>
-      {% endif %}
-    </li>
-						      
-						      
-						    </ul>
-						    
-              </div>
-              
-						 
-						</nav>
-
-    </div>
-    
     <style>
       @media screen and (max-width: 600px) {
                 .carr1 {
@@ -231,7 +61,7 @@ For better experience please Login.
  @media only screen and (min-width: 1200px) {
                 .carr {
                   padding-top: 2rem !important;
-                  margin-left: 3rem;
+                  margin-left: 6rem;
               }
               }
  @media screen and (max-width: 992px) {
@@ -255,32 +85,32 @@ For better experience please Login.
     	<div class="container-fluid">
     		<div class="site-slider-two">
     			<div class="row slider-two text-center">
-    				<div class="col-md-2">
-    					<img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/>
-    				<a href="{% url 'products:query1' 'playstations' %}">	<button class="btn-dark btn btn-sm">Playstation</button></a>
+    				<div class="col-md-2 col-lg-2 text-center">
+              <img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/>
+            <a href="{% url 'products:query1' 'playstations' %}">	<button class="btn-dark btn btn-sm">Playstation</button></a>
     				</div>
-    				<div class="col-md-2">
+    				<div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/accessories.jpg' %}" class="responsive carr" alt="Product 2"/>
     				<a href="{% url 'products:query1' 'menaccessories' %}"><button class="btn-dark btn btn-sm">Accessories</button></a>
     				</div>
-    				<div class="col-md-2">
+    				<div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/books.jpg' %}" class="responsive carr" alt="Product 3"/>
     				<a href="{% url 'products:query' 'booksnovels' %}">	<button class="btn-dark btn btn-sm">Books</button></a>
     				</div>
-    				<div class="col-md-2 ">
+    				<div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/clothing.jpg' %}" class="responsive carr" alt="Product 4"/>
     				<a href="{% url 'products:query1' 'menclothing' %}"><button class="btn-dark btn btn-sm">Clothing</button></a>
     				</div>
-    				<div class="col-md-2 ">
+    				<div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/electronics.jpg' %}" class="responsive carr" alt="Product 5"/>
     			  <a href="{% url 'products:query' 'electronics' %}"><button class="btn-dark btn btn-sm">Electronics</button></a>
     				</div>
             
-            <div class="col-md-2 ">
+            <div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/furniture.jpg' %}" class="responsive carr" alt="Product 7"/>
     				 <a href="{% url 'products:query' 'furniture' %}">	<button class="btn-dark btn btn-sm">Furniture</button></a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 col-lg-2 text-center">
     					<img src="{% static 'img/music.jpg' %}" class="responsive carr" alt="Product 7"/>
     				 <a href="{% url 'products:query' 'music' %}"><button class="btn-dark btn btn-sm">Music</button></a>
     				</div>

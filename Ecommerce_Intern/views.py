@@ -18,8 +18,9 @@ from .utils import render_to_pdf #created in step 4
 
 
 def home_page(request):
-    # request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
-    # = request.user, viewed=False).count()
+    if request.user.is_authenticated:
+        request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+        = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count()
     #print(request.session.get("first_name","Unknown"))
     
     city_name = request.build_absolute_uri().split('/')

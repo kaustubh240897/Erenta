@@ -6,9 +6,9 @@
     {% if qs.exists %}
 
   <div class='container'>
-              <div class='row mb-3'>
+              <div class='text-center'>
 
-       Items are here-:
+       <h3>{% if slug %} {{ slug|capfirst }} {% elif sub_slug %} {{ sub_slug|capfirst }} {% elif cat_slug %} {{ cat_slug|capfirst }} {% endif %} Items</h3>
           
             
         <div class='col-12'>
@@ -27,7 +27,7 @@
   </div>
      </div> -->
       {% if slug  %}
-      <div class="dropdown">
+      <div class="dropdown mx-4">
     <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Filter by Color
   </a>
@@ -64,14 +64,16 @@
     <div class="container" style="background-color: white;">
       <br/>
     
-         <div class='row wow fadeIn'>
+         <div class='row'>
         
 
          {% for obj in qs %}
 
-          <div class="col-lg-4 col-md-4 col-sm-4 mb-4" style="display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;flex: 0 1 calc(25% - 2em);" >
+          <div class="col-lg-3 col-md-3 col-sm-4 mb-4" style="display: flex;
+        flex-wrap: wrap; flex-grow: 1;
+        flex-basis: 100px; flex-shrink: inherit;
+
+        justify-content: space-between;flex: calc(30% - 5em);" >
    
           
        

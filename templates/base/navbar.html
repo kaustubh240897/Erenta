@@ -1,5 +1,7 @@
 {% load static %}
 {% url 'home' as home_url %}
+{% url 'home1' as home_url1 %}
+{% url 'home2' as home_url2 %}
 {% url 'contact' as contact_url %}
 {% url 'products:list' as product_list_url %}
 {% url 'login' as login_url %}
@@ -9,20 +11,775 @@
 {% url 'cart:home' as cart_url %}
 {% url 'notification_page' as notification_url %}
 
+<style>
+  .btn .bx {
+  vertical-align: inherit !important;
+  margin-top: -3px !important;
+  font-size: 1.15rem !important;
+}
+
+.form-control {
+  height: calc(2.5rem + 2px) !important;
+  padding: 0.5rem 1.5rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  border-radius: 0.3rem !important;
+}
+
+.btn {
+  font-size: 1rem !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  border-radius: 0.25rem !important;
+}
+
+.bx.icon-single {
+  font-size: 1.5rem !important;
+}
+
+.form-inline .form-control {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.form-inline .btn {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .form-inline .form-control {
+    width: 210px !important;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .form-inline .form-control {
+    width: 440px !important;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .form-inline .form-control {
+    width: 600px !important;
+  }
+}
+
+.sub-menu.navbar-light .navbar-nav .active > .nav-link,
+.sub-menu.navbar-light .navbar-nav .nav-link.active,
+.sub-menu.navbar-light .navbar-nav .nav-link.show,
+.sub-menu.navbar-light .navbar-nav .show > .nav-link {
+  border-bottom: 3px solid #007bff !important;
+  color: #007bff !important;
+}
+
+.navbar .navbar-toggler {
+  border: none !important;
+}
+
+.navbar-light .navbar-toggler:focus {
+  outline: none !important;
+}
+
+.navbar {
+  padding: 1rem !important;
+}
+
+.main-menu {
+  position: relative !important;
+  z-index: 3;
+}
+
+.sub-menu {
+  position: relative;
+  z-index: 2;
+  padding: 0 1rem;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .sub-menu {
+    padding: 0 1rem !important;
+  }
+
+  .sub-menu.navbar-expand-md .navbar-nav .nav-link {
+    padding: 1rem 1.5rem !important;
+  }
+}
+
+.navbar.bg-light {
+  background: #fff !important;
+  box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.1) !important;
+}
+
+.user-dropdown .nav-link {
+  padding: 0.15rem 0 !important;
+}
+
+#sidebar {
+  background: #fff;
+  height: 100%;
+  left: -100%;
+  top: 0;
+  bottom: 0;
+  overflow: auto;
+  position: fixed;
+  transition: 0.4s ease-in-out;
+  width: 84%;
+  z-index: 5001;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  padding: 1.25rem 1rem 1rem;
+}
+
+#sidebar.active {
+  left: 0;
+}
+
+#sidebar .sidebar-header {
+  background: #fff;
+  border-bottom: 1px solid #e4e4e4;
+  padding-bottom: 1.5rem;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #e4e4e4;
+  margin-bottom: 40px;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px 16px;
+  font-size: 1.1em;
+  display: block;
+  color: #000;
+}
+
+#sidebar ul li a:hover {
+  color: #7386d5;
+  background: #fff;
+}
+
+#sidebar ul li.active > a,
+#sidebar a[aria-expanded="true"] {
+  color: #007bff;
+  background: #e6f2ff;
+  border-radius: 6px;
+}
+
+a[data-toggle="collapse"] {
+  position: relative !important;
+}
+
+#sidebar .links .dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+section {
+  padding: 6rem !important;
+  background: #e4e4e4 !important;
+  margin-bottom: 30px !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.7);
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  z-index: -1;
+  width: 100%;
+  opacity: 0;
+}
+
+.overlay.visible {
+  opacity: 1;
+  z-index: 5000;
+}
+
+/* .mobiHeader .menuActive~.overlay {
+    opacity: 1;
+    width: 100%;
+} */
+
+ul.social-icons {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+ul.social-icons li {
+  display: inline-block;
+  margin-right: 0px;
+  margin-bottom: 0;
+}
+
+#sidebar ul.social-icons li a {
+  font-size: 24px;
+}
+
+.utility-nav {
+  background: #e4e4e4;
+  padding: 0.5rem 1rem !important;
+}
+
+.utility-nav p {
+  margin-bottom: 0;
+}
+
+.search-bar {
+  position: relative !important;
+  z-index: 2 !important;
+  box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.1) !important;
+}
+
+.search-bar .form-control {
+  width: calc(100% - 45px);
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-right: 8px;
+}
+
+.avatar.avatar-xs {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.user-dropdown .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the navigation bar gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .content {
+  padding-top: 60px ;
+  padding-bottom: 60px;
+}
+#navbar{
+  z-index: 9999;
+}
+.zz{
+  z-index: 9999;
+}
+
+</style>
+
+<!-- new nav-->
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+ 
+</head>
+ <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+          {% if request.session.cart_items %}
+            
+          <h3 class='text-center'> You already have Items in your cart. To change the city first clear the cart.</h3>
+          <h3 class='text-center'><a href='{% url "cart:remove_all" %}'>Clear the cart?</a> </h3>
+            {% else %}
+           
+            <div class='row'>
+              <div class='col-4'>
+                <h3><a href='{% url "home" %}'><i class="fas fa-map-marker-alt"></i> Tokyo</a></h3>
+              </div>
+               <div class='col-4'>
+                <h3><a href='{% url "home1" %}'><i class="fas fa-map-marker-alt"></i> Osaka</a></h3>
+               </div>
+                <div class='col-4'>
+                <h3><a href='{% url "home2" %}'><i class="fas fa-map-marker-alt"></i> Kyoto</a></h3>
+              </div>
+            </div>
+           {% endif %}
+          </div>
+
+        </div> 
+<body>
+<!-- partial:index.partial.html -->
+<div class="overlay"></div>
+
+<div class="utility-nav d-none d-md-block">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <p class="small"><i class="fa fa-envelope"></i> e-renta@example.com | <i class="fa fa-phone"></i> +91-9876543210
+        </p>
+      </div>
+
+      <div class="col-12 col-md-6 text-right">
+        <p class="small">Free shipping on total of $99 of all products</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div id='navbar'>
+<nav class="navbar navbar-expand-md navbar-light bg-light main-menu" style="box-shadow:none;">
+  <div class="container">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-link d-block d-md-none">
+                <i class="fas fa-bars"></i>
+            </button>
+
+     {% if request.session.city_names == 'Tokyo' %}
+    <a class="navbar-brand" href="{{ home_url }}">
+      <h4 class="font-weight-bold">E-renta</h4>
+    </a>
+      {% elif request.session.city_names == 'Osaka' %}
+    <a class="navbar-brand" href="{{ home_url1 }}">
+      <h4 class="font-weight-bold">E-renta</h4>
+    </a>
+    {% elif request.session.city_names == 'Kyoto' %}
+    <a class="navbar-brand" href="{{ home_url2 }}">
+      <h4 class="font-weight-bold">E-renta</h4>
+    </a>
+    {% else %}
+    <a class="navbar-brand">
+      <h4 class="font-weight-bold">E-renta</h4>
+    </a>
+    {% endif %}
+
+    <ul class="navbar-nav ml-auto d-block d-md-none">
+    <div class='row'>
+      <li class="nav-item">
+        <a class="btn btn-link" href="{{ cart_url }}"> <i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
+      </li>
+       {% if request.user.is_authenticated %}
+       <li class="nav-item">
+        <a class="btn btn-link" href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
+      </li>
+        {% endif %}
+        <li class="nav-item mt-2">
+        <a title='select your city here' id="myBtn3"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
+       </li>
+      </div>
+       
+    </ul>
+
+    <div class="collapse navbar-collapse">
+      <form method='GET' action='{% url "search:query" %}' class="form-inline search-form my-2 my-lg-0 mx-auto">
+        <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search" name='q' value='{{ request.GET.q }}'>
+        <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-link" href="{{ cart_url }}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
+        </li>
+         {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="btn btn-link" href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
+        </li>
+        {% endif %}
+       <li class="nav-item mt-2">
+        <a title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
+       </li>
+       
+
+        <li class="nav-item ml-md-3">
+        {% if request.user.is_authenticated %}
+            {% if request.user.profile_image %}
+            <a href="{% url 'accounts:user-update' %}"> <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0 text-right"
+                  alt="avatar image" height="50" width="50" />
+            </a>
+            {% else %}
+           <a href="{% url 'accounts:user-update' %}"><img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" /> </a>
+            {% endif %}
+        {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> Log In</a>
+        {% endif %}
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+</div>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sub-menu">
+  <div class="container">
+    <div class="collapse navbar-collapse zz">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item {% if request.path == home_url or request.path == home_url1 or request.path == home_url2  %} active {% endif %}">
+           {% if request.session.city_names == 'Tokyo' %}
+                    <a class="nav-link" href="{{ home_url }}">HOME</a>
+                    {% elif request.session.city_names == 'Osaka' %}
+                    <a class="nav-link" href="{{ home_url1 }}">HOME </a>
+                    {% elif request.session.city_names == 'Kyoto' %}
+                    <a class="nav-link" href="{{ home_url2 }}">HOME</a>
+                    {% else %}
+                     <a class="nav-link"><i class="fas fa-home mr-3"></i>HOME</a>
+        {% endif %}
+        </li>
+       
+        <li class="nav-item dropdown">
+                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      CATEGORIES
+                    </a>
+                                <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
+                                  
+                                       <li class="dropdown-submenu">
+                                        <a class="dropdown-item"  tabindex="1" href="{% url 'products:query' 'men' %}">
+                                            MEN
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                          <li><a class="dropdown-item" tabindex="-1" href="#">Accessories</a></li>
+                                            <li class='dropdown-submenu'>
+                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menclothing' %}">
+                                                Clothing
+                                              </a>
+                                            <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'blazers' %}">Blazer</a></li>
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'suits' %}">Suit</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menfootwear' %}">
+                                                    Footwear
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'menshoes' %}">Shoes</a></li>
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a></li>
+                                                </ul>
+                                            </li>
+                                            
+                                           
+                                        </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'booksnovels' %}">Books or Novels</a></li>
+                                     
+                                    
+                                   
+
+                                    <li class='dropdown-submenu'><a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'electronics' %}">Electronics
+
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                            <li>
+                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'fitnessband' %}">
+                                                Fitness band
+                                              </a>
+                                              </li>
+                                              <li>
+                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'laptops' %}">
+                                                Laptops
+                                              </a>
+                                              </li>
+                                              <li>
+                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'mobiles' %}">
+                                                Mobiles
+                                              </a>
+                                              </li>
+                                              <li>
+                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'playstations' %}">
+                                                Playstations
+                                              </a>
+                                              </li>
+                                    </ul>
+
+                                  </li>
+                                   <li class="dropdown-submenu">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'women' %}">
+                                            WOMEN
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" tabindex="-1" href="#">Footwear</a></li>
+                                            <li class='dropdown-submenu'>
+                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenclothing' %}">
+                                                Women's clothing
+                                              </a>
+                                          
+                                            <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item"  tabindex="-1"href="{% url 'products:query2' 'womenjackets' %}">Jackets</a></li>
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womendresses' %}">Dresses</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="dropdown-submenu">
+                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenaccessories' %}">
+                                                    Women's Accessories
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenhandbags' %}">Handbag</a></li>
+                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenwatches' %}">Watch</a></li>
+                                                </ul>
+                                            </li>
+                                          
+                                           
+                                        </ul>
+                                    </li>
+                                   
+                                 
+                                   
+                                </ul>
+        </li>
+          {% if request.user.is_authenticated %}
+        <li class="nav-item dropdown {% if request.path == account_url or request.path == about_url %}active {% endif %}">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ACCOUNTS
+                        </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'account:home' %}">Your Dashboard</a>
+            <a class="dropdown-item" href="#">Terms & Conditions</a>
+             <a class="dropdown-item" href="#">About us</a>
+            <a class='dropdown-item' href="{% url 'logout' %}">Logout</a>
+          </div>
+        </li>
+        {% endif %}
+         <li class="nav-item {% if request.path == product_list_url %}active {% endif %}">
+          <a class="nav-link" href="{{ product_list_url }}">COLLECTION</a>
+        </li>
+        <li class="nav-item {% if request.path == conttact_url %}active {% endif %}">
+          <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="search-bar d-block d-md-none zz">
+  <div class="container zz">
+    <div class="row">
+      <div class="col-12">
+        <form method='GET' action='{% url "search:query" %}' class="form-inline mb-3 mx-auto">
+          <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search" name='q' value='{{ request.GET.q }}'>
+          <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-10 pl-0">
+          {% if request.user.is_authenticated %}
+            {% if request.user.profile_image %}
+            <a href="{% url 'accounts:user-update' %}"> <img src="{{ user.profile_image.url }}" class="rounded-circle z-depth-0 text-right"
+                  alt="avatar image" height="50" width="50" />
+            </a>
+            {% else %}
+           <a href="{% url 'accounts:user-update' %}"><img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
+                  alt="avatar image" height="50" width="50" /> </a>
+            {% endif %}
+          {% else %}
+          <a class="btn btn-primary" href="#"><i class="far fa-user mr-1"></i> Log In</a>
+          {% endif %}
+        </div>
+
+        <div class="col-2 text-left">
+          <button type="button" id="sidebarCollapseX" class="btn btn-link">
+                            <i class="fas fa-window-close"></i>
+                        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="list-unstyled components links">
+    <li class="{% if request.path == home_url or request.path == home_url1 or request.path == home_url2  %} active {% endif %}">
+       {% if request.session.city_names == 'Tokyo' %}
+                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    {% elif request.session.city_names == 'Osaka' %}
+                    <a class="nav-link" href="{% url 'home1' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    {% elif request.session.city_names == 'Kyoto' %}
+                    <a class="nav-link" href="{% url 'home2' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    {% else %}
+                     <a class="nav-link"><i class="fas fa-home mr-3"></i>HOME </a>
+        {% endif %}
+      
+    </li>
+    <li class="{% if request.path == product_list_url  %} active {% endif %}">
+      <a href="{{ product_list_url }}"><i class="fas fa-store mr-3"></i> COLLECTION</a>
+    </li>
+    <li class="{% if request.path == contact_url %} active {% endif %}">
+      <a href="{% url 'contact' %}"><i class=" mr-3"></i> CONTACT</a>
+    </li>
+    <li class="{% if request.path == about_url %} active {% endif %}">
+      <a href="{% url 'contact' %}"><i class=" mr-3"></i> ABOUT</a>
+    </li>
+    
+    {% if request.user.is_authenticated %}
+    <li>
+      <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="far fa-question-circle mr-3"></i>
+                    ACCOUNTS</a>
+      <ul class="collapse list-unstyled" id="pageSubmenu">
+        <li>
+          <a href="{% url 'account:home' %}">Your Dashboard</a>
+        </li>
+        <li>
+          <a href="#">Terms & Conditions</a>
+        </li>
+        
+      </ul>
+    </li>
+    {% endif %}
+    
+    <li>
+          <a href="{% url 'logout' %}">Logout</a>
+    </li>
+  </ul>
+
+  <h6 class="text-uppercase mb-1">Categories</h6>
+  <ul class="list-unstyled components mb-3">
+    <li>
+      <a href="{% url 'products:query' 'men' %}">Men</a>
+      <ul class=" mb-6">
+        <li>
+      <a href="{% url 'products:query1' 'menclothing' %}">Men's Clothing</a>
+      <ul class='mb-9'>
+        <li>
+           <a href="{% url 'products:query2' 'blazers' %}">Blazer</a>
+        </li>
+        <li>
+           <a href="{% url 'products:query2' 'suits' %}">Suit</a>
+        </li>
+      </ul>
+      </li>
+       <li>
+      <a href="#">Men's Accessories</a>
+      </li>
+       <li>
+      <a href="{% url 'products:query1' 'menfootwear' %}">Footwear</a>
+      <ul class="mb-9">
+        <li>
+           <a href="{% url 'products:query2' 'menshoes' %}">Shoes</a>
+        </li>
+        <li>
+           <a href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a>
+        </li>
+      </ul>
+      </li>
+      </ul>
+    </li>
+    <li>
+      <a href="{% url 'products:query' 'women' %}">Women</a>
+       <ul class=" mb-6">
+        <li>
+      <a href="{% url 'products:query1' 'womenclothing' %}">Women's Clothing</a>
+        <ul class='mb-9'>
+          <li>
+           <a href="{% url 'products:query2' 'womendreeses' %}">Dresses</a>
+        </li>
+        <li>
+           <a href="{% url 'products:query2' 'womenjackets' %}">Jackets</a>
+        </li>
+        </ul>
+      </li>
+       <li>
+      <a href="{% url 'products:query1' 'womenaccessories' %}">Women's Accessories</a>
+      <ul class='mb-9'>
+        <li>
+           <a href="{% url 'products:query2' 'womenhandbags' %}">Handbags</a>
+        </li>
+        <li>
+           <a href="{% url 'products:query2' 'womenwatches' %}">Watch</a>
+        </li>
+      </ul>
+      </li>
+       <li>
+      <a href="#">Women's Footwear</a>
+      </li>
+      </ul>
+    </li>
+    <li>
+      <a href="{% url 'products:query' 'booksnovels' %}">Books/Novels</a>
+       <ul class=" mb-6">
+        <li>
+      <a href="#">Japnese Novels</a>
+      </li>
+       <li>
+      <a href="#">English Novels</a>
+      </li>
+       <li>
+      <a href="#">Other language</a>
+      </li>
+      </ul>
+    </li>
+    <li>
+      <a href="{% url 'products:query' 'electronics' %}">Electronics</a>
+       <ul class=" mb-6">
+        <li>
+      <a href="{% url 'products:query1' 'fitnessband' %}">Fitness Gadgets</a>
+      </li>
+       <li>
+      <a href="{% url 'products:query1' 'laptops' %}">Laptops</a>
+      </li>
+       <li>
+      <a href="{% url 'products:query1' 'mobiles' %}">Mobiles</a>
+      </li>
+      <li>
+      <a href="{% url 'products:query1' 'playstations' %}">Playstations</a>
+      </li>
+      </ul>
+    </li>
+    
+  </ul>
+
+  <ul class="social-icons">
+    <li><a href="#" target="_blank" title=""><i class="fa fa-facebook"></i></a></li>
+    <li><a href="#" target="_blank" title=""><i class="fa fa-twitter"></i></a></li>
+    <li><a href="#" target="_blank" title=""><i class="fa fa-linkedin"></i></a></li>
+    <li><a href="#" target="_blank" title=""><i class="fa fa-instagram"></i></a></li>
+  </ul>
+
+</nav>
 
 
 
 
+</body>
+</html>
+
+<!--/ new nav-->
 
 <!-- header -->
-	<header>
+	<!-- <header>
 
 
-  <div class='container-fluid'>
+  <div class='container-fluid'> -->
     <!--Navbar-->
 
 <!--Navbar-->
-<nav class="navbar navbar-dark indigo darken">
+<!-- <nav class="navbar navbar-dark indigo darken">
 <div class='row text-white'>
 <div class="col-2 mt-2 mx-1">
 <button class="navbar-toggler third-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent22"
@@ -44,7 +801,7 @@
             
         
   </div>
-</div>
+</div> -->
   <!-- <div class="col-md-4 col-sm-6 col-6 text-center"> -->
     
             <!-- <form class="form-inline" >
@@ -60,13 +817,13 @@
   	
           
              <!-- Trigger/Open The Modal -->
-<a style='color:white' title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
-     
+<!-- <a style='color:white' title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
+      -->
         <!-- The Modal -->
-        <div id="myModal" class="modal">
+        <!-- <div id="myModal" class="modal"> -->
 
           <!-- Modal content -->
-          <div class="modal-content">
+          <!-- <div class="modal-content">
             <span class="close">&times;</span>
           {% if request.session.cart_items %}
             
@@ -114,16 +871,16 @@
                   {% endif %}
               </a>
               
-              </div>
+              </div> -->
        
   <!-- Navbar brand -->
   <!-- <a class="navbar-brand" href="#">E-renta</a>
  -->
   
   <!-- Collapsible content -->
-  <div class="collapse navbar-collapse" id="navbarSupportedContent22">
+  <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent22"> -->
 
-    <!-- Links -->
+    <!-- Links
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <style>
@@ -274,20 +1031,20 @@
         <a class="nav-link" id="ham" href="{% url 'login' %}">LOGIN</a>
       </li>
       {% endif %}
-    
+     -->
   
     <!-- Links -->
-    </ul>
+    <!-- </ul>
   </div>
   
-  
+   -->
   <!-- Collapsible content -->
 
-</nav>
+<!-- </nav> -->
 <!--/.Navbar-->
-</div>
+<!-- </div>
 	
-</header>
+</header> -->
 
 
 	<!-- /header -->

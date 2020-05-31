@@ -25,21 +25,21 @@
 <style>
               @media screen and ( max-width: 992px) {
                 #car1 {
-                  width: 15em ;
+                  width: 15em !important;
                 
                   
                 }
               }
               @media only screen and (min-width: 1200px) {
                 #car1 {
-                  width: 15rem ;
+                  width: 15rem !important;
               }
               }
 
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
                 #car1 {
-                  width: 9rem ;
+                  width: 8.2rem !important;
                   
             }
           }
@@ -48,12 +48,12 @@
           color: orange;
         }
       
-            </style>
+  </style>
 
         <div id=car1 class="card">
 
               <!--Card image-->
-              <div class="view overlay">
+              <div class="view">
                  {% if instance.image %}
                  <a href="{{ instance.get_absolute_url }}" target="_blank" ><img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
                    </a>

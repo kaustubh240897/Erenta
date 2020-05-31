@@ -11,6 +11,8 @@ from django.shortcuts import render,redirect
 from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,BusinessDetailUpdateForm,ReactivationEmailForm,SupplierpersonaldetailForm,SupplierbankdetailForm,BankDetailUpdateForm
 from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail,User
 from .signals import user_logged_in
+from notification.models import Supplier_Order_Notification, Order_current_status
+from orders.models import Low_Quantity_Notification
 from django.db import IntegrityError
 from django.http import Http404
 from django.utils.safestring import mark_safe
@@ -24,6 +26,7 @@ from Ecommerce_Intern.mixins import NextUrlMixin, RequestFormAttachMixin
 
 @login_required
 def join_us_page(request):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count() + Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).count()
     context = {
        "title":"E-renta: Start lending",
        'personal_details': Supplier.objects.filter(email=request.user),
