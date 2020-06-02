@@ -64,9 +64,6 @@ function showSlides(n) {
   dots[slideIndex-1].className += " active";
   captionText.innerHTML = dots[slideIndex-1].alt;
 } 
-
-
-
 </script>
 {% endblock %}
 
@@ -109,11 +106,10 @@ function showSlides(n) {
                 .prev,
                 .next {
                   cursor: pointer;
-                  position: absolute;
-                  top: 40%;
                   width: auto;
-                  padding: 16px;
                   margin-top: -50px;
+                  top: 40% ;
+                  padding: 10px;
                   color: white;
                   font-weight: bold;
                   font-size: 20px;
@@ -174,12 +170,18 @@ function showSlides(n) {
                 }
              
               
-              @media screen and ( max-width: 992px) {
-                .wid {
-                  width: 19rem ;
-                
-                  
+              @media screen and (max-width: 992px) {
+               .wid {
+                  width: 17rem !important ;
+                  height: 17rem !important;
+                  }
+                .wid1{
+                  width: 22rem !important;
                 }
+                .wid2{
+                  width: 19rem !important;
+                }
+                
                 .margin-l{
                   margin-left: 20px !important;
                 }
@@ -190,14 +192,31 @@ function showSlides(n) {
               }
               @media only screen and (min-width: 1200px) {
                 .wid {
-                  width: 25rem ;
+                  width: 30rem !important;
+                  height: 30rem !important;
               }
-              .margin-l{
-                margin-left: 25px;
+              .wid1{
+                width: 35rem !important;
+              }
+              .margin-r{
+                margin-left: 10rem;
+              }
+              .margin-a{
+                margin-left: 30rem !important;
+        
               }
              
               .margin-l2{
                 margin-left: 50px !important;
+              }
+              .wid2{
+                width: 30rem !important;
+              }
+              .margin-l3{
+              margin-right: 8rem !important;
+              }
+              .margin-l4{
+                margin-left: 20rem !important;
               }
               
               
@@ -206,19 +225,28 @@ function showSlides(n) {
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
                 .wid {
-                  width: 21rem ;
-                  
-            }
-             .margin-l{
-              margin-left: 15px !important;
-          }
-          .margin-l2{
-            margin-left: 30px !important;
-          }
-          .margin-r{
-            margin-right: 10px !important;
-          }
-          }
+                  width: 17rem !important ;
+                  height: 17rem !important;
+                  }
+                .wid1{
+                  width: 21rem !important;
+                }
+                .wid2{
+                  width: 21rem !important;
+                }
+               
+              
+                
+                .margin-l{
+                  margin-left: 2rem !important;
+                    }
+                .margin-l2{
+                  margin-left: 30px !important;
+                }
+                .margin-r{
+                  margin-right: 10px !important;
+                }
+                }
          
 
            </style>
@@ -226,40 +254,41 @@ function showSlides(n) {
 
               <div class='row'>
                   
-                <div class='col-lg-4 col-md-6 col-sm-6' >
+                <div class='col-lg-4 col-md-6 col-sm-12' >
                       <br/>
             <h2 class="text-center margin-r"> <strong>{{ object.product_name|capfirst }} </strong></h2>
            
            
         
          
-
+              <!-- <a class="prev"  onclick="plusSlides(-1)">&#10094;</a>
+              <a class="next margin-a"  onclick="plusSlides(1)">&#10095;</a> -->
               <div class="mySlides margin-l">
                 <div class="numbertext">1 / 4</div>
-                  <img src="{{ object.image.url }}"  class="zoom"   style=" width:20rem; height:20rem !important;" />
+                  <img src="{{ object.image.url }}"  class="zoom wid" />
               </div>
 
               <div class="mySlides margin-l">
                 <div class="numbertext">2 / 4</div>
-                  <img src='{{ images0.image.url }}'  class="zoom "   style=" width:20rem; height:20rem !important;" />
+                  <img src='{{ images0.image.url }}'  class="zoom wid" />
               </div>
 
               <div class="mySlides margin-l">
                 <div class="numbertext">3 / 4</div>
-                  <img src='{{ images1.image.url }}'  class="zoom "   style="width:20rem; height:20rem !important;" />
+                  <img src='{{ images1.image.url }}'  class="zoom wid" />
               </div>
 
               <div class="mySlides margin-l">
                 <div class="numbertext">4 / 4</div>
-                  <img src='{{ images2.image.url }}'  class="zoom"  style="width:20rem; height:20rem !important;" />
+                  <img src='{{ images2.image.url }}'  class="zoom wid"/>
               </div>
 
               
 
               <!-- Next and previous buttons -->
              
-              <a class="prev margin-b"  onclick="plusSlides(-1)">&#10094;</a>
-              <a class="next margin-b"  onclick="plusSlides(1)">&#10095;</a>
+            
+              
              
 
               <!-- Image text -->
@@ -270,22 +299,22 @@ function showSlides(n) {
               
               <!-- Thumbnail images -->
               <div class="row margin-l2">
-                <div class="column">
-                  <img class="demo cursor" src="{{ object.image.url }}" style=" width:80%" onclick="currentSlide(1)" alt="img.1">
+                <div class="column mr-4">
+                  <img class="demo cursor" src="{{ object.image.url }}" style=" width:100%" onclick="currentSlide(1)" alt="img.1">
                 </div>
-                <div class="column">
-                  <img class="demo cursor" src="{{ images0.image.url }}" style="width:80%" onclick="currentSlide(2)" alt="img.2">
+                <div class="column mr-4">
+                  <img class="demo cursor" src="{{ images0.image.url }}" style="width:100%" onclick="currentSlide(2)" alt="img.2">
                 </div>
-                <div class="column">
-                  <img class="demo cursor" src="{{ images1.image.url }}" style=" width:80%;" onclick="currentSlide(3)" alt="img.3">
+                <div class="column mr-4">
+                  <img class="demo cursor" src="{{ images1.image.url }}" style=" width:100%;" onclick="currentSlide(3)" alt="img.3">
                 </div>
-                <div class="column">
-                  <img class="demo cursor" src="{{ images2.image.url }}" style="width:80%;" onclick="currentSlide(4)" alt="img.4">
+                <div class="column mr-4">
+                  <img class="demo cursor" src="{{ images2.image.url }}" style="width:100%;" onclick="currentSlide(4)" alt="img.4">
                 </div>
                 
               </div>
             <br/>
-             <div class="container text-center wid" style="background-color: #007b5e; color: white; align-content: center;">
+             <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
             <h3 class="text-center">About Item</h3>
             
                {{ object.description|linebreaks }}<br/>
@@ -298,11 +327,11 @@ function showSlides(n) {
         </div>
         
         
-         <div class='col-sm-4 col-lg-5 col-md-4'>
+         <div class='col-sm-12 col-lg-5 col-md-4'>
           <br/>
         <br/>
         <br/>
-          <div class="card wid" style="z-index: -1; background-color:#263238;">
+          <div class="card wid2" style="z-index: -1; background-color:#263238;">
           <div class="card-body text-center" style="color: white;">
             
            <p>Posted : {{ object.timestamp|timesince }} ago   {% if product_time %}
@@ -322,9 +351,9 @@ function showSlides(n) {
           
 
 
-        
-          <div class=wid style=" background-color: lavender;">
-           <form class='form wid' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
+    
+          <div class='wid2' style=" background-color: lavender;">
+           <form class='form wid2' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
             
               Quantity-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
               Start Date-:
@@ -365,11 +394,13 @@ function showSlides(n) {
           <br/>
            <input class='btn btn-light btn-block' style="background-color: #263238;  ; color:white;" type='submit' value='Add to cart' />
            </form>
-          </br>
+          
+          <br/>
+          <br/>
           
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
            <h3 class='text-center'> Variations available</h3>
-           
+          <br/>
             <table class="table" style="background-color: #263238; color: white;">
             <thead>
               <tr>
@@ -442,21 +473,7 @@ function showSlides(n) {
               </div>
          <hr/>
          
-            <!-- <div class="card" style="width: 18rem"></div> -->
-            <!-- {% if object.image %}
-            <img src='{{ object.image.url }}' class='img-fluid' />
-             {% endif %}   -->
-            <!-- </div> -->
-
-
-             <!-- {% for img in images %}
-             <div class='col-xs-6 col-md-3'>
-               <a href="#">
-             <img class='img-thumbnail' src='{{ img.image.url }}' />
-             </a>
-             </div>
-             {% endfor %} -->
-
+           
              <!-- slider -->
     <div class='col-lg-12 col-md-12 col-sm-12' style="margin-top: 5rem;">
       <style>

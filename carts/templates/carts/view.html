@@ -325,7 +325,7 @@ a.remove:hover {
 .promoCode input:active, .promoCode input:focus {
   outline: 0;
 }
-.promoCode a.btn {
+.promoCode a.btn1 {
   float: left;
   width: 15%;
   padding: .75em 0;
@@ -333,12 +333,12 @@ a.remove:hover {
   text-align: center;
   border: 1px solid #82ca9c;
 }
-.promoCode a.btn:hover {
+.promoCode a.btn1:hover {
   border: 1px solid #f69679;
   background: #f69679;
 }
 
-.btn:link, .btn:visited {
+.btn1:link, .btn1:visited {
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
   letter-spacing: -.015em;
@@ -356,7 +356,7 @@ a.remove:hover {
   -o-transition: all 0.25s linear;
   transition: all 0.25s linear;
 }
-.btn:after {
+.btn1:after {
   content: "\276f";
   padding: .5em;
   position: relative;
@@ -367,13 +367,13 @@ a.remove:hover {
   -o-transition: all 0.15s linear;
   transition: all 0.15s linear;
 }
-.btn:hover, .btn:focus, .btn:active {
+.btn1:hover, .btn1:focus, .btn1:active {
   background: #f69679;
 }
-.btn:hover:after, .btn:focus:after, .btn:active:after {
+.btn1:hover:after, .btn1:focus:after, .btn1:active:after {
   right: -10px;
 }
-.promoCode .btn {
+.promoCode .btn1 {
   font-size: .85em;
   padding: .5em 2em;
 }
@@ -452,7 +452,7 @@ a.remove:hover {
     width: 100%;
   }
 
-  a.btn.continue {
+  a.btn1.continue {
     width: 100%;
     text-align: center;
   }
@@ -529,7 +529,7 @@ a.remove:hover {
       
             <li class="totalRow"><span class="label">Tax</span><span class="value">${{ cart.tax }}</span></li>
             <li class="totalRow final"><span class="label">Total</span><span class="value"> ${{ cart.total }}</span></li>
-      <li class="totalRow"><a  href='{% url "cart:checkout" %}' class="btn continue">Checkout</a></li>
+      <li class="totalRow"><a  href='{% url "cart:checkout" %}' class="btn1 btn continue">Checkout</a></li>
     </ul>
   </div>
 </div>

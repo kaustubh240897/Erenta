@@ -34,9 +34,6 @@
   border-radius: 0.25rem !important;
 }
 
-.bx.icon-single {
-  font-size: 1.5rem !important;
-}
 
 .form-inline .form-control {
   border-top-right-radius: 0 !important;
@@ -137,6 +134,9 @@
   z-index: 5001;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   padding: 1.25rem 1rem 1rem;
+}
+.dropdown-menu{
+  font-size: 1.4rem !important;
 }
 
 #sidebar.active {
@@ -448,12 +448,12 @@ ul.social-icons li {
         </li>
        
         <li class="nav-item dropdown">
-                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <a class="nav-link dropdown-toggle"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       CATEGORIES
                     </a>
                                 <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
                                   
-                                       <li class="dropdown-submenu">
+                                       <li class="dropdown-submenu" >
                                         <a class="dropdown-item"  tabindex="1" href="{% url 'products:query' 'men' %}">
                                             MEN
                                         </a>
@@ -631,10 +631,10 @@ ul.social-icons li {
       <a href="{{ product_list_url }}"><i class="fas fa-store mr-3"></i> COLLECTION</a>
     </li>
     <li class="{% if request.path == contact_url %} active {% endif %}">
-      <a href="{% url 'contact' %}"><i class=" mr-3"></i> CONTACT</a>
+      <a href="{% url 'contact' %}"><i class="fas fa-phone mr-3"></i> CONTACT</a>
     </li>
     <li class="{% if request.path == about_url %} active {% endif %}">
-      <a href="{% url 'contact' %}"><i class=" mr-3"></i> ABOUT</a>
+      <a href="{% url 'contact' %}"><i class="fas fa-info-circle mr-3"></i> ABOUT</a>
     </li>
     
     {% if request.user.is_authenticated %}
@@ -654,7 +654,7 @@ ul.social-icons li {
     {% endif %}
     
     <li>
-          <a href="{% url 'logout' %}">Logout</a>
+          <a href="{% url 'logout' %}"><i class="fas fa-sign-info mr-3"></i>Logout</a>
     </li>
   </ul>
 
