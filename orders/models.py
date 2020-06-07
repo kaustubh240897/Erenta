@@ -317,7 +317,7 @@ def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
     if int(instance.quantity) <= 5:
         Low_Quantity_Notification.objects.create(quantity=instance.quantity,
                                         product = instance.product,
-                                        title = ("Low quantity, You have only  %d %s ramaining." %(instance.quantity, instance.product)),
+                                        title = ("Low quantity, You have only  %d %s remaining." %(int(instance.quantity), instance.product)),
                                         message = "Add the quantity now."
         )
 
