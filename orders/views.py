@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from billing.models import BillingProfile
 #from django.shortcuts import render
 from .models import Order,Cancel_Item
-from carts.models import Coupon
 from .forms import RefundForm
 from carts.forms import CouponForm
 from django.contrib import messages
@@ -18,7 +17,7 @@ from django.views.generic import CreateView
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
-from carts.models import Cart,CartItem
+from carts.models import Cart,CartItem,Coupon
 from addresses.forms import AddressForm
 from addresses.models import Address
 from products.models import  Variation
@@ -65,7 +64,7 @@ class ShippedOrderListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ShippedOrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, status='shipped').not_created()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status = 'shipped').not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -156,8 +155,8 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
         #context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
-        context['time']=Order.objects.filter(order_id=order_id,updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
-        context['cancel_time']=Order.objects.filter(order_id=order_id,updated__lte=datetime.datetime.now() - datetime.timedelta(hours=24))
+        context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
+        context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=datetime.datetime.now() - datetime.timedelta(hours=24))
         return context
 
     def get_object(self):
@@ -213,7 +212,7 @@ class ShippedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ShippedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, status='shipped').not_created().distinct()
+        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__status='shipped').not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -241,7 +240,7 @@ class RefundedSupplierOrdersListView(LoginRequiredMixin,ListView):
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
-        context['refunded orders'] = 'refunded supplier oders',
+        context['refunded_orders'] = 'refunded supplier oders',
         context['products'] = products
         return context
 
@@ -260,7 +259,7 @@ class ReturnedSupplierOrdersListView(LoginRequiredMixin,ListView):
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
-        context['returned orders'] = 'returned supplier orders',
+        context['returned_orders'] = 'returned supplier orders',
         context['products'] = products
         return context
 
@@ -279,7 +278,7 @@ class CancelSupplierOrdersListView(LoginRequiredMixin,ListView):
             products = paginator.page(1)
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
-        context['cancel_orders'] = 'cancelled supplier orders',
+        context['cancelled_orders'] = 'cancelled supplier orders',
         context['products'] = products
         return context
 

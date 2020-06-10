@@ -9,9 +9,10 @@
 {% if not billing_profile %}
 
 <div class='row text-center'>
-<div class='col-12 col-md-3 mx-auto'>
+<div class='col-12 col-md-6 mx-auto'>
 </br>
 <p class='lead'><b> LOGIN </b></p>
+<p>** If you don't have an account yet please <a href="{% url 'register' %}"> Signup </a>  first.</p>
     {% include 'accounts/snippets/form.html' with form=login_form next_url=request.build_absolute_uri %}
 </div>
  <!-- <p class='lead'>or</p>

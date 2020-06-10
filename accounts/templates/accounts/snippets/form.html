@@ -7,8 +7,11 @@
      {% endif %}
      
 
-     {{ form|crispy }}</br>
+     {{ form|crispy }} <a href="{% url 'password_reset' %}" >Forget password?</a>
+     <div>
+          <br/>
 <button type='submit' class='btn btn-success'> Submit </button>
+     </div>
 </form>
 <br/>
 </div>

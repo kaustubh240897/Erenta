@@ -64,7 +64,7 @@ Welcome {{ request.user.full_name }}!
   <div class="card-body">
     <h5 class="card-title text-center">Billing</h5>
      <div class='list-group'>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:list" %}'>My paid Orders </a>
+          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:list" %}'>My Orders(paid) </a>
           <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:created" %}'>My created(unpaid) Orders </a>
          
             <!-- <a class='list-group-item' href='#'>Addresses </a> -->

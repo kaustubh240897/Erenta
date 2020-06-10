@@ -660,7 +660,7 @@ class my_productsView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['qs'] = Product_description.objects.filter(user = self.request.user)
+        context['qs'] = Product_description.objects.filter(user = self.request.user).order_by('-timestamp')
         return context
     
     
