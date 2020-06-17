@@ -157,9 +157,9 @@ class Product_description(models.Model):
 
     objects = ProductManager()
 
-    
+    @property
     def product_posted_days(self):
-        return datetime.datetime.now() - datetime.timedelta(hours=1488)
+        return datetime.datetime.now()-datetime.timedelta(hours=1488)
     
 
     def get_absolute_url(self):
