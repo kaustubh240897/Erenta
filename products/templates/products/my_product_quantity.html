@@ -11,7 +11,7 @@
     <h4 class='text-center'> Product's colors and sizes available now.</h4>
      {% for obj in qs1 %}
      
-      <div class='col text-left'>
+      <div class='col text-left mb-2'>
     <strong> {{ forloop.counter }}.
 
        {{ obj.product }}
@@ -19,6 +19,8 @@
       
       </strong>
       </div>
+       {% empty %}
+      <p class='col-12'>  You have not added color and sizes yet.</p>
        {% endfor %}
     
     <hr/>
@@ -46,7 +48,7 @@
          </div>
       <br/>
       {% empty %}
-      <p class='col-12'>  You have not created any products yet.</p>
+      <p class='col-12'>  You have not added quantity yet.</p>
     {% endfor %}
   <hr/>
     <strong>Note: If quantity for any size and color not available, Then <a href='{% url "addproductdetails" %}'> Add here.</a>  </strong>

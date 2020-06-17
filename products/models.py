@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.conf import settings
 import random
 import os
+import datetime
 from django.contrib import messages
 from django.db import models
 from multiselectfield import MultiSelectField
@@ -155,6 +156,10 @@ class Product_description(models.Model):
 
 
     objects = ProductManager()
+
+    
+    def product_posted_days(self):
+        return datetime.datetime.now() - datetime.timedelta(hours=1488)
     
 
     def get_absolute_url(self):

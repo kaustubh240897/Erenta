@@ -327,16 +327,18 @@ function showSlides(n) {
         </div>
         
         
-         <div class='col-sm-12 col-lg-5 col-md-4'>
-          <br/>
+         <div class='col-sm-12 col-lg-5 col-md-4 container'>
         <br/>
         <br/>
-          <div class="card wid2" style="z-index: -1; background-color:#263238;">
+        <br/>
+          <div class="card" style="z-index: -1; background-color:#263238;">
           <div class="card-body text-center" style="color: white;">
             
-           <p>Posted : {{ object.timestamp|timesince }} ago   {% if product_time %}
+           <p>Posted : {{ object.timestamp|timesince }} ago   {% if object.timestamp >= object.product_posted_days %}
+                     
                       <span class="badge badge-pill badge-danger">NEW</span>
-            {% endif %}</p>
+                    
+                      {% endif %}</p>
            
            <h5>Brand : {{ object.brand }}</h5>
            <br/>
@@ -352,8 +354,8 @@ function showSlides(n) {
 
 
     
-          <div class='wid2' style=" background-color: lavender;">
-           <form class='form wid2' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
+          <div style=" background-color: lavender;">
+           <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
             
               Quantity-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
               Start Date-:
@@ -567,7 +569,7 @@ function showSlides(n) {
 
           <!--Grid column-->
            {% for object in similar_products %}
-         <div class="col-lg-3 col-md-4 col-sm-4 mb-4" style="display: flex;
+         <div class="col-lg-3 col-md-4 col-sm-4 mb-4 text-center" style="display: flex;
         flex-wrap: wrap; flex-grow: 1;
         flex-basis: 100px; flex-shrink: inherit;
 

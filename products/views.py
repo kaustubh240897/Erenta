@@ -82,7 +82,7 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Details'
         context['qs1']=Variation.objects.filter(product__slug= slug)
-        context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
+        #context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.filter(Current_City__iexact= self.request.session['city_names'], slug=slug)
         context['similar_products']= View_Count.objects.filter(product__Current_City__iexact= self.request.session['city_names'], product__sub_category=product.sub_category).exclude(product__slug=slug)[:8]
