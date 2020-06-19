@@ -38,10 +38,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Erenta <erentajapan@gmail.com>'
 BASE_URL = '127.0.0.1:8000'
-
-MANAGERS = (
-    ('Kaustubh Dwivedi', "erentajapan@gmail.com"),
-)
+SERVER_EMAIL = 'erentajapan@gmail.com'
+MANAGERS = [
+    ('Kaustubh_Dwivedi', "erentajapan@gmail.com"),
+]
 
 ADMINS = MANAGERS
 

@@ -44,10 +44,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Erenta <erentajapan@gmail.com>'
 BASE_URL = 'https://rent-now.herokuapp.com'
-
-MANAGERS = (
-    ('Kaustubh Dwivedi', "erentajapan@gmail.com"),
-)
+SERVER_EMAIL = 'erentajapan@gmail.com'
+MANAGERS = [
+    ('Kaustubh_Dwivedi', "erentajapan@gmail.com"),
+]
 
 
 

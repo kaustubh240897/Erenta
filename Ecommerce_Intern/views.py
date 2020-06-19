@@ -129,6 +129,7 @@ class GeneratePdf(LoginRequiredMixin,View):
             'customer_name': order.billing_profile.user.full_name,
             'email': order.billing_profile.user,
             'object': Order.objects.get(order_id=id),
+            'title' : "Invoice",
             
             
         }
@@ -157,7 +158,8 @@ class GenerateSupplierPdf(LoginRequiredMixin,View):
              'time': timezone.now(),
             'customer_name': order.billing_profile.user.full_name,
             'object': Order.objects.get(order_id=id),
-            'user': self.request.user
+            'user': self.request.user,
+            'title': "Invoice",
             
             
         }
