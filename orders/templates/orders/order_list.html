@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
 
 {% block content %}
 <div class='container'>
@@ -12,37 +12,37 @@
 <div class='container' style='background-color: black;'>
   <div class='row'>
     {% if paid_orders %}
-    <div class='col-3 text-center' style='background-color: white;'>
+    <div class='col-md-3 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
-    <div class='col-3 text-center'>
+    <div class='col-md-3 col-sm-12 text-center mb-2'>
       {% endif %}
 <strong><a href="{% url 'orders:list' %}">Paid orders</a> </strong>
 </div>
 {% if shipped_orders %}
-    <div class='col-2 text-center' style='background-color: white;'>
+    <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
-    <div class='col-2 text-center'>
+    <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
 <strong><a href="{% url 'orders:shippedlist' %}">Shipped orders</a> </strong>
 </div>
 {% if refund_orders %}
-    <div class='col-2 text-center' style='background-color: white;'>
+    <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
-    <div class='col-2 text-center'>
+    <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
 <strong><a href="{% url 'orders:refundedlist' %}">Refunded orders</a> </strong>
 </div>
 {% if returned_orders %}
-    <div class='col-3 text-center' style='background-color: white;'>
+    <div class='col-md-3 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
-    <div class='col-3 text-center'>
+    <div class='col-md-3 col-sm-12 text-center mb-2'>
       {% endif %}
-<strong><a href="{% url 'orders:returnedlist' %}">Retruned back orders after rental timeperiod</a> </strong>
+<strong><a href="{% url 'orders:returnedlist' %}">Retruned orders(after rent timeperiod)</a> </strong>
 </div>
   {% if cancelled_orders %}
-    <div class='col-2 text-center' style='background-color: white;'>
+    <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
-    <div class='col-2 text-center'>
+    <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
       
 <strong><a href="{% url 'orders:cancelledlist' %}">Cancelled orders</a> </strong>
@@ -50,24 +50,25 @@
 
 </div>
 </div>
-<div class='row'>
+<!-- <div class='row'>
     <div class='col'>
         <table class='table table-dark'>
-            <thead><th>#</th><th>Order Id</th><th>Products</th><th>Total</th><th>Date</th><th>View</th></thead>
+            <thead><th>#</th><th>Cart Id</th><th>Products</th><th>Total</th><th>Date</th><th>View</th></thead>
 
             <tbody>
                 {% for object in products %}
                     <tr>
                         <td>{{ forloop.counter }}.</td>
-                        <td>{{ object.order_id }}</td>
-                        <td>
+                        <td>{{ object.cart }}</td>
+                         <td>
                          {% for item in object.cart.cartitem_set.all %} {{ item.quantity}} X {{ item.product }} {% if not forloop.last %} , {% endif %}
                          {% endfor %}
-                        </td>
+                        </td> 
+                         <td>{{ object.quantity}} X {{ object.product }}</td>
                         
-                        <td>$ {{ object.total }}</td>
+                        <td>$ {{ object.cart.total }}</td>
                         <td> {{ object.timestamp }}</td>
-                        <td><a class='btn btn-sm  btn-primary' href='{{ object.get_absolute_url }}'>View your Order</a></td>
+                        <td><a class='btn btn-sm  btn-primary' href='#'>View your Order</a></td>
                     </tr>
                 {% empty %}
                 <tr><td colspan="3"><p class='lead'>No orders yet.</td></tr>
@@ -76,7 +77,69 @@
 
         </table>
     </div>
+</div>  -->
+
+
+
+ {% for object in products %}
+ <div class='container' style='background-color:rgb(182, 182, 182);'>
+  <div class='row'>
+    <div class='col-md-1 col-sm-1'>
+      <b>{{ forloop.counter }}.</b>
+    </div>
+    <div class='col-md-4 col-sm-4'>
+    <b>Order Id -:  {{ object.order_id }} <br/>
+    Order Total -:  ${{ object.total }} </b>
+    </div>
+    <div class='col-md-3 col-sm-3'>
+    <b>Order Placed -: {{ object.timestamp }} </b>
+    </div>
+    <div class='col-md-4 col-sm-4'>
+      <b><a href='{{ object.get_absolute_url }}'>Order details</a> </b> |
+      <b>  <a href="{% url 'pdf' object.order_id %}"> View Invoice</a>
+      </b>
+
+    </div>
+  </div>
+  </div>
+ {% for item in object.cart.cartitem_set.all %}
+<div class="container"  style="background-color: #263238; color: white;">
+  <br/>
+  <div class='text-right'>
+<strong> <font color='green'> Status -:  {% if item.refund_granted %} Refund granted {% elif item.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ item.status }} {% endif %}  </font> </strong>
+<h6> (from {{ item.updated }})</h6>
+  </div>
+  {{ forloop.counter }}.
+  {% if item.product.image %}
+  <img src="{{ item.product.image.url }}" class="card-img-top" style="height:100px;width:100px" alt="{{ item.product.title }} logo">
+  
+  {% endif %}
+  <div class="card-body">
+                    
+    <h5 class="card-title"><a href='{{ item.product.get_absolute_url }}'> {{ item.quantity }} X {{ item.product|capfirst }} </a></h5>
+     <h6 class="card-title"> {% if item.product.discount_price %}
+            <strike> ${{ item.product.cost_per_day }}</strike> ${{ item.product.discount_price }}/day ({{ item.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ item.product.cost_per_day }}/day
+           {% endif %}
+           </h6>
+    <p class="card-text">{{ item.product.description|linebreaks|truncatewords:14 }}</p>
+    <h6> Cost -: ${{ item.line_total }}</h6>
+    {% for o in item.product.user.supplier_set.all %}
+    <h6>lended by -: {{ o.Shop_name }}</h6>
+    <b>Contact -: {{ o.Mobile_number }}</b>
+    {% endfor %}
+    
+  
+  </div>
 </div>
+
+  {% empty %}
+  <strong><p class='lead'>No orders yet.</p> </strong>
+  {% endfor %}
+  <hr/>
+  
+  {% endfor %}
 
 
   {% if products.has_other_pages %}

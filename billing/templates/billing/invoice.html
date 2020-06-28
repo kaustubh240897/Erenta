@@ -35,6 +35,9 @@
             }
         </style>
     </head>
+
+    {% if email == user %}
+    
     <body>
         <div class='wrapper'>
             <div class='header'>
@@ -67,3 +70,9 @@
         </div>
     </div>
     </body>
+    {% else %}
+    <div class='text-center'>
+    <h4> You are unauthorized to see this content.</h4>
+    </div>
+    {% endif %}
+

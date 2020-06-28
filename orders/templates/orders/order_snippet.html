@@ -28,7 +28,7 @@
              <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-danger btn-sm' style="margin-right: 5px;margin-left: 5px;">Request Refund</button></a></p>
             {% else %}
              {% if not item.cancel_request %}
-             {% if time and item.status == 'shipped' %}
+             {% if item.updated >= item.cancel_time and item.status == 'shipped' %}
             <a href="{% url 'product-refund' item.id item.product.slug %}"> <button class='btn btn-danger btn-sm' style="margin-right: 5px;margin-left: 5px;">Request Refund</button></a></p>
             {% endif %}
             {% endif %}
@@ -54,13 +54,13 @@
          <br/>
          <br/>
      {% if item.status == 'shipped' and not item.cancel_request %}
-     {% if cancel_time %}
+     {% if item.cancel_time > item.updated  %}
         <a  href='{% url "refund" item.id item.product.slug %}'><button class='btn-sm btn btn-danger'>Cancel Item</button></a>
      {% endif %}
     {% elif item.cancel_request and not item.cancel_granted %}
    <b><font color='red'><p>** Cancel request has been initiated.</p> </font> </b>
    {% elif item.cancel_granted %}
-   <b><p>Cancellation has been done.</p> </b>
+   <b><font color='red'><p>** Cancellation has been done.</p> </font></b>
         {% endif %}
     </div>
      </div>
@@ -84,25 +84,35 @@
         <span>Order's Status : </span>
      <font color="green"> <strong> {{ object.get_status }} </strong></font>
     </li> -->
+    
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Cart SubTotal</span>
+    <font color="green"><strong>${{ object.cart.subtotal }}</strong></font>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Tax</span>
+    <font color="green"><strong>+ ${{ object.cart.tax }}</strong></font>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Shipping Total</span>
+    <font color="green"><strong>+ ${{ object.cart.shipping_total }}</strong></font>
+    </li>
+    
+    <li class="list-group-item d-flex justify-content-between">
+        <span>Cart Total(Including all taxes)</span>
+    <font color="green"><strong>= ${{ object.cart.total }}</strong></font>
+    </li>
     {% if object.cart.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Promo code</h6>
         <small>{{ object.cart.coupon.code }}</small>
         </div>
-        <span class="text-success">-${{ object.cart.coupon.amount }}</span>
+        <span class="text-success">- ${{ object.cart.coupon.amount }}</span>
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
-        <span>Cart Total (USD)</span>
-    <font color="green"><strong>${{ object.cart.total }}</strong></font>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-        <span>Shipping Total (USD)</span>
-    <font color="green"><strong>+ ${{ object.cart.shipping_total }}</strong></font>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-        <span>Order Total (USD)</span>
+        <span>Order Total</span>
      <font color="green"><strong>= ${{ object.total }}</strong></font>
     </li>
     </ul>

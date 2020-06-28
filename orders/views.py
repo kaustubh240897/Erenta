@@ -12,6 +12,7 @@ from products.models import Product_description
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
+from django.utils import timezone
 from django.conf import settings
 from django.views.generic import CreateView
 from django.shortcuts import HttpResponseRedirect
@@ -42,7 +43,7 @@ class OrderListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(OrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, status='paid').not_created()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status = 'paid').not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -86,7 +87,7 @@ class RefundedOrderListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(RefundedOrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__refund_requested = True).not_created()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__refund_requested = True).not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -108,7 +109,7 @@ class ReturnedOrderListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ReturnedOrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status='returned back').not_created()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status='returned back').not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -131,7 +132,7 @@ class CancelOrderListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(CancelOrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__cancel_request = True).not_created()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__cancel_request = True).not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -155,8 +156,8 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
         #context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
-        context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=datetime.datetime.now() - datetime.timedelta(hours=24))
-        context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=datetime.datetime.now() - datetime.timedelta(hours=24))
+        #context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=timezone.now() - datetime.timedelta(hours=24))
+        #context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=timezone.now() - datetime.timedelta(hours=24))
         return context
 
     def get_object(self):
@@ -193,7 +194,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, status='paid').not_created().distinct()
+        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__status='paid').not_created().distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:

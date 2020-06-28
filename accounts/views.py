@@ -277,8 +277,9 @@ class AddSupplierpersonaldetailView(LoginRequiredMixin,CreateView):
     template_name = 'accounts/supplier_personal_details.html'
     def form_valid(self,form):
         obj = form.save(commit=False)
-        if Supplier.objects.filter(email=self.request.user).count()==1:
+        if Supplier.objects.filter(email=self.request.user).count()>0:
             return HttpResponseRedirect(self.get_success_url1())
+        
         else:
             obj.email = self.request.user # logged in user is available on a view func's `request` instance
             obj.save()

@@ -629,7 +629,9 @@ class AddProductView(LoginRequiredMixin,CreateView):
             return HttpResponseRedirect(self.get_success_url2())
         else:
             obj.user = self.request.user # logged in user is available on a view func's `request` instance
+            #obj.supplier = self.request.user 
             obj.save()
+            
             return HttpResponseRedirect(self.get_success_url())
 
 

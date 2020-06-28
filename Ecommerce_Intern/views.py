@@ -128,6 +128,7 @@ class GeneratePdf(LoginRequiredMixin,View):
              'amount': order.total,
             'customer_name': order.billing_profile.user.full_name,
             'email': order.billing_profile.user,
+            'user': self.request.user,
             'object': Order.objects.get(order_id=id),
             'title' : "Invoice",
             

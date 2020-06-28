@@ -12,6 +12,8 @@ from Ecommerce_Intern.utils import unique_slug_generator
 from django.urls import reverse
 from django.db.models import Sum,Avg,Count
 from decimal import Decimal
+from accounts.models import Supplier
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 #from django.contrib.auth import get_user_model
 
@@ -160,7 +162,7 @@ class Product_description(models.Model):
 
     @property
     def product_posted_days(self):
-        return datetime.datetime.now()-datetime.timedelta(hours=1488)
+        return timezone.now()-datetime.timedelta(hours=1488)
     
 
     def get_absolute_url(self):

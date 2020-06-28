@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.db import models
 from decimal import Decimal
+from django.utils import timezone
+import datetime
+from datetime import timedelta
 from django.db.models.signals import pre_save , post_save, m2m_changed
 from products.models import Product_description,Variation
 from otherdetails.models import OtherDetails
@@ -61,6 +64,10 @@ class CartItem(models.Model):
             return str(self.cart.id)
         except:
             return self.product.product_name
+    
+    @property
+    def cancel_time(self):
+        return timezone.now()-datetime.timedelta(hours=24)
     
     def get_amount_saved(self):
         return self.quantity * (self.product.cost_per_day-self.product.discount_price) * (self.days)

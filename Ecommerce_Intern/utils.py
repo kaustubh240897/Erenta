@@ -1,6 +1,5 @@
 import random
 import string
-
 from django.utils.text import slugify
 from io import BytesIO
 from django.http import HttpResponse
@@ -30,7 +29,7 @@ def get_month_data_range(months_ago=1, include_this_month=False):
     A method that generates a list of dictionaires 
     that describe any given amout of monthly data.
     '''
-    today = datetime.datetime.now().today()
+    today = timezone.now().today()
     dates_ = []
     if include_this_month:
         # get next month's data with:
@@ -54,7 +53,7 @@ def get_month_data_range(months_ago=1, include_this_month=False):
             "start_json": start.isoformat(),
             "end": end.timestamp(),
             "end_json": end.isoformat(),
-            "timesince": int((datetime.datetime.now() - end).total_seconds()),
+            "timesince": int((timezone.now() - end).total_seconds()),
             "year": start.year,
             "month": str(start.strftime("%B"))
         })

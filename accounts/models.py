@@ -273,7 +273,7 @@ class GuestEmail(models.Model):
 class Supplier(models.Model):
     Nick_name = models.CharField(max_length=50, unique=True, null=True, blank=True)
     Shop_name = models.CharField(max_length=100,blank=True,null=True)
-    email     = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)
+    email     = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     Address_Line1 = models.CharField(max_length=555,blank=True,null=True)
     Address_Line2 = models.CharField(max_length=100,blank=True,null=True)
     Postal_code = models.IntegerField(blank=True,null=True)
@@ -288,9 +288,12 @@ class Supplier(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = (("email"),)
+
 
     def __str__(self):
-        return '%s %s %s %s'%(self.Nick_name,self.Mobile_number, self.Shop_name, self.email)
+        return '%s' %(self.email)
 
 class Bank_Account_Detail(models.Model):
     Account_holder_name = models.CharField(max_length=100)
