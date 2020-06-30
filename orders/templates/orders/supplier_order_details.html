@@ -4,7 +4,7 @@
 {% block content %}
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
-         <h2 class='text-center'>Order {{ object.order_id }}</h2>
+        
          <h4 class="d-flex justify-content-between align-items-center mb-3">
     <span class="text-muted">Your order details</span>
     
@@ -13,11 +13,11 @@
     </div>
 </div>
 
- {% for item in object.cart.cartitem_set.all %}
-     {% if item.product.user == request.user %}
-
+ {% for item in object.cart.order_set.all %}
+     {% if object.product.user == request.user %}
+ 
  <br/>
-
+ <h4 class='text-center'>Order Id {{ item.order_id }}</h4>
  
 <div class='row'>
     <div class='col-12 col-md-6 mx-auto'>
@@ -25,24 +25,25 @@
     
     <ul class="list-group mb-3 z-depth-1">
     
-        {% if item.product.image %}
-        <img style="width:4rem !important; height:4rem !important;"  src='{{ item.product.image.url }}' class='img-fluid' />
+        {% if object.product.image %}
+        <img style="width:4rem !important; height:4rem !important;"  src='{{ object.product.image.url }}' class='img-fluid' />
         {% endif %}
     <li class="list-group-item d-flex justify-content-between lh-condensed">
 
         <div>
-        <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name|capfirst }}</h6>
-        <small class="text-muted">{{ item.product.description}}</small>
+        <h6 class="my-0">{{ object.quantity }} x {{ object.product.product_name|capfirst }}</h6>
+        <small class="text-muted">{{ object.product.description}}</small>
+        <b><h6> Rental Period -: {{ object.start_date }} - {{ object.end_date }}( {{ object.days }} days )</h6> </b>
         </div>
          
      <div>
-        <span class="text-muted">${{ item.line_total }}</span>
+        <span class="text-muted">${{ object.line_total }}</span>
         </div>
        
     </li>
     <div>
-        <strong> <font color='green'>Status: {{ item.status }} </font> {% if item.status == 'paid' %}  <a class='mx-4' title='If this Item is Shipped to the customer then click it' href='{% url "orders:update_status_to_shipped" object.order_id item.id %}'> Update status to Shipped?</a> {% endif %}
-     {% if item.status == 'shipped' or item.status == 'refund requested' or item.status == 'cancellation request' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" object.order_id item.id %}'> Update status to returned back?</a> </strong> {% endif %}
+        <strong> <font color='green'>Status: {{ object.status }} </font> {% if object.status == 'paid' %}  <a class='mx-4' title='If this Item is Shipped to the customer then click it' href='{% url "orders:update_status_to_shipped" item.order_id object.id %}'> Update status to Shipped?</a> {% endif %}
+     {% if object.status == 'shipped' or object.status == 'refund requested' or object.status == 'cancellation request' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" item.order_id object.id %}'> Update status to returned back?</a> </strong> {% endif %}
         <hr/> 
        </div>
         
@@ -50,19 +51,19 @@
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Shipping Address</h6>
-        <small>{{ object.shipping_address.get_address }}</small>
+        <small>{{ item.shipping_address.get_address }}</small>
         </div>
     </li>
    <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
         <h6 class="my-0">Billing Address</h6>
-        <small>{{ object.billing_address.get_address }}</small>
+        <small>{{ item.billing_address.get_address }}</small>
         </div>
     </li>
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div class="text-danger">
         <h6 class="my-0">Customer's Email</h6>
-        <small>{{ object.billing_profile }}</small>
+        <small>{{ item.billing_profile }}</small>
         </div>
     </li>
    
@@ -78,12 +79,14 @@
   
     <div class='text-center'>
 <a href="/supplierreviews/"> <button class='btn btn-primary'>Rate your customer!</button></a>
-<a href="{% url 'supplierpdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+<a href="{% url 'supplierpdf' object.id item.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
 </div>
  
 </div>
 </div>
+{% else %}
+<h4> Oops! You are unauthorized to see this content.</h4>
  {% endif %}
-  {% endfor %}
+{% endfor %} 
     
 {% endblock %}

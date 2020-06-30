@@ -87,61 +87,67 @@
 
 
  {% for object in products %}
+     {% if object.product.user == request.user %}
+   {% for item in object.cart.order_set.all %}
  <div class='container' style='background-color:rgb(182, 182, 182);'>
   <div class='row'>
     <div class='col-md-1 col-sm-1'>
-      <b>{{ forloop.counter }}.</b>
+      <b> Id. {{ object.id }}</b>
     </div>
     <div class='col-md-4 col-sm-4'>
-    <b>Order Id -:  {{ object.order_id }} </b>
+    <b>Order Id -:  {{ item.order_id }} </b> <br/>
+    <b>Customer's email -: {{ item.billing_profile }}</b>
     </div>
     <div class='col-md-3 col-sm-3'>
-    <b>Order Placed -: {{ object.timestamp }} </b>
+    <b>Order Placed -: {{ item.timestamp }} </b>
     </div>
     <div class='col-md-4 col-sm-4'>
-      <b><a href='{{ object.get_absolute_url1 }}'>Order details</a> </b> |
-      <b>  <a href="{% url 'supplierpdf' object.order_id %}"> View Invoice</a>
+      <b><a href='{% url "orders:supplierorderdetail" object.id %}'>Order details</a> </b> |
+      <b>  <a href="{% url 'supplierpdf' object.id item.order_id %}"> View Invoice</a>
       </b>
 
     </div>
   </div>
   </div>
- {% for item in object.cart.cartitem_set.all %}
-  {% if item.product.user == request.user %}
+   
+  
+  {% endfor %}
+
 <div class="container"  style="background-color: #263238; color: white;">
   <br/>
   <div class='text-right'>
-<strong> <font color='green'> Status -:  {% if item.refund_granted %} Refund granted {% elif item.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ item.status }} {% endif %}  </font> </strong>
-<h6> (from {{ item.updated }})</h6>
+<strong> <font color='green'> Status -:  {% if object.refund_granted %} Refund granted {% elif object.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ object.status }} {% endif %}  </font> </strong>
+<h6> (from {{ object.updated }})</h6>
   </div>
   {{ forloop.counter }}.
-  {% if item.product.image %}
-  <img src="{{ item.product.image.url }}" class="card-img-top" style="height:100px;width:100px" alt="{{ item.product.title }} logo">
+  {% if object.product.image %}
+  <img src="{{ object.product.image.url }}" class="card-img-top" style="height:100px;width:100px" alt="{{ object.product.title }} logo">
   
   {% endif %}
   <div class="card-body">
                     
-    <h5 class="card-title"><a href='{{ item.product.get_absolute_url }}'> {{ item.quantity }} X {{ item.product|capfirst }} </a></h5>
-     <h6 class="card-title"> {% if item.product.discount_price %}
-            <strike> ${{ item.product.cost_per_day }}</strike> ${{ item.product.discount_price }}/day ({{ item.product.get_amount_percent_saved }}% Off)
+    <h5 class="card-title"><a href='{{ object.product.get_absolute_url }}'> {{ object.quantity }} X {{ object.product|capfirst }} </a></h5>
+     <h6 class="card-title"> {% if object.product.discount_price %}
+            <strike> ${{ object.product.cost_per_day }}</strike> ${{ object.product.discount_price }}/day ({{ object.product.get_amount_percent_saved }}% Off)
            {% else %}
-           ${{ item.product.cost_per_day }}/day
+           ${{ object.product.cost_per_day }}/day
            {% endif %}
            </h6>
-    <p class="card-text">{{ item.product.description|linebreaks|truncatewords:14 }}</p>
-    <h6> Cost -: ${{ item.line_total }}</h6>
+    <p class="card-text">{{ object.product.description|linebreaks|truncatewords:14 }}</p>
+    <h6> Cost -: ${{ object.line_total }}</h6>
+    <h6> Rental Period -: {{ object.start_date }} - {{ object.end_date }}( {{ object.days }} days )</h6>
    
     
   
   </div>
 </div>
- {% endif %}
-  {% empty %}
-  <strong><p class='lead'>No orders yet.</p> </strong>
-  
-  {% endfor %}
+
+ 
+ 
   <hr/>
-  
+    {% endif %}
+     {% empty %}
+  <strong><p class='lead'>No orders yet.</p> </strong>
   {% endfor %}
 
 

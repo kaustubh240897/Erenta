@@ -65,6 +65,9 @@ class CartItem(models.Model):
         except:
             return self.product.product_name
     
+    class Meta:
+        ordering = ['-timestamp','-updated']
+    
     @property
     def cancel_time(self):
         return timezone.now()-datetime.timedelta(hours=24)

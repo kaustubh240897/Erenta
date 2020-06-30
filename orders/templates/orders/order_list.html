@@ -125,6 +125,7 @@
            </h6>
     <p class="card-text">{{ item.product.description|linebreaks|truncatewords:14 }}</p>
     <h6> Cost -: ${{ item.line_total }}</h6>
+    <h6> Rental Period -: {{ item.start_date }} - {{ item.end_date }}( {{ item.days }} days )</h6>
     {% for o in item.product.user.supplier_set.all %}
     <h6>lended by -: {{ o.Shop_name }}</h6>
     <b>Contact -: {{ o.Mobile_number }}</b>

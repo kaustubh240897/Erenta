@@ -194,7 +194,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__status='paid').not_created().distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user ,status='paid').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -213,7 +213,7 @@ class ShippedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ShippedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__status='shipped').not_created().distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, status='shipped').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -232,7 +232,7 @@ class RefundedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(RefundedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__refund_requested=True).not_created().distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, refund_requested=True).distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -251,7 +251,7 @@ class ReturnedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ReturnedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__status='returned back').not_created().distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, status='returned back').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -270,7 +270,7 @@ class CancelSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(CancelSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(cart__cartitem__product__user=self.request.user, cart__cartitem__cancel_request=True).not_created().distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, cancel_request=True).distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -288,8 +288,8 @@ class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
     model =  Order
     template_name = 'orders/supplier_order_details.html'
     def get_object(self):
-        qs = Order.objects.all().filter(
-            order_id = self.kwargs.get('order_id')
+        qs = CartItem.objects.all().filter(
+            id = self.kwargs.get('id')
         )
         if qs.count()==1:
             return qs.first()
@@ -481,7 +481,7 @@ def update_status_to_shipped_view(request, order_id, cartitem_id):
         item_status.status = 'shipped'
         item_status.save()
         messages.success(request, "Item's status has been updated successfully, Thank you for shipping the Item.")
-        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(order_id,)))
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order")
         return redirect("orders:orders")
@@ -492,7 +492,7 @@ def update_status_to_returned_view(request, order_id, cartitem_id):
         item_status.status = 'returned back'
         item_status.save()
         messages.success(request, "Item's status has been updated successfully, Thank you for receiving the Item.")
-        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(order_id,)))
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order")
         return redirect("orders:orders")

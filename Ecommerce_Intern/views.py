@@ -7,6 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
 from products.models import Product_description,Contact,Subscribers
 from orders.models import Order,Low_Quantity_Notification
+from carts.models import CartItem
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status
 from django.views.generic import ListView
 from django.views.generic import View
@@ -152,6 +153,7 @@ class GeneratePdf(LoginRequiredMixin,View):
 class GenerateSupplierPdf(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         id = self.kwargs.get('order_id')
+        cart_id = self.kwargs.get('id')
         order= Order.objects.get(order_id=id)
         template = get_template('billing/supplier_invoice.html')
         context = {
@@ -159,6 +161,7 @@ class GenerateSupplierPdf(LoginRequiredMixin,View):
              'time': timezone.now(),
             'customer_name': order.billing_profile.user.full_name,
             'object': Order.objects.get(order_id=id),
+            'supplier': CartItem.objects.get(id=cart_id),
             'user': self.request.user,
             'title': "Invoice",
             

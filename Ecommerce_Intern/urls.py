@@ -90,7 +90,7 @@ urlpatterns = [
     path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity'),
     path('add_product_details/add_tags/<int:id>/',SupplierTagView.as_view(),name='producttags'),
     path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
-    path('<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf')
+    path('<id>/<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf')
 
 
 ]

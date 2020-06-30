@@ -35,7 +35,7 @@
             }
         </style>
     </head>
-    
+    {% if supplier.product.user == user %}
     <body>
         <div class='wrapper'>
             <div class='header'>
@@ -84,3 +84,6 @@
         </div>
     </div>
     </body>
+    {% else %}
+    <h4>Oops! You are unauthorized to see this content. </h4>
+    {% endif %}
