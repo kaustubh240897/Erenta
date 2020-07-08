@@ -35,7 +35,7 @@
             }
         </style>
     </head>
-    {% if supplier.product.user == user %}
+    {% if supplier.product.user == user and not supplier.status == 'created' %}
     <body>
         <div class='wrapper'>
             <div class='header'>
