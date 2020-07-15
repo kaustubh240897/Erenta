@@ -283,7 +283,10 @@ class AddSupplierpersonaldetailView(LoginRequiredMixin,CreateView):
         else:
             obj.email = self.request.user # logged in user is available on a view func's `request` instance
             obj.save()
-            return HttpResponseRedirect(self.get_success_url())
+            if Bank_Account_Detail.objects.filter(email=self.request.user).count()>0:
+                return HttpResponseRedirect(self.get_success_url2())
+            else:
+                return HttpResponseRedirect(self.get_success_url())
     
         
     
@@ -294,6 +297,10 @@ class AddSupplierpersonaldetailView(LoginRequiredMixin,CreateView):
     def get_success_url1(self):
         messages.warning(self.request, "Your personal details are already exist")
         return reverse("addsupplierbankdetail")
+    
+    def get_success_url2(self):
+        messages.success(self.request, "Your personal details added successfully and Your Bank details already exists.")
+        return reverse("supplier")
 
 
 

@@ -237,10 +237,11 @@ class SupplierpersonaldetailForm(forms.ModelForm):
     City        = forms.ChoiceField(choices = MY_CHOICES)
     Country = forms.CharField(label='Country', required=True, widget=forms.TextInput)
     Mobile_number = forms.CharField(label='Mobile number',required=True ,widget=forms.NumberInput)
+    receive_message_time = forms.CharField(label="Message Timing(timing to receive customer's messages)", required=False, widget=forms.TextInput(attrs={'placeholder':'ex-: anytime or 9:00 AM to 5:00 PM'})) 
 
     class Meta:
         model = Supplier
-        fields = ['Nick_name', 'Shop_name','Address_Line1','Address_Line2','Postal_code','City','Country','Mobile_number'] 
+        fields = ['Nick_name','Shop_name','Address_Line1','Address_Line2','Postal_code','City','Country','Mobile_number','receive_message_time']
 
 
 
