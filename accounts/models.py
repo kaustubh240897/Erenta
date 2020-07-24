@@ -279,7 +279,7 @@ class Supplier(models.Model):
     Postal_code = models.IntegerField(blank=True,null=True)
     City = models.CharField(max_length=55,blank=True,null=True)
     Country = models.CharField(max_length=20, blank=True, null=True)
-    Mobile_number = models.PositiveIntegerField(blank=True,null=True)
+    Mobile_number = models.PositiveIntegerField(blank=True,null=True, validators=[MaxValueValidator(999999999999)])
     receive_message_time = models.CharField(max_length=50, null=True, blank=True)
     #Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
     #bank_account_number = models.IntegerField(blank=True, null=True)
