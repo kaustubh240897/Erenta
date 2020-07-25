@@ -33,6 +33,15 @@ class ProductForm(forms.ModelForm):
     #         raise forms.ValidationError(_('File type is not supported'))
     #     return image
 
+    def clean_image(self):
+            image = self.cleaned_data.get('image', False)
+            if image:
+                if image._size > 1 * 1024 * 1024:
+                    raise ValidationError("size is larger than 1 MB")
+                return image
+            else:
+                raise ValidationError("No image found")
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(ProductForm, self).save(commit=False)
