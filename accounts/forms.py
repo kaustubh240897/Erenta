@@ -4,6 +4,7 @@ from .models import Supplier,EmailActivation,Bank_Account_Detail
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.safestring import mark_safe
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
 
 User = get_user_model()
 from .signals import user_logged_in
@@ -170,7 +171,7 @@ class SupplierLoginForm(forms.Form):
 
 
 
-class RegisterForm(forms.ModelForm):
+class RegisterForm(UserCreationForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)

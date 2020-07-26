@@ -14,7 +14,7 @@ from .signals import user_logged_in
 from notification.models import Supplier_Order_Notification, Order_current_status
 from orders.models import Low_Quantity_Notification
 from django.db import IntegrityError
-from django.http import Http404
+from django.http import Http404,HttpResponseForbidden
 from django.utils.safestring import mark_safe
 from django.views.generic.edit import FormMixin
 from Ecommerce_Intern.mixins import NextUrlMixin, RequestFormAttachMixin
@@ -128,7 +128,17 @@ class UserDetailUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'accounts/detail-update-view.html'
     #succeess_url = '/account/'
     def get_object(self):
-        return self.request.user
+        try:
+            obj= User.objects.get(email=self.request.user)
+        except User.DoesNotExist:
+            raise Http404("Your personal details not found..!")
+        except User.MultipleObjectsReturned:
+            qs = User.objects.filter(email=self.request.user, active=True)
+            obj = qs.first()
+        except:
+            raise Http404("Uhhmmm ")
+        return obj
+
     def get_context_data(self,*args,**kwargs):
         context = super(UserDetailUpdateView,self).get_context_data(*args,**kwargs)
         context['title']='Your profile details'

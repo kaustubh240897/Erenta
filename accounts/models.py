@@ -10,6 +10,8 @@ from django.urls import reverse
 from django.db.models.signals import pre_save, post_save
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from stdimage.models import StdImageField
+from stdimage.validators import MaxSizeValidator
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
@@ -86,16 +88,16 @@ def upload_image_path(instance, filename):
         final_filename=final_filename
         )
 # Create your models here.
-def validate_image(profile_image):
-        file_size = profile_image.file.size
-        limit_mb = 1
-        if file_size > limit_mb * 1024 * 1024:
-            raise ValidationError("Max size of file is %s MB" % limit_mb)
+# def validate_image(profile_image):
+#         file_size = profile_image.file.size
+#         limit_mb = 1
+#         if file_size > limit_mb * 1024 * 1024:
+#             raise ValidationError("Max size of file is %s MB" % limit_mb)
 
 class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(max_length=255,unique=True,null=True)
     full_name = models.CharField(max_length=255,blank=True,null=True)
-    profile_image = models.ImageField(upload_to=upload_image_path, null=True, blank=True, validators=[validate_image])
+    profile_image = StdImageField(upload_to=upload_image_path,null=True,blank=True,validators=[MaxSizeValidator(1050, 1050)])
     is_active = models.BooleanField(default=True) # can login
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -279,7 +281,7 @@ class Supplier(models.Model):
     Postal_code = models.IntegerField(blank=True,null=True)
     City = models.CharField(max_length=55,blank=True,null=True)
     Country = models.CharField(max_length=20, blank=True, null=True)
-    Mobile_number = models.PositiveIntegerField(blank=True,null=True, validators=[MaxValueValidator(999999999999)])
+    Mobile_number = models.CharField(max_length=15,blank=True,null=True)
     receive_message_time = models.CharField(max_length=50, null=True, blank=True)
     #Shop_registration_number=models.CharField(max_length=50,blank=True,null=True)
     #bank_account_number = models.IntegerField(blank=True, null=True)
@@ -297,7 +299,7 @@ class Supplier(models.Model):
 
 class Bank_Account_Detail(models.Model):
     Account_holder_name = models.CharField(max_length=100)
-    Account_number = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999999)])
+    Account_number = models.CharField(max_length=25)
     IFSC_code = models.CharField(max_length=20)
     Account_type = models.CharField(choices=ACCOUNT_TYPE, max_length=25)
     email = models.OneToOneField(settings.AUTH_USER_MODEL,unique=True, on_delete=models.CASCADE, null=True)

@@ -23,24 +23,15 @@ class ProductForm(forms.ModelForm):
         fields = ['product_name','category','sub_category','sub_sub_category','brand','description','cost_per_day','discount_price','Current_City','image']
     
     
-    # def clean_content(self):
-    #     image = self.cleaned_data['image']
-    #     content_type = image.content_type.split('/')[0]
-    #     if content_type in settings.CONTENT_TYPES:
-    #         if content._size > settings.MAX_UPLOAD_SIZE:
-    #             raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image._size)))
-    #     else:
-    #         raise forms.ValidationError(_('File type is not supported'))
-    #     return image
 
-    def clean_image(self):
-            image = self.cleaned_data.get('image', False)
-            if image:
-                if image._size > 1 * 1024 * 1024:
-                    raise ValidationError("size is larger than 1 MB")
-                return image
-            else:
-                raise ValidationError("No image found")
+    # def clean_image(self):
+    #         image = self.cleaned_data.get('image', False)
+    #         if image:
+    #             if image._size > 1 * 1024 * 1024:
+    #                 raise ValidationError("size is larger than 1 MB")
+    #             return image
+    #         else:
+    #             raise ValidationError("No image found")
 
     def save(self, commit=True):
         # Save the provided password in hashed format

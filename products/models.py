@@ -15,6 +15,8 @@ from decimal import Decimal
 from accounts.models import Supplier
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from stdimage.models import StdImageField
+from stdimage.validators import MaxSizeValidator
 #from django.contrib.auth import get_user_model
 
 User = settings.AUTH_USER_MODEL
@@ -151,7 +153,7 @@ class Product_description(models.Model):
     #days = models.IntegerField( null=True, blank=True)
     brand = models.CharField(max_length=20, default=None,null=True)
     #registered_email = models.EmailField(null=True)
-    image = models.ImageField(upload_to=upload_image_path, validators=[validate_image])
+    image = models.ImageField(upload_to=upload_image_path,validators=[MaxSizeValidator(1050, 1050)])
     slug = models.SlugField(blank=True, unique=True)
     active = models.BooleanField(default=True)
     timestamp= models.DateTimeField(auto_now_add=True)
@@ -197,7 +199,7 @@ pre_save.connect(product_pre_save_receiver, sender=Product_description)
 
 class ProductImage(models.Model):
     product =models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_image_path,validators=[validate_image])
+    image = models.ImageField(upload_to=upload_image_path,validators=[MaxSizeValidator(1050, 1050)])
     featured = models.BooleanField(default=False)
     thumbnail = models.BooleanField(default=False)
     active = models.BooleanField(default=True)

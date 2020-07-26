@@ -10,7 +10,7 @@
 <form  method='POST' enctype="multipart/form-data" action='{% if action_url %} {{ action_url }}{% endif %}'>
      {% csrf_token %}
      {% if form.errors %}
-       <h6>Sorry your image size is greater than 1 MB.please upload image less than 1 MB.</h6>
+       <h6>Sorry your image size is greater than 1 MB.please upload image <= 1 MB.</h6>
        {% endif %}
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
