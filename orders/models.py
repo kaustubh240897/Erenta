@@ -314,7 +314,7 @@ class Low_Quantity_Notification(models.Model):
 
 @receiver(post_save, sender=Quantity)
 def receive_paid_ordersuccess_msg(sender,instance,created, **kwargs):
-    if int(instance.quantity) > 0 and int(instance.quantity) <= 5:
+    if int(instance.quantity) >= 0 and int(instance.quantity) <= 5:
         Low_Quantity_Notification.objects.create(quantity=instance.quantity,
                                         product = instance.product,
                                         title = ("Low quantity, You have only  %d %s remaining." %(int(instance.quantity), instance.product)),

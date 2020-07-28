@@ -158,7 +158,7 @@ class Quantity(models.Model):
     # color = models.CharField(max_length=100,default=None)
     # size = models.CharField(max_length=100,default=None)
     variations = models.ManyToManyField(Variation,blank=True) 
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=-1)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 
