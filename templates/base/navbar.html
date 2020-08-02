@@ -312,7 +312,9 @@ ul.social-icons li {
           <h3 class='text-center'> You already have Items in your cart. To change the city first clear the cart.</h3>
           <h3 class='text-center'><a href='{% url "cart:remove_all" %}'>Clear the cart?</a> </h3>
             {% else %}
-           
+            <div class='text-center'>
+            <h2> Select your City.</h2>
+            </div>
             <div class='row'>
               <div class='col-4'>
                 <h3><a href='{% url "home" %}'><i class="fas fa-map-marker-alt"></i> Tokyo</a></h3>

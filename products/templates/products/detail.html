@@ -314,12 +314,26 @@ function showSlides(n) {
                 
               </div>
             <br/>
-             <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
+          <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
             <h3 class="text-center">About Item</h3>
             
                {{ object.description|linebreaks }}<br/>
-             </div>
-            </div>
+              
+          </div>
+          <br/>
+           <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
+            * If you have any query for item contact to supplier.
+             {% for obj in object.user.supplier_set.all %}
+            <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
+               
+              Contact -: {{ obj.Mobile_number }} <br/>
+              Contact Timing -:  {{ obj.receive_message_time }}
+
+               {% endfor %}
+          </div>
+
+
+      </div>
             
         
         <div class=' col-lg-3 col-md-1'>

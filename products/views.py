@@ -202,6 +202,7 @@ def sub_category_product_view_by_color(request,slug, color):
           'qs': queryset ,
           'slug': slug_type,
          "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     
 
@@ -227,6 +228,7 @@ def sub_sub_category_product_view_by_color(request,slug, color):
           'qs': queryset ,
           'sub_slug': slug_type,
          "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     
 
@@ -276,6 +278,7 @@ def category_product_view_1(request, slug,*args, **kwargs):
           
          'cat_slug': slug_type,
          "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
@@ -310,6 +313,7 @@ def sub_category_product_view(request, slug,*args, **kwargs):
           'slug': slug_type,
           #'clothing_category': query,
          "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
@@ -344,6 +348,7 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
           'sub_slug': slug_type,
           #'clothing_category': query,
          "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
