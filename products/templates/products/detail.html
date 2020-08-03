@@ -321,7 +321,7 @@ function showSlides(n) {
               
           </div>
           <br/>
-           <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
+           <div class="container text-center wid1" style="background-color: white; color: black;">
             * If you have any query for item contact to supplier.
              {% for obj in object.user.supplier_set.all %}
             <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
@@ -347,6 +347,45 @@ function showSlides(n) {
         <br/>
           <div class="card" style="z-index: -1; background-color:#263238;">
           <div class="card-body text-center" style="color: white;">
+               {% if object.rating >= 1 %}
+              ({{ object.rating }})
+              {% endif %}
+                {% if object.rating >= 1 and object.rating < 2 %}
+          <span class="fa fa-star checked"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            <span class="fa fa-star-o"></span>
+            {% endif %}
+
+            {% if object.rating >= 2 and object.rating < 3 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if object.rating >= 3 and object.rating < 4 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if object.rating >= 4 and object.rating < 4.5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star-o"></span>
+            {% endif %}
+          {% if  object.rating >= 4.5 and object.rating <= 5 %}
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+          <span class="fa fa-star checked"></span>
+        {% endif %}      
             
            <p>Posted : {{ object.timestamp|timesince }} ago   {% if object.timestamp >= object.product_posted_days %}
                      
@@ -421,8 +460,7 @@ function showSlides(n) {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Size</th>
-                <th>Color</th>
+                <th>Size and Color</th>
                 <th>Quantity</th>
               </tr>
             </thead>
@@ -439,18 +477,19 @@ function showSlides(n) {
            
            <td> {{ forloop.counter }}. </td>
             {% if obj.variations.all %}
-            {% for item in obj.variations.all %}
-          <td>  {{ item.title|capfirst }}
-          {{ item.category|capfirst }} </td>
+          <td>{% for item in obj.variations.all %}
+           {{ item.title|capfirst }}  
+          {{ item.category|capfirst }} <br/>
+        
           
             <!-- {% if not forloop.last %} , {% endif %} -->
-            {% endfor %}
+            {% endfor %} </td>
           <td>  <font color="orange">Sufficient</font> </td>
            
 
             {% else %}
-            <td> as in image</td>
-            <td> as in image </td>
+            <td> as in image
+              </td>
              <td>  <font color="orange">Sufficient</font> </td>
             {% endif %}
             
@@ -461,14 +500,15 @@ function showSlides(n) {
            
             <td> {{ forloop.counter }}. </td>
             {% if obj.variations.all %}
-            {% for item in obj.variations.all %}
-          <td> {{ item.title|capfirst }} {{ item.category|capfirst }} </td>
+           <td>{% for item in obj.variations.all %}
+           {{ item.title|capfirst }} {{ item.category|capfirst }} 
             <!-- {% if not forloop.last %} , {% endif %} -->
-            {% endfor %}
+            <br/>
+            {% endfor %} </td>
             {% else %}
-            <td> as in image</td>
-            <td> as in image </td>
-             <td><font color="orange">Sufficient </font> </td>
+            <td> as in image
+             </td>
+             
             {% endif %}
        
           <td> <font color="red">({{ obj.quantity }} left only) </font> </td>
