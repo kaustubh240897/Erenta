@@ -109,18 +109,65 @@
     {% endfor %}
      <li class="list-group-item d-flex justify-content-between">
         <span>Shipping Address : {{ object.shipping_address.get_address }}</span>
-        
-      <strong><a href='{% url "orders:update_address" object.order_id %}'>Edit your shipping Address?</a></strong>
+
+
+
+      <form method='POST' id='delete-shipping-form-{{ object.order_id }}' action='{% url "orders:update_address" object.order_id %}' style="display:none;">
+      {% csrf_token %}
+
+      </form>
+      <button onclick="if(confirm('Are you sure to edit your Shipping Address?')){
+      event.preventDefault();
+      document.getElementById('delete-shipping-form-{{ object.order_id }}').submit();
+
+      }
+      else{
+        event.preventDefault();
+      }"
+      
+      class='btn btn-raised btn-primary btn-sm' href=''>Edit your shipping Address? </button>
     </li>
+
+
     <li class="list-group-item d-flex justify-content-between">
         <span>Billing Address : {{ object.billing_address.get_address }} </span>
-        
-      <strong><a href='{% url "orders:update_billingaddress" object.order_id %}'>Edit your billing Address?</a></strong>
+
+      <form method='POST' id='delete-billing-form-{{ object.order_id }}' action='{% url "orders:update_billingaddress" object.order_id %}' style="display:none;">
+      {% csrf_token %}
+
+      </form>
+      <button onclick="if(confirm('Are you sure to edit your Billing Address?')){
+      event.preventDefault();
+      document.getElementById('delete-billing-form-{{ object.order_id }}').submit();
+
+      }
+      else{
+        event.preventDefault();
+      }"
+      
+      class='btn btn-raised btn-primary btn-sm' href=''>Edit your billing Address? </button>
+      
     </li>
      <li class="list-group-item d-flex justify-content-between">
         <span>Payment Method : {{ billing_profile.default_card }}</span>
+      
+       <form method='POST' id='delete-payment-card-form' action='{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}' style="display:none;">
+      {% csrf_token %}
+
+      </form>
+      <button onclick="if(confirm('Are you sure to add new Card')){
+      event.preventDefault();
+      document.getElementById('delete-payment-card-form').submit();
+
+      }
+      else{
+        event.preventDefault();
+      }"
+      
+      class='btn btn-raised btn-primary btn-sm' href=''>Change </button>
+      
         
-      <strong><a href="{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a></strong>
+     
     </li>
     {% if object.cart.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
@@ -171,7 +218,6 @@
        </div>
        
        {% endif %}
-
     {% endif %}
 {% endif %}
 </div>

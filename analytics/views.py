@@ -9,6 +9,7 @@ from orders.models import Order
 from products.models import Product_description
 from .models import ObjectViewed,View_Count
 from django.utils import timezone
+from datetime import timedelta
 # Create your views here.
 
 class SalesAjaxView(View):

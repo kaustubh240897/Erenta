@@ -42,10 +42,48 @@
        
     </li>
     <div>
-        <strong> <font color='green'>Status: {{ object.status }} </font> {% if object.status == 'paid' %}  <a class='mx-4' title='If this Item is Shipped to the customer then click it' href='{% url "orders:update_status_to_shipped" item.order_id object.id %}'> Update status to Shipped?</a> {% endif %}
-     {% if object.status == 'shipped' or object.status == 'refund requested' or object.status == 'cancellation request' %}   <a class='mx-4' title='If this Item is returned back after using it then click here.' href='{% url "orders:update_status_to_returned" item.order_id object.id %}'> Update status to returned back?</a> </strong> {% endif %}
-        <hr/> 
-       </div>
+        <strong> <font color='green'>Status: {{ object.status }} </font> </strong>
+             {% if object.status == 'paid' %}  
+
+
+            <form method='POST' id='order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_shipped" item.order_id object.id %}' style="display:none;">
+            {% csrf_token %}
+
+            </form>
+            <button onclick="if(confirm('Are you sure to change order status to shipped?')){
+            event.preventDefault();
+            document.getElementById('order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}').submit();
+
+            }
+            else{
+                event.preventDefault();
+            }"
+            
+            class='btn btn-raised btn-primary btn-sm mx-2' title='If this Item is Shipped to the customer then click it' href=''>Update Status to Shipped </button>
+
+             {% endif %}
+
+             {% if object.status == 'shipped' or object.status == 'refund requested' or object.status == 'cancellation request' %} 
+             
+
+            <form method='POST' id='order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_returned" item.order_id object.id %}' style="display:none;">
+            {% csrf_token %}
+
+            </form>
+            <button onclick="if(confirm('Are you sure to change the order status to Retuned Back?')){
+            event.preventDefault();
+            document.getElementById('order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}').submit();
+
+            }
+            else{
+                event.preventDefault();
+            }"
+            
+            class='btn btn-raised btn-primary btn-sm mx-2' title='If this Item is Returned back after completion of its rental period by customer then click it' href=''>Update Status to Retuned back </button>
+
+            {% endif %}
+             <hr/> 
+    </div>
         
     
     <li class="list-group-item d-flex justify-content-between bg-light">
