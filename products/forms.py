@@ -2,7 +2,6 @@ from django import forms
 from .models import Product_description,ProductImage,Variation,Product_Refund
 from tags.models import Tag
 from carts.models import Quantity
-from otherdetails.models import OtherDetails
 # from django.template.defaultfilters import filesizeformat
 # from django.utils.translation import ugettext_lazy as _
 # from django.conf import settings

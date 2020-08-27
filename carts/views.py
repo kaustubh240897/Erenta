@@ -10,7 +10,6 @@ from addresses.models import Address
 from billing.models import BillingProfile
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from products.models import Product_description, Variation
-from otherdetails.models import OtherDetails
 from orders.models import Order,Low_Quantity_Notification
 from accounts.models import GuestEmail
 import datetime

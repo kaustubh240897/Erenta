@@ -7,9 +7,18 @@ class RequestFormAttachMixin(object):
         return kwargs
 
 class NextUrlMixin(object):
-    default_next = ""
+    default_next = "/"
     def get_next_url(self):
         request = self.request
+        city = request.session.get('city_names',None)
+        if city == "Tokyo":
+            self.default_next = "/home/Tokyo"
+        elif city == "Osaka":
+            self.default_next = "/home/Osaka"
+        elif city == "Kyoto":
+            self.default_next = "/home/Kyoto"
+        else:
+            self.default_next = "/home/Tokyo"
         next_ = request.GET.get('next')
         next_post = request.POST.get('next')
         redirect_path = next_ or next_post or None

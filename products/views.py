@@ -14,12 +14,10 @@ from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 import datetime
-from otherdetails.models import OtherDetails
 from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm,ProductTagForm,ProductRefundForm
 from django.http import Http404
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from carts.forms import OtherDetailForm
 from accounts.models import User
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -101,36 +99,6 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['images']= qq
         context['reviews']=User_Review.objects.filter(product_id=product_id)
         return context
-    
-    # def post(self, *args, **kwargs):
-    #     print(self.request.POST)
-    #     form = OtherDetailForm(self.request.POST)
-    #     if form.is_valid():
-    #         quantity = form.cleaned_data.get('quantity')
-    #         size = form.cleaned_data.get('size')
-    #         days   = form.cleaned_data.get('days')
-    #         other_details = form.cleaned_data.get('other_details')
-    #         # edit the order
-    #         try:
-                
-    #             details = OtherDetails()
-    #             details.user = self.request.user
-    #             slug_type = self.request.build_absolute_uri().split('/')
-    #             slug_type = slug_type[len(slug_type)-2]
-    #             details.product = Product_description.objects.get(slug=slug_type)
-    #             details.quantity = quantity
-    #             details.size = size
-    #             details.days = days
-    #             print(days)
-    #             details.other_details  = other_details
-    #             print(size)
-    #             details.save()
-    #             messages.info(self.request, "Your details has received.")
-    #             return redirect("products:detail",slug=self.kwargs.get('slug'))
-
-    #         except ObjectDoesNotExist:
-    #             messages.warning(self.request, "your details has not received.")
-    #             return redirect("products:detail", slug=self.kwargs.get('slug'))
     
     
 

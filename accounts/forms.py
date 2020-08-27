@@ -116,7 +116,7 @@ class LoginForm(forms.Form):
                 if email_confirm_exist:
                     msg2 = "Email not confirmed. " + reconfirm_msg
                     raise forms.ValidationError(mark_safe(msg2))
-                if not is_confirmable and not email_confirm_qs.exists():
+                if not is_confirmable and not email_confirm_exist:
                     raise forms.ValidationError("This user is inactive")
 
 

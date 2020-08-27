@@ -164,31 +164,31 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
 
 
 
-class SupplierLoginView(FormView):
-    form_class=LoginForm
-    success_url='/supplier/'
-    template_name='accounts/snippets/login1.html' 
-    def form_valid(self, form):
-        request = self.request
-        next_ = request.GET.get('next')
-        next_post = request.POST.get('next')
-        redirect_path = next_ or next_post or None
-        email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
-        user = authenticate(request, username=email , password=password)
+# class SupplierLoginView(FormView):
+#     form_class=LoginForm
+#     success_url='/supplier/'
+#     template_name='accounts/snippets/login1.html' 
+#     def form_valid(self, form):
+#         request = self.request
+#         next_ = request.GET.get('next')
+#         next_post = request.POST.get('next')
+#         redirect_path = next_ or next_post or None
+#         email = form.cleaned_data.get("email")
+#         password = form.cleaned_data.get("password")
+#         user = authenticate(request, username=email , password=password)
 
-        if user is not None:
-            login(request, user)
-            user_logged_in.send(user.__class__ , instance=user, request=request)
-            try: 
-                del request.session['guest_email_id']
-            except:
-                pass
-            if is_safe_url(redirect_path, request.get_host()):
-                return redirect(redirect_path)
-            else:
-                return redirect("/supplier/")
-        return super(SupplierLoginView,self).form_invalid(form)
+#         if user is not None:
+#             login(request, user)
+#             user_logged_in.send(user.__class__ , instance=user, request=request)
+#             try: 
+#                 del request.session['guest_email_id']
+#             except:
+#                 pass
+#             if is_safe_url(redirect_path, request.get_host()):
+#                 return redirect(redirect_path)
+#             else:
+#                 return redirect("/supplier/")
+#         return super(SupplierLoginView,self).form_invalid(form)
 
 
 

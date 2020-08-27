@@ -40,6 +40,14 @@ def home_page(request):
     
     return render(request,"home_page.html",context)
 
+def home_redirect(request):
+    if request.session.get('city_names',None) == None:
+        city = 'Tokyo'
+    else:
+        city = request.session['city_names']
+    return redirect(f'/home/{city}')
+
+
 def about_page(request):
     context = {
        "title":"About",

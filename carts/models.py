@@ -6,7 +6,6 @@ import datetime
 from datetime import timedelta
 from django.db.models.signals import pre_save , post_save, m2m_changed
 from products.models import Product_description,Variation
-from otherdetails.models import OtherDetails
 from datetime import date
 from django.dispatch import receiver
 from django.db.utils import IntegrityError
@@ -101,10 +100,9 @@ class Cart(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     #items = models.ManyToManyField(CartItem, null=True, blank=True)
     #products = models.ManyToManyField(Product_description,blank=True)
-    #other = models.ManyToManyField(OtherDetails,blank=True)
     coupon  = models.ForeignKey('Coupon',on_delete=models.CASCADE,blank=True,null=True)
     subtotal = models.DecimalField(default=0, max_digits=50, decimal_places=2 )
-    shipping_total     = models.DecimalField(default=15,max_digits=50,decimal_places=2)
+    shipping_total     = models.DecimalField(default=15,max_digits=20,decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=50, decimal_places=2 )
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+{% if not request.user.is_authenticated %}
 </br>
 <style>
     .c{
@@ -9,6 +11,7 @@
 
     }
 </style>
+
 <div class='container c' >
     <h3 class="text-center"> E-renta Login | <a href="{% url 'register' %}">Signup </a> </h3>
    
@@ -31,4 +34,13 @@
 </div>
 
 </div>
+{% else %}
+<div class='text-center'>
+    <br/>
+<h5> Already login.</h5>
+
+<p>If you want to login with different account then first logout by<a href="{% url 'logout' %}">Click here.</a> </p>
+<br/>
+</div>
+{% endif %}
 {% endblock %}
