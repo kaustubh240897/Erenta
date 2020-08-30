@@ -98,6 +98,7 @@
     
     </li>
     <hr/>
+    <a href="{% url 'orders:user_item_tracker' item.id object.order_id %}"> <button class='btn btn-primary btn-sm'> Track</button></a>
     {% endfor %}
       <li class="list-group-item d-flex justify-content-between">
         <span>Shipping Address :</span>

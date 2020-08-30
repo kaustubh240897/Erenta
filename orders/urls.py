@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view,update_status_to_shipped_view,update_status_to_returned_view,ShippedOrderListView,RefundedOrderListView,ReturnedOrderListView,CancelOrderListView,ShippedSupplierOrdersListView,RefundedSupplierOrdersListView,ReturnedSupplierOrdersListView,CancelSupplierOrdersListView
+from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view,update_status_to_shipped_view,update_status_to_returned_view,ShippedOrderListView,RefundedOrderListView,ReturnedOrderListView,CancelOrderListView,ShippedSupplierOrdersListView,RefundedSupplierOrdersListView,ReturnedSupplierOrdersListView,CancelSupplierOrdersListView,track_item_user_view
 
 urlpatterns = [
    
@@ -18,6 +18,7 @@ urlpatterns = [
     path('orders/returned/', ReturnedSupplierOrdersListView.as_view(), name='returnedsupplierorders'),
     path('orders/cancelled/', CancelSupplierOrdersListView.as_view(), name='cancelsupplierorders'),
     path('orders/detail/<id>/', SupplierOrderDetailView.as_view(), name='supplierorderdetail'),
+    path('trackitem/<cart_id>/<order_id>', track_item_user_view, name='user_item_tracker'),
     path('add_coupon/<cart>/',add_coupon,name='add-coupon'),
     #path('created_orders/<order_id>/',created_order_checkout_home,name='created_orders'),
     path('update_address/<order_id>/',shipping_address_update_view,name='update_address'),

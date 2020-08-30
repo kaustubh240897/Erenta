@@ -3,10 +3,31 @@
 
 {% block content %}
 
-<div class="container">
+<div class='container'>
   <!-- {{ object.order_id }} -- {{ object.cart }} -->
 
 {% if not billing_profile %}
+
+<div class="checkout-wrap">
+  <ul class="checkout-bar">
+
+    <li class="active">
+      <a href="#">Login</a>
+    </li>
+    
+    <li class="next">Shipping Address</li>
+
+     <li class="">Billing Address</li>
+    
+    <li class="">Payment option</li>
+    
+    <li class="">Payment and checkout</li>
+    
+   
+       
+  </ul>
+  <br/>
+</div>
 
 <div class='row text-center'>
 <div class='col-12 col-md-6 mx-auto'>
@@ -28,14 +49,40 @@
 
 {% else %}
 
+
     {% if not object.shipping_address %}
+
+    <div class="checkout-wrap">
+      <ul class="checkout-bar">
+
+          <li class="previous visited">
+            <a href="#">Login</a>
+          </li>
+          
+          <li class="active">Shipping Address</li>
+
+           <li class="next">Billing Address</li>
+          
+          <li class="">Payment Options</li>
+          
+          <li class="">Payment & checkout</li>
+          
+         
+          
+      </ul>
+      <br/>
+</div>
+
+<br/>
     
     <div class='row'>
+      
        <div class='col-12'>
-       </br>
+       
           <p class='lead text-center'><strong>Shipping Address </strong></p>
           <hr/>
        </div>
+       
              <div class='col-lg-6 col-sm-12 col-md-6'>
     {% url "checkout_address_create" as checkout_address_create %}
 
@@ -52,10 +99,31 @@
      
 
      {% elif not object.billing_address %}
+  <div class="checkout-wrap">
+        <ul class="checkout-bar">
+
+          <li class="visited first">
+            <a href="#">Login</a>
+          </li>
+          
+          <li class="previous visited">Shipping address</li>
+
+           <li class="active">Billing Address</li>
+          
+          <li class="next">Payment Options</li>
+          
+          <li class="">Payment & checkout</li>
+          
+  
+          
+       </ul>
+       <br/>
+ </div>
+
     
     <div class='row'>
       <div class='col-12'>
-      </br>
+      
         <p class='lead text-center'> <strong>Billing Address </strong></p>
           <hr/>
       </div>
@@ -75,14 +143,56 @@
      {% else %}
 
        {% if not has_card %}
+      <div class="checkout-wrap">
+        <ul class="checkout-bar">
+
+          <li class="visited first">
+            <a href="#">Login</a>
+          </li>
+          
+          <li class="previous visited">Shipping address</li>
+
+           <li class="previous visited">Billing Address</li>
+          
+          <li class="active">Payment Options</li>
+          
+          <li class="next">Payment & checkout</li>
+          
+          
+       </ul>
+       <br/>
+     </div>
+     <br/>
        <!-- enter credit card-->
-      </br>
+      
       <div class='container' style='background-color: #263238; color:white'>
+        <br/>
+        <br/>
        <h2 class='text-center'>Payment</h2>
        <div class='stripe-payment-form'  data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
        </div>
 
        {% else %}
+
+    <div class="checkout-wrap">
+        <ul class="checkout-bar">
+
+          <li class="visited first">
+            <a href="#">Login</a>
+          </li>
+          
+          <li class="visited first">Shipping address</li>
+
+           <li class="previous visited"> Billing Address</li>
+          
+          <li class="previous visited">Payment Options</li>
+          
+          <li class="active">Payment & Checkout</li>
+          
+          
+       </ul>
+       <br/>
+    </div>
 
        <h2 class='text-center'> Finalize Checkout </h2>
     

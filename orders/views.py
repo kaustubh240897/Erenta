@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView,View
 from django.views.generic.edit import UpdateView
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from billing.models import BillingProfile
 #from django.shortcuts import render
 from .models import Order,Cancel_Item
@@ -301,7 +302,7 @@ class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
 #     myorders = SupplierOrders.objects.filter(orders=products)
 #     return render(request, 'classroom/teachers/view_orders.html',{'myorders': myorders})
 
-class RequestCancelView(View):
+class RequestCancelView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
         form = RefundForm()
         context={
@@ -339,6 +340,15 @@ class RequestCancelView(View):
                 return redirect("orders:list")
 
 
+@login_required
+def track_item_user_view(request,cart_id,order_id):
+    try:
+        item = CartItem.objects.get(id=cart_id)
+        return render(request,"orders/track_user_item.html", {"item" : item})
+    except ObjectDoesNotExist:
+        messages.info(request, "You don't have an active order")
+        return redirect("orders:detail" 'order_id')
+
 
 def get_coupon(request, code):
     if Coupon.objects.get(code=code):
@@ -348,7 +358,7 @@ def get_coupon(request, code):
         messages.info(request,"Your coupon does not exist")
         return redirect("cart:checkout")
 
-
+@login_required
 def add_coupon(request, cart):
     if request.method == "POST":
         form = CouponForm(request.POST or None)
@@ -474,7 +484,7 @@ def add_coupon(request, cart):
         
 #     }
 #     return render(request,"carts/checkout.html", context)
-
+@login_required
 def update_status_to_shipped_view(request, order_id, cartitem_id):
     try:
         item_status = CartItem.objects.get(id=cartitem_id)
@@ -485,7 +495,7 @@ def update_status_to_shipped_view(request, order_id, cartitem_id):
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order")
         return redirect("orders:orders")
-
+@login_required
 def update_status_to_returned_view(request, order_id, cartitem_id):
     try:
         item_status = CartItem.objects.get(id=cartitem_id)
@@ -497,7 +507,7 @@ def update_status_to_returned_view(request, order_id, cartitem_id):
         messages.info(request, "You do not have an active order")
         return redirect("orders:orders")
 
-
+@login_required
 def shipping_address_update_view(request,order_id):
     try:
         shipping_address = Order.objects.get(order_id=order_id)
@@ -508,7 +518,7 @@ def shipping_address_update_view(request,order_id):
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order")
         return redirect("cart:checkout")
-
+@login_required
 def billing_address_update_view(request,order_id):
     try:
         billing_address = Order.objects.get(order_id=order_id)

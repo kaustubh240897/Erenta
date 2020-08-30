@@ -785,7 +785,7 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
 
 
 
-class ReviewView(View):
+class ReviewView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
         form = RatingForm()
         context={
@@ -820,7 +820,7 @@ class ReviewView(View):
 
 
 
-class ProductRefundView(View):
+class ProductRefundView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
         form = ProductRefundForm()
         context={
@@ -861,7 +861,7 @@ class ProductRefundView(View):
 
 
 
-class SupplierReviewView(View):
+class SupplierReviewView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
         form = SupplierRatingForm()
         context={
