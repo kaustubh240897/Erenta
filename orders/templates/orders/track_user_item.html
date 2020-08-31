@@ -9,17 +9,138 @@
   <ul class="checkout-bar">
 
     
-    <li class="active">Paid</li>
+   
 
-     <li class="">Out for delivery( Arrive today)</li>
+  {% if item.status == 'paid' and not item.refund_requested %}
+   <li class="visited first">Paid (Shipping soon)</li>
     
-    <li class="">Shipped</li>
+    <li class="active">Shipped (delivered)</li>
     
     <li class="">Returned back</li>
 
-    <li class="">Refund requested</li>
+    <li class=''>Item received back</li>
+
+    <li class=''>Completed</li>
 
    
+    {% elif item.status == 'shipped' and not item.refund_requested %}
+
+      <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="active">Returned back</li>
+
+    <li class=''>Item received back</li>
+
+    <li class=''>Completed</li>
+
+   {% elif item.status == 'returned back' and not item.refund_requested %}
+    
+     <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Returned back</li>
+
+    <li class='visited first'>Item received back</li>
+
+    <li class='visited first'>Completed</li>
+
+  {% elif item.status == 'refund requested' and item.shipped and not item.refund_granted %}
+
+  <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Refund requested</li>
+
+    <li class='active'>Returned back</li>
+
+    <li class=''>Refund granted</li>
+
+  {% elif item.status == 'returned back' and item.refund_requested and item.shipped  %}
+  <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Refund requested</li>
+
+    <li class='visited first'>Returned back</li>
+
+    <li class='active'>Refund granted</li>
+
+  {% elif item.status == 'refund requested' and not item.shipped and not item.refund_granted %}
+   <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Refund requested</li>
+    
+    <li class="active">Refund request accepted</li>
+
+    <li class=''>Refund granted</li>
+
+  
+  {% elif item.refund_granted and item.shipped %}
+
+   <li class="visited first">Paid (Shipping soon)</li>
+
+   <li class='visited first'>Shipped</li>
+    
+    <li class="visited first">Refund requested</li>
+    
+    <li class="visited first">Retuned back</li>
+
+    <li class='visited first'>Refund granted</li>
+
+  {% elif item.refund_granted and not item.shipped %}
+
+   <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Refund requested</li>
+
+    <li class='visited first'>Refund request accepted</li>
+
+    <li class='visited first'>Refund granted</li>
+
+  {% elif item.cancel_request and not item.cancel_granted %}
+
+   <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Cancellation request</li>
+
+    <li class='active'>Retuned back</li>
+
+    <li class=''>Cancellation granted</li>
+
+
+   {% elif item.cancel_request and item.status == 'returned back' %}
+
+   <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Cancellation request</li>
+
+    <li class='visited first'>Retuned back</li>
+
+    <li class='active'>Cancellation granted</li>
+
+   {% elif item.cancel_granted %}
+
+   <li class="visited first">Paid (Shipping soon)</li>
+    
+    <li class="visited first">Shipped</li>
+    
+    <li class="visited first">Cancellation request</li>
+
+    <li class='visited first'>Retuned back</li>
+
+    <li class='visited first'>Cancellation granted</li>
+
+
+  {% endif %} 
 
    
 
@@ -29,8 +150,13 @@
   </ul>
   <br/>
 </div>
+{% if item.refund_granted %}
+ <h1>Refund granted.</h1>
+{% elif item.cancel_granted %}
+<h1> Your cancellation request has been accepted.</h1>
+{% else %}
 <h1>{{ item.status }} </h1>
-
+{% endif %}
 
 
 {% endblock %}

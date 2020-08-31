@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+
+{% if object.cancel_time > object.updated %}
 <main>
 
 <div class='container'>
 
-    <h2 class='text-center'>Request Refund</h2>
+    <h2 class='text-center'>Request for Cancellation of Order's Item</h2>
    <font color='red'> <strong><p>** You will not get the refund now according to our cancellation policy, Thank you.</p></strong> </font>
     <form method="POST">
         {% csrf_token %}
@@ -20,7 +22,13 @@
 
 </main>
 
+{% else %}
 
+<h1> You are eligible for refund order now.</h1>
+<div class='text-center'>
+<p>**You can get refund as you are eligible for refund request for now. Thank you.</p>
+</div>
+{% endif %}
 
 
 

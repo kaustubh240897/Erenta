@@ -489,6 +489,7 @@ def update_status_to_shipped_view(request, order_id, cartitem_id):
     try:
         item_status = CartItem.objects.get(id=cartitem_id)
         item_status.status = 'shipped'
+        item_status.shipped = True
         item_status.save()
         messages.success(request, "Item's status has been updated successfully, Thank you for shipping the Item.")
         return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
