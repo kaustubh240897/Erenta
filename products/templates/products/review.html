@@ -4,10 +4,10 @@
 <main>
 
 <div class='container'>
-
-   
+{% if count == 0 %}
+{% if item.cart.user == request.user %}
 {% if product_refund %}
-    {% if object.updated > object.cancel_time %}
+    {% if item.updated > item.cancel_time %}
         <h2 class='text-center'>Request the refund this product.</h2>
         <font color='green'> <strong><p>** You will get refund within 7 days and for more details please refer refund policy, Thank you.</p></strong> </font>
          <form method="POST">
@@ -36,10 +36,14 @@
 
    
 
+{% else %}
+<h2> Permission denied! you are not allowed to see this page.</h2>
 
+{% endif %}
 
-
-
+{% else %}
+<h2> You have already submitted your request. Thank you.</h2>
+{% endif %}
 
 </div>
 

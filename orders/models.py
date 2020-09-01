@@ -287,6 +287,7 @@ post_save.connect(post_save_order_return_status, sender=CartItem)
 
 class Cancel_Item(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    cartitem_id = models.IntegerField(default=0)
     email = models.ForeignKey(User,on_delete=models.CASCADE)
     reason = models.TextField()
     accepted = models.BooleanField(default=False)

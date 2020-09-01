@@ -65,7 +65,7 @@
             {% endif %}
             {% endif %}
            
-    <a href="{% url 'review' item.product.slug %}"> <button class='btn btn-primary btn-sm mx-2 mt-2'> Rate the product</button></a>
+    <a href="{% url 'review' item.id item.product.slug %}"> <button class='btn btn-primary btn-sm mx-2 mt-2'> Rate the product</button></a>
     <a href="{% url 'orders:user_item_tracker' item.id object.order_id %}"> <button class='btn btn-warning btn-sm mx-2 mt-2'> Track</button></a> 
     {% if not paid %}
     <a href='{{ item.product.get_absolute_url }}'  target="_blank">  <button class='btn btn-warning btn-sm' style="margin-left: 5px;">  Add to cart Now?</button> </a>

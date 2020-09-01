@@ -271,6 +271,7 @@ RATING = (
 
 class User_Review(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    cartitem_id = models.IntegerField(default=0)
     email     = models.ForeignKey(User,on_delete=models.CASCADE)
     rating    = models.IntegerField(default=5)
     review = models.TextField()
@@ -294,6 +295,7 @@ post_save.connect(post_save_review, sender=User_Review)
 
 class Product_Refund(models.Model):
     product_id = models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    cartitem_id = models.IntegerField(default=0)
     email = models.ForeignKey(User,on_delete=models.CASCADE)
     reason = models.TextField()
     accepted = models.BooleanField(default=False)

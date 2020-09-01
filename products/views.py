@@ -787,15 +787,19 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
 
 class ReviewView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
+        id = self.kwargs.get('id')
         form = RatingForm()
         context={
-            'form': form
+            'form': form,
+            'item' : CartItem.objects.get(id=id),
+            'count' : User_Review.objects.filter(cartitem_id=id).count()
         }
         return render(self.request, "products/review.html" ,context)
     def post(self,*args, **kwargs):
         form = RatingForm(self.request.POST)
         if form.is_valid():
             slug = self.kwargs.get('slug')
+            id = self.kwargs.get('id')
             rating = form.cleaned_data.get('rating')
             review   = form.cleaned_data.get('review')
             # edit the order
@@ -805,6 +809,7 @@ class ReviewView(LoginRequiredMixin,View):
                 #store the refund
                 reviews = User_Review()
                 reviews.product_id = product_id
+                reviews.cartitem_id = id
                 reviews.email = self.request.user
                 reviews.rating = rating
                 reviews.review  = review
@@ -822,10 +827,13 @@ class ReviewView(LoginRequiredMixin,View):
 
 class ProductRefundView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
+        id = self.kwargs.get('id')
         form = ProductRefundForm()
         context={
             'form': form,
-            'product_refund': 'product_refund'
+            'product_refund': 'product_refund',
+            'item': CartItem.objects.get(id=id),
+            'count': Product_Refund.objects.filter(cartitem_id=id).count()
         }
         return render(self.request, "products/review.html" ,context)
     def post(self,*args, **kwargs):
@@ -848,6 +856,7 @@ class ProductRefundView(LoginRequiredMixin,View):
                 #store the refund
                 reviews = Product_Refund()
                 reviews.product_id = product_id
+                reviews.cartitem_id = id
                 reviews.email = self.request.user
                 reviews.reason = reason
                 reviews.save()

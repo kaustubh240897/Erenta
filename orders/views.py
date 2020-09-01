@@ -304,9 +304,13 @@ class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
 
 class RequestCancelView(LoginRequiredMixin,View):
     def get(self, *args, **kwargs):
+        id = self.kwargs.get('id')
         form = RefundForm()
         context={
-            'form': form
+            'form': form,
+            'item': CartItem.objects.get(id=id),
+            'count': Cancel_Item.objects.filter(cartitem_id=id).count()
+            
         }
         return render(self.request, "orders/request-refund.html" ,context)
     def post(self,*args, **kwargs):
@@ -330,6 +334,7 @@ class RequestCancelView(LoginRequiredMixin,View):
                 #store the refund
                 reviews = Cancel_Item()
                 reviews.product_id = product_id
+                reviews.cartitem_id = id
                 reviews.email = self.request.user
                 reviews.reason = reason
                 reviews.save()

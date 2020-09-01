@@ -2,7 +2,9 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-{% if object.cancel_time > object.updated %}
+{% if count == 0 %}
+{% if item.cart.user == request.user %}
+{% if item.cancel_time > item.updated %}
 <main>
 
 <div class='container'>
@@ -30,6 +32,15 @@
 </div>
 {% endif %}
 
+{% else %}
 
+<h2> Permission denied, you have not access for it.</h2>
 
+{% endif %}
+
+{% else %}
+
+<h2>You have already submitted your request. Thank you.</h2>
+
+{% endif %}
 {% endblock %}
