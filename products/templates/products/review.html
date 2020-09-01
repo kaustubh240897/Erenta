@@ -7,7 +7,7 @@
 {% if count == 0 %}
 {% if item.cart.user == request.user %}
 {% if product_refund %}
-    {% if item.updated > item.cancel_time %}
+    {% if item.updated > item.cancel_time or item.status == 'paid' %}
         <h2 class='text-center'>Request the refund this product.</h2>
         <font color='green'> <strong><p>** You will get refund within 7 days and for more details please refer refund policy, Thank you.</p></strong> </font>
          <form method="POST">
