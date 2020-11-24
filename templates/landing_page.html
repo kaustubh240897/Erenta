@@ -1,5 +1,6 @@
 {% load static %}
 {% url 'home' as home_url %}
+{% load i18n %}
 {% url 'home1' as home_url1 %}
 <!DOCTYPE html>
 <html>
@@ -184,6 +185,22 @@ body, html {
 </header>
 
 <!-- About Section -->
+{% trans "this is in english" %}
+
+{% get_current_language as LANGUAGE_CODE %}
+<h2> {{ LANGUAGE_CODE }}</h2>
+<form action="{% url 'change_language' %}" method="post">
+    {% csrf_token %}
+    <select name="language">
+        {% get_available_languages as LANGUAGES %}
+        {% for language in LANGUAGES %}
+        <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected{% endif %}>
+            {{ language.0|language_name_local }} ({{ language.0 }})
+        </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Change language">
+</form>
 
 <div class="w3-container" style="padding:128px 16px" id="about">
   <h3 class="w3-center"><b>ABOUT THE SERVICE </b></h3>

@@ -30,14 +30,26 @@ from products.views import SupplierHomeView,AddProductView,my_productsView,Produ
 from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
 from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf,landing_page,home_redirect
 from orders.views import RequestCancelView
+from django.conf.urls.i18n import i18n_patterns
+from .views import change_language
 admin.site.site_header = 'ShopNow Administration'
 admin.site.site_title = 'ShopNow Administration'
 admin.site.index_title = 'ShopNow Administration'
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('change_language/', 
+         change_language, 
+         name='change_language'),
+]
+
+
+urlpatterns += i18n_patterns(
+    
+    
     path('', landing_page, name='landing-page'),
-    path('home',home_redirect, name='home-redirect'),
+    path('home/',home_redirect, name='home-redirect'),
     path('home/Tokyo/',home_page, name='home'),
     path('home/Osaka/',home_page, name='home1'),
     path('home/Kyoto/',home_page, name='home2'),
@@ -91,10 +103,11 @@ urlpatterns = [
     path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity'),
     path('add_product_details/add_tags/<int:id>/',SupplierTagView.as_view(),name='producttags'),
     path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
-    path('<id>/<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf')
+    path('<id>/<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf'),
+    #prefix_default_language = False,
 
 
-]
+)
 
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

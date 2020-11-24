@@ -16,6 +16,9 @@ from analytics.models import View_Count
 import datetime
 from django.utils import timezone
 from .utils import render_to_pdf #created in step 4
+from django.utils import translation 
+from django.http import HttpResponseRedirect
+from django.conf import settings
 
 
 def home_page(request):
@@ -192,6 +195,10 @@ class GenerateSupplierPdf(LoginRequiredMixin,View):
 
 
 def landing_page(request):
+    # user_language = 'ja'
+    # translation.activate(user_language)
+    # request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+
     if request.method=="POST":
         if request.POST.get("form_type") == '1':
             name=request.POST.get('name')
@@ -211,6 +218,25 @@ def landing_page(request):
     
     
     return render(request,"landing_page.html")
+
+
+
+def change_language(request):
+    response = HttpResponseRedirect('/')
+    if request.method == 'POST':
+        language = request.POST.get('language')
+        if language:
+            if language != settings.LANGUAGE_CODE and [lang for lang in settings.LANGUAGES if lang[0] == language]:
+                redirect_path = f'/{language}/'
+            elif language == settings.LANGUAGE_CODE:
+                redirect_path = '/'
+            else:
+                return response
+            from django.utils import translation
+            translation.activate(language)
+            response = HttpResponseRedirect(redirect_path)
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    return response
 
         
 

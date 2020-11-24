@@ -1,3 +1,4 @@
+{% load static i18n %}
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -10,6 +11,21 @@
     <title> {{ title }} </title>
     {% include 'base/css.html' %}
     {% include 'base/navbar.html' with brand_name='ShopNow' %}
+
+    {% get_current_language as LANGUAGE_CODE %}
+<h2> {{ LANGUAGE_CODE }}</h2>
+<form action="{% url 'change_language' %}" method="post">
+    {% csrf_token %}
+    <select name="language">
+        {% get_available_languages as LANGUAGES %}
+        {% for language in LANGUAGES %}
+        <option value="{{ language.0 }}" {% if language.0 == LANGUAGE_CODE %} selected{% endif %}>
+            {{ language.0|language_name_local }} ({{ language.0 }})
+        </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Change language">
+</form>
     
     {% block base_head %} {% endblock %}
    </head>

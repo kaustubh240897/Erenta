@@ -1,17 +1,20 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% load static %}
 {% url 'account:home' as account_url %}
 <title> Home Page!</title>
 {% block base_head %}
      <link rel='stylesheet' href='{% static "css/test.css" %}' />
+     {% trans "this is in for indians" %}
 {% endblock %}
 
 {% block content %}
+{% trans "this is in for indians" %}
 
 {% if request.user.is_authenticated %}
 <div class='col' style="background-color: white;">
    {{ premium_content }} {{ user.full_name }}!
+   {% trans "this is user name" %}
   <!-- <a href='{% url "account:user-update" %}'>
     <img src="{% static 'img/a.jpg' %}" width=50px height="50px" style="float: right;"  class="rounded-circle" alt="...."> </a> -->
    
