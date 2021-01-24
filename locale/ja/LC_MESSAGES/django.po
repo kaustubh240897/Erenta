@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-06 16:39+0530\n"
+"POT-Creation-Date: 2021-01-25 00:55+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,656 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\templates\home_page.html:8 .\templates\home_page.html:12
-msgid "this is in for indians"
-msgstr "これはインド人用です"
+#: .\accounts\templates\accounts\home.html:10
+msgid "Account"
+msgstr "マイページ"
 
-#: .\templates\home_page.html:17
-msgid "this is user name"
-msgstr "これはユーザー名です"
+#: .\accounts\templates\accounts\home.html:18
+msgid "History"
+msgstr "履歴"
 
-#: .\templates\landing_page.html:188
-msgid "this is in english"
-msgstr "これは日本語です"
+#: .\accounts\templates\accounts\home.html:19
+msgid "Products"
+msgstr "商品"
+
+#: .\accounts\templates\accounts\home.html:29
+msgid "Add new card"
+msgstr "商品カゴ"
+
+#: .\accounts\templates\accounts\home.html:30
+msgid "Payment Methods"
+msgstr "決済情報"
+
+#: .\accounts\templates\accounts\home.html:41 .\templates\landing_page.html:241
+msgid "Support"
+msgstr "サポート"
+
+#: .\accounts\templates\accounts\home.html:43
+msgid "About"
+msgstr "eRentaについて"
+
+#: .\accounts\templates\accounts\home.html:44
+#: .\orders\templates\orders\order_list.html:131
+#: .\products\templates\products\detail.html:330
+msgid "Contact"
+msgstr "お問合せ"
+
+#: .\accounts\templates\accounts\home.html:55
+msgid "Personal Info"
+msgstr "あなたの情報"
+
+#: .\accounts\templates\accounts\home.html:56
+msgid "Update details"
+msgstr "個人情報の更新"
+
+#: .\accounts\templates\accounts\home.html:57
+msgid "ChangePassword"
+msgstr "パスワード変更"
+
+#: .\accounts\templates\accounts\home.html:66
+msgid "Billing"
+msgstr "お支払い"
+
+#: .\accounts\templates\accounts\home.html:68
+msgid "My Orders(paid)"
+msgstr "借りた金額"
+
+#: .\accounts\templates\accounts\home.html:69
+msgid "My created(unpaid) Orders"
+msgstr "貸した金額"
+
+#: .\orders\templates\orders\order_list.html:9
+msgid "Orders"
+msgstr "ご注文"
+
+#: .\orders\templates\orders\order_list.html:19
+msgid "Paid orders"
+msgstr "支払い情報"
+
+#: .\orders\templates\orders\order_list.html:26
+msgid "Shipped orders"
+msgstr "郵送情報"
+
+#: .\orders\templates\orders\order_list.html:33
+msgid "Refunded orders"
+msgstr "返金情報"
+
+#: .\orders\templates\orders\order_list.html:40
+msgid "Retruned orders(after rent timeperiod)"
+msgstr "返金情報"
+
+#: .\orders\templates\orders\order_list.html:48
+msgid "Cancelled orders"
+msgstr "キャンセル情報"
+
+#: .\orders\templates\orders\order_list.html:91
+msgid "Order Id"
+msgstr "ＩＤ"
+
+#: .\orders\templates\orders\order_list.html:92
+msgid "Order Total"
+msgstr "金額"
+
+#: .\orders\templates\orders\order_list.html:95
+msgid "Order Placed"
+msgstr "日時"
+
+#: .\orders\templates\orders\order_list.html:98
+msgid "Order details"
+msgstr "注文情報"
+
+#: .\orders\templates\orders\order_list.html:99
+msgid "View Invoice"
+msgstr "請求情報"
+
+#: .\orders\templates\orders\order_list.html:109
+msgid "Status"
+msgstr "状態"
+
+#: .\orders\templates\orders\order_list.html:127
+#: .\products\templates\products\detail.html:400
+#: .\products\templates\products\detail.html:402
+msgid "Cost"
+msgstr "金額"
+
+#: .\orders\templates\orders\order_list.html:128
+msgid "Rental Period"
+msgstr "レンタル期間"
+
+#: .\orders\templates\orders\order_list.html:130
+msgid "lended by"
+msgstr "貸出人"
+
+#: .\orders\templates\orders\order_list.html:139
+msgid "No orders yet."
+msgstr "まだ注文はありません。"
+
+#: .\products\templates\products\detail.html:319
+msgid "AboutItem"
+msgstr "eRentaについて"
+
+#: .\products\templates\products\detail.html:331
+msgid "ContactTiming"
+msgstr "お問合せ"
+
+#: .\products\templates\products\detail.html:391
+msgid "Posted"
+msgstr "投稿日時"
+
+#: .\products\templates\products\detail.html:397
+msgid "Brand"
+msgstr "ブランド"
+
+#: .\products\templates\products\detail.html:414
+#: .\products\templates\products\detail.html:465
+msgid "Quantity"
+msgstr "数量"
+
+#: .\products\templates\products\detail.html:415
+msgid "Start Date"
+msgstr "借りたい日"
+
+#: .\products\templates\products\detail.html:421
+msgid "End Date"
+msgstr "返す日"
+
+#: .\products\templates\products\detail.html:429
+msgid "Size"
+msgstr "サイズ"
+
+#: .\products\templates\products\detail.html:439
+msgid "Color"
+msgstr "色"
+
+#: .\products\templates\products\detail.html:458
+msgid "Variations available"
+msgstr "可能な貸し出し情報"
+
+#: .\products\templates\products\detail.html:464
+msgid "Size and Color"
+msgstr ""
+
+#: .\products\templates\products\detail.html:541
+msgid "Rating and Reviews"
+msgstr ""
+
+#: .\templates\base\footer.html:13
+msgid "Information"
+msgstr "ご案内"
+
+#: .\templates\base\footer.html:15
+msgid "Blogs"
+msgstr "ブログ"
+
+#: .\templates\base\footer.html:16
+msgid "Policies"
+msgstr "ポリシー"
+
+#: .\templates\base\footer.html:17 .\templates\base\footer.html:27
+msgid "FAQ"
+msgstr "よくある質問"
+
+#: .\templates\base\footer.html:18
+msgid "Documents Required"
+msgstr "必要な事項"
+
+#: .\templates\base\footer.html:19
+msgid "SiteMap"
+msgstr "サイトマップ"
+
+#: .\templates\base\footer.html:23
+msgid "Lend with us"
+msgstr "貸し出す"
+
+#: .\templates\base\footer.html:25
+msgid "Join as a lender now"
+msgstr "貸し出すため"
+
+#: .\templates\base\footer.html:26
+msgid "For Lenders (list your items)"
+msgstr "貸し出す方はこちら"
+
+#: .\templates\base\footer.html:28
+msgid "Documents required(for lenders)"
+msgstr "必要な事項"
+
+#: .\templates\base\footer.html:29
+msgid "Videos"
+msgstr "説明動画"
+
+#: .\templates\base\footer.html:33
+msgid "Quick links"
+msgstr "便利な機能"
+
+#: .\templates\base\footer.html:35
+msgid "About us"
+msgstr "eRentaについて"
+
+#: .\templates\base\footer.html:36
+msgid "Careers"
+msgstr "社歴"
+
+#: .\templates\base\footer.html:37
+msgid "Privacy policies"
+msgstr "プライバシーポリシー"
+
+#: .\templates\base\footer.html:38
+msgid "How it works"
+msgstr "eRentaで働く"
+
+#: .\templates\base\footer.html:39
+msgid "Press"
+msgstr "情報発信"
+
+#: .\templates\base\navbar.html:313
+msgid ""
+"You already have Items in your cart. To change the city first clear the cart."
+msgstr ""
+
+#: .\templates\base\navbar.html:314
+msgid "Clear the cart?"
+msgstr ""
+
+#: .\templates\base\navbar.html:317
+msgid "Select your City."
+msgstr "あなたの国を選択してください"
+
+#: .\templates\base\navbar.html:321 .\templates\landing_page.html:128
+msgid "Tokyo"
+msgstr "東京"
+
+#: .\templates\base\navbar.html:324 .\templates\landing_page.html:131
+msgid "Osaka"
+msgstr "大阪"
+
+#: .\templates\base\navbar.html:327 .\templates\landing_page.html:134
+msgid "Kyoto"
+msgstr "京都"
+
+#: .\templates\base\navbar.html:347
+msgid "Free shipping on total of $99 of all products"
+msgstr ""
+
+#: .\templates\base\navbar.html:426 .\templates\base\navbar.html:625
+msgid "Log In"
+msgstr "ログイン"
+
+#: .\templates\base\navbar.html:461 .\templates\base\navbar.html:463
+#: .\templates\base\navbar.html:465 .\templates\base\navbar.html:467
+#: .\templates\base\navbar.html:657 .\templates\base\navbar.html:659
+#: .\templates\base\navbar.html:661 .\templates\base\navbar.html:663
+msgid "HOME"
+msgstr "ホーム"
+
+#: .\templates\base\navbar.html:473
+msgid "CATEGORIES"
+msgstr "商品カテゴリー"
+
+#: .\templates\base\navbar.html:574 .\templates\base\navbar.html:680
+msgid "ACCOUNTS"
+msgstr "マイページ"
+
+#: .\templates\base\navbar.html:585 .\templates\base\navbar.html:668
+msgid "COLLECTION"
+msgstr "商品一覧"
+
+#: .\templates\base\navbar.html:588 .\templates\base\navbar.html:671
+#: .\templates\landing_page.html:352
+msgid "CONTACT"
+msgstr "お問合せ"
+
+#: .\templates\base\navbar.html:674 .\templates\landing_page.html:95
+#: .\templates\landing_page.html:144
+msgid "ABOUT"
+msgstr "e-Rentaについて"
+
+#: .\templates\base\navbar.html:698
+msgid "Categories"
+msgstr "商品カテゴリー"
+
+#: .\templates\home_page.html:20
+msgid "For better experience please Login."
+msgstr "より良い経験のためにログインしてください。"
+
+#: .\templates\home_page.html:83
+msgid "Popular Categories"
+msgstr "人気なカテゴリー"
+
+#: .\templates\home_page.html:91
+msgid "Playstation"
+msgstr "プレイステーション"
+
+#: .\templates\home_page.html:95
+msgid "Accessories"
+msgstr "生活に便利なもの"
+
+#: .\templates\home_page.html:99
+msgid "Books"
+msgstr "本"
+
+#: .\templates\home_page.html:103
+msgid "Clothing"
+msgstr "洋服"
+
+#: .\templates\home_page.html:107
+msgid "Electronics"
+msgstr "電化製品"
+
+#: .\templates\home_page.html:112
+msgid "Furniture"
+msgstr "家具"
+
+#: .\templates\home_page.html:116
+msgid "Music"
+msgstr "音楽"
+
+#: .\templates\home_page.html:132
+msgid "Top trending Products"
+msgstr "トップトレンド製品"
+
+#: .\templates\landing_page.html:97 .\templates\landing_page.html:146
+#: .\templates\landing_page.html:300
+msgid "PRODUCTS"
+msgstr "カテゴリー"
+
+#: .\templates\landing_page.html:98 .\templates\landing_page.html:147
+msgid "SUBSCRIBE"
+msgstr "メルマガ"
+
+#: .\templates\landing_page.html:100 .\templates\landing_page.html:102
+#: .\templates\landing_page.html:104 .\templates\landing_page.html:106
+#: .\templates\landing_page.html:149 .\templates\landing_page.html:151
+#: .\templates\landing_page.html:153 .\templates\landing_page.html:155
+msgid "START RENTING"
+msgstr "e-Rentaを開始"
+
+#: .\templates\landing_page.html:123
+msgid "Please select your City."
+msgstr "あなたの国を選択してください"
+
+#: .\templates\landing_page.html:163 .\templates\landing_page.html:164
+msgid "Rent something that matters"
+msgstr "買いたくない、でも使いたいを叶えます"
+
+#: .\templates\landing_page.html:167 .\templates\landing_page.html:169
+#: .\templates\landing_page.html:171 .\templates\landing_page.html:173
+msgid "Learn more and start renting now"
+msgstr "今すぐ借りたいものを探そう"
+
+#: .\templates\landing_page.html:200
+msgid "ABOUT THE SERVICE"
+msgstr "e-Rentaについて"
+
+#: .\templates\landing_page.html:201
+msgid "What is Erenta?"
+msgstr "e-Rentaとは？"
+
+#: .\templates\landing_page.html:202
+msgid ""
+"Erenta is trusted marketplace for renting VideoGames, Sports and adventure "
+"equipments, Accessories and Electronic items. We connect people who need "
+"things with the people who have them So it is an online peer to peer rental "
+"platform."
+msgstr ""
+"e-Rentaは、ビデオゲーム、スポーツおよびアドベンチャー機器、アクセサリー、電子"
+"製品を借りたり貸したりするためのサービスです。e-Rentaは物を必要とする人々とそ"
+"れを持っている人々をつなぎます。つまり、それはオンラインでほしいときに欲しい"
+"期間だけ借りたり貸したりできるレンタルプラットフォームです。"
+
+#: .\templates\landing_page.html:203
+msgid "Why use Erenta as borrower?"
+msgstr "e-Rentaを使うとどんなことができる？"
+
+#: .\templates\landing_page.html:204
+#, fuzzy
+#| msgid "When you choose our service you get the following benefits -:"
+msgid ""
+"When you choose our service over buying from stores you get the following "
+"benefits -:"
+msgstr "こんなメリットがあります"
+
+#: .\templates\landing_page.html:206
+msgid ""
+"Avoid unnecessry buying items which you use few times, Accept renting it "
+"takes fraction of cost and save money."
+msgstr "買ってみたけど、思っていたのと違う、、、などの無駄な出費を抑えます。"
+
+#: .\templates\landing_page.html:207
+msgid ""
+"Live lighter, Save the planet by reducing waste. By opting to borrow, not "
+"buy, you’re putting the brakes on unnecessary manufacturing and carbon-"
+"intensive distribution systems. It is the responsible choice. "
+msgstr ""
+"意外と地球を救うことが出来る？世界のゴミ排出量は○○です。これを余っているもの"
+"を借りることで少しでも減らせば地球にやさしい人になれます。"
+
+#: .\templates\landing_page.html:208
+msgid "Quality and different varieties of products."
+msgstr ""
+"アウトドアをしてみたい、あのゲームをしてみたい、写真をとったり、スポーツをし"
+"たり、、、"
+
+#: .\templates\landing_page.html:209
+msgid ""
+"Catch up with your passion,hobby and get things done. You can rent things in "
+"affordable prices, Whether you want to do photography or play with "
+"playstation or going on hiking trip or going to play or learn new outdoor "
+"sports these are few screnrios where our service comes in the role."
+msgstr ""
+"あなたの情熱、趣味に追いつき、物事を成し遂げましょう。あなたはで物を借りるこ"
+"とができますe-Rentaはいろんな夢を叶えることができます！思ったときに、必要な分"
+"だけの出費でいろんな体験がすぐそこにあります。"
+
+#: .\templates\landing_page.html:211
+msgid "How renting works?"
+msgstr "e-Rentaをどうやってつかえばいい？"
+
+#: .\templates\landing_page.html:213
+msgid "Find What you are looking for, from category section or by search bar."
+msgstr ""
+"まずは、アカウントを作成しましょうこのアカウントで借りたり、貸したりできます"
+"（アカウント作成のリンク）本人かどうかの認証を１度だけお願いします。"
+
+#: .\templates\landing_page.html:214
+msgid ""
+"Book the item for your chosen dates and let us verify you. we will just once "
+"ask some documents for proof."
+msgstr ""
+"カテゴリまたは検索バーから借りたいものを探します選択した日付など必要な情報を"
+"入力し、予約してください。"
+
+#: .\templates\landing_page.html:215
+msgid "Arrange collection from your lender and enjoy your rental."
+msgstr "あとは、商品到着するまでお待ちいただきます"
+
+#: .\templates\landing_page.html:216
+msgid ""
+"Return the item to the lender and leave the review on our platform. we are "
+"always happy to hear your experience."
+msgstr ""
+"期限になったら指定の方法で返却して、レビューをかいてください貸し出した人は、"
+"品物が帰ってきたらレビューをかいてください。"
+
+#: .\templates\landing_page.html:218
+msgid "Documents required?"
+msgstr "個人認証はどのようにやっていますか？"
+
+#: .\templates\landing_page.html:219
+msgid ""
+"Every user submits ID card as part of our Smart Verification process, so "
+"that you can rent in confidence."
+msgstr ""
+"全ての利用者に対して、身分証明書での認証をしていますスマホ1つでおわるのですご"
+"く簡単です。"
+
+#: .\templates\landing_page.html:222
+msgid "Key features of our service"
+msgstr "eRentaの特徴"
+
+#: .\templates\landing_page.html:226
+msgid "Service"
+msgstr "サービス"
+
+#: .\templates\landing_page.html:227
+msgid ""
+"We rent wide range of products to users and we list quality products on our "
+"platform."
+msgstr "幅広いカテゴリーと高品質を提供します。"
+
+#: .\templates\landing_page.html:231
+msgid "Passion"
+msgstr "情熱"
+
+#: .\templates\landing_page.html:232
+msgid ""
+"We have passion for our customer satisfaction and we are trying hard to keep "
+"our community safe."
+msgstr ""
+"ユーザの満足を高めるため情熱をもって取り組み、安全なプラットフォームを提供す"
+"ることに努力を続けます"
+
+#: .\templates\landing_page.html:236
+msgid "Secure"
+msgstr "安全"
+
+#: .\templates\landing_page.html:237
+msgid ""
+"We provide fully secured flawless payment methods on our platform and we "
+"allow only approved users on our platform."
+msgstr ""
+"個人情報、決済などあらゆる情報のセキュリティーを強化して安全なプラットフォー"
+"ムを提供し続けます"
+
+#: .\templates\landing_page.html:242
+msgid "24x7 support for our customers, we always here for your help."
+msgstr "２４時間３６５日お客様の問合せにお応えできるようにします"
+
+#: .\templates\landing_page.html:251
+msgid "Join with us for business."
+msgstr "アイテムを貸し出そう！"
+
+#: .\templates\landing_page.html:252
+msgid ""
+"Your items are not just meant to lie in the attic, but can be a source of "
+"some extra bucks in the pocket. Every item, new or used, has a value. you "
+"can easily list your items and start earning."
+msgstr ""
+"押し入れや使っていないものには価値がありますただ、それは出品しないと価値がで"
+"ません。簡単に貸し出すことができるので、すぐに登録してみましょう！"
+
+#: .\templates\landing_page.html:253
+msgid " Why use Erenta as a lender?"
+msgstr "eRentaを使って貸し出すことのメリットは？"
+
+#: .\templates\landing_page.html:254
+msgid "When you choose our service you get the following benefits -:"
+msgstr "こんなメリットがあります"
+
+#: .\templates\landing_page.html:256
+msgid ""
+"You quickly make your money back on item by lending it out through Erenta."
+msgstr "貸し出したらすぐにお金が手に入ります"
+
+#: .\templates\landing_page.html:257
+msgid ""
+"By sharing with each other that we develop meaningful relationships and "
+"create effective local communities. It built trust and social barriers fall "
+"down."
+msgstr ""
+"お互いに共有することで、有意義な関係を築き、効果的な地域社会を作り上げます。"
+"それは信頼を築き、社会的障壁は崩壊しました。"
+
+#: .\templates\landing_page.html:258
+msgid ""
+"By giving a quality product, reliable and convenient service with good "
+"communication the borrower will see you again."
+msgstr "貸し出すと、すべての人に笑顔が訪れます"
+
+#: .\templates\landing_page.html:259
+msgid "Make world a efficient place for everyone."
+msgstr "世界を誰にとっても効率的な場所にします。"
+
+#: .\templates\landing_page.html:261
+msgid "How lending works?"
+msgstr "どうやって貸し出しますか？"
+
+#: .\templates\landing_page.html:263
+msgid ""
+"List your items for free. Upload images, product description, pricing and "
+"quantity."
+msgstr "画像、説明文、料金を決めて無料で貸し出すことができます。"
+
+#: .\templates\landing_page.html:264
+msgid "See the incoming requests and respond it."
+msgstr "商品に対して問合せが来たら、返答してください"
+
+#: .\templates\landing_page.html:265
+msgid "Arrange a convenient time to ship or exchange the item with borrower."
+msgstr "借り手と商品を発送または交換するのに都合の良い時間を手配します。"
+
+#: .\templates\landing_page.html:266
+msgid "Get paid within a week through our secured payment system and enjoy."
+msgstr "商品が届いたら、お金を受け取ります"
+
+#: .\templates\landing_page.html:268
+msgid "List your Item now"
+msgstr "今すぐアイテムをリストしてください"
+
+#: .\templates\landing_page.html:282
+msgid "Partners"
+msgstr "協力会社"
+
+#: .\templates\landing_page.html:286
+msgid "Suppliers"
+msgstr "貸出人"
+
+#: .\templates\landing_page.html:290
+msgid "Happy Clients"
+msgstr "エンドユーザ"
+
+#: .\templates\landing_page.html:301
+msgid "Products available for rent."
+msgstr "こんな商品があります"
+
+#: .\templates\landing_page.html:308
+msgid "Rent Accessories"
+msgstr "生活に便利なもの"
+
+#: .\templates\landing_page.html:312
+msgid " Rent Sports and trekking Equipments"
+msgstr "スポーツ"
+
+#: .\templates\landing_page.html:319
+msgid " Rent games"
+msgstr "ゲーム"
+
+#: .\templates\landing_page.html:325
+msgid "Rent electronic equipments"
+msgstr "電化製品"
+
+#: .\templates\landing_page.html:342 .\templates\landing_page.html:347
+msgid "Subscribe"
+msgstr "申し込む"
+
+#: .\templates\landing_page.html:343
+msgid "To get special offers and VIP treatment and latest updates:"
+msgstr "新着情報などあなただけに特別な情報を受け取れます"
+
+#: .\templates\landing_page.html:353
+msgid "Lets get in touch. Send us a message:"
+msgstr "どんなことでも構いません。お気軽にお問合せください３日以内に返答します"
+
+#: .\templates\landing_page.html:367
+msgid "SEND MESSAGE"
+msgstr "メッセージを送る"
+
+#: .\templates\landing_page.html:379
+msgid "To the top"
+msgstr "頂点に"
+
+#: .\templates\notification_home.html:5
+msgid "Notifications"
+msgstr ""
 
 #: .\templates\registration\password_reset_email.html:2
 #: .\templates\registration\password_reset_email.txt:2
@@ -39,3 +678,12 @@ msgid ""
 "\n"
 "Reset your password on %(domain)s for %(user)s:\n"
 msgstr ""
+
+#~ msgid "this is in for indians"
+#~ msgstr "これはインド人用です"
+
+#~ msgid "this is user name"
+#~ msgstr "これはユーザー名です"
+
+#~ msgid "this is in english"
+#~ msgstr "これは日本語です"

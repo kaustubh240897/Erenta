@@ -1,3 +1,4 @@
+{% load static i18n %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -9,33 +10,33 @@
         
 			<div class="row text-center text-xs-center text-sm-left text-md-left ">
 				<div class="col-xs-8 col-sm-4 col-md-4 col-lg-4">
-					<h5>Information</h5>
+					<h5>{% trans "Information" %}</h5>
 					<ul class="list-unstyled quick-links">
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Blogs</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Policies</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Documents Required</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>SiteMap</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Blogs" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Policies" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "FAQ" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Documents Required" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "SiteMap" %}</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-					<h5>Lend with us</h5>
+					<h5>{% trans "Lend with us" %}</h5>
 					<ul class="list-unstyled quick-links">
-						<li><a href="{% url 'join_us' %}"><i class="fa fa-angle-double-right"></i>Join as a lender now</a></li>
-						<li><a href="{% url 'join_us' %}" title='click here'><i class="fa fa-angle-double-right"></i>For Lenders (list your items)</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>FAQ</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Documents required(for lenders)</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Videos</a></li>
+						<li><a href="{% url 'join_us' %}"><i class="fa fa-angle-double-right"></i>{% trans "Join as a lender now" %}</a></li>
+						<li><a href="{% url 'join_us' %}" title='click here'><i class="fa fa-angle-double-right"></i>{% trans "For Lenders (list your items)" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "FAQ" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Documents required(for lenders)" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Videos" %}</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-					<h5>Quick links</h5>
+					<h5>{% trans "Quick links" %}</h5>
 					<ul class="list-unstyled quick-links">
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>About us</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Careers</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>Privacy policies</a></li>
-						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>How it works</a></li>
-						<li><a href="https://wwwe.sunlimetech.com" title="Design and developed by"><i class="fa fa-angle-double-right"></i>Press</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "About us" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Careers" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "Privacy policies" %}</a></li>
+						<li><a href="javascript:void();"><i class="fa fa-angle-double-right"></i>{% trans "How it works" %}</a></li>
+						<li><a href="https://wwwe.sunlimetech.com" title="Design and developed by"><i class="fa fa-angle-double-right"></i>{% trans "Press" %}</a></li>
 					</ul>
 				</div>
 			</div>

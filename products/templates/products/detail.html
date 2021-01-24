@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load static i18n %}
 {% block javascript %}
 <script>
 $(function(){
@@ -14,7 +15,7 @@ $(function(){
     if(day1 < 10)
         day1 = '0' + day1.toString();
     var maxDate1 = year1 + '-' + month1 + '-' + day1;
-    $('#txtDate').attr('max', maxDate1);
+    //$('#txtDate').attr('max', maxDate1);
 
 
 
@@ -29,7 +30,8 @@ $(function(){
     var maxDate = year + '-' + month + '-' + day;
     // alert(maxDate);
     $('#txtDate').attr('min', maxDate);
-    $('#txtDate1').attr('min', maxDate);
+    //$('#txtDate1').attr('min', maxDate);
+    $('#txtDate1').attr('min', maxDate1);
 });
 
 
@@ -315,7 +317,7 @@ function showSlides(n) {
               </div>
             <br/>
           <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
-            <h3 class="text-center">About Item</h3>
+            <h3 class="text-center">{% trans "AboutItem" %}</h3>
             
                {{ object.description|linebreaks }}<br/>
               
@@ -326,8 +328,8 @@ function showSlides(n) {
              {% for obj in object.user.supplier_set.all %}
             <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
                
-              Contact -: {{ obj.Mobile_number }} <br/>
-              Contact Timing -:  {{ obj.receive_message_time }}
+              {% trans "Contact" %} -: {{ obj.Mobile_number }} <br/>
+              {% trans "ContactTiming" %} -:  {{ obj.receive_message_time }}
 
                {% endfor %}
           </div>
@@ -387,18 +389,18 @@ function showSlides(n) {
           <span class="fa fa-star checked"></span>
         {% endif %}      
             
-           <p>Posted : {{ object.timestamp|timesince }} ago   {% if object.timestamp >= object.product_posted_days %}
+           <p>{% trans "Posted" %} : {{ object.timestamp|timesince }} ago   {% if object.timestamp >= object.product_posted_days %}
                      
                       <span class="badge badge-pill badge-danger">NEW</span>
                     
                       {% endif %}</p>
            
-           <h5>Brand : {{ object.brand }}</h5>
+           <h5>{% trans "Brand" %} : {{ object.brand }}</h5>
            <br/>
            {% if object.discount_price %}
-           <h4> Cost : <strike> ${{ object.cost_per_day }}</strike> ${{ object.discount_price }}/day ({{ object.get_amount_percent_saved }}% Off)</h4>
+           <h4> {% trans "Cost" %} : <strike> ${{ object.cost_per_day }}</strike> ${{ object.discount_price }}/day ({{ object.get_amount_percent_saved }}% Off)</h4>
            {% else %}
-           <h4> Cost : ${{ object.cost_per_day }}/day</h4>
+           <h4> {% trans "Cost" %} : ${{ object.cost_per_day }}/day</h4>
            {% endif %}
           
         </div>
@@ -410,14 +412,14 @@ function showSlides(n) {
           <div style=" background-color: lavender;">
            <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
             
-              Quantity-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
-              Start Date-:
+              {% trans "Quantity" %}-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
+              {% trans "Start Date" %}-:
                <br/>
               <i class="fas fa-calendar-week"></i>
                <input class='form-control' type="date" name='start_date' required='True' value='start_date' id="txtDate" />
           
              
-              End Date-: 
+              {% trans "End Date" %}-: 
               <br/>
               <i class="fas fa-calendar-week"></i>
               <input class='form-control' type="date" name='end_date' required='True' value='end_date' id="txtDate1" />
@@ -425,7 +427,7 @@ function showSlides(n) {
           {% if object.variation_set.all %}
 
              {% if object.variation_set.sizes %}
-             Size-:
+             {% trans "Size" %}-:
               <select class='form-control' name='size'>
                 {% for item in object.variation_set.sizes %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
@@ -435,7 +437,7 @@ function showSlides(n) {
              {% endif %}
               
               {% if  object.variation_set.colors %}
-              Color-:
+              {% trans "Color" %}-:
               <select class='form-control' name='color'>
                 {% for item in object.variation_set.colors %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
@@ -454,14 +456,14 @@ function showSlides(n) {
           <br/>
           
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
-           <h3 class='text-center'> Variations available</h3>
+           <h3 class='text-center'> {% trans "Variations available" %}</h3>
           <br/>
             <table class="table" style="background-color: #263238; color: white;">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Size and Color</th>
-                <th>Quantity</th>
+                <th>{% trans "Size and Color" %}</th>
+                <th>{% trans "Quantity" %}</th>
               </tr>
             </thead>
             <tbody>
@@ -537,7 +539,7 @@ function showSlides(n) {
           color: orange;
         }
       </style>
-      <h3>Rating and Reviews (Overall rating: {{ object.rating }})</h3>
+      <h3>{% trans "Rating and Reviews" %} (Overall rating: {{ object.rating }})</h3>
       <br/>
       {% if reviews.exists %}
       {% for rev in reviews %}

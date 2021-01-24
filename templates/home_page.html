@@ -8,18 +8,16 @@
 {% endblock %}
 
 {% block content %}
-{% trans "this is in for indians" %}
 
 {% if request.user.is_authenticated %}
 <div class='col' style="background-color: white;">
    {{ premium_content }} {{ user.full_name }}!
-   {% trans "this is user name" %}
   <!-- <a href='{% url "account:user-update" %}'>
     <img src="{% static 'img/a.jpg' %}" width=50px height="50px" style="float: right;"  class="rounded-circle" alt="...."> </a> -->
    
 </div>
 {% else %}
-For better experience please Login.
+{% trans "For better experience please Login." %}
 {% endif %}
    
     	<!--first slider -->
@@ -82,7 +80,7 @@ For better experience please Login.
 
   </style>
   <hr/>
-      <h2 class="text-center"> Popular Categories </h2>
+      <h2 class="text-center"> {% trans "Popular Categories" %} </h2>
     	<!-- second slider -->
 
     	<div class="container-fluid">
@@ -90,32 +88,32 @@ For better experience please Login.
     			<div class="row slider-two text-center">
     				<div class="col-md-4 col-lg-4 text-center">
              <a href="{% url 'products:query1' 'playstations' %}"> <img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/></a>
-              <b>Playstation</b>
+              <b>{% trans "Playstation" %}</b>
     				</div>
     				<div class="col-md-4 col-lg-4 text-center">
             	<a href="{% url 'products:query1' 'menaccessories' %}"> <img src="{% static 'img/accessories.jpg' %}" class="responsive carr" alt="Product 2"/></a>
-               <b>Accessories</b>
+               <b>{% trans "Accessories" %}</b>
     				</div>
     				<div class="col-md-4 col-lg-4 text-center">
             	<a href="{% url 'products:query' 'booksnovels' %}"> <img src="{% static 'img/books.jpg' %}" class="responsive carr" alt="Product 3"/></a>
-               <b>Books</b>
+               <b>{% trans "Books" %}</b>
     				</div>
     				<div class="col-md-4 col-lg-4 text-center">
             	<a href="{% url 'products:query1' 'menclothing' %}"> <img src="{% static 'img/clothing.jpg' %}" class="responsive carr" alt="Product 4"/></a>
-               <b>Clothing</b>
+               <b>{% trans "Clothing" %}</b>
     				</div>
     				<div class="col-md-4 col-lg-4 text-center">
              <a href="{% url 'products:query' 'electronics' %}"> <img src="{% static 'img/electronics.jpg' %}" class="responsive carr" alt="Product 5"/></a>
-               <b>Electronics</b>
+               <b>{% trans "Electronics" %}</b>
     				</div>
             
             <div class="col-md-4 col-lg-4 text-center">
              <a href="{% url 'products:query' 'furniture' %}"><img src="{% static 'img/furniture.jpg' %}" class="responsive carr" alt="Product 7"/> </a>
-               <b>Furniture</b>
+               <b>{% trans "Furniture" %}</b>
             </div>
             <div class="col-md-4 col-lg-4 text-center">
             	 <a href="{% url 'products:query' 'music' %}"> <img src="{% static 'img/music.jpg' %}" class="responsive carr" alt="Product 8"/></a>
-               <b>Music</b>
+               <b>{% trans "Music" %}</b>
     				</div>
     			</div>
     			<div class="slider-btn" style="color:brown">
@@ -131,7 +129,7 @@ For better experience please Login.
                              <br/>
                              
                              <hr/>
-<h2 class='text-center'>Top trending Products</h2>
+<h2 class='text-center'>{% trans "Top trending Products" %}</h2>
   <div class='container-fluid'>
 {% include 'analytics/view-count.html' %}
      

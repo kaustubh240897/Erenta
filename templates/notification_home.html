@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load static i18n %}
 {% block content %}
 {% if order_notifications.count > 0 or notifications.count > 0 or item_current_status.count > 0 %}
-<h3 class='text-center'>Notifications</h3>
+<h3 class='text-center'>{% trans "Notifications" %}</h3>
 <hr/>
 <div class='container' style='background-color: white;'>
 {% for n in notifications %}

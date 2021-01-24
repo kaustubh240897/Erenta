@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static i18n %}
 {% load staticfiles %}
 
 {% block content %}
@@ -6,7 +7,7 @@
 <br/>
 <div class='row'>
     <div class='col-12'>
-        <h2 class='text-center'>Orders</h2>
+        <h2 class='text-center'>{% trans "Orders" %}</h2>
     </div>
 </div>
 <div class='container' style='background-color: black;'>
@@ -16,28 +17,28 @@
       {% else %}
     <div class='col-md-3 col-sm-12 text-center mb-2'>
       {% endif %}
-<strong><a href="{% url 'orders:list' %}">Paid orders</a> </strong>
+<strong><a href="{% url 'orders:list' %}">{% trans "Paid orders" %}</a> </strong>
 </div>
 {% if shipped_orders %}
     <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
     <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
-<strong><a href="{% url 'orders:shippedlist' %}">Shipped orders</a> </strong>
+<strong><a href="{% url 'orders:shippedlist' %}">{% trans "Shipped orders" %}</a> </strong>
 </div>
 {% if refund_orders %}
     <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
     <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
-<strong><a href="{% url 'orders:refundedlist' %}">Refunded orders</a> </strong>
+<strong><a href="{% url 'orders:refundedlist' %}">{% trans "Refunded orders" %}</a> </strong>
 </div>
 {% if returned_orders %}
     <div class='col-md-3 col-sm-12 text-center mb-2' style='background-color: white;'>
       {% else %}
     <div class='col-md-3 col-sm-12 text-center mb-2'>
       {% endif %}
-<strong><a href="{% url 'orders:returnedlist' %}">Retruned orders(after rent timeperiod)</a> </strong>
+<strong><a href="{% url 'orders:returnedlist' %}">{% trans "Retruned orders(after rent timeperiod)" %}</a> </strong>
 </div>
   {% if cancelled_orders %}
     <div class='col-md-2 col-sm-12 text-center mb-2' style='background-color: white;'>
@@ -45,7 +46,7 @@
     <div class='col-md-2 col-sm-12 text-center mb-2'>
       {% endif %}
       
-<strong><a href="{% url 'orders:cancelledlist' %}">Cancelled orders</a> </strong>
+<strong><a href="{% url 'orders:cancelledlist' %}">{% trans "Cancelled orders" %}</a> </strong>
 </div>
 
 </div>
@@ -88,15 +89,15 @@
       <b>{{ forloop.counter }}.</b>
     </div>
     <div class='col-md-4 col-sm-4'>
-    <b>Order Id -:  {{ object.order_id }} <br/>
-    Order Total -:  ${{ object.total }} </b>
+    <b>{% trans "Order Id" %} -:  {{ object.order_id }} <br/>
+      {% trans "Order Total" %} -:  ${{ object.total }} </b>
     </div>
     <div class='col-md-3 col-sm-3'>
-    <b>Order Placed -: {{ object.timestamp }} </b>
+    <b>{% trans "Order Placed" %} -: {{ object.timestamp }} </b>
     </div>
     <div class='col-md-4 col-sm-4'>
-      <b><a href='{{ object.get_absolute_url }}'>Order details</a> </b> |
-      <b>  <a href="{% url 'pdf' object.order_id %}"> View Invoice</a>
+      <b><a href='{{ object.get_absolute_url }}'>{% trans "Order details" %}</a> </b> |
+      <b>  <a href="{% url 'pdf' object.order_id %}"> {% trans "View Invoice" %}</a>
       </b>
 
     </div>
@@ -106,7 +107,7 @@
 <div class="container"  style="background-color: #263238; color: white;">
   <br/>
   <div class='text-right'>
-<strong> <font color='green'> Status -:  {% if item.refund_granted %} Refund granted {% elif item.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ item.status }} {% endif %}  </font> </strong>
+<strong> <font color='green'> {% trans "Status" %} -:  {% if item.refund_granted %} Refund granted {% elif item.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ item.status }} {% endif %}  </font> </strong>
 <h6> (from {{ item.updated }})</h6>
   </div>
   {{ forloop.counter }}.
@@ -124,11 +125,11 @@
            {% endif %}
            </h6>
     <p class="card-text">{{ item.product.description|linebreaks|truncatewords:14 }}</p>
-    <h6> Cost -: ${{ item.line_total }}</h6>
-    <h6> Rental Period -: {{ item.start_date }} - {{ item.end_date }}( {{ item.days }} days )</h6>
+    <h6> {% trans "Cost" %} -: ${{ item.line_total }}</h6>
+    <h6> {% trans "Rental Period" %} -: {{ item.start_date }} - {{ item.end_date }}( {{ item.days }} days )</h6>
     {% for o in item.product.user.supplier_set.all %}
-    <h6>lended by -: {{ o.Shop_name }}</h6>
-    <b>Contact -: {{ o.Mobile_number }}</b>
+    <h6>{% trans "lended by" %} -: {{ o.Shop_name }}</h6>
+    <b>{% trans "Contact" %} -: {{ o.Mobile_number }}</b>
     {% endfor %}
     
   
@@ -136,7 +137,7 @@
 </div>
 
   {% empty %}
-  <strong><p class='lead'>No orders yet.</p> </strong>
+  <strong><p class='lead'>{% trans "No orders yet." %}</p> </strong>
   {% endfor %}
   <hr/>
   

@@ -310,21 +310,21 @@ ul.social-icons li {
             <span class="close">&times;</span>
           {% if request.session.cart_items %}
             
-          <h3 class='text-center'> You already have Items in your cart. To change the city first clear the cart.</h3>
-          <h3 class='text-center'><a href='{% url "cart:remove_all" %}'>Clear the cart?</a> </h3>
+          <h3 class='text-center'> {% trans "You already have Items in your cart. To change the city first clear the cart." %}</h3>
+          <h3 class='text-center'><a href='{% url "cart:remove_all" %}'>{% trans "Clear the cart?" %}</a> </h3>
             {% else %}
             <div class='text-center'>
-            <h2> Select your City.</h2>
+            <h2> {% trans "Select your City." %}</h2>
             </div>
             <div class='row'>
               <div class='col-4'>
-                <h3><a href='{% url "home" %}'><i class="fas fa-map-marker-alt"></i> Tokyo</a></h3>
+                <h3><a href='{% url "home" %}'><i class="fas fa-map-marker-alt"></i> {% trans "Tokyo" %}</a></h3>
               </div>
                <div class='col-4'>
-                <h3><a href='{% url "home1" %}'><i class="fas fa-map-marker-alt"></i> Osaka</a></h3>
+                <h3><a href='{% url "home1" %}'><i class="fas fa-map-marker-alt"></i> {% trans "Osaka" %}</a></h3>
                </div>
                 <div class='col-4'>
-                <h3><a href='{% url "home2" %}'><i class="fas fa-map-marker-alt"></i> Kyoto</a></h3>
+                <h3><a href='{% url "home2" %}'><i class="fas fa-map-marker-alt"></i> {% trans "Kyoto" %}</a></h3>
               </div>
             </div>
            {% endif %}
@@ -344,7 +344,7 @@ ul.social-icons li {
       </div>
 
       <div class="col-12 col-md-6 text-right">
-        <p class="small">Free shipping on total of $99 of all products</p>
+        <p class="small">{% trans "Free shipping on total of $99 of all products" %}</p>
       </div>
     </div>
   </div>
@@ -423,7 +423,7 @@ ul.social-icons li {
                   alt="avatar image" height="50" width="50" /> </a>
             {% endif %}
         {% else %}
-          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> Log In</a>
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> {% trans "Log In" %}</a>
         {% endif %}
         </li>
 
@@ -458,19 +458,19 @@ ul.social-icons li {
       <ul class="navbar-nav mx-auto">
         <li class="nav-item {% if request.path == home_url or request.path == home_url1 or request.path == home_url2  %} active {% endif %}">
            {% if request.session.city_names == 'Tokyo' %}
-                    <a class="nav-link" href="{{ home_url }}">HOME</a>
+                    <a class="nav-link" href="{{ home_url }}">{% trans "HOME" %}</a>
                     {% elif request.session.city_names == 'Osaka' %}
-                    <a class="nav-link" href="{{ home_url1 }}">HOME </a>
+                    <a class="nav-link" href="{{ home_url1 }}">{% trans "HOME" %} </a>
                     {% elif request.session.city_names == 'Kyoto' %}
-                    <a class="nav-link" href="{{ home_url2 }}">HOME</a>
+                    <a class="nav-link" href="{{ home_url2 }}">{% trans "HOME" %}</a>
                     {% else %}
-                     <a class="nav-link"><i class="fas fa-home mr-3"></i>HOME</a>
+                     <a class="nav-link"><i class="fas fa-home mr-3"></i>{% trans "HOME" %}</a>
         {% endif %}
         </li>
        
         <li class="nav-item dropdown">
                  <a class="nav-link dropdown-toggle"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      CATEGORIES
+                  {% trans "CATEGORIES" %}
                     </a>
                                 <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
                                   
@@ -571,7 +571,7 @@ ul.social-icons li {
           {% if request.user.is_authenticated %}
         <li class="nav-item dropdown {% if request.path == account_url or request.path == about_url %}active {% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            ACCOUNTS
+            {% trans "ACCOUNTS" %}
                         </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="{% url 'account:home' %}">Your Dashboard</a>
@@ -582,10 +582,10 @@ ul.social-icons li {
         </li>
         {% endif %}
          <li class="nav-item {% if request.path == product_list_url %}active {% endif %}">
-          <a class="nav-link" href="{{ product_list_url }}">COLLECTION</a>
+          <a class="nav-link" href="{{ product_list_url }}">{% trans "COLLECTION" %}</a>
         </li>
         <li class="nav-item {% if request.path == conttact_url %}active {% endif %}">
-          <a class="nav-link" href="{% url 'contact' %}">CONTACT</a>
+          <a class="nav-link" href="{% url 'contact' %}">{% trans "CONTACT" %}</a>
         </li>
        
       </ul>
@@ -622,7 +622,7 @@ ul.social-icons li {
                   alt="avatar image" height="50" width="50" /> </a>
             {% endif %}
           {% else %}
-          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> Log In</a>
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> {% trans "Log In" %}</a>
           {% endif %}
         </div>
 
@@ -654,30 +654,30 @@ ul.social-icons li {
   <ul class="list-unstyled components links">
     <li class="{% if request.path == home_url or request.path == home_url1 or request.path == home_url2  %} active {% endif %}">
        {% if request.session.city_names == 'Tokyo' %}
-                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home mr-3"></i>{% trans "HOME" %}</a>
                     {% elif request.session.city_names == 'Osaka' %}
-                    <a class="nav-link" href="{% url 'home1' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    <a class="nav-link" href="{% url 'home1' %}"><i class="fas fa-home mr-3"></i>{% trans "HOME" %}</a>
                     {% elif request.session.city_names == 'Kyoto' %}
-                    <a class="nav-link" href="{% url 'home2' %}"><i class="fas fa-home mr-3"></i>HOME</a>
+                    <a class="nav-link" href="{% url 'home2' %}"><i class="fas fa-home mr-3"></i>{% trans "HOME" %}</a>
                     {% else %}
-                     <a class="nav-link"><i class="fas fa-home mr-3"></i>HOME </a>
+                     <a class="nav-link"><i class="fas fa-home mr-3"></i>{% trans "HOME" %} </a>
         {% endif %}
       
     </li>
     <li class="{% if request.path == product_list_url  %} active {% endif %}">
-      <a href="{{ product_list_url }}"><i class="fas fa-store mr-3"></i> COLLECTION</a>
+      <a href="{{ product_list_url }}"><i class="fas fa-store mr-3"></i> {% trans "COLLECTION" %}</a>
     </li>
     <li class="{% if request.path == contact_url %} active {% endif %}">
-      <a href="{% url 'contact' %}"><i class="fas fa-phone mr-3"></i> CONTACT</a>
+      <a href="{% url 'contact' %}"><i class="fas fa-phone mr-3"></i> {% trans "CONTACT" %}</a>
     </li>
     <li class="{% if request.path == about_url %} active {% endif %}">
-      <a href="{% url 'contact' %}"><i class="fas fa-info-circle mr-3"></i> ABOUT</a>
+      <a href="{% url 'contact' %}"><i class="fas fa-info-circle mr-3"></i> {% trans "ABOUT" %}</a>
     </li>
     
     {% if request.user.is_authenticated %}
     <li>
       <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="far fa-question-circle mr-3"></i>
-                    ACCOUNTS</a>
+        {% trans "ACCOUNTS" %}</a>
       <ul class="collapse list-unstyled" id="pageSubmenu">
         <li>
           <a href="{% url 'account:home' %}">Your Dashboard</a>
@@ -695,7 +695,7 @@ ul.social-icons li {
     </li>
   </ul>
 
-  <h6 class="text-uppercase mb-1">Categories</h6>
+  <h6 class="text-uppercase mb-1">{% trans "Categories" %}</h6>
   <ul class="list-unstyled components mb-3">
     <li>
       <a href="{% url 'products:query' 'men' %}">Men</a>
