@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-27 15:09+0530\n"
+"POT-Creation-Date: 2021-01-27 17:24+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,7 +88,7 @@ msgstr "ログイン"
 #: .\carts\templates\carts\checkout.html:62
 #: .\carts\templates\carts\checkout.html:221
 msgid "Shipping Address"
-msgstr "郵送情報"
+msgstr "お届け先の住所"
 
 #: .\carts\templates\carts\checkout.html:20
 #: .\carts\templates\carts\checkout.html:64
@@ -97,13 +97,11 @@ msgstr "郵送情報"
 #: .\carts\templates\carts\checkout.html:186
 #: .\carts\templates\carts\checkout.html:243
 msgid "Billing Address"
-msgstr "お支払い"
+msgstr "請求先住所情報"
 
 #: .\carts\templates\carts\checkout.html:22
-#, fuzzy
-#| msgid "Payment Options"
 msgid "Payment option"
-msgstr "決済情報"
+msgstr "完了"
 
 #: .\carts\templates\carts\checkout.html:24
 msgid "Payment and checkout"
@@ -114,23 +112,23 @@ msgstr "決済情報"
 #: .\carts\templates\carts\checkout.html:157
 #: .\carts\templates\carts\checkout.html:188
 msgid "Payment Options"
-msgstr "決済情報"
+msgstr "お支払い情報"
 
 #: .\carts\templates\carts\checkout.html:68
 #: .\carts\templates\carts\checkout.html:115
 #: .\carts\templates\carts\checkout.html:159
 msgid "Payment & checkout"
-msgstr "決済情報"
+msgstr "完了"
 
 #: .\carts\templates\carts\checkout.html:109
 #: .\carts\templates\carts\checkout.html:153
 #: .\carts\templates\carts\checkout.html:184
 msgid "Shipping address"
-msgstr "郵送情報"
+msgstr "お届け先の住所"
 
 #: .\carts\templates\carts\checkout.html:190
 msgid "Payment & Checkout"
-msgstr "決済情報"
+msgstr "完了"
 
 #: .\carts\templates\carts\checkout.html:197
 msgid "Finalize Checkout"
@@ -142,7 +140,7 @@ msgstr "あなたのカート"
 
 #: .\carts\templates\carts\checkout.html:238
 msgid "Edit your shipping Address?"
-msgstr "住所の編集"
+msgstr "配送先住所情報を編集する"
 
 #: .\carts\templates\carts\checkout.html:258
 msgid "Edit your billing Address?"
@@ -183,7 +181,7 @@ msgstr "引き換え"
 
 #: .\carts\templates\carts\checkout.html:325
 msgid "Checkout finally"
-msgstr "最後にチェックアウト"
+msgstr "最終チェックアウト"
 
 #: .\carts\templates\carts\view.html:469
 msgid "Your"
