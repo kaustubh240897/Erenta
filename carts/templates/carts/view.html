@@ -465,7 +465,7 @@ a.remove:hover {
 
 <!-- partial:index.partial.html -->
 <div class="wrap cf">
-  <h1 class="projTitle"><span>Your</span> Shopping Cart</h1>
+  <h1 class="projTitle"><span>{ % trans "Your" %}</span> {% trans "Shopping Cart" %}</h1>
   <div class="heading cf">
     <h1>My Cart</h1>
     <a href='{% url "products:list" %}' class="continue">Continue Shopping</a>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-25 00:55+0530\n"
+"POT-Creation-Date: 2021-01-27 14:20+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,8 +47,8 @@ msgid "About"
 msgstr "eRentaについて"
 
 #: .\accounts\templates\accounts\home.html:44
-#: .\orders\templates\orders\order_list.html:131
-#: .\products\templates\products\detail.html:330
+#: .\orders\templates\orders\order_list.html:132
+#: .\products\templates\products\detail.html:331
 msgid "Contact"
 msgstr "お問合せ"
 
@@ -76,120 +76,198 @@ msgstr "借りた金額"
 msgid "My created(unpaid) Orders"
 msgstr "貸した金額"
 
-#: .\orders\templates\orders\order_list.html:9
-msgid "Orders"
-msgstr "ご注文"
+#: .\carts\templates\carts\checkout.html:181
+msgid "Login"
+msgstr "ログイン"
 
-#: .\orders\templates\orders\order_list.html:19
-msgid "Paid orders"
-msgstr "支払い情報"
-
-#: .\orders\templates\orders\order_list.html:26
-msgid "Shipped orders"
+#: .\carts\templates\carts\checkout.html:184
+msgid "Shipping address"
 msgstr "郵送情報"
 
-#: .\orders\templates\orders\order_list.html:33
-msgid "Refunded orders"
-msgstr "返金情報"
+#: .\carts\templates\carts\checkout.html:186
+#: .\carts\templates\carts\checkout.html:243
+msgid "Billing Address"
+msgstr "お支払い"
 
-#: .\orders\templates\orders\order_list.html:40
-msgid "Retruned orders(after rent timeperiod)"
-msgstr "返金情報"
+#: .\carts\templates\carts\checkout.html:188
+msgid "Payment Options"
+msgstr "決済情報"
 
-#: .\orders\templates\orders\order_list.html:48
-msgid "Cancelled orders"
-msgstr "キャンセル情報"
+#: .\carts\templates\carts\checkout.html:190
+msgid "Payment & Checkout"
+msgstr "決済情報"
 
-#: .\orders\templates\orders\order_list.html:91
-msgid "Order Id"
-msgstr "ＩＤ"
+#: .\carts\templates\carts\checkout.html:197
+msgid "Finalize Checkout"
+msgstr "チェックアウトを完了する"
 
-#: .\orders\templates\orders\order_list.html:92
+#: .\carts\templates\carts\checkout.html:201
+msgid "Your cart"
+msgstr "あなたのカート"
+
+#: .\carts\templates\carts\checkout.html:221
+msgid "Shipping Address"
+msgstr "郵送情報"
+
+#: .\carts\templates\carts\checkout.html:238
+msgid "Edit your shipping Address?"
+msgstr "住所の編集"
+
+#: .\carts\templates\carts\checkout.html:258
+msgid "Edit your billing Address?"
+msgstr "請求情報の編集"
+
+#: .\carts\templates\carts\checkout.html:262
+msgid "Payment Method"
+msgstr "決済情報"
+
+#: .\carts\templates\carts\checkout.html:277
+msgid "Change"
+msgstr "決済情報の編集"
+
+#: .\carts\templates\carts\checkout.html:285
+msgid "Promo code"
+msgstr "プロモーションコード"
+
+#: .\carts\templates\carts\checkout.html:292
+msgid "Cart Subtotal"
+msgstr "カート小計"
+
+#: .\carts\templates\carts\checkout.html:296
+msgid "Shipping Total"
+msgstr "送料合計"
+
+#: .\carts\templates\carts\checkout.html:300
+msgid "Tax"
+msgstr "税金"
+
+#: .\carts\templates\carts\checkout.html:304
+#: .\orders\templates\orders\order_list.html:93
 msgid "Order Total"
 msgstr "金額"
 
-#: .\orders\templates\orders\order_list.html:95
+#: .\carts\templates\carts\checkout.html:316
+msgid "Redeem"
+msgstr "引き換え"
+
+#: .\carts\templates\carts\checkout.html:325
+msgid "Checkout finally"
+msgstr "最後にチェックアウト"
+
+#: .\carts\templates\carts\view.html:468
+msgid "Shopping Cart"
+msgstr "ショッピングカート"
+
+#: .\orders\templates\orders\order_list.html:10
+msgid "Orders"
+msgstr "ご注文"
+
+#: .\orders\templates\orders\order_list.html:20
+msgid "Paid orders"
+msgstr "支払い情報"
+
+#: .\orders\templates\orders\order_list.html:27
+msgid "Shipped orders"
+msgstr "郵送情報"
+
+#: .\orders\templates\orders\order_list.html:34
+msgid "Refunded orders"
+msgstr "返金情報"
+
+#: .\orders\templates\orders\order_list.html:41
+msgid "Retruned orders(after rent timeperiod)"
+msgstr "返金情報"
+
+#: .\orders\templates\orders\order_list.html:49
+msgid "Cancelled orders"
+msgstr "キャンセル情報"
+
+#: .\orders\templates\orders\order_list.html:92
+msgid "Order Id"
+msgstr "ＩＤ"
+
+#: .\orders\templates\orders\order_list.html:96
 msgid "Order Placed"
 msgstr "日時"
 
-#: .\orders\templates\orders\order_list.html:98
+#: .\orders\templates\orders\order_list.html:99
 msgid "Order details"
 msgstr "注文情報"
 
-#: .\orders\templates\orders\order_list.html:99
+#: .\orders\templates\orders\order_list.html:100
 msgid "View Invoice"
 msgstr "請求情報"
 
-#: .\orders\templates\orders\order_list.html:109
+#: .\orders\templates\orders\order_list.html:110
 msgid "Status"
 msgstr "状態"
 
-#: .\orders\templates\orders\order_list.html:127
-#: .\products\templates\products\detail.html:400
-#: .\products\templates\products\detail.html:402
+#: .\orders\templates\orders\order_list.html:128
+#: .\products\templates\products\detail.html:401
+#: .\products\templates\products\detail.html:403
 msgid "Cost"
 msgstr "金額"
 
-#: .\orders\templates\orders\order_list.html:128
+#: .\orders\templates\orders\order_list.html:129
 msgid "Rental Period"
 msgstr "レンタル期間"
 
-#: .\orders\templates\orders\order_list.html:130
+#: .\orders\templates\orders\order_list.html:131
 msgid "lended by"
 msgstr "貸出人"
 
-#: .\orders\templates\orders\order_list.html:139
+#: .\orders\templates\orders\order_list.html:140
 msgid "No orders yet."
 msgstr "まだ注文はありません。"
 
-#: .\products\templates\products\detail.html:319
+#: .\products\templates\products\detail.html:320
 msgid "AboutItem"
 msgstr "eRentaについて"
 
-#: .\products\templates\products\detail.html:331
+#: .\products\templates\products\detail.html:332
 msgid "ContactTiming"
-msgstr "お問合せ"
+msgstr "接触時間"
 
-#: .\products\templates\products\detail.html:391
+#: .\products\templates\products\detail.html:392
 msgid "Posted"
 msgstr "投稿日時"
 
-#: .\products\templates\products\detail.html:397
+#: .\products\templates\products\detail.html:398
 msgid "Brand"
 msgstr "ブランド"
 
-#: .\products\templates\products\detail.html:414
-#: .\products\templates\products\detail.html:465
+#: .\products\templates\products\detail.html:415
+#: .\products\templates\products\detail.html:466
 msgid "Quantity"
 msgstr "数量"
 
-#: .\products\templates\products\detail.html:415
+#: .\products\templates\products\detail.html:416
 msgid "Start Date"
 msgstr "借りたい日"
 
-#: .\products\templates\products\detail.html:421
+#: .\products\templates\products\detail.html:422
 msgid "End Date"
 msgstr "返す日"
 
-#: .\products\templates\products\detail.html:429
+#: .\products\templates\products\detail.html:430
 msgid "Size"
 msgstr "サイズ"
 
-#: .\products\templates\products\detail.html:439
+#: .\products\templates\products\detail.html:440
 msgid "Color"
 msgstr "色"
 
-#: .\products\templates\products\detail.html:458
+#: .\products\templates\products\detail.html:459
 msgid "Variations available"
 msgstr "可能な貸し出し情報"
 
-#: .\products\templates\products\detail.html:464
+#: .\products\templates\products\detail.html:465
 msgid "Size and Color"
-msgstr ""
+msgstr "サイズと色"
 
-#: .\products\templates\products\detail.html:541
+#: .\products\templates\products\detail.html:542
 msgid "Rating and Reviews"
-msgstr ""
+msgstr "評価とレビュー"
 
 #: .\templates\base\footer.html:13
 msgid "Information"
@@ -262,11 +340,11 @@ msgstr "情報発信"
 #: .\templates\base\navbar.html:313
 msgid ""
 "You already have Items in your cart. To change the city first clear the cart."
-msgstr ""
+msgstr "カートにはすでにアイテムがあります。都市を変更するには、最初にカートをクリアします。"
 
 #: .\templates\base\navbar.html:314
 msgid "Clear the cart?"
-msgstr ""
+msgstr "カートをクリアしますか？"
 
 #: .\templates\base\navbar.html:317
 msgid "Select your City."
@@ -286,7 +364,7 @@ msgstr "京都"
 
 #: .\templates\base\navbar.html:347
 msgid "Free shipping on total of $99 of all products"
-msgstr ""
+msgstr "全商品合計99ドルで送料無料"
 
 #: .\templates\base\navbar.html:426 .\templates\base\navbar.html:625
 msgid "Log In"
@@ -665,9 +743,9 @@ msgstr "メッセージを送る"
 msgid "To the top"
 msgstr "頂点に"
 
-#: .\templates\notification_home.html:5
+#: .\templates\notification_home.html:6
 msgid "Notifications"
-msgstr ""
+msgstr "お知らせ"
 
 #: .\templates\registration\password_reset_email.html:2
 #: .\templates\registration\password_reset_email.txt:2

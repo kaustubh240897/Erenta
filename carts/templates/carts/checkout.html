@@ -178,27 +178,27 @@
         <ul class="checkout-bar">
 
           <li class="visited first">
-            <a href="#">Login</a>
+            <a href="#">{% trans "Login" %}</a>
           </li>
           
-          <li class="visited first">Shipping address</li>
+          <li class="visited first">{% trans "Shipping address" %}</li>
 
-           <li class="previous visited"> Billing Address</li>
+           <li class="previous visited"> {% trans "Billing Address" %}</li>
           
-          <li class="previous visited">Payment Options</li>
+          <li class="previous visited">{% trans "Payment Options" %}</li>
           
-          <li class="active">Payment & Checkout</li>
+          <li class="active">{% trans "Payment & Checkout" %}</li>
           
           
        </ul>
        <br/>
     </div>
 
-       <h2 class='text-center'> Finalize Checkout </h2>
+       <h2 class='text-center'> {% trans "Finalize Checkout" %} </h2>
     
       <div class="col-md-12 mb-4">
     <h4 class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted">Your cart</span>
+    <span class="text-muted">{% trans "Your cart" %}</span>
     <span class="badge badge-secondary badge-pill">{{ request.session.cart_items }}</span>
     </h4>
     <ul class="list-group mb-3 z-depth-1">
@@ -218,7 +218,7 @@
     </li>
     {% endfor %}
      <li class="list-group-item d-flex justify-content-between">
-        <span>Shipping Address : {{ object.shipping_address.get_address }}</span>
+        <span>{% trans "Shipping Address" %} : {{ object.shipping_address.get_address }}</span>
 
 
 
@@ -235,12 +235,12 @@
         event.preventDefault();
       }"
       
-      class='btn btn-raised btn-primary btn-sm' href=''>Edit your shipping Address? </button>
+      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Edit your shipping Address?" %} </button>
     </li>
 
 
     <li class="list-group-item d-flex justify-content-between">
-        <span>Billing Address : {{ object.billing_address.get_address }} </span>
+        <span>{% trans "Billing Address" %} : {{ object.billing_address.get_address }} </span>
 
       <form method='POST' id='delete-billing-form-{{ object.order_id }}' action='{% url "orders:update_billingaddress" object.order_id %}' style="display:none;">
       {% csrf_token %}
@@ -255,11 +255,11 @@
         event.preventDefault();
       }"
       
-      class='btn btn-raised btn-primary btn-sm' href=''>Edit your billing Address? </button>
+      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Edit your billing Address?" %} </button>
       
     </li>
      <li class="list-group-item d-flex justify-content-between">
-        <span>Payment Method : {{ billing_profile.default_card }}</span>
+        <span>{% trans "Payment Method" %} : {{ billing_profile.default_card }}</span>
       
        <form method='POST' id='delete-payment-card-form' action='{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}' style="display:none;">
       {% csrf_token %}
@@ -274,7 +274,7 @@
         event.preventDefault();
       }"
       
-      class='btn btn-raised btn-primary btn-sm' href=''>Change </button>
+      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Change" %} </button>
       
         
      
@@ -282,26 +282,26 @@
     {% if object.cart.coupon %}
     <li class="list-group-item d-flex justify-content-between bg-light">
         <div class="text-success">
-        <h6 class="my-0">Promo code</h6>
+        <h6 class="my-0">{% trans "Promo code" %}</h6>
         <small>{{ object.cart.coupon.code }}</small>
         </div>
         <span class="text-success">-${{ object.cart.coupon.amount }}</span>
     </li>
     {% endif %}
     <li class="list-group-item d-flex justify-content-between">
-        <span>Cart Subtotal</span>
+        <span>{% trans "Cart Subtotal" %}</span>
         <strong>${{ object.cart.subtotal }}</strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
-        <span>Shipping Total </span>
+        <span>{% trans "Shipping Total" %} </span>
         <strong>+ ${{ object.cart.shipping_total }}</strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
-        <span>Tax</span>
+        <span>{% trans "Tax" %}</span>
         <strong>${{ object.cart.tax }}</strong>
     </li>
     <li class="list-group-item d-flex justify-content-between">
-        <span>Order Total</span>
+        <span>{% trans "Order Total" %}</span>
         <strong>= ${{ object.total }}</strong>
     </li>
     </ul>
@@ -313,7 +313,7 @@
             <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2"> -->
             {{ couponform.code }}
             <div class="input-group-append">
-            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">{% trans "Redeem" %}</button>
             </div>
         </div>
     </form>
@@ -322,7 +322,7 @@
 </div>
        <div class='text-center'>
        <form class='form' method="POST" action="">{% csrf_token %}
-         <button type='submit' class='btn-lg btn btn-success'>Checkout finally</button>
+         <button type='submit' class='btn-lg btn btn-success'>{% trans "Checkout finally" %}</button>
      
        </form>
        </div>
