@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-27 14:20+0530\n"
+"POT-Creation-Date: 2021-01-27 14:59+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,22 +76,61 @@ msgstr "借りた金額"
 msgid "My created(unpaid) Orders"
 msgstr "貸した金額"
 
+#: .\carts\templates\carts\checkout.html:15
+#: .\carts\templates\carts\checkout.html:59
+#: .\carts\templates\carts\checkout.html:106
+#: .\carts\templates\carts\checkout.html:150
 #: .\carts\templates\carts\checkout.html:181
 msgid "Login"
 msgstr "ログイン"
 
-#: .\carts\templates\carts\checkout.html:184
-msgid "Shipping address"
+#: .\carts\templates\carts\checkout.html:18
+#: .\carts\templates\carts\checkout.html:62
+#: .\carts\templates\carts\checkout.html:221
+msgid "Shipping Address"
 msgstr "郵送情報"
 
+#: .\carts\templates\carts\checkout.html:20
+#: .\carts\templates\carts\checkout.html:64
+#: .\carts\templates\carts\checkout.html:111
+#: .\carts\templates\carts\checkout.html:155
 #: .\carts\templates\carts\checkout.html:186
 #: .\carts\templates\carts\checkout.html:243
 msgid "Billing Address"
 msgstr "お支払い"
 
+#: .\carts\templates\carts\checkout.html:22
+#, fuzzy
+#| msgid "Payment Options"
+msgid "Payment option"
+msgstr "決済情報"
+
+#: .\carts\templates\carts\checkout.html:24
+#, fuzzy
+#| msgid "Payment & Checkout"
+msgid "Payment and checkout"
+msgstr "決済情報"
+
+#: .\carts\templates\carts\checkout.html:66
+#: .\carts\templates\carts\checkout.html:113
+#: .\carts\templates\carts\checkout.html:157
 #: .\carts\templates\carts\checkout.html:188
 msgid "Payment Options"
 msgstr "決済情報"
+
+#: .\carts\templates\carts\checkout.html:68
+#: .\carts\templates\carts\checkout.html:115
+#: .\carts\templates\carts\checkout.html:159
+#, fuzzy
+#| msgid "Payment & Checkout"
+msgid "Payment & checkout"
+msgstr "決済情報"
+
+#: .\carts\templates\carts\checkout.html:109
+#: .\carts\templates\carts\checkout.html:153
+#: .\carts\templates\carts\checkout.html:184
+msgid "Shipping address"
+msgstr "郵送情報"
 
 #: .\carts\templates\carts\checkout.html:190
 msgid "Payment & Checkout"
@@ -104,10 +143,6 @@ msgstr "チェックアウトを完了する"
 #: .\carts\templates\carts\checkout.html:201
 msgid "Your cart"
 msgstr "あなたのカート"
-
-#: .\carts\templates\carts\checkout.html:221
-msgid "Shipping Address"
-msgstr "郵送情報"
 
 #: .\carts\templates\carts\checkout.html:238
 msgid "Edit your shipping Address?"
@@ -154,7 +189,13 @@ msgstr "引き換え"
 msgid "Checkout finally"
 msgstr "最後にチェックアウト"
 
-#: .\carts\templates\carts\view.html:468
+#: .\carts\templates\carts\view.html:469
+#, fuzzy
+#| msgid "Your cart"
+msgid "Your"
+msgstr "あなたのカート"
+
+#: .\carts\templates\carts\view.html:469
 msgid "Shopping Cart"
 msgstr "ショッピングカート"
 
@@ -340,7 +381,9 @@ msgstr "情報発信"
 #: .\templates\base\navbar.html:313
 msgid ""
 "You already have Items in your cart. To change the city first clear the cart."
-msgstr "カートにはすでにアイテムがあります。都市を変更するには、最初にカートをクリアします。"
+msgstr ""
+"カートにはすでにアイテムがあります。都市を変更するには、最初にカートをクリア"
+"します。"
 
 #: .\templates\base\navbar.html:314
 msgid "Clear the cart?"
