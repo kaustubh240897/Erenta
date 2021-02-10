@@ -39,6 +39,7 @@ admin.site.index_title = 'ShopNow Administration'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('change_language/', 
          change_language, 
          name='change_language'),
@@ -75,7 +76,7 @@ urlpatterns += i18n_patterns(
     path('register/guest/',guest_register_view, name='guest_register'),
     path('logout/',LogoutView.as_view(), name='logout'),
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
-    path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
+    # path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/',RegisterView.as_view(), name='register'),
     #path('logout_page/', logout_page, name='logout_page'),
     path('settings/',RedirectView.as_view(url='/account')),
