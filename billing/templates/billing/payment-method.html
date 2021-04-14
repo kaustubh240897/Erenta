@@ -3,7 +3,52 @@
 {% block content %}
  
 </br>
-<div class='container' style="background-color: #263238; color:white">
+
+
+    
+      <div class="container p-3" style="background-color: #ffffff;">
+        <form class="" action="{% url 'cart:reusecard' %}" method="POST">
+            {% csrf_token %}
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2">Available Cards</p>
+            </div>
+            <div class="col">
+            {% for card in cards %}    
+              <div class="form-check">
+               <label class="form-check-label">
+                 <input type="radio" class="form-check-input" name="optradio" value="{{ card.id }}" />{{ card.brand }}  **** **** **** {{ card.last4 }}
+               </label>
+              </div>
+            {% endfor %}
+              
+            </div>
+          </div>
+          <div class='text-center'>
+            
+                <a href="{% url 'cart:checkout' %}" style='text-decoration: none;'>  <button class='btn-lg py-2 px-xs-2 px-md-3 mr-2' style=" border-radius: 4px; background-color: #dedede; color: #555555; font-weight: bold; width: 156px; text-align: center; border-style: none; ">Back </button> </a>
+              <button type='submit' class='btn-lg' style="color: #ffffff; border-radius: 4px; background-color: #e06a3b; border-style: none;"> Add the card</button>
+          
+        </div>
+        </form>
+        
+      </div>
+   
+    <!-- <div class="container mt-3 pt-3 mb-3">
+      <div class="container">
+        <div class="d-flex flex-row justify-content-center">
+          <div class="button py-2 px-xs-2 px-md-3 mr-2" style="color: #ffffff; border-radius: 4px; background-color: #dedede; color: #555555; font-weight: bold; width: 156px; text-align: center;">
+            前の画面に戻る
+          </div>
+          <div class="button py-2 px-3 ml-2" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; font-weight: bold; width: 156px; text-align: center;">
+            次に進む
+          </div>
+        </div>
+      </div>
+    </div> -->
+<br/>
+<div class='container' style="background-color: #1daf9e; color:white">
+    
 
 <div class='col-10 col-md-6 mx-auto'>
     <h2 class='text-center'>Add new card</h2>

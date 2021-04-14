@@ -317,4 +317,18 @@ class Supplier_Review(models.Model):
 
     def __str__(self):
         return "%s reviewed on %s" %(self.email, self.timestamp)
+
+
+
+class RentalPeriod(models.Model):
+    product_name = models.ForeignKey(Product_description,null=True,blank=True,on_delete=models.CASCADE)
+    start_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
+    end_date = models.DateField(null=True,blank=True,auto_now=False, auto_now_add=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    active =models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.product_name.slug
+
+    
         

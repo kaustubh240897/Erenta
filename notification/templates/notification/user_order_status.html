@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user_order_status.cart.user == request.user %}
+<div class='container' style='background-color: white;'>
+  
+  <br/>
+
+  
+<div class='text-center'>  <h3> Status -: {{ user_order_status.status }} </h3> </div>
+ <br/>
+  <list class="list-group-item list-group-item-action">Dear {{ user_order_status.cart.user.full_name }}, <a href="{% url 'orders:list' %}">Your product item {{ user_order_status.product }} </a>  {% for item in user_order_status.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %} for Order(order_id: {% for item in user_order_status.cart.order_set.all %}{{ item.order_id }} {% endfor %})  has been {{ user_order_status.order_confirmed }} successfully.
+<div class='text-right'> <a href='{% url "notification:delete_userorder_status_notification" user_order_status.id %}'><i class='fa fa-trash' style="color: black;"></i></a></div>
+</list>
+
+  </div>
+{% else %}
+<h3> You are not authenticated to see this content.</h3>
+{% endif %}
+{% endblock %}

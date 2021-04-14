@@ -1,0 +1,174 @@
+body{
+    font-family: 'Noto Sans', sans-serif;
+      margin:0;
+      width:100%;
+      height:100vh;
+        background:#ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+  }
+  header{
+      width:100%;
+      background:#ffffff;
+      height:60px;
+      line-height:60px;
+      border-bottom:1px solid #dddddd;
+  }
+  .hamburger{
+    background:none;
+    position:absolute;
+    top:0;
+    left:0;
+    line-height:45px;
+    padding:5px 15px 0px 15px;
+    color:#999;
+    border:0;
+    font-size:1.4em;
+    font-weight:bold;
+    cursor:pointer;
+    outline:none;
+    z-index:999;
+  }
+  .cross{
+    background:none;
+    position:absolute;
+    top:0px;
+    left:0;
+    padding:7px 15px 0px 15px;
+    color:#999;
+    border:0;
+    font-size:3em;
+    line-height:65px;
+    font-weight:bold;
+    cursor:pointer;
+    outline:none;
+    z-index:999;
+  }
+  .menu{z-index:999; font-weight:bold; width:100%; background:#555555;  position:absolute; text-align:left; top: 50px;}
+  .menu ul {margin: 0; padding: 0; list-style-type: none; list-style-image: none; border-top:#aaaaaa 1px solid;}
+  .menu li {display: block;   padding:5px 0 5px 0; }
+  .menu li:hover{display: block;    background:#ffffff; padding:5px 0 5px 0;}
+  .menu ul li a { text-decoration:none;  margin: 0px; color:#666;}
+  .menu ul li a:hover {  color: #666; text-decoration:none;}
+  .menu a{text-decoration:none; color:#666;}
+  .menu a:hover{text-decoration:none; color:#666;}
+  
+  .glyphicon-home{
+    color:white;
+    font-size:1.5em;
+    margin-top:5px;
+    margin:0 auto;
+  }
+  .multi_step_form {
+    background: #fff;
+    display: block;
+    overflow: hidden;
+  }
+  .multi_step_form #msform {
+    text-align: center;
+    position: relative;
+    padding-top: 0px;
+    min-height: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+    background: #ffffff;
+    z-index: 1;
+  }
+  .multi_step_form #msform #progressbar {
+    margin-bottom: 0px;
+    overflow: hidden;
+  }
+  .multi_step_form #msform #progressbar li {
+    list-style-type: none;
+    color: #99a2a8; /*font-color of title*/
+    font-size: 12px;
+    width: calc(100%/5);
+    float: left;
+    position: relative;
+  }
+  /* .multi_step_form #msform #progressbar li:nth-child(2):before {
+    content: url(pb_dot.svg);
+  }
+  .multi_step_form #msform #progressbar li:nth-child(3):before {
+    content: ".";
+  } */
+  .multi_step_form #msform #progressbar li:before {
+    content: url(pb_dot.svg);
+    font: normal normal normal 30px/50px Ionicons;
+    width: 46px;
+    height: 50px;
+    line-height: 38px;
+    display: block;
+    background: #eaf0f4;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+  }
+  .multi_step_form #msform #progressbar li:after {
+    content: "";
+    width: 100%;
+    height: 10px;
+    background: #eaf0f4;
+    position: absolute;
+    left: -50%;
+    top: 21px;
+    z-index: -1;
+  }
+  @media only screen and (max-width: 800px) {
+    .multi_step_form #msform #progressbar li {
+      list-style-type: none;
+      color: #99a2a8; /*font-color of title*/
+      font-size: 8px;
+      width: calc(100%/5);
+      float: left;
+      position: relative;
+    }
+    .multi_step_form #msform #progressbar li:before {
+      content: url(pb_dot.svg);
+      width: 28px;
+      height: 30px;
+      line-height: 18px;
+      display: block;
+      background: #eaf0f4;
+      border-radius: 50%;
+      margin: 0 auto 10px auto;
+    }
+    .multi_step_form #msform #progressbar li:after {
+      content: "";
+      width: 100%;
+      height: 10px;
+      background: #eaf0f4;
+      position: absolute;
+      left: -50%;
+      top: 11px;
+      z-index: -1;
+    }
+  }
+  .multi_step_form #msform #progressbar li:nth-child(1):after {
+    content: "";
+    width: 100%;
+    height: 0px;
+    background: #eaf0f4;
+    position: absolute;
+    top: 21px;
+    z-index: -1;
+  }
+  /* .multi_step_form #msform #progressbar li:last-child:after {
+  
+  }
+  .multi_step_form #msform #progressbar li:nth-child(1):before {
+  
+  }
+  .multi_step_form #msform #progressbar li.active:nth-child(1):before {
+  
+  } */
+  .multi_step_form #msform #progressbar li.active {
+    color: #5cb85c;
+  }
+  .multi_step_form #msform #progressbar li.active:before, .multi_step_form #msform #progressbar li.active:after {
+    background: #1daf9e;
+    color: white;
+  }
+  header{display:inline-block; font-size:12px;}
+  span{padding-left:20px;}
+  a{color:#336699;}
+  

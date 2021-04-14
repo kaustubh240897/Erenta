@@ -80,7 +80,7 @@
 
 <div class='text-right'>
     {% if alag %}
-<a href='{% url "addproductdetails" %}' ><button class='btn btn-warning'>Completed --></button></a>
+<a href='{% url "productrentalperiods" name.id %}' ><button class='btn btn-warning'>Next page --></button></a>
     {% else %}
 <a href='{% url "productvariations" name.id %}' ><button class='btn btn-warning'>Next page --></button></a>
  {% endif %}

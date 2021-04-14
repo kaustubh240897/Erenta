@@ -7,7 +7,7 @@ from billing.models import BillingProfile
 #from django.shortcuts import render
 from .models import Order,Cancel_Item
 from .forms import RefundForm
-from carts.forms import CouponForm
+from carts.forms import CouponForm,TransactionForm
 from django.contrib import messages
 from products.models import Product_description
 from django.shortcuts import render,redirect
@@ -19,7 +19,7 @@ from django.views.generic import CreateView
 from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
-from carts.models import Cart,CartItem,Coupon
+from carts.models import Cart,CartItem,Coupon,TransactionMessage
 from addresses.forms import AddressForm
 from addresses.models import Address
 from products.models import  Variation
@@ -156,6 +156,7 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
+        context['messages1'] = TransactionMessage.objects.filter(order_id=self.kwargs.get('order_id'))
         #context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
         #context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=timezone.now() - datetime.timedelta(hours=24))
         #context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=timezone.now() - datetime.timedelta(hours=24))
@@ -171,6 +172,27 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
             return qs.first()
         raise Http404
 
+    def post(self,*args, **kwargs):
+        
+        form = TransactionForm(self.request.POST)
+        if form.is_valid():
+            cart_id = form.cleaned_data.get('cart_id')
+            message = form.cleaned_data.get('message')
+            # edit the order
+            try:
+                #store the refund
+                reviews = TransactionMessage()
+                reviews.user = self.request.user
+                reviews.cart_id = cart_id
+                reviews.order_id = self.kwargs.get('order_id')
+                reviews.message = message
+                reviews.save()
+                messages.info(self.request, "Your message is sent.")
+                return redirect("orders:detail", self.kwargs.get('order_id'))
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "Sorry! This user does not exist.")
+                return redirect("orders:detail", self.kwargs.get('order_id'))
+
 class CreatedOrderView(LoginRequiredMixin,ListView):
     model =  Order
     template_name = 'orders/created_order_list.html'
@@ -180,7 +202,7 @@ class CreatedOrderView(LoginRequiredMixin,ListView):
 
 class CreatedOrderDetailView(LoginRequiredMixin,DetailView):
     model =  Order
-    template_name = 'orders/created_order_detail.html'
+    template_name = 'orders/order_detail.html'
     def get_object(self):
         qs = Order.objects.all().filter(
             order_id = self.kwargs.get('order_id')
@@ -189,13 +211,32 @@ class CreatedOrderDetailView(LoginRequiredMixin,DetailView):
             return qs.first()
         raise Http404
 
+class SupplierOrdersApplicationListView(LoginRequiredMixin,ListView):
+    model =  Order
+    template_name = 'orders/view_orders.html'
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierOrdersApplicationListView, self).get_context_data(*args, **kwargs)
+        queryset = CartItem.objects.filter(product__user=self.request.user , order_confirmed='none', status='paid').distinct()
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(queryset, 10)
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        context['application_orders'] = "Your Applications",
+        context['products'] = products
+        return context
+
 class SupplierOrdersListView(LoginRequiredMixin,ListView):
     model =  Order
     template_name = 'orders/view_orders.html'
     
     def get_context_data(self, *args, **kwargs):
         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user ,status='paid').distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user ,order_confirmed='confirmed',status='paid').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -214,7 +255,7 @@ class ShippedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ShippedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, status='shipped').distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, status='shipped',order_confirmed='confirmed').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -252,7 +293,7 @@ class ReturnedSupplierOrdersListView(LoginRequiredMixin,ListView):
     
     def get_context_data(self, *args, **kwargs):
         context = super(ReturnedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, status='returned back').distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user, status='returned back',order_confirmed='confirmed').distinct()
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -288,6 +329,14 @@ class CancelSupplierOrdersListView(LoginRequiredMixin,ListView):
 class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
     model =  Order
     template_name = 'orders/supplier_order_details.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierOrderDetailView, self).get_context_data(*args, **kwargs)
+        # context['form'] = OtherDetailForm(initial={'post': self.object })
+        context['cart_id'] = self.kwargs.get('id')
+        context['messages1'] = TransactionMessage.objects.filter(cart_id=self.kwargs.get('id'))
+        return context
+
     def get_object(self):
         qs = CartItem.objects.all().filter(
             id = self.kwargs.get('id')
@@ -295,6 +344,26 @@ class SupplierOrderDetailView(LoginRequiredMixin,DetailView):
         if qs.count()==1:
             return qs.first()
         raise Http404
+    def post(self,*args, **kwargs):
+        
+        form = TransactionForm(self.request.POST)
+        if form.is_valid():
+            cart_id = form.cleaned_data.get('cart_id')
+            message = form.cleaned_data.get('message')
+            # edit the order
+            try:
+                #store the refund
+                reviews = TransactionMessage()
+                reviews.user = self.request.user
+                reviews.cart_id = cart_id
+                reviews.order_id = Order.objects.get(cart__cartitem__id = self.kwargs.get('id'))
+                reviews.message = message
+                reviews.save()
+                messages.info(self.request, "Your message is sent.")
+                return redirect("orders:supplierorderdetail", self.kwargs.get('id'))
+            except ObjectDoesNotExist:
+                messages.warning(self.request, "Sorry! This user does not exist.")
+                return redirect("orders:supplierorderdetail", self.kwargs.get('id'))
 
 
 # def view_orders(LoginRequiredMixin,request, pk):
@@ -489,6 +558,35 @@ def add_coupon(request, cart):
         
 #     }
 #     return render(request,"carts/checkout.html", context)
+
+@login_required
+def confirm_order_view(request, order_id, cartitem_id):
+    try:
+        item_status = CartItem.objects.get(id=cartitem_id)
+        item_status.order_confirmed = 'confirmed'
+        item_status.save()
+        messages.success(request, "Order is confirmed now.")
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
+    except ObjectDoesNotExist:
+        messages.info(request, "You do not have an active order")
+        return redirect("orders:orders")
+
+@login_required
+def reject_order_view(request, order_id, cartitem_id):
+    try:
+        item_status = CartItem.objects.get(id=cartitem_id)
+        item_status.order_confirmed = 'rejected'
+        item_status.supplier_cancellation = True
+        item_status.cancel_request = True
+        item_status.cancel_granted = True
+        item_status.status = 'rejected by supplier'
+        item_status.save()
+        messages.success(request, "Order is rejected now.")
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
+    except ObjectDoesNotExist:
+        messages.info(request, "You do not have an active order")
+        return redirect("orders:orders")
+
 @login_required
 def update_status_to_shipped_view(request, order_id, cartitem_id):
     try:
@@ -535,6 +633,21 @@ def billing_address_update_view(request,order_id):
     except ObjectDoesNotExist:
         messages.info(request, "You do not have an active order")
         return redirect("cart:checkout")
+
+@login_required
+def supplier_cancellation_order_view(request, order_id, cartitem_id):
+    try:
+        item_status = CartItem.objects.get(id=cartitem_id)
+        item_status.status = 'supplier cancelled order'
+        item_status.cancel_request = True
+        item_status.cancel_granted = True
+        item_status.supplier_cancellation = True
+        item_status.save()
+        messages.success(request, "Order has been cancelled successfully.")
+        return HttpResponseRedirect(reverse("orders:supplierorderdetail", args=(cartitem_id,)))
+    except ObjectDoesNotExist:
+        messages.info(request, "You do not have an active order")
+        return redirect("orders:orders")
 
 
 

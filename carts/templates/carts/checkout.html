@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 
@@ -8,27 +9,76 @@
 
 {% if not billing_profile %}
 
-<div class="checkout-wrap">
-  <ul class="checkout-bar">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+  <title></title>
+  <style media="screen">
+    body {
+      background-color: #f7f7f7 !important;
+    }
+    .overlay-pd {
+      align-self: flex-start;
+      transform: translateY(-40%);
+      z-index: 50;
+    }
+    input[type=radio]:checked ~ .check {
+    border: 5px solid #0DFF92;
+    }
 
-    <li class="active">
-      <a href="#">{% trans "Login" %}</a>
-    </li>
-    
-    <li class="next">{% trans "Shipping Address" %}</li>
+    input[type=radio]:checked ~ .check::before{
+      background: #0DFF92;
+    }
 
-     <li class="">{% trans "Billing Address" %}</li>
-    
-    <li class="">{% trans "Payment option" %}</li>
-    
-    <li class="">{% trans "Payment and checkout" %}</li>
-    
-   
-       
-  </ul>
+    input[type=radio]:checked ~ label{
+      color: #0DFF92;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid p-3" style="background: #fff">
+    <div class="container">
+      <div class="container d-lg-none multi_step_form">
+        <div id="msform">
+          <ul  id="progressbar">
+            <li class="active">Cart</li>
+            <li class="active">Shipping Address</li>
+            <li>Security Questions</li>
+            <li>Upload Documents</li>
+            <li>Security Questions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container pt-3" style="height: 200px">
+      <div class="d-flex flex-row justify-content-between">
+        <div class="col mt-2">
+          <p style="font-size: 24px;
+                    font-weight: bold;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.33;
+                    letter-spacing: normal;
+                    text-align: left;
+                    color: #555555;">配送設定</p>
+        </div>
+        <div class="col-xs-12 d-none d-lg-block multi_step_form">
+          <div class="float-right" id="msform">
+            <ul class="text-center" id="progressbar">
+              <li class="active">Cart</li>
+              <li class="active">Shipping Address</li>
+              <li>Security Questions</li>
+              <li>Upload Documents</li>
+              <li>Security Questions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <br/>
-</div>
-
 <div class='row text-center'>
 <div class='col-12 col-md-6 mx-auto'>
 </br>
@@ -46,80 +96,236 @@
      {% include 'accounts/snippets/form.html' with form=guest_form  next_url=request.build_absolute_uri action_url=guest_register_url %}
     </div> -->
     </div>
+</body>
 
 {% else %}
 
 
     {% if not object.shipping_address %}
-
-    <div class="checkout-wrap">
-      <ul class="checkout-bar">
-
-          <li class="previous visited">
-            <a href="#">{% trans "Login" %}</a>
-          </li>
-          
-          <li class="active">{% trans "Shipping Address" %}</li>
-
-           <li class="next">{% trans "Billing Address" %}</li>
-          
-          <li class="">{% trans "Payment Options" %}</li>
-          
-          <li class="">{% trans "Payment & checkout" %}</li>
-          
-         
-          
-      </ul>
-      <br/>
-</div>
-
-<br/>
-    
-    <div class='row'>
-      
-       <div class='col-12'>
-       
-          <p class='lead text-center'><strong>Shipping Address </strong></p>
-          <hr/>
-       </div>
-       
-             <div class='col-lg-6 col-sm-12 col-md-6'>
-    {% url "checkout_address_create" as checkout_address_create %}
-
-    {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='shipping' %}
-             </div>
-    <div class='col-lg-6 col-md-6 col-sm-12'>
-      {% url 'checkout_address_reuse' as checkout_address_reuse %}
-      {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
-     </div>
     
   
-  
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+    <title></title>
+    <style media="screen">
+      body {
+        background-color: #f7f7f7 !important;
+      }
+      .overlay-pd {
+        align-self: flex-start;
+        transform: translateY(-40%);
+        z-index: 50;
+      }
+      input[type=radio]:checked ~ .check {
+      border: 5px solid #0DFF92;
+      }
+
+      input[type=radio]:checked ~ .check::before{
+        background: #0DFF92;
+      }
+
+      input[type=radio]:checked ~ label{
+        color: #0DFF92;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid p-3" style="background: #fff">
+      <div class="container">
+        <div class="container d-lg-none multi_step_form">
+          <div id="msform">
+            <ul  id="progressbar">
+              <li class="active">Cart</li>
+              <li class="active">Shipping Address</li>
+              <li>Security Questions</li>
+              <li>Upload Documents</li>
+              <li>Security Questions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container pt-3" style="height: 200px">
+        <div class="d-flex flex-row justify-content-between">
+          <div class="col mt-2">
+            <p style="font-size: 24px;
+                      font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      line-height: 1.33;
+                      letter-spacing: normal;
+                      text-align: left;
+                      color: #555555;">配送設定</p>
+          </div>
+          <div class="col-xs-12 d-none d-lg-block multi_step_form">
+            <div class="float-right" id="msform">
+              <ul class="text-center" id="progressbar">
+                <li class="active">Cart</li>
+                <li class="active">Shipping Address</li>
+                <li>Security Questions</li>
+                <li>Upload Documents</li>
+                <li>Security Questions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <br/>
+
+    {% for item in cart.cartitem_set.all %}
+    <div class="container overlay-pd">
+      <div class="container p-3" style="background: #fff !important">
+        <div class="row">
+          {{ forloop.counter }}.
+          <div class="col-xs-2 col-md-1">
+            <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ item.product.image.url }}" alt="">
+          </div>
+          <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+            <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                        font-weight: normal;
+                                        font-stretch: normal;
+                                        font-style: normal;
+                                        letter-spacing: normal;
+                                        text-align: left;
+                                        color: #555555;">{{ item.product.product_name }}</p>
+            <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+              <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                <p style="font-size: 16px;
+                          font-weight: normal;
+                          font-stretch: normal;
+                          font-style: normal;
+                          letter-spacing: normal;
+                          color: #1daf9e;">{% if item.product.discount_price %}
+                           <strike>Y{{ item.product.cost_per_day }} </strike>
+
+     Y{{ item.product.discount_price }}/日 
+        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+      {% else %}
+      <td>${{ item.product.cost_per_day }}/日 
+      {% endif %}</p>
+              </div>
+              <div class="col-sm-2 col-md-2 ml-0">
+                <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+              </div>
+
+              {% if item.variations.all %}
+              {% for subitem in item.variations.all %} 
+              {% if subitem.category == 'size' %}
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 <b>{{ subitem.title|capfirst }}サイズ </b>
+                 
+                </p>
+              </div>
+              {% endif %}
+                 {% endfor %}
+              {% for subitem in item.variations.all %} 
+                 {% if subitem.category == 'color' %}
+          
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
+                 
+          
+                </p>
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+
+              <div class="col-sm-2 col-md-2">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-1 col-lg-2 text-right float-right">
+            <div class="row justify-content-end">
+              <p class="" style="color: #1daf9e;">商品小計
+              </p>
+              <p class="pl-3" style="font-weight: bold;
+                        color: #1daf9e;">運送
+              </p>
+            </div>
+            <div class="row justify-content-end">
+              <p class="pr-3" style="font-size: 125%;
+                        color: #1daf9e;">{{ item.line_total }}
+              </p>
+              <p class="pl-3" style="font-weight: bold;
+                        font-style: normal;
+                        font-size: 125%;
+                        color: #1daf9e;">{{ item.cart.shipping_total }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2">配送方法</p>
+          </div>
+          <div class="col">
+            <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb;">宅配便　全国一律　\ 1,000</p>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2">配送先</p>
+          </div>
+          <div class="col">
+            
+              {% url 'checkout_address_reuse' as checkout_address_reuse %}
+              {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
+           
+          
+        </div>
+      </div>
+    </div>
+    
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col-xs-auto col-md-2">
+    
+          </div>
+          <div class="col px-2 py-3" style="border-radius: 4px;
+                                            border: solid 5px #f6fcfb;">
+            {% url "checkout_address_create" as checkout_address_create %}
+
+          {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='shipping' %}
+
+  
+</div>
+</div>
+</div>
+            
+    <!-- <div class="container mt-3 pt-3 mb-3">
+      <div class="container">
+        <div class="d-flex flex-row justify-content-center">
+          <div class="button py-2 px-xs-2 px-md-3 mr-2" style="color: #ffffff; border-radius: 4px; background-color: #dedede; color: #555555; font-weight: bold; width: 156px; text-align: center;">
+            前の画面に戻る
+          </div>
+          <div class="button py-2 px-3 ml-2" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; font-weight: bold; width: 156px; text-align: center;">
+            次に進む
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </body>
+
+
      
 
      {% elif not object.billing_address %}
-  <div class="checkout-wrap">
-        <ul class="checkout-bar">
-
-          <li class="visited first">
-            <a href="#">{% trans "Login" %}</a>
-          </li>
-          
-          <li class="previous visited">{% trans "Shipping address" %}</li>
-
-           <li class="active">{% trans "Billing Address" %}</li>
-          
-          <li class="next">{% trans "Payment Options" %}</li>
-          
-          <li class="">{% trans "Payment & checkout" %}</li>
-          
   
-          
-       </ul>
-       <br/>
- </div>
-
     
     <div class='row'>
       <div class='col-12'>
@@ -127,205 +333,851 @@
         <p class='lead text-center'> <strong>Billing Address </strong></p>
           <hr/>
       </div>
-       <div class='col-lg-6 col-md-6 col-sm-12'>
-        
-    {% url "checkout_address_create" as checkout_address_create %}
 
-    {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='billing' %}
+
+
+
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+        <title></title>
+        <style media="screen">
+          body {
+            background-color: #f7f7f7 !important;
+          }
+          .overlay-pd {
+            align-self: flex-start;
+            transform: translateY(-40%);
+            z-index: 50;
+          }
+          input[type=radio]:checked ~ .check {
+          border: 5px solid #0DFF92;
+          }
     
-       </div>
-    <div class='col-lg-6 col-md-6 col-sm-12'>
-       {% url 'checkout_address_reuse' as checkout_address_reuse %}
-   {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
-      </div>
+          input[type=radio]:checked ~ .check::before{
+            background: #0DFF92;
+          }
+    
+          input[type=radio]:checked ~ label{
+            color: #0DFF92;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container-fluid p-3" style="background: #fff">
+          <div class="container">
+            <div class="container d-lg-none multi_step_form">
+              <div id="msform">
+                <ul  id="progressbar">
+                  <li class="active">Cart</li>
+                  <li class="active">Shipping Address</li>
+                  <li class="active">Billing Address</li>
+                  <li>Upload Documents</li>
+                  <li>Security Questions</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="container pt-3" style="height: 200px">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="col mt-2">
+                <p style="font-size: 24px;
+                          font-weight: bold;
+                          font-stretch: normal;
+                          font-style: normal;
+                          line-height: 1.33;
+                          letter-spacing: normal;
+                          text-align: left;
+                          color: #555555;">配送設定</p>
+              </div>
+              <div class="col-xs-12 d-none d-lg-block multi_step_form">
+                <div class="float-right" id="msform">
+                  <ul class="text-center" id="progressbar">
+                    <li class="active">Cart</li>
+                    <li class="active">Shipping Address</li>
+                    <li class="active">Billing Address</li>
+                    <li>Upload Documents</li>
+                    <li>Security Questions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
+    
+        {% for item in cart.cartitem_set.all %}
+        <div class="container overlay-pd">
+          <div class="container p-3" style="background: #fff !important">
+            <div class="row">
+              {{ forloop.counter }}.
+              <div class="col-xs-2 col-md-1">
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ item.product.image.url }}" alt="">
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">{{ item.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+                  <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                    <p style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #1daf9e;">{% if item.product.discount_price %}
+                               <strike>Y{{ item.product.cost_per_day }} </strike>
+    
+         Y{{ item.product.discount_price }}/日 
+            <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+          {% else %}
+          <td>${{ item.product.cost_per_day }}/日 
+          {% endif %}</p>
+                  </div>
+                  <div class="col-sm-2 col-md-2 ml-0">
+                    <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+                  </div>
+    
+                  {% if item.variations.all %}
+                  {% for subitem in item.variations.all %} 
+                  {% if subitem.category == 'size' %}
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }}サイズ </b>
+                     
+                    </p>
+                  </div>
+                  {% endif %}
+                     {% endfor %}
+                  {% for subitem in item.variations.all %} 
+                     {% if subitem.category == 'color' %}
+              
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
+                     
+              
+                    </p>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+    
+                  <div class="col-sm-2 col-md-2">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-1 col-lg-2 text-right float-right">
+                <div class="row justify-content-end">
+                  <p class="" style="color: #1daf9e;">商品小計
+                  </p>
+                  <p class="pl-3" style="font-weight: bold;
+                            color: #1daf9e;">運送
+                  </p>
+                </div>
+                <div class="row justify-content-end">
+                  <p class="pr-3" style="font-size: 125%;
+                            color: #1daf9e;">{{ item.line_total }}
+                  </p>
+                  <p class="pl-3" style="font-weight: bold;
+                            font-style: normal;
+                            font-size: 125%;
+                            color: #1daf9e;">{{ item.cart.shipping_total }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    
+        
+          <div class="container p-3" style="background-color: #ffffff;">
+            <div class="row p-3">
+              <div class="col col-md-2">
+                <p class="p-2">配送方法</p>
+              </div>
+              <div class="col">
+                <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb;">宅配便　全国一律　\ 1,000</p>
+              </div>
+            </div>
+            <div class="row p-3">
+              <div class="col col-md-2">
+                <p class="p-2">配送先</p>
+              </div>
+              <div class="col">
+                
+                {% url 'checkout_address_reuse' as checkout_address_reuse %}
+                {% include 'addresses/prev_addresses.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
+               
+              
+            </div>
+          </div>
+        </div>
+        
+          <div class="container p-3" style="background-color: #ffffff;">
+            <div class="row p-3">
+              <div class="col-xs-auto col-md-2">
+        
+              </div>
+              <div class="col px-2 py-3" style="border-radius: 4px;
+                                                border: solid 5px #f6fcfb;">
+                {% url "checkout_address_create" as checkout_address_create %}
+
+                {% include 'addresses/form.html' with form=address_form  next_url=request.build_absolute_uri  action_url=checkout_address_create address_type='billing' %}
+    
+      
+    </div>
+    </div>
+    </div>
+                
+        <!-- <div class="container mt-3 pt-3 mb-3">
+          <div class="container">
+            <div class="d-flex flex-row justify-content-center">
+              <div class="button py-2 px-xs-2 px-md-3 mr-2" style="color: #ffffff; border-radius: 4px; background-color: #dedede; color: #555555; font-weight: bold; width: 156px; text-align: center;">
+                前の画面に戻る
+              </div>
+              <div class="button py-2 px-3 ml-2" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; font-weight: bold; width: 156px; text-align: center;">
+                次に進む
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </body>
+       
   
      </div>
      {% else %}
 
        {% if not has_card %}
-      <div class="checkout-wrap">
-        <ul class="checkout-bar">
-
-          <li class="visited first">
-            <a href="#">{% trans "Login" %}</a>
-          </li>
-          
-          <li class="previous visited">{% trans "Shipping address" %}</li>
-
-           <li class="previous visited">{% trans "Billing Address" %}</li>
-          
-          <li class="active">{% trans "Payment Options" %}</li>
-          
-          <li class="next">{% trans "Payment & checkout" %}</li>
-          
-          
-       </ul>
-       <br/>
-     </div>
-     <br/>
+      
        <!-- enter credit card-->
       
-      <div class='container' style='background-color: #263238; color:white'>
+      <!-- <div class='container' style='background-color: #263238; color:white'>
         <br/>
         <br/>
        <h2 class='text-center'>Payment</h2>
        <div class='stripe-payment-form'  data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
-       </div>
+       </div> -->
+
+
+       <!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+    <title></title>
+    <style media="screen">
+      body {
+        background-color: #f7f7f7 !important;
+      }
+      .overlay-pd {
+        align-self: flex-start;
+        transform: translateY(-40%);
+        z-index: 50;
+      }
+      input[type=radio]:checked ~ .check {
+      border: 5px solid #0DFF92;
+      }
+
+      input[type=radio]:checked ~ .check::before{
+        background: #0DFF92;
+      }
+
+      input[type=radio]:checked ~ label{
+        color: #0DFF92;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid p-3" style="background: #fff">
+      <div class="container">
+        <div class="container d-lg-none multi_step_form">
+          <div id="msform">
+            <ul  id="progressbar">
+              <li class="active">Verify Phone</li>
+              <li class="active">Upload Documents</li>
+              <li class="active">Security Questions</li>
+              <li>Upload Documents</li>
+              <li>Security Questions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container pt-3" style="height: 200px">
+        <div class="d-flex flex-row justify-content-between">
+          <div class="col mt-2">
+            <p style="font-size: 24px;
+                      font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      line-height: 1.33;
+                      letter-spacing: normal;
+                      text-align: left;
+                      color: #555555;">お支払い設定</p>
+          </div>
+          <div class="col-xs-12 d-none d-lg-block multi_step_form">
+            <div class="float-right" id="msform">
+              <ul class="text-center" id="progressbar">
+                <li class="active">Verify Phone</li>
+                <li class="active">Upload Documents</li>
+                <li class="active">Security Questions</li>
+                <li>Upload Documents</li>
+                <li>Security Questions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for item in object.cart.cartitem_set.all %}
+    <div class="container overlay-pd">
+      <div class="container p-3" style="background: #fff !important">
+        <div class="row">
+          <div class="col-xs-2 col-md-1">
+            <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ item.product.image.url }}" alt="">
+          </div>
+          <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+            <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                        font-weight: normal;
+                                        font-stretch: normal;
+                                        font-style: normal;
+                                        letter-spacing: normal;
+                                        text-align: left;
+                                        color: #555555;">{{ item.product.product_name }}</p>
+            <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+              <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                <p style="font-size: 16px;
+                          font-weight: normal;
+                          font-stretch: normal;
+                          font-style: normal;
+                          letter-spacing: normal;
+                          color: #1daf9e;"> {% if item.product.discount_price %}
+                               <strike>Y{{ item.product.cost_per_day }} </strike>
+    
+         Y{{ item.product.discount_price }}/日 
+            <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+          {% else %}
+          <td>${{ item.product.cost_per_day }}/日 
+          {% endif %}</p>
+              </div>
+              <div class="col-sm-2 col-md-2 ml-0">
+                <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+              </div>
+              {% if item.variations.all %}
+                  {% for subitem in item.variations.all %} 
+                  {% if subitem.category == 'size' %}
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }}サイズ </b>
+                     
+                    </p>
+                  </div>
+                  {% endif %}
+                     {% endfor %}
+                  {% for subitem in item.variations.all %} 
+                     {% if subitem.category == 'color' %}
+              
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
+                     
+              
+                    </p>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+              <div class="col-sm-2 col-md-2">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-1 col-lg-2 text-right float-right">
+            <div class="row justify-content-end">
+              <p class="" style="color: #1daf9e;">Total(Including all taxes)
+              </p>
+              <!-- <p class="pl-3" style="color: #1daf9e;">送料
+              </p> -->
+            </div>
+            <div class="row justify-content-end">
+              <p class="pr-3" style="font-size: 125%;
+                        color: #1daf9e;">{{ object.total }}
+              </p>
+              <!-- <p class="pl-3" style="font-size: 125%;
+                        color: #1daf9e;">4000
+              </p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <!-- <div class="container">
+      <div class="container p-3" style="background-color: #ffffff;">
+        <form class="" action="index.html" method="post">
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2">配送先</p>
+            </div>
+            <div class="col">
+              <div class="form-check">
+               <label class="form-check-label">
+                 <input type="radio" class="form-check-input" name="optradio">Option 1
+               </label>
+              </div>
+              <div class="form-check">
+               <label class="form-check-label">
+                 <input type="radio" class="form-check-input" name="optradio">Option 2
+               </label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div> -->
+    <!-- <div class="container mt-3 pt-3 mb-3">
+      <div class="container">
+        <div class="d-flex flex-row justify-content-center">
+          <div class="button py-2 px-xs-2 px-md-3 mr-2" style="color: #ffffff; border-radius: 4px; background-color: #dedede; color: #555555; font-weight: bold; width: 156px; text-align: center;">
+            前の画面に戻る
+          </div>
+          <div class="button py-2 px-3 ml-2" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; font-weight: bold; width: 156px; text-align: center;">
+            次に進む
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="container mt-3 pt-3 mb-3">
+    <div class='container' style='background-color: #1daf9e; color:white'>
+      <br/>
+      <br/>
+     <h2 class='text-center'>Payment</h2>
+     <div class='stripe-payment-form'  data-token='{{ publish_key }}' data-next-url= '{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
+     </div>
+     </div>
+  </body>
+</html>
+
+
+
 
        {% else %}
 
-    <div class="checkout-wrap">
-        <ul class="checkout-bar">
-
-          <li class="visited first">
-            <a href="#">{% trans "Login" %}</a>
-          </li>
-          
-          <li class="visited first">{% trans "Shipping address" %}</li>
-
-           <li class="previous visited"> {% trans "Billing Address" %}</li>
-          
-          <li class="previous visited">{% trans "Payment Options" %}</li>
-          
-          <li class="active">{% trans "Payment & Checkout" %}</li>
-          
-          
-       </ul>
-       <br/>
-    </div>
-
-       <h2 class='text-center'> {% trans "Finalize Checkout" %} </h2>
     
-      <div class="col-md-12 mb-4">
-    <h4 class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted">{% trans "Your cart" %}</span>
-    <span class="badge badge-secondary badge-pill">{{ request.session.cart_items }}</span>
-    </h4>
-    <ul class="list-group mb-3 z-depth-1">
-     {% for item in object.cart.cartitem_set.all %}
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
-        <div>
-        <h6 class="my-0"> {% if item.product.image %}
-      <img style="width:50px; height:50px !important;" src='{{ item.product.image.url }}' class='img-fluid' />
-      {% endif %}
-      {{ item.quantity }} x {{ item.product.product_name}} <b>({{ item.days }} days)[ {{ item.start_date }}-{{ item.end_date }} ]</b></h6>
-        {% if item.variations.all %} 
-        <ul>{% for subitem in item.variations.all %} 
-   <li>{{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %}</li></ul>{% endif %}
-        <small class="text-muted">{{ item.product.description}}</small>
-        </div>
-        <span class="text-muted">${{ item.line_total }}</span>
-    </li>
-    {% endfor %}
-     <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Shipping Address" %} : {{ object.shipping_address.get_address }}</span>
-
-
-
-      <form method='POST' id='delete-shipping-form-{{ object.order_id }}' action='{% url "orders:update_address" object.order_id %}' style="display:none;">
-      {% csrf_token %}
-
-      </form>
-      <button onclick="if(confirm('Are you sure to edit your Shipping Address?')){
-      event.preventDefault();
-      document.getElementById('delete-shipping-form-{{ object.order_id }}').submit();
-
-      }
-      else{
-        event.preventDefault();
-      }"
-      
-      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Edit your shipping Address?" %} </button>
-    </li>
-
-
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Billing Address" %} : {{ object.billing_address.get_address }} </span>
-
-      <form method='POST' id='delete-billing-form-{{ object.order_id }}' action='{% url "orders:update_billingaddress" object.order_id %}' style="display:none;">
-      {% csrf_token %}
-
-      </form>
-      <button onclick="if(confirm('Are you sure to edit your Billing Address?')){
-      event.preventDefault();
-      document.getElementById('delete-billing-form-{{ object.order_id }}').submit();
-
-      }
-      else{
-        event.preventDefault();
-      }"
-      
-      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Edit your billing Address?" %} </button>
-      
-    </li>
-     <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Payment Method" %} : {{ billing_profile.default_card }}</span>
-      
-       <form method='POST' id='delete-payment-card-form' action='{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}' style="display:none;">
-      {% csrf_token %}
-
-      </form>
-      <button onclick="if(confirm('Are you sure to add new Card')){
-      event.preventDefault();
-      document.getElementById('delete-payment-card-form').submit();
-
-      }
-      else{
-        event.preventDefault();
-      }"
-      
-      class='btn btn-raised btn-primary btn-sm' href=''>{% trans "Change" %} </button>
-      
-        
-     
-    </li>
-    {% if object.cart.coupon %}
-    <li class="list-group-item d-flex justify-content-between bg-light">
-        <div class="text-success">
-        <h6 class="my-0">{% trans "Promo code" %}</h6>
-        <small>{{ object.cart.coupon.code }}</small>
-        </div>
-        <span class="text-success">-${{ object.cart.coupon.amount }}</span>
-    </li>
-    {% endif %}
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Cart Subtotal" %}</span>
-        <strong>${{ object.cart.subtotal }}</strong>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Shipping Total" %} </span>
-        <strong>+ ${{ object.cart.shipping_total }}</strong>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Tax" %}</span>
-        <strong>${{ object.cart.tax }}</strong>
-    </li>
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{% trans "Order Total" %}</span>
-        <strong>= ${{ object.total }}</strong>
-    </li>
-    </ul>
-
+       
+       
+         <head>
+           <meta charset="utf-8">
+           <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+           <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+           <title></title>
+           <style media="screen">
+             body {
+               background-color: #f7f7f7 !important;
+             }
+             .overlay-pd {
+               align-self: flex-start;
+               transform: translateY(-40%);
+               z-index: 50;
+             }
+           </style>
+         </head>
+         <body>
+           <div class="container-fluid p-3" style="background: #fff">
+             <div class="container">
+               <div class="container d-lg-none multi_step_form">
+                 <div id="msform">
+                   <ul  id="progressbar">
+                     <li class="active">Cart</li>
+                     <li class="active">Billing Address</li>
+                     <li class="active">Shipping Address</li>
+                     <li class="active">payment options</li>
+                     <li>Payment & Checkout</li>
+                   </ul>
+                 </div>
+               </div>
+             </div>
+             <div class="container pt-3" style="height: 200px">
+               <div class="d-flex flex-row justify-content-between">
+                 <div class="col mt-2">
+                   <p style="font-size: 24px;
+                             font-weight: bold;
+                             font-stretch: normal;
+                             font-style: normal;
+                             line-height: 1.33;
+                             letter-spacing: normal;
+                             text-align: left;
+                             color: #555555;">レンタル内容</p>
+                 </div>
+                 <div class="col-xs-12 d-none d-lg-block multi_step_form">
+                   <div class="float-right" id="msform">
+                     <ul class="text-center" id="progressbar">
+                       <li class="active">Cart</li>
+                       <li class="active">Billing Address</li>
+                       <li class="active">Shipping Address</li>
+                       <li class="active">Payment options</li>
+                       <li>Payment & Checkout</li>
+                     </ul>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           {% for item in object.cart.cartitem_set.all %}
+           <div class="container overlay-pd">
+             <div class="container p-3" style="background: #fff !important">
+               <div class="row">
+                 <div class="col-xs-2 col-md-1">
+                   <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src='{{ item.product.image.url }}' alt="">
+                 </div>
+                 <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                   <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                               font-weight: normal;
+                                               font-stretch: normal;
+                                               font-style: normal;
+                                               letter-spacing: normal;
+                                               text-align: left;
+                                               color: #555555;">{{ item.product.product_name }}</p>
+                   <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+                     <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                       <p style="font-size: 16px;
+                                 font-weight: normal;
+                                 font-stretch: normal;
+                                 font-style: normal;
+                                 letter-spacing: normal;
+                                 color: #1daf9e;"> {% if item.product.discount_price %}
+                               <strike>Y{{ item.product.cost_per_day }} </strike>
     
-    <form class="card p-2" action="{% url 'orders:add-coupon' object.cart %}" method="POST">
-        {% csrf_token %}
-        <div class="input-group">
-            <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2"> -->
-            {{ couponform.code }}
-            <div class="input-group-append">
-            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">{% trans "Redeem" %}</button>
+         Y{{ item.product.discount_price }}/日 
+            <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+          {% else %}
+          <td>${{ item.product.cost_per_day }}/日 
+          {% endif %}</p>
+
+                     </div>
+                     <div class="col-sm-2 col-md-2 ml-0">
+                       <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+                     </div>
+
+                  {% if item.variations.all %}
+                  {% for subitem in item.variations.all %} 
+                  {% if subitem.category == 'size' %}
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }}サイズ </b>
+                     
+                    </p>
+                  </div>
+                  {% endif %}
+                     {% endfor %}
+                  {% for subitem in item.variations.all %} 
+                     {% if subitem.category == 'color' %}
+              
+                  <div class="col-sm-3 col-md-3">
+                    <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                      
+                     <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
+                     
+              
+                    </p>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+
+                     <div class="col-sm-2 col-md-2">
+                       <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+                     </div>
+                   </div>
+                 </div>
+                 <div class="col-xs-1 col-lg-3 text-right float-right">
+                   <div class="row justify-content-around">
+                     <!-- <p class="pr-3" style="color: #1daf9e;">商品小計
+                     </p>
+                     <p class="pl-3" style="color: #1daf9e;">送料
+                     </p> -->
+                     <p class="pl-3" style="color: #1daf9e; font-weight: bold;">支払い総額
+                     </p>
+                   </div>
+                   <div class="row justify-content-around">
+                     <!-- <p class="pr-3" style="font-size: 125%;
+                               color: #1daf9e;">4000
+                     </p>
+                     <p class="pl-3" style="font-size: 125%;
+                               color: #1daf9e;">4000
+                     </p> -->
+                     <p class="pl-3" style="font-size: 125%; font-weight: bold;
+                               color: #1daf9e;">Y {{ item.line_total }}
+                     </p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="container">
+             <div class="container p-0">
+               <p class="pb-3" style="color: #555555; font-size: 130%; font-weight: bold;">レンタル内容</p>
+             </div>
+           </div>
+           <div class="container">
+             <div class="container p-3" style="background-color: #ffffff;">
+               <div class="row p-3">
+                 <div class="col col-md-2">
+                   <p class="p-2" style="color: #1daf9e;" >数量</p>
+                 </div>
+                 <div class="col">
+                   <p class="p-2" style="border-radius: 4px; width: 132px; color: #aaaaaa;">{{ item.quantity }}個</p>
+                 </div>
+               </div>
+               <div class="row p-3">
+                 <div class="col col-md-2">
+                   <p class="p-2" style="color: #1daf9e;">レンタル期間</p>
+                 </div>
+                 <div class="col">
+                   <div class="d-flex flex-row justify-content-between">
+                     <div class="col">
+                       <div class="row">
+                         <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.start_date }} ~ {{ item.end_date }}</p>
+                         <p class="p-2" style="border-radius: 4px; background-color: #fff; color: #1daf9e;">{{ item.days }}日間</p>
+                       </div>
+                     </div>
+                     <!-- <div class="col-xs-3 col-md-2 text-center">
+                       <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p>
+                     </div> -->
+                   </div>
+                 </div>
+               </div>
+               <div class="row p-3">
+                 <div class="col col-md-2">
+                   <p class="p-2" style="color: #1daf9e;">備考</p>
+                 </div>
+                 <div class="col">
+                     <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.product.description }}</p>
+                 </div>
+               </div>
+             </div>
+           </div>
+          {% if not forloop.last %}
+          <div class='mt-5'></div>
+          <br/>
+          {% endif %}
+           {% endfor %}
+           <div class="container">
+             <div class="container p-0">
+               <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">配送について</p>
+             </div>
+           </div>
+           <div class="container">
+             <div class="container p-3" style="background-color: #ffffff;">
+
+              {% if object.cart.coupon %}
+              <div class="row p-3" style='background-color: lightgrey;'>
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: green;" >Promo Code ({{ object.cart.coupon.code }})</p>
+                </div>
+                <div class="col">
+                  <p class="p-2" style="border-radius: 4px; color: green;">-Y{{ object.cart.coupon.amount }}</p>
+                </div> 
+                <div>
+                  <a class="remove" href='{% url "cart:removecoupon" object.id %}' ><i class='fa fa-trash' style="color: black;"></i></a>
+               </div>
+              </div>
+    
+            {% endif %}
+
+              <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;" >Cart Subtotal</p>
+                </div>
+                <div class="col">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y {{ object.cart.subtotal }}</p>
+                </div>
+              </div>
+              <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;" >配送方法</p>
+                </div>
+                <div class="col">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">宅配便　全国一律　\ Y{{ object.cart.shipping_total }}</p>
+                </div>
+              </div>
+
+              <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;" >Tax</p>
+                </div>
+                <div class="col">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.tax }}</p>
+                </div>
+              </div>
+
+
+               <div class="row p-3">
+                 <div class="col col-md-2">
+                   <p class="p-2" style="color: #1daf9e;" >Total (Including all taxes)</p>
+                 </div>
+                 <div class="col">
+                   <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">=Y{{ object.cart.total }}</p>
+                 </div>
+               </div>
+               {% if object.cart.coupon %}
+               <div class="row p-3" style='background-color: lightgrey;'>
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: green;" >Total (After applying coupon)</p>
+                </div>
+                <div class="col">
+                  <p class="p-2" style="border-radius: 4px; color: green;">=Y{{ object.total }}</p>
+                </div>
+              </div>
+              {% endif %}
+
+               <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;" >Biiling Address</p>
+                </div>
+                <div class="col">
+                  <div class="d-flex flex-row justify-content-between">
+                    <div class="col">
+                      <div class="row">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.billing_address.get_address }}</p>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2 text-center">
+                <form method='POST' id='delete-billing-form-{{ object.order_id }}' action='{% url "orders:update_billingaddress" object.order_id %}' style="display:none;">
+                  {% csrf_token %}
+            
+                  </form>
+
+                 <p onclick="if(confirm('Are you sure to edit your Billing Address?')){
+                  event.preventDefault();
+                  document.getElementById('delete-billing-form-{{ object.order_id }}').submit();
+            
+                  }
+                  else{
+                    event.preventDefault();
+                  }"
+                   
+                  class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;" href=''>変更</p>
+               </div>
+              </div>
+              </div>
             </div>
-        </div>
-    </form>
-    
+               
+               <div class="row p-3">
+                 <div class="col-sm-2 col-md-2">
+                   <p class="p-2" style="color: #1daf9e;">配送先</p>
+                 </div>
+                 <div class="col">
+                   <div class="d-flex flex-row justify-content-between">
+                     <div class="col">
+                       <div class="row">
+                         <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.shipping_address.get_address }}</p>
+                       </div>
+                     </div>
+                     <div class="col-xs-3 col-md-2 text-center">
+                      <form method='POST' id='delete-shipping-form-{{ object.order_id }}' action='{% url "orders:update_address" object.order_id %}' style="display:none;">
+                        {% csrf_token %}
+                  
+                        </form>
+                       <p onclick="if(confirm('Are you sure to edit your Shipping Address?')){
+                        event.preventDefault();
+                        document.getElementById('delete-shipping-form-{{ object.order_id }}').submit();
+                  
+                        }
+                        else{
+                          event.preventDefault();
+                        }"
+                        class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;" href=''>変更</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="container">
+             <div class="container p-0">
+               <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">お支払いについて</p>
+             </div>
+           </div>
+           <div class="container">
+             <div class="container p-3" style="background-color: #ffffff;">
+               <div class="row p-3">
+                 <div class="col-sm-2 col-md-2">
+                   <p class="p-2" style="color: #1daf9e;">支払い方法</p>
+                 </div>
+                 <div class="col">
+                   <div class="d-flex flex-row justify-content-between">
+                     <div class="col">
+                       <div class="row">
+                         <!-- <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ billing_profile.default_card.brand }}</p> -->
+                         <p class="p-4" style="border-radius: 4px; background-color: #f6fcfb; color: #1daf9e;">{{ billing_profile.default_card.brand }} **** **** **** {{ billing_profile.default_card.last4 }}</p>
+                       </div>
+                     </div>
+                     <div class="col-xs-3 col-md-2 text-center">
+                      <form method='POST' id='delete-payment-card-form' action='{{ billing_profile.get_payment_method_url }}?next={{ request.build_absolute_uri }}' style="display:none;">
+                        {% csrf_token %}
+                  
+                        </form>
+                       <p type='button' onclick="if(confirm('Are you sure to add new Card')){
+                        event.preventDefault();
+                        document.getElementById('delete-payment-card-form').submit();
+                  
+                        }
+                        else{
+                          event.preventDefault();
+                        }"
+                         class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;" href=''>変更</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
 
-</div>
-       <div class='text-center'>
-       <form class='form' method="POST" action="">{% csrf_token %}
-         <button type='submit' class='btn-lg btn btn-success'>{% trans "Checkout finally" %}</button>
-     
-       </form>
-       </div>
+             <form class="card p-2" action="{% url 'orders:add-coupon' object.cart %}" method="POST">
+              {% csrf_token %}
+              <div class="input-group">
+                  <!-- <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipent's username" aria-describedby="basic-addon2"> -->
+                  {{ couponform.code }}
+                  <div class="input-group-append">
+                  <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">{% trans "Redeem" %}</button>
+                  </div>
+              </div>
+          </form>
+
+           </div>
+           <div class="container mt-3 pt-3 mb-3">
+             <div class="container">
+               
+                 <div class='text-center'>
+                  <form class='form' method="POST" action="">{% csrf_token %}
+                    <button type='submit' class='btn-lg' style="color: #ffffff; border-radius: 4px; background-color: #e06a3b; border-style: none;">{% trans "Checkout finally" %}</button>
+                
+                  </form>
+                  </div>
+             </div>
+           </div>
+         </body>
+       
+       
+
+
+      
        
        {% endif %}
     {% endif %}

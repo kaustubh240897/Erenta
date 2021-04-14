@@ -1,34 +1,595 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
 
  <br/>
 
- <div class='row'>
-    <div class='col-12 col-md-6 mx-auto'>
-         <h2 class='text-center'> Your Order Id -: {{ object.order_id }}</h2>
-          <hr/>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Order details </title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:700'>
+  <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+  <style media="screen">
+    body {
+      background-color: #f7f7f7 !important;
+    }
+  </style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+ 
+    <div class="col">
+        <div class="container">
+            <div class="container p-0">
+              <div class="d-flex flex-row justify-content-around mt-2 pt-2" style="background-color: #fff">
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">申請</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">支払</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #e06a3b; color: #555555">発送</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">返送</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+                </div>
+                <div class="col">
+                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+          {% if not paid %}
+            <div class="container">
+                <div class="container p-3" style="background-color: #ffffff;">
+                <div class="row p-3">
+                    <div class="col">
+                    <h2>Your had Created this order on {{ object.timestamp }} but not Ordered yet!</h2>
+                    <h4 class='text-center'>Order {{ object.order_id }}</h4>
+                    <hr/>
+                </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+    {% for item in object.cart.cartitem_set.all %}  
+      <div class="container">
+        <div class="container p-3" style="background: #fff !important">
+          <div class="row">
+            <div class="col-xs-2 col-md-1">
+              <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ item.product.image.url }}" alt="">
+            </div>
+            <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+              <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                          font-weight: normal;
+                                          font-stretch: normal;
+                                          font-style: normal;
+                                          letter-spacing: normal;
+                                          text-align: left;
+                                          color: #555555;">{{ item.product.product_name }}</p>
+              <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+                <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                  <p style="font-size: 16px;
+                            font-weight: normal;
+                            font-stretch: normal;
+                            font-style: normal;
+                            letter-spacing: normal;
+                            color: #1daf9e;">{% if item.product.discount_price %}
+                           <strike>Y{{ item.product.cost_per_day }} </strike>
+
+                        Y{{ item.product.discount_price }}/日 
+                            <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+                        {% else %}
+                        <td>${{ item.product.cost_per_day }}/日 
+                        {% endif %}</p>
+                </div>
+                <div class="col-sm-2 col-md-2 ml-0">
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+                </div>
+                {% if item.variations.all %}
+              {% for subitem in item.variations.all %} 
+              {% if subitem.category == 'size' %}
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 {{ subitem.title|capfirst }}サイズ 
+                 
+                </p>
+              </div>
+              {% endif %}
+                 {% endfor %}
+              {% for subitem in item.variations.all %} 
+                 {% if subitem.category == 'color' %}
+          
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 {{ subitem.title|capfirst }} {{ subitem.category }}
+                 
+          
+                </p>
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+                
+              </div>
+            </div>
+            <div class="col-sm-2 col-lg-3 text-right float-right">
+              <div class="row justify-content-around">
+               
+                <p class="pl-3" style="color: #1daf9e; font-weight: bold;"> Total
+                </p>
+              </div>
+              <div class="row justify-content-around">
+               
+                <p class="pl-3" style="font-size: 125%; font-weight: bold;
+                          color: #1daf9e;">Y {{ item.line_total }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+      
+      <div class="container">
+        <div class="container p-3" style="background-color: #ffffff;">
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;" >発送期限</p>
+            </div>
+            <div class="col">
+              <p class="p-2" style="border-radius: 4px; color: #aaaaaa; font-weight: bold;">{{ item.start_date|date:"c" }}　23時59分</p>
+            </div>
+            <div class="col">
+            
+              <p class="p-2" style="border-radius: 4px; color: #e06a3b;">残り時間:{{ item.start_date|timeuntil }}</p>
+            
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">数量</p>
+            </div>
+            <div class="col">
+              <div class="d-flex flex-row justify-content-between">
+                <div class="col">
+                  <div class="row">
+                    <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.quantity }}個</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Status</p>
+            </div>
+            <div class="col w-50">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.status }}</p>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">レンタル期間</p>
+            </div>
+            <div class="col w-50">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.start_date|date:"c" }} ~ {{ item.end_date|date:"c" }} ({{ item.days }} days)</p>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Refund:</p>
+            </div>
+            <div class="col w-50">
+                <p style="border-radius: 4px; color: #aaaaaa;">{% if item.refund_requested and not item.refund_granted %}
+                    <b>Refund is requested, It will take upto 7 days. Please wait.</b>
+                    {% elif item.refund_granted %}
+                    <b>Refund is granted successfully.</b>
+                    {% elif object.refund_requested or object.refund_granted %}
+                    <b>See below for status.</b>
+                    {% elif item.status == 'paid' %}
+            
+            
+                    <form method='GET' id='refund-request-form-{{ item.id }}-{{ item.product.slug }}' action="{% url 'product-refund' item.id item.product.slug %}" style="display:none;">
+                    {% csrf_token %}
+            
+                    </form>
+                    <button onclick="if(confirm('Are you sure to request for Refund?')){
+                    event.preventDefault();
+                    document.getElementById('refund-request-form-{{ item.id }}-{{ item.product.slug }}').submit();
+            
+                    }
+                    else{
+                        event.preventDefault();
+                    }"
+                    
+                    class='btn btn-danger'  href=''>Request Refund </button>
+            
+                    {% else %}
+                     {% if not item.cancel_request %}
+                     {% if item.updated >= item.cancel_time and item.status == 'shipped' %}
+            
+                     <form method='GET' id='refund-request-form-{{ item.id }}-{{ item.product.slug }}' action="{% url 'product-refund' item.id item.product.slug %}" style="display:none;">
+                    {% csrf_token %}
+            
+                    </form>
+                    <button onclick="if(confirm('Are you sure to request for Refund?')){
+                    event.preventDefault();
+                    document.getElementById('refund-request-form-{{ item.id }}-{{ item.product.slug }}').submit();
+            
+                    }
+                    else{
+                        event.preventDefault();
+                    }"
+                    
+                    class='btn btn-danger'  href=''>Request Refund </button>
+                    {% else %}
+                    <p> Not possible</p>
+            
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <br/>
+    <!-- <div class='text-center'>
+      <div class='row p-3'> 
+          <div class='col'>
+        {% if item.refund_requested and not item.refund_granted %}
+        <b>Refund is requested, It will take upto 7 days. Please wait.</b>
+        {% elif item.refund_granted %}
+        <b>Refund is granted successfully.</b>
+        {% elif object.refund_requested or object.refund_granted %}
+        <b>See below for status.</b>
+        {% elif item.status == 'paid' %}
+
+
+        <form method='GET' id='refund-request-form-{{ item.id }}-{{ item.product.slug }}' action="{% url 'product-refund' item.id item.product.slug %}" style="display:none;">
+        {% csrf_token %}
+
+        </form>
+        <button onclick="if(confirm('Are you sure to request for Refund?')){
+        event.preventDefault();
+        document.getElementById('refund-request-form-{{ item.id }}-{{ item.product.slug }}').submit();
+
+        }
+        else{
+            event.preventDefault();
+        }"
+        
+        class='btn btn-danger btn-sm mx-2 mt-2'  href=''>Request Refund </button>
+
+        {% else %}
+         {% if not item.cancel_request %}
+         {% if item.updated >= item.cancel_time and item.status == 'shipped' %}
+
+         <form method='GET' id='refund-request-form-{{ item.id }}-{{ item.product.slug }}' action="{% url 'product-refund' item.id item.product.slug %}" style="display:none;">
+        {% csrf_token %}
+
+        </form>
+        <button onclick="if(confirm('Are you sure to request for Refund?')){
+        event.preventDefault();
+        document.getElementById('refund-request-form-{{ item.id }}-{{ item.product.slug }}').submit();
+
+        }
+        else{
+            event.preventDefault();
+        }"
+        
+        class='btn btn-danger btn-sm mx-2 mt-2'  href=''>Request Refund </button>
+
+        {% endif %}
+        {% endif %}
+        {% endif %}
     </div>
+    </div> -->
+    <div class='text-center'>   
+    <div class='row'>
+
+    <div class='col text-center'>  
+       
+        <div class="container mb-3">
+            <div class="container px-3" >
+              <div class="row px-3" style="background-color: #ffffff;">
+                <div class="col">
+                  <p class="p-2" style="color: #555555;">追跡番号を入力してください</p>
+                </div>
+                <div class="col text-center">
+                    <a href="{% url 'orders:user_item_tracker' item.id object.order_id %}">  <button class="p-2" style="background-color: #f9dfd5; color: #eda184; text-decoration: none !important; border-style: none;">Track</button> </a>
+                </div>
+              </div>
+
+              <div class="row px-3" style="background-color: #ffffff;">
+                <div class="col">
+                  <p class="p-2" style="color: #555555;">Rate your product.</p>
+                </div>
+                <div class="col text-center">
+                    <a href="{% url 'review' item.id item.product.slug %}"> <button class="p-2" style="background-color: #f9dfd5; color: #eda184; text-decoration: none !important; border-style: none;"> Rate the product</button> </a>
+                </div>
+              </div>
+           
+          {% if not paid %}
+          <div class="row px-3" style="background-color: #ffffff;">
+            <div class="col">
+              <p class="p-2" style="color: #555555;">Add to your cart:</p>
+            </div>
+            <div class="col text-center">
+                <a href='{{ item.product.get_absolute_url }}' > <button class="p-2" style="background-color:#1daf9e; color: #ffffff; text-decoration: none !important; border-style: none;"> Add to cart Now?</button> </a>
+            </div>
+          </div>
+        
+      {% endif %}
+    </div>
+    </div>
+       
+    </div>
+      
+    </div>
+    </div>
+    <hr/>
+    {% if item.status == 'shipped' and not item.cancel_request %}
+     {% if item.cancel_time > item.updated  %}
+     <div class="container">
+        <div class="container p-0">
+          <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">取引のキャンセル</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="container p-0">
+          <p style="color: #555555;">取引を途中で終了したい場合、下記より注文者へキャンセルの申請を送ることができます。キャンセルが承認された場合、取引を終了することができます。事前に取引メッセージにて終了
+            についての確認をお願い致します。</p>
+        </div>
+      </div>
+      <div class="container mt-3 pt-3 mb-3">
+        <div class="container">
+          
+            <div class='text-center'>
+                <a  href='{% url "refund" item.id item.product.slug %}'><button class='btn-sm btn' style="color: #ffffff; border-radius: 4px; background-color: #e06a3b; border-style: none;">Cancel Item</button></a>
+             </div>
+        </div>
+      </div>
+       
+     {% endif %}
+    {% elif item.cancel_request and not item.cancel_granted %}
+   <b><font color='red'><p>** Cancel request has been initiated.</p> </font> </b>
+   {% elif item.cancel_granted %}
+   <b><font color='red'><p>** Cancellation has been done.</p> </font></b>
+        {% endif %}
+    
+      <div class="container">
+        <div class="container p-0">
+          <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">取引メッセージ</p>
+        </div>
+      </div>
+      {% for message in messages1 %}
+      {% if item.id == message.cart_id %}
+      <div class="container">
+        <div class="container p-0">
+          <div class="d-flex flex-row">
+            <div class="col-1">
+              {% if message.user.profile_image %}
+              <img class="rounded-circle thumbnail rounded float-left" style="width: 60px; height: 60px" src="{{ message.user.profile_image.url }}" alt="" height="50" width="50" />
+              {% else %}
+              <img class="rounded-circle thumbnail rounded float-left" style="width: 60px; height: 60px" src='{% static "img/images.jpg" %}' alt="" height="50" width="50" />
+              {% endif %}
+            </div>
+            <div class="col">
+              <div class="d-flex flex-row justify-content-start">
+                {% if item.product.user == message.user %}
+                <div class="col-lg-2 col-md-2 col-sm-4 text-center">
+                  <p class="py-1" style="border-radius: 4px; background-color: #1daf9e; color: #fff; font-size: 70%">出品者</p>
+                </div>
+                {% endif %}
+                  <p class="px-1" style="color: #555555; font-size: 70%;">{{ message.user.full_name }}</p>
+                  <div class="col">
+                    <p class="px-1 float-right" style="color: #555555; font-size: 70%;">{{ message.timestamp|timesince }} ago</p>
+                  </div>
+              </div>
+              <div class="d-flex flex-row" style="background-color: #c8efea;">
+                <p class="p-2" style="font-weight: normal;">{{ message.message }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <hr/>
+      {% endif %}
+      {% endfor %}
+      <form class='transaction-form'  method="POST" action='{{ request.build_absolute_uri }}'>
+        {% csrf_token %}
+      <div class="container mt-3">
+       
+          <!-- <p class="p-2" style="color: #68cfc3;">メッセージを書く</p> -->        
+            <input class="input" type="hidden" placeholder="id" required name="cart_id" value='{{ item.id }}'>
+            <input class="container input p-0 mb-3 pb-5" placeholder="メッセージを書く" style="color: #68cfc3; border-style: none; text-decoration: none;;" type="text"  required name="message" >  </input>      
+       
+      </div>
+      <div class="container">
+        <div class="d-flex flex-row justify-content-end">
+          <button class='py-2' style="background-color: #1daf9e; color: #fff; border-radius: 4px; text-decoration: none; border-style: none;" type='submit'>  メッセージを送信する</button>
+        </div>
+      </div>
+      </form>
+      <br/>
+
+
+    
+
+    {% endfor %}
+      <div class="container">
+        <div class="container p-0 mt-3">
+          <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">商品を発送してください。</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="container p-0">
+          <p class="pb-3" style="color: #555555; font-size: 100%;">商品代金のお支払が完了しました。下記発送内容をご確認の上、期日までに商品を発送してください。</p>
+        </div>
+      </div>
+
+    
+      
+      
+      
+      <div class="container mt-3">
+        <div class="container p-0">
+          <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">ご注文内容</p>
+        </div>
+      </div>
+            
+      <div class="container mt-2">
+        <div class="container p-3" style="background-color: #ffffff;">
+
+            <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;">発送方法</p>
+                </div>
+                <div class="col">
+                  <div class="d-flex flex-row justify-content-between">
+                    <div class="col">
+                      <div class="row">
+                        <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">宅配便　全国一律　\ Y {{ object.cart.shipping_total }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;">配送先情報</p>
+                </div>
+                <div class="col w-50">
+                    <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.shipping_address.get_address }}</p>
+                </div>
+              </div>
+              <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;">Billing Address</p>
+                </div>
+                <div class="col w-50">
+                    <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.billing_address.get_address }}</p>
+                </div>
+              </div>
+            
+          
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Contact</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.shipping_address.mobile_number }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Cart Subtotal</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.subtotal }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Tax</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.tax }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Shipping Total</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.shipping_total }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Cart Total(Including all taxes)</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.total }}</p>
+            </div>
+          </div>
+          {% if object.cart.coupon %}
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Promo Code</p>
+            </div>
+            <div class="col">
+                <small>{{ object.cart.coupon.code }}</small>
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.cart.coupon.amount }}</p>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Order Total</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">Y{{ object.total }}</p>
+            </div>
+          </div>
+
+          <!-- <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">支払い状況</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">お支払済み</p>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class='text-center'>
+        <a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+        {% if object.refund_requested and not object.refund_granted %}
+        <p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
+        {% elif object.status == 'refunded' or object.refund_granted %}
+        <p> <strong>Status : Refund is granted. </strong> </p>
+        
+        
+        {% endif %}
+        </div>
+      
+    </div>
+  </div>
 </div>
 
-<div class='row'>
-    <div class='col-12 col-md-6 mx-auto'>
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{% static 'js/vertical-nav.js' %}"></script>
 
 
+</body>
+</html>
 
-{% include 'orders/order_snippet.html' %}
-<div class='text-center'>
-<a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
-{% if object.refund_requested and not object.refund_granted %}
-<p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
-{% elif object.status == 'refunded' or object.refund_granted %}
-<p> <strong>Status : Refund is granted. </strong> </p>
-
-
-{% endif %}
-</div>
-</div>
-</div>
 
 {% endblock %}

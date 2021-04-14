@@ -19,12 +19,12 @@ from django.views.generic import RedirectView
 from django.contrib import admin
 from django.urls import path ,include
 from django.contrib.auth.views import LogoutView
-from addresses.views import checkout_address_create_view, checkout_address_reuse_view
+from addresses.views import checkout_address_create_view, checkout_address_reuse_view,AddressUpdateView
 #from carts.views import cart_home
 #from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,BusinessDetailUpdateView,join_us_page,AddSupplierbankdetailView,AddSupplierpersonaldetailView,BankDetailUpdateView
-from billing.views import payment_method_view,payment_method_createview
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView
+from billing.views import payment_method_view,payment_method_createview,CardUpdateView
+from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView,SupplierRentalPeriodView
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
 from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
@@ -73,9 +73,12 @@ urlpatterns += i18n_patterns(
     #path('api/cart/',cart_detail_api_view, name='api_cart'),
     path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
     path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
+    path('addressupdate/<int:id>/', AddressUpdateView.as_view(), name='address_update_view'),
+    #path('cart/transaction/', TransactionMessageView.as_view() , name='transactionmessage'),
     path('register/guest/',guest_register_view, name='guest_register'),
     path('logout/',LogoutView.as_view(), name='logout'),
     path('billing/payment-method/', payment_method_view, name='billing-payment-method'),
+    path('cardupdate/<int:id>/', CardUpdateView.as_view(), name='card_update_view'),
     # path('billing/payment-method/create/', payment_method_createview, name='billing-payment-method-endpoint'),
     path('register/',RegisterView.as_view(), name='register'),
     #path('logout_page/', logout_page, name='logout_page'),
@@ -103,6 +106,7 @@ urlpatterns += i18n_patterns(
     path('add_product_details/add_variations/<int:id>/',SupplierAddProductVariationsView.as_view(),name='productvariations'),
     path('add_product_details/add_quantity/<int:id>/',SupplierAddProductQuantityView.as_view(),name='productquantity'),
     path('add_product_details/add_tags/<int:id>/',SupplierTagView.as_view(),name='producttags'),
+    path('add_product_details/add_rental_period/<int:id>/',SupplierRentalPeriodView.as_view(),name='productrentalperiods'),
     path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
     path('<id>/<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf'),
     #prefix_default_language = False,

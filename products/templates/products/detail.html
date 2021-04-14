@@ -2,8 +2,44 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% load static i18n %}
+
 {% block javascript %}
+
+
 <script>
+  
+  const dates = "{{ rent_periods_list|safe }}"
+  
+  function DisableSpecificDates(date) {
+    var string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+    return [dates.indexOf(string) == -1];
+  }
+
+  $(function() {
+  $("#txtDate").datepicker({
+    dateFormat: 'dd-mm-yy',
+    // changeYear: true,
+    // changeMonth:true,
+    minDate: new Date(),
+    maxDate: '+1Y',
+    beforeShowDay: DisableSpecificDates
+  });
+});
+
+$(function() {
+  $("#txtDate1").datepicker({
+    dateFormat: 'dd-mm-yy',
+    // changeYear: true,
+    // changeMonth:true,
+    minDate: new Date(),
+    maxDate: '+1Y',
+    beforeShowDay: DisableSpecificDates
+  });
+});
+  </script>
+
+<script>
+
 $(function(){
     var dtToday = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
     var dtToday1 = new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000);
@@ -65,8 +101,12 @@ function showSlides(n) {
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
   captionText.innerHTML = dots[slideIndex-1].alt;
-} 
+}
+
+
 </script>
+
+
 {% endblock %}
 
 {% block content %}
@@ -74,6 +114,7 @@ function showSlides(n) {
 <div class='container'>
 </br>
 <style>
+  
              .zoom{
                 padding: 10px;
                 background-color:rgb(241, 241, 241);;
@@ -416,13 +457,13 @@ function showSlides(n) {
               {% trans "Start Date" %}-:
                <br/>
               <i class="fas fa-calendar-week"></i>
-               <input class='form-control' type="date" name='start_date' required='True' value='start_date' id="txtDate" />
+               <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" />
           
              
               {% trans "End Date" %}-: 
               <br/>
               <i class="fas fa-calendar-week"></i>
-              <input class='form-control' type="date" name='end_date' required='True' value='end_date' id="txtDate1" />
+              <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" />
               
           {% if object.variation_set.all %}
 

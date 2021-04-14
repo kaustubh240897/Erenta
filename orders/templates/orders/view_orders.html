@@ -1,7 +1,7 @@
 {% extends "supplier_base.html" %}
 
 {% block content %}
-<div class='container'>
+<div class='container-fluid' style='background-color: #f7f7f7 ;'>
 
 <div class='row'>
     <div class='col-12'>
@@ -10,6 +10,14 @@
 </div>
 <div class='container' style='background-color: black;'>
   <div class='row'>
+    {% if application_orders %}
+    <div class='col-md-3 col-sm-3  text-center' style='background-color: white;'>
+      {% else %}
+    <div class='col-md-3 col-sm-3 text-center'>
+      {% endif %}
+<strong><a href="{% url 'orders:ordersapplication' %}">Applications</a> </strong>
+</div>
+ 
     {% if paid_orders %}
     <div class='col-md-3 col-sm-3  text-center' style='background-color: white;'>
       {% else %}

@@ -8,7 +8,7 @@ from .forms import ContactForm
 from products.models import Product_description,Contact,Subscribers
 from orders.models import Order,Low_Quantity_Notification
 from carts.models import CartItem
-from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status,User_Order_Status_Notification
 from django.views.generic import ListView
 from django.views.generic import View
 from django.template.loader import get_template
@@ -61,17 +61,19 @@ def about_page(request):
 @login_required
 def notification_page(request):
     request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
-    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count()
+    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count() + User_Order_Status_Notification.objects.filter(cart__user=request.user, viewed=False).count()
     n= Notification.objects.filter(user=request.user, viewed=False)
 
     n1 = Order_Notification.objects.filter(billing_profile__user=request.user,viewed=False)
     n2 = Order_current_status.objects.filter(user=request.user, viewed=False)
+    n3 = User_Order_Status_Notification.objects.filter(cart__user=request.user, viewed=False)
     # n2 = Order_Notification.objects.filter(billing_profile__order__cart__cartitem__product__user=request.user, viewed=False)
     context = {
        "title":"Notifications",
        "notifications": n ,
        "order_notifications": n1,
        "item_current_status": n2,
+       "userorder_status_notifications": n3,
     }
     return render(request,"notification_home.html",context)
 

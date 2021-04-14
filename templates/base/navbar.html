@@ -291,7 +291,11 @@ ul.social-icons li {
 .zz{
   z-index: 9999;
 }
-
+.img10 {
+  width:50px;
+  height:50px;
+  border-radius: 50%;
+}
 </style>
 
 <!-- new nav-->
@@ -378,11 +382,11 @@ ul.social-icons li {
     <ul class="navbar-nav ml-auto d-block d-md-none">
     <div class='row'>
       <li class="nav-item">
-        <a class="btn btn-link" href="{{ cart_url }}"> <i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
+        <a class="btn btn-link" style='text-decoration:none;' href="{{ cart_url }}"> <i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
       </li>
        {% if request.user.is_authenticated %}
        <li class="nav-item">
-        <a class="btn btn-link" href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
+        <a class="btn btn-link" style='text-decoration: none;' href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
       </li>
         {% endif %}
         <li class="nav-item mt-2">
@@ -400,7 +404,7 @@ ul.social-icons li {
 
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="btn btn-link" href="{{ cart_url }}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
+          <a class="btn btn-link" style='text-decoration:none;' href="{{ cart_url }}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
         </li>
          {% if request.user.is_authenticated %}
         <li class="nav-item">
@@ -474,10 +478,12 @@ ul.social-icons li {
                     </a>
                                 <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
                                   
-                                       <li class="dropdown-submenu" >
-                                        <a class="dropdown-item"  tabindex="1" href="{% url 'products:query' 'men' %}">
+                                       <li class="dropdown-submenu">
+                                        
+                                        <a class="dropdown-item"  tabindex="-1" href="{% url 'products:query' 'men' %}">  <img class='img10' src="{% static 'img/videogame.jpg' %}" alt="Avatar">
                                             MEN
                                         </a>
+                                        
                                         <ul class="dropdown-menu">
                                           <li><a class="dropdown-item" tabindex="-1" href="#">Accessories</a></li>
                                             <li class='dropdown-submenu'>
@@ -502,12 +508,12 @@ ul.social-icons li {
                                            
                                         </ul>
                                     </li>
-                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'booksnovels' %}">Books or Novels</a></li>
+                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'booksnovels' %}"><img class='img10' src="{% static 'img/books.jpg' %}" alt="Avatar">Books</a></li>
                                      
                                     
                                    
 
-                                    <li class='dropdown-submenu'><a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'electronics' %}">Electronics
+                                    <li class='dropdown-submenu'><a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'electronics' %}"><img class='img10' src="{% static 'img/electronics.jpg' %}" alt="Avatar">Electronics
 
                                     </a>
                                     <ul class="dropdown-menu">
@@ -535,7 +541,7 @@ ul.social-icons li {
 
                                   </li>
                                    <li class="dropdown-submenu">
-                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'women' %}">
+                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'women' %}"><img class='img10' src="{% static 'img/music.jpg' %}" alt="Avatar">
                                             WOMEN
                                         </a>
                                         <ul class="dropdown-menu">

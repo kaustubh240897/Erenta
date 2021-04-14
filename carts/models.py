@@ -14,6 +14,7 @@ User = settings.AUTH_USER_MODEL
 
 
 
+
 class CartManager(models.Manager):
     def new_or_get(self , request):
         cart_id = request.session.get("cart_id", None)
@@ -40,7 +41,12 @@ class CartManager(models.Manager):
             
         return self.model.objects.create(user=user_obj)
 
+SUPPLIER_DECISION = (
+    ('none','none'),
+    ('confirmed','confirmed'),
+    ('rejected','rejected'),   
 
+)
 class CartItem(models.Model):
     cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
     product = models.ForeignKey(Product_description,null=True,blank=True,on_delete=models.CASCADE)
@@ -51,10 +57,12 @@ class CartItem(models.Model):
     variations = models.ManyToManyField(Variation,blank=True)
     line_total = models.DecimalField(default=0.00,max_digits=1000,decimal_places=2)
     status             = models.CharField(max_length=50, default='created')
+    order_confirmed  = models.CharField(max_length=120, choices=SUPPLIER_DECISION,default='none')
     refund_requested   = models.BooleanField(default=False)
     refund_granted     = models.BooleanField(default=False)
     cancel_request     = models.BooleanField(default=False)
     cancel_granted    = models.BooleanField(default=False)
+    supplier_cancellation = models.BooleanField(default=False)
     shipped    = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -255,3 +263,15 @@ class Quantity(models.Model):
     
     
 # post_save.connect(post_save_cartitem_receiver , sender=CartItem)
+
+
+class TransactionMessage(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    cart_id = models.IntegerField()
+    order_id = models.CharField(max_length=120, blank=True)
+    message = models.TextField()
+    timestamp= models.DateTimeField(auto_now_add=True)
+    updated  = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "%s %s" %(self.cart_id, self.order_id)

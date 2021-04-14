@@ -1,19 +1,20 @@
 from django.conf import settings
-from django.views.generic import CreateView
+from django.views.generic import CreateView,View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect,HttpResponseRedirect
 from django.urls import reverse
 from django.http import JsonResponse
-from .forms import CouponForm
-from .models import Cart,CartItem,Quantity
+from .forms import CouponForm,TransactionForm
+from .models import Cart,CartItem,Quantity,TransactionMessage
 from addresses.forms import AddressForm
 from addresses.models import Address
-from billing.models import BillingProfile
+from billing.models import BillingProfile,Card
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification
 from products.models import Product_description, Variation
 from orders.models import Order,Low_Quantity_Notification
 from accounts.models import GuestEmail
 import datetime
-from datetime import timedelta
+from datetime import timedelta,datetime
 from accounts.forms import LoginForm, GuestForm
 from django.contrib import messages
 # Create your views here.
@@ -150,6 +151,7 @@ def add_to_cart(request,id):
 
     try:
         product_obj = Product_description.objects.get(id=id)
+        slug = product_obj.slug
             
     except Product_description.DoesNotExist:
         print("Product does not exist now!")
@@ -165,10 +167,19 @@ def add_to_cart(request,id):
         qty = request.POST['qty']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
-        y, m, d = map(int, start_date.split('-'))
-        date1 = datetime.date(y, m, d)
-        y, m, d = map(int, end_date.split('-'))
-        date2 = datetime.date(y, m, d)
+        start_date = datetime.strptime(start_date, '%d-%m-%Y').date()
+        end_date = datetime.strptime(end_date, '%d-%m-%Y').date()
+        #print(start_date)
+        y = start_date.year
+        m = start_date.month
+        d = start_date.day
+        #y, m, d = map(int, start_date.split('-'))
+        date1 = datetime(y, m, d)
+        y1 = end_date.year
+        m1 = end_date.month
+        d1 = end_date.day
+        #y, m, d = map(int, end_date.split('-'))
+        date2 = datetime(y1, m1, d1)
         timedelta = date2-date1
         days = timedelta.days + 1
         print(timedelta.days+1)
@@ -206,10 +217,10 @@ def add_to_cart(request,id):
                             cart_item.days = days
                             cart_item.save()
                             messages.success(request, 'added Successfully !!!')
-                            return redirect("cart:home")
+                            return redirect("products:detail",slug)
                         else:
                             messages.warning(request, 'sorry quantity is too low for this item !!!')
-                            return redirect("cart:home")
+                            return redirect("products:detail",slug)
                 
                             
                 else: 
@@ -239,19 +250,19 @@ def add_to_cart(request,id):
                                     cart_item.save()
                                     
                                     messages.success(request, 'added Successfully !!!')
-                                    return redirect("cart:home")
+                                    return redirect("products:detail",slug)
                                 else:
                                     messages.warning(request, 'sorry quantity is too low for this item !!!')
-                                    return redirect("cart:home")
+                                    return redirect("products:detail",slug)
             else:
                 messages.warning(request, 'sorry no items left !!!')
-                return redirect("cart:home")
+                return redirect("products:detail",slug)
         else:
             messages.warning(request, 'Oops!!! you added some invalid date field or quantity.Please check and fill again!')
-            return redirect("cart:home")                    
+            return redirect("products:detail",slug)                    
 
     messages.warning(request, 'Sorry!!! you added some invalid field Or This color or size of product not left !!!')
-    return redirect("cart:home")
+    return redirect("products:detail",slug)
 
 
 
@@ -325,6 +336,7 @@ def checkout_home(request):
                 return redirect("cart:checkout")
     context = {
         "object": order_obj,
+        "cart":cart_obj,
         "billing_profile": billing_profile,
         "login_form": login_form,
         "guest_form": guest_form,
@@ -343,6 +355,45 @@ def checkout_done_view(request):
     request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     
     return render(request, "carts/checkout-done.html", {})
+
+
+    # cart_id = request.build_absolute_uri().split('/')
+    # cart_id = cart_id[len(cart_id)-2]
+    
+
+# class TransactionMessageView(LoginRequiredMixin,View):
+#     def get(self, *args, **kwargs):
+#         form = TransactionForm()
+#         context={
+#             'form': form
+#         }
+#         return render(self.request, "products/supplier_review.html" ,context)
+
+
+def payment_method_default_update_view(request):
+    if request.method == "POST":
+        id = request.POST.get('optradio')
+        obj = Card.objects.get(id=id)
+        obj1 = Card.objects.all().first()
+        obj.default = True
+        obj1.default = False
+        obj1.save()
+        obj.save()
+        return redirect("cart:checkout")
+
+def remove_coupon_view(request, id):
+    obj = Cart.objects.get(id=id)
+    obj.coupon = None
+    obj.save()
+    return redirect("cart:checkout")
+    
+        
+    
+
+
+
+
+
 
 
 

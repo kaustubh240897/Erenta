@@ -1,5 +1,5 @@
 {% load crispy_forms_tags %}
-<div class='container' style='background-color: #263238; color:white'>
+<div class='container' style="background-color: #1daf9e; text-align: center; color: #ffffff;">
 <form  method='POST' action='{% if action_url %} {{ action_url }} {% else %}{% url "login" %}{% endif %}'>
      {% csrf_token %}
      {% if next_url %}
@@ -10,7 +10,7 @@
      {{ form|crispy }} <a href="{% url 'password_reset' %}" >Forget password?</a>
      <div>
           <br/>
-<button type='submit' class='btn btn-success'> Submit </button>
+<button type='submit' class='btn btn-success' style="color: #ffffff; border-radius: 4px; background-color: #e06a3b; border-style: none;"> Submit </button>
      </div>
 </form>
 <br/>

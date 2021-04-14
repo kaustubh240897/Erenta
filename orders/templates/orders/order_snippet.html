@@ -98,6 +98,23 @@
     
     </li>
     <hr/>
+
+    {% for message in messages1 %}
+        {% if item.id == message.cart_id %}
+            {{ message.user }} -: {{ message.message }} <br/>
+        {% endif %}
+    {% endfor %}
+    <form class='transaction-form'  method="POST" action='{{ request.build_absolute_uri }}'>
+        {% csrf_token %}
+        <input class="input" type="hidden" placeholder="id" required name="cart_id" value='{{ item.id }}'>
+        <input class="input" type="text" placeholder="Message" required name="message">
+        <div>
+            <button type='submit' class='btn btn-primary'>Submit</button>
+        </div>
+     <br/>
+    </form>
+
+    <hr/>
     
     {% endfor %}
       <li class="list-group-item d-flex justify-content-between">

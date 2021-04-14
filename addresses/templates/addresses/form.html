@@ -1,7 +1,8 @@
-{% load crispy_forms_tags %}
 
-<div class='container' style="background-color: #263238; color:white">
+
+<div class='container'>
      <br/>
+     
 <form  method='POST' action='{% if action_url %} {{ action_url }} {% else %}{% url "login" %}{% endif %}'>
      {% csrf_token %}
      {% if next_url %}
@@ -13,12 +14,134 @@
     
      {% endif %}
 
-     {{ form|crispy }}<br>
-    
-
-     <div class="text-center">
-<button type='submit' class='btn btn-primary'> Submit </button>
-     </div>
+     
+          
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">お名前</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1">
+                    <input type="text" class="form-control" name='state' id="name1" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="姓">
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">お名前（カナ）</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1">
+                    <input type="text" class="form-control" id="name3" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="セイ">
+                  </div>
+                  <div class="px-1">
+                    <input type="text" class="form-control" id="name4" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="メイ">
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">郵便番号</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1">
+                    <input type="text" class="form-control" name='postal_code' id="postalcode" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="例）1410022">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">都道府県</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1">
+                    <input type="text" class="form-control" name='city' id="perfecture" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="東京都">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">住所1</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1 w-100">
+                    <input type="text" class="form-control" name='address_line_1' id="add1" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="品川区東五反田1-11-15">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">住所2（ビル名など）</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1 w-100">
+                    <input type="text" class="form-control" name='address_line_2' id="address_line_2" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="電波ビル4階">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row py-1">
+              <div class="col">
+                <div class="row">
+                  <p class="px-3">電話番号</p>
+                  <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">required</p>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-7">
+                <div class="d-flex flex-row">
+                  <div class="px-1">
+                    <input type="text" class="form-control" name='mobile_number' id="ph1" style="border-radius: 4px; border-color: #f6fcfb;
+                                                                              background-color: #f6fcfb;" placeholder="XXXXXXXXX">
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-center mt-3 pt-3">
+              <button type="submit" style="color: #ffffff; border-radius: 4px; border-color: #1daf9e;background-color: #1daf9e; border-style: none;" name="button">Save</button>
+            </div>
+         
+      
 </form>
+</div>
+</div>
+</div>
+</div>
 <br/>
 </div>

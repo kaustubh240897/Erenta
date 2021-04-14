@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Cart,CartItem,Coupon,Quantity
+from .models import Cart,CartItem,Coupon,Quantity,TransactionMessage
 
 # Register your models here.
 def make_refund_accepted(modeladmin, request, queryset):
@@ -28,5 +28,6 @@ class CartItemAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart)
 admin.site.register(CartItem,CartItemAdmin)
+admin.site.register(TransactionMessage)
 admin.site.register(Coupon)
 admin.site.register(Quantity)

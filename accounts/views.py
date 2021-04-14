@@ -10,6 +10,8 @@ from django.utils.http import is_safe_url
 from django.shortcuts import render,redirect
 from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,BusinessDetailUpdateForm,ReactivationEmailForm,SupplierpersonaldetailForm,SupplierbankdetailForm,BankDetailUpdateForm
 from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail,User
+from addresses.models import Address
+from billing.models import Card
 from .signals import user_logged_in
 from notification.models import Supplier_Order_Notification, Order_current_status
 from orders.models import Low_Quantity_Notification
@@ -142,6 +144,8 @@ class UserDetailUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self,*args,**kwargs):
         context = super(UserDetailUpdateView,self).get_context_data(*args,**kwargs)
         context['title']='Your profile details'
+        context['addresses']=Address.objects.filter(billing_profile__user=self.request.user)
+        context['cards'] = Card.objects.filter(billing_profile__user=self.request.user)
         #context['instance'] = User.objects.filter(email=self.request.user)
         
         return context

@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-from .models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status
+from .models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status,User_Order_Status_Notification
 from orders.models import Low_Quantity_Notification
 
 # Create your views here.
@@ -30,6 +30,19 @@ def delete_order_notification(request, notification_id):
     n1.viewed = True
     n1.save()
     return redirect("notification_page")
+
+def user_order_status_notification(request,notification_id):
+    n10 = User_Order_Status_Notification.objects.get(id = notification_id)
+    n10.seen = True
+    n10.save()
+    return render(request, 'notification/user_order_status.html',{'user_order_status': n10})
+
+def delete_user_order_status_notification(request, notification_id):
+    n10 = User_Order_Status_Notification.objects.get(id = notification_id)
+    n10.viewed = True
+    n10.save()
+    return redirect("notification_page")
+
 
 def supplier_order_notification(request,notification_id):
     n2 = Supplier_Order_Notification.objects.get(id = notification_id)

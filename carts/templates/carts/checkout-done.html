@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
  <style>
@@ -70,18 +70,262 @@ p.error {
   }
 }
  </style>
+ {% if not request.session.cart_items %}
  <svg class='checkmark' viewBox="0 0 130.2 130.2">
   <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
   <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
 </svg>
 <p class="success">Oh Yeah!</p>
-<div class='col-6 mx-auto py-5 text-center'>
-    <h2 class='display-1'> Thank you for Renting :)</h2>
-    <br/>
-    <h3>Your Order has placed successfully.</h3>
-    <br/>
-    <div class='text-center'>
-    <a class='btn btn-lg btn-black btn-primary' href='{% url "products:list" %}'>Continue Shopping</a>
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet"  href="{% static 'css/progressbar.css' %}">
+    <title></title>
+    <style media="screen">
+      body {
+        background-color: #f7f7f7 !important;
+      }
+      .overlay-pd {
+        align-self: flex-start;
+        transform: translateY(-40%);
+        z-index: 50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid" style="border-bottom: solid 15px #f9dfd5;">
+      <div class="container pt-3 mt-3">
+        <div class="container multi_step_form" style="background: #f7f7f7 !important;">
+          <div id="msform" style="background: #f7f7f7 !important;">
+            <ul  id="progressbar">
+              <li class="active">Verify Phone</li>
+              <li class="active">Upload Documents</li>
+              <li class="active">Security Questions</li>
+              <li class="active">Upload Documents</li>
+              <li class="active">Security Questions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container" style="background: url('pg_8_bg.svg')">
+        <div class="mt-3 pt-3">
+          <p class="mt-3 pt-3" style="font-size: 24px;
+                    font-weight: bold;
+                    font-stretch: normal;
+                    font-style: normal;
+                    line-height: 1.33;
+                    letter-spacing: normal;
+                    text-align: center;
+                    color: #555555;">ご注文手続きが完了しました</p>
+        </div>
+        <div class="text-center">
+          <img src="pg_8_tick.svg" alt="">
+          <p style="color: #f9dfd5; font-size: 120%">Congratulations!</p>
+          <p class="py-3" style="color: #555555;">ご注文が完了しました。出品者より商品が発送されるまでしばらくお待ちください。</p>
+        </div>
+      </div>
+      <div class="container">
+        <img src="truck_solid.svg" alt="">
+      </div>
     </div>
-</div>
+    <!-- <div class="container-fluid p-3" style="background: #fff">
+      <div class="container pt-3" style="height: 200px">
+        <div class="d-flex flex-row justify-content-between">
+          <div class="col mt-2">
+            <p style="font-size: 24px;
+                      font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      line-height: 1.33;
+                      letter-spacing: normal;
+                      text-align: left;
+                      color: #555555;">ご注文内容</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="container overlay-pd">
+      <div class="container p-3" style="background: #fff !important">
+        <div class="row">
+          <div class="col-xs-2 col-md-1">
+            <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="pb_1.svg" alt="">
+          </div>
+          <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+            <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                        font-weight: normal;
+                                        font-stretch: normal;
+                                        font-style: normal;
+                                        letter-spacing: normal;
+                                        text-align: left;
+                                        color: #555555;">Dolce & Gappana limited white crush denim leg length effect white / white</p>
+            <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+              <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                <p style="font-size: 16px;
+                          font-weight: normal;
+                          font-stretch: normal;
+                          font-style: normal;
+                          letter-spacing: normal;
+                          color: #1daf9e;">Y 100 / 日</p>
+              </div>
+              <div class="col-sm-2 col-md-2 ml-0">
+                <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">Gucci</p>
+              </div>
+              <div class="col-sm-3 col-md-2">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">Ｌサイズ</p>
+              </div>
+              <div class="col-sm-2 col-md-2">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-1 col-lg-3 text-right float-right">
+            <div class="row justify-content-around">
+              <p class="pr-3" style="color: #1daf9e;">商品小計
+              </p>
+              <p class="pl-3" style="color: #1daf9e;">送料
+              </p>
+              <p class="pl-3" style="color: #1daf9e; font-weight: bold;">支払い総額
+              </p>
+            </div>
+            <div class="row justify-content-around">
+              <p class="pr-3" style="font-size: 125%;
+                        color: #1daf9e;">4000
+              </p>
+              <p class="pl-3" style="font-size: 125%;
+                        color: #1daf9e;">4000
+              </p>
+              <p class="pl-3" style="font-size: 125%; font-weight: bold;
+                        color: #1daf9e;">4000
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="pb-3" style="color: #555555; font-size: 130%; font-weight: bold;">レンタル内容</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;" >数量</p>
+          </div>
+          <div class="col">
+            <p class="p-2" style="border-radius: 4px; width: 132px; color: #aaaaaa;">1個</p>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;">レンタル期間</p>
+          </div>
+          <div class="col">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="col">
+                <div class="row">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">2019/09/01 ~ 2019/09/04</p>
+                  <p class="p-2" style="border-radius: 4px; background-color: #fff; color: #1daf9e;">4日間</p>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2 text-center">
+                <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;">備考</p>
+          </div>
+          <div class="col">
+              <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">備考なし</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">配送について</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;" >配送方法</p>
+          </div>
+          <div class="col">
+            <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">宅配便　全国一律　\ 1,000</p>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;">配送先</p>
+          </div>
+          <div class="col">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="col">
+                <div class="row">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">苗字ナマエ　〒141-0022　東京都品川区東五反田1-11-15電波ビル4階　03-5789-2900</p>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2 text-center">
+                <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">お支払いについて</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2" style="color: #1daf9e;">支払い方法</p>
+          </div>
+          <div class="col">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="col">
+                <div class="row">
+                  <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">カード2</p>
+                  <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb; color: #1daf9e;">**** - **** - **** -1234</p>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-2 text-center">
+                <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="container mt-3 pt-3 mb-3">
+      <div class="container">
+        <div class="d-flex flex-row justify-content-center">
+          
+          <div class='text-center'>
+            <a class='btn btn-lg btn-black' style="color: #ffffff; border-radius: 4px; background-color: #e06a3b;" href='{% url "products:list" %}'>Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+{% else %}
+
+<h3 class='text-center'> Please checkout you order first!!! </h3>
+{% endif %}
+
 {% endblock %}

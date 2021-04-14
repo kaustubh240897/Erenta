@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect ,get_object_or_404
-from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Product_Refund
+from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Product_Refund,RentalPeriod
 from carts.models import Quantity,CartItem
 from tags.models import Tag
 from analytics.models import View_Count
@@ -14,6 +14,7 @@ from django.urls import reverse
 from analytics.mixins import ObjectViewedMixin
 from carts.models import Cart
 import datetime
+from datetime import date, timedelta
 from .forms import ProductForm,ProductDetailChangeForm,RatingForm,SupplierRatingForm,ProductImageForm,ProductVariationForm,ProductQuantityForm,ProductImageChangeForm,ProductQuantityChangeForm,ProductTagForm,ProductRefundForm
 from django.http import Http404
 from django.conf import settings
@@ -74,12 +75,37 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context = super(ProductDetailSlugView, self).get_context_data(*args, **kwargs)
         # cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         # context['cart'] = cart_obj
+        if(self.request.user.is_authenticated == True):
+            cart_obj = Cart.objects.filter(user=self.request.user).last()
+            self.request.session['cart_items']=cart_obj.cartitem_set.count()
+        else:
+            cart_obj = Cart.objects.get(id=self.request.session['cart_id'])
+            self.request.session['cart_items']=cart_obj.cartitem_set.count()
+
         slug = self.kwargs.get('slug')
         product= Product_description.objects.get(slug=slug)
         product_id = Product_description.objects.get(slug=slug)
         # context['form'] = OtherDetailForm(initial={'post': self.object })
         context['title'] = 'Details'
         context['qs1']=Variation.objects.filter(product__slug= slug)
+        rentperiods =  RentalPeriod.objects.filter(product_name__slug=slug)
+        rent_periods_list = []
+        for obj in rentperiods:
+            day = obj.start_date.day
+            month = obj.start_date.month
+            year = obj.start_date.year
+            day1 = obj.end_date.day
+            month1 = obj.end_date.month
+            year1 = obj.end_date.year
+            sdate = date(year, month, day)   # start date
+            edate = date(year1, month1, day1)
+            delta = edate - sdate       # as timedelta
+            for i in range(delta.days + 1):
+                day = sdate + timedelta(days=i)
+                # print(day.strftime("%d/%m/%Y"))
+                rent_periods_list.append(day.strftime("%d-%m-%Y"))
+        context['rent_periods_list'] = rent_periods_list
+        context['today_date'] = datetime.datetime.now().strftime('%d-%m-%Y')      
         #context['product_time']=Product_description.objects.filter(slug=slug, timestamp__gte=datetime.datetime.now() - datetime.timedelta(hours=744))
         context['qs'] = Quantity.objects.filter(product__slug = slug)
         context['all']=Product_description.objects.filter(Current_City__iexact= self.request.session['city_names'], slug=slug)
@@ -183,7 +209,7 @@ def sub_sub_category_product_view_by_color(request,slug, color):
     slug_type = slug_type[len(slug_type)-2]
     print(slug_type)
     try:
-        sub_sub_cat_query = Sub_Sub_Category.objects.filter(slug=slug)
+        sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
     except Sub_Sub_Category.DoesNotExist:
         print("Product does not exist now!")
         return redirect("products:list")
@@ -400,6 +426,57 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         return reverse("productimage", kwargs={'id': self.kwargs.get('id')})
 
 
+class SupplierRentalPeriodView(LoginRequiredMixin,CreateView):
+    
+    model = RentalPeriod
+    #form_class = RentalPeriodForm
+    fields = '__all__'
+    template_name = 'products/rental_period.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SupplierRentalPeriodView, self).get_context_data(*args, **kwargs)
+        id = self.kwargs.get('id')
+        context['rentperiod'] = "rentperiod" 
+        context['name'] = Product_description.objects.get(id=id)
+        context['rental_periods'] = RentalPeriod.objects.filter(product_name__id=id)
+        return context
+
+    def form_valid(self,form):
+        try:
+            obj = form.save(commit=False)
+            id = self.kwargs.get('id')
+            obj.product_name = Product_description.objects.get(id=id)
+            if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
+                if RentalPeriod.objects.filter(product_name__id=id).count() < 10:
+                    obj.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                else:
+                    messages.warning(self.request, "Sorry, You can not add more periods limit exceeded.")
+                    return redirect("addproductdetails")
+            else:
+                messages.warning(self.request, "You are not authorized to add the rental period.")
+                return redirect("addproductdetails")
+
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
+
+    
+
+    def get_success_url(self):
+        messages.success(self.request, 'Rental period added Successfully now, you can add more periods for your product again !!!')
+        return reverse("productrentalperiods", kwargs={'id': self.kwargs.get('id')})
+
+def remove_rentalperiod(request,id1,id):
+    try:
+        obj = RentalPeriod.objects.get(id=id1)
+        obj.delete()
+        messages.success(request, 'removed Successfully !!!')
+        return HttpResponseRedirect(reverse("productrentalperiods", args=(id,)))
+    except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
+
 class SupplierTagView(LoginRequiredMixin,CreateView):
     
     model = Tag
@@ -427,7 +504,7 @@ class SupplierTagView(LoginRequiredMixin,CreateView):
                     messages.warning(self.request, "Sorry, You can not add more tags limit exceeded.")
                     return redirect("addproductdetails")
             else:
-                messages.warning(self.request, "You are not authorized to add the image.")
+                messages.warning(self.request, "You are not authorized to add the tags.")
                 return redirect("addproductdetails")
 
         except ObjectDoesNotExist:

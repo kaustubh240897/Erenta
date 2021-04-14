@@ -73,6 +73,24 @@ def create_paid_ordersuccess_msg(sender,instance,created, **kwargs):
 
 
 
+class User_Order_Status_Notification(models.Model):
+    product = models.ForeignKey(Product_description, null=True,blank=True,on_delete=models.CASCADE)
+    cart    = models.ForeignKey(Cart,null=True, blank=True, on_delete=models.CASCADE)
+    viewed = models.BooleanField(default=False)
+    seen   = models.BooleanField(default=False)
+    order_confirmed = models.CharField(max_length=50, default='none')
+    supplier_cancellation = models.BooleanField(default=False)
+    status = models.CharField(max_length=120, default='created')
+    timestamp= models.DateTimeField(auto_now_add=True)
+
+@receiver(post_save, sender=CartItem)
+def receive_user_orderstatus_msg(sender, instance, created, **kwargs):
+    if instance.order_confirmed == 'confirmed' or instance.order_confirmed == 'rejected' :
+        User_Order_Status_Notification.objects.get_or_create(product = instance.product,
+                                order_confirmed = instance.order_confirmed,
+                                status = instance.status,
+                                cart = instance.cart,
+                            )
 
 
 

@@ -4,36 +4,126 @@
 
 {% if not request.user.is_authenticated %}
 </br>
-<style>
-    .c{
-        background-color: #263238;
-        color: white
-
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<style media="screen">
+    body {
+      background-color: #f7f7f7 !important;
     }
-</style>
+    ol.breadcrumb {
+      font-size: 80%;
+      background: #fafafa;
+    }
+    ol.breadcrumb li+li:before {
+      color: black;
+      content: ">" !important;
+    }
+    ol.breadcrumb li a {
+      color: #7f7f7f;
+      text-decoration: none;
+    }
+    ol.breadcrumb li.active {
+      color: #7f7f7f;
+      font-weight: bold;
+    }
+    span.input-group-text {
+      border-radius: 4px;
+      border-color: #f6fcfb;
+      background-color: #f6fcfb;
+      font-size: 90%
+    }
+    input.form-control {
+      border-radius: 4px;
+      border-color: #f6fcfb;
+      background-color: #f6fcfb;
+      font-size: 90%;
+      color: #68cfc3 !important;
+      outline: none !important;
+      box-shadow: none;
+    }
+    .form-control:focus {
+      border: none;
+      background-color: #f6fcfb;
+      box-shadow: 0 0 0 0rem rgba(40, 167, 69, 0.25);
+    }
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: #68cfc3 !important;
+      opacity: 1; /* Firefox */
+    }
 
-<div class='container c' >
-    <h3 class="text-center"> E-renta Login | <a href="{% url 'register' %}">Signup </a> </h3>
-   
-    <br/>
-    <div class='row'>
-    <div class="col-lg-4"> </div>
-    <div class='col-lg-4'>
-<form  method='POST'>{% csrf_token %}
-    
-{{ form|crispy }} 
- <a href="{% url 'password_reset' %}" >Forget password?</a>
-<div class="text-center">
-   
-<button type='submit' class='btn btn-success'> login </button>
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color: #68cfc3 !important;
+    }
 
-</div>
-</form>
-<br/>
-</div>
-</div>
+    ::-ms-input-placeholder { /* Microsoft Edge */
+      color: #68cfc3 !important;
+    }
+  </style>
+</head>
+  <body>
+    <div class="container-fluid" style="background-color: #fafafa !important;">
+      <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">ホーム</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ログイン</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="container mt-3 pt-3">
+      <div class="row justify-content-center mt-3">
+        <div class="col-md-3">
 
-</div>
+        </div>
+        <div class="col text-center mt-3" style="background: #fff">
+          <p class="pt-3" style="font-size: 24px;
+                    font-weight: bold;
+                    color: #555555;">ログイン| <a href="{% url 'register' %}">ログイン</a></p>
+          <form class="row justify-content-center mt-3 py-3" method="POST">{% csrf_token %}
+            <div class="input-group mb-3 px-3 w-75 mt-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="uname"><i class="fa fa-envelope" style="color: #1daf9e" aria-hidden="true"></i></span>
+              </div>
+              <input type="email" class="form-control" name='email' placeholder="メールアドレス" aria-label="Username" aria-describedby="uname">
+            </div>
+            <div class="input-group mb-3 px-3 w-75">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="pass"><i class="fa fa-lock" style="color: #1daf9e" aria-hidden="true"></i></span>
+              </div>
+              <input type="password" name='password' class="form-control" placeholder="パスワード" aria-label="Password" aria-describedby="pass">
+            </div>
+
+
+            <div class="container pt-3 mb-3">
+                <div class="container">
+                  
+                    <div class='text-center'>
+                     
+                       <button type='submit' class='btn-lg' style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; border-style: none;">ログイン</button>
+                   
+                    
+                     </div>
+                </div>
+            </div>
+
+
+            <div class="container row justify-content-center mt-3">
+                <a href="{% url 'password_reset' %}" >  <p class="mt-3" style="color: #1daf9e;">パスワードをお忘れの方</p> </a>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+    </div>
+  </body>
+
+
+
+
 {% else %}
 <div class='text-center'>
     <br/>
@@ -43,4 +133,6 @@
 <br/>
 </div>
 {% endif %}
+
+
 {% endblock %}

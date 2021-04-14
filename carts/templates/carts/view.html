@@ -1,53 +1,20 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block javascript %}
-<script>
-// Remove Items From Cart
-// $('a.remove').click(function(){
-//   event.preventDefault();
-//   $( this ).parent().parent().parent().remove();
- 
-// })
+{% load static %}
 
-// Just for testing, show all items
-  // $('a.btn.continue').click(function(){
-  //   $('li.items').show(400);
-  // })
-</script>
-  
-{% endblock %}
 
 {% block content %}
 <style>
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic|Montserrat:400,700);
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby,  summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
+
 
 html {
   line-height: 1;
 }
 
-ol, ul {
+/* ol, ul {
   list-style: none;
-}
+} */
 
 table {
   border-collapse: collapse;
@@ -465,76 +432,233 @@ a.remove:hover {
 <!-- new -->
 
 <!-- partial:index.partial.html -->
-<div class="wrap cf">
-  <h1 class="projTitle"><span>{% trans "Your" %}</span> {% trans "Shopping Cart" %}</h1>
-  <div class="heading cf">
-    <h1>My Cart</h1>
-    <a href='{% url "products:list" %}' class="continue">Continue Shopping</a>
-  </div>
-   {% for item in cart.cartitem_set.all %}
-  <div class="cart">
 
-    <ul class="cartWrap">
-     
-      <li class="items even">
+<!-- partial -->
+
+
+
+
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+    <title></title>
+    <style media="screen">
+      body {
+        background-color: #f7f7f7 !important;
+      }
+      .overlay-pd {
+        align-self: flex-start;
+        transform: translateY(-40%);
+        z-index: 50;
+      }
       
-        
-    <div class="infoWrap"> 
-        <div class="cartSection">
-        <img src="{{ item.product.image.url }}" alt="img" class="itemImg" />
-          <!-- <p class="itemNumber">#QUE-007544-002</p> -->
-          <h3><a  href='{{ item.product.get_absolute_url }}'> {{ item.product.product_name }} </a></h3>
-        {% if item.variations.all %} 
-        <ul>{% for subitem in item.variations.all %} 
-        <li><b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>{% endfor %}</li></ul>{% endif %}
-           <p><b> {{ item.quantity }} x ${{ item.product.cost_per_day }}</b></p>
-        
-          <p class="stockStatus"> In Stock</p>
-         
-        </div>  
-    
-      
-      <b>  <div class="prodTotal" style='color:grey; font-size: large;'>
-          <p> {% if item.product.discount_price %}
-     ${{ item.product.discount_price }} (price per unit per day)
-        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
-      {% else %}
-      <td>${{ item.product.cost_per_day }} (price per unit per day)
-      {% endif %}</p>
-        </div></b>
-              <div class="removeWrap">
-           <a class="remove" href='{% url "cart:remove_cart" item.id %}' ><i class='fa fa-trash' style="color: black;"></i></a>
+    </style>
+  </head>
+  <body>
+  
+    <div class="container-fluid p-3" style="background: #fff">
+      <div class="container">
+        <div class="container d-lg-none multi_step_form">
+          <div id="msform">
+            <ul  id="progressbar">
+              <li class="active">Verify Phone</li>
+              <li>Upload Documents</li>
+              <li>Security Questions</li>
+              <li>Upload Documents</li>
+              <li>Security Questions</li>
+            </ul>
+          </div>
         </div>
       </div>
+      <div class="container pt-3" style="height: 200px">
+        <div class="d-flex flex-row justify-content-between">
+          <div class="col">
+            <p style="font-size: 24px;
+                      font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      line-height: 1.33;
+                      letter-spacing: normal;
+                      text-align: left;
+                      color: #555555;">レンタル内容</p>
+          </div>
+          <div class="col-xs-12 d-none d-lg-block multi_step_form">
+            <div class="float-right" id="msform">
+              <ul class="text-center" id="progressbar">
+                <li class="active">Cart</li>
+                <li>Upload Documents</li>
+                <li>Security Questions</li>
+                <li>Upload Documents</li>
+                <li>Security Questions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for item in cart.cartitem_set.all %}
     
+    <div class="container overlay-pd mt-3">
+      <div class="container p-3" style="background: #fff !important">
+        
+        <div class="row">
+          {{ forloop.counter }}.
+          <div class="col-xs-2 col-md-1">
+            <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px"  src="{{ item.product.image.url }}" alt="img">
+          </div>
+          <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+            <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                        font-weight: normal;
+                                        font-stretch: normal;
+                                        font-style: normal;
+                                        letter-spacing: normal;
+                                        text-align: left;
+                                        color: #555555;">{{ item.product.product_name }}</p>
+            <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+              <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                <p style="font-size: 16px;
+                          font-weight: normal;
+                          font-stretch: normal;
+                          font-style: normal;
+                          letter-spacing: normal;
+                          color: #1daf9e;">
+                           {% if item.product.discount_price %}
+                           <strike>Y{{ item.product.cost_per_day }} </strike>
 
+     Y{{ item.product.discount_price }} / 日 
+        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+      {% else %}
+      <td>${{ item.product.cost_per_day }} / 日 
+      {% endif %}</p>
+              </div>
+              <div class="col-sm-2 col-md-2 ml-0">
+                <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
+              </div>
+              {% if item.variations.all %}
+              {% for subitem in item.variations.all %} 
+              {% if subitem.category == 'size' %}
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 <b>{{ subitem.title|capfirst }}サイズ </b>
+                 
+                </p>
+              </div>
+              {% endif %}
+                 {% endfor %}
+              {% for subitem in item.variations.all %} 
+                 {% if subitem.category == 'color' %}
+          
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
+                 
+          
+                </p>
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+              <div class="col-sm-2 col-md-2">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-xs-1 col-md-2 text-right float-right">
+            <p style="font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      letter-spacing: normal;
+                      color: #1daf9e;">商品小計</p>
+            <p style="font-weight: bold;
+                      font-stretch: normal;
+                      font-style: normal;
+                      font-size: 125%;
+                      color: #1daf9e;">Y{{ item.line_total }}
+                                          
+              </p>
+              <div class="removeWrap">
+                <a class="remove" href='{% url "cart:remove_cart" item.id %}' ><i class='fa fa-trash' style="color: black;"></i></a>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-3" style="background-color: #ffffff;">
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2">数量</p>
+          </div>
+          <div class="col">
+            <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb; width: 132px;">{{ item.quantity }}個</p>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2">レンタル期間</p>
+          </div>
+          <div class="col">
+            <div class="d-flex flex-row">
+              <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb;">{{ item.start_date }} ~ {{ item.end_date }}</p>
+              <p class="p-2" style="border-radius: 4px; background-color: #fff; color: #1daf9e;">{{ item.days }}日間</p>
+            </div>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col col-md-2">
+            <p class="p-2">備考</p>
+          </div>
+          <div class="col">
+              <p class="p-2" style="border-radius: 4px; background-color: #f6fcfb; color: #68cfc3;">{{ item.product.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if not forloop.last %}
+    <div style="margin-top:11rem;"></div>
+    {% endif %}
+    {% endfor %}
+    <div class='container'>
+    <div class="subtotal cf">
+      <ul style='list-style: none;'>
+        <li class="totalRow"><span class="label">Subtotal</span><span class="value">${{ cart.subtotal }}</span></li>
+        
+            <li class="totalRow"><span class="label">Shipping</span><span class="value">$15.00</span></li>
+        
+              <li class="totalRow"><span class="label">Tax</span><span class="value">${{ cart.tax }}</span></li>
+              <li class="totalRow final"><span class="label">Total</span><span class="value"> ${{ cart.total }}</span></li>
+        <li class="totalRow"><a  href='{% url "cart:checkout" %}' class="btn1 btn continue" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; margin-bottom: 5rem;">次へ進む</a></li>
+      </ul>
+    </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
-      
-         <div class="special"><div class="specialContent"> {{ item.start_date }} - {{ item.end_date }}<b>({{ item.days }} days)</b></div></div>
-      </li>
-      
-      
-      <!--<li class="items even">Item 2</li>-->
- 
-    </ul>
-  </div>
-  {% endfor %}
-  <!-- <div class="promoCode"><label for="promo">Have A Promo Code?</label><input type="text" name="promo" placholder="Enter Code" />
-  <a href="#" class="btn"></a></div> -->
+    
+    
+  </body>
+
   
-  <div class="subtotal cf">
-    <ul>
-      <li class="totalRow"><span class="label">Subtotal</span><span class="value">${{ cart.subtotal }}</span></li>
-      
-          <li class="totalRow"><span class="label">Shipping</span><span class="value">$15.00</span></li>
-      
-            <li class="totalRow"><span class="label">Tax</span><span class="value">${{ cart.tax }}</span></li>
-            <li class="totalRow final"><span class="label">Total</span><span class="value"> ${{ cart.total }}</span></li>
-      <li class="totalRow"><a  href='{% url "cart:checkout" %}' class="btn1 btn continue">Checkout</a></li>
-    </ul>
-  </div>
-</div>
-<!-- partial -->
+
+
+
+
+
+
+
+
+
   
 
 

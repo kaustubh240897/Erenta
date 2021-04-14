@@ -1,0 +1,55 @@
+{% extends "supplier_base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if request.user == name.user %}
+
+        <div class='container'>
+                    <h2 class='text-center'>Add Rental Period.</h2>
+                    <hr/>
+        <h4 class='text-center'> Product's rental periods added till now.</h4>
+        {% for obj in rental_periods %}
+                    
+            <div class='col text-left'>
+                <strong> {{ forloop.counter }}.
+               
+                    {{ obj.start_date }} - {{ obj.end_date}} <a href="{% url 'products:remove_rentalperiod' obj.id name.id %}">X</a>
+                     
+                </strong>
+            </div>
+            {% endfor %}
+                   
+            <hr/>
+            </br>
+        
+           
+            <form method='POST' enctype="multipart/form-data">{% csrf_token %}
+                {% if next_url %}
+                <input type='hidden' name='next' value='{{ next_url }}' />
+                {% endif %}
+               
+           
+            Start Date-:
+               <br/>
+              <i class="fas fa-calendar-week"></i>
+               <input class='form-control' type="date" name='start_date' required='True' value='start_date' id="txtDate" />
+
+            End Date-:
+               <br/>
+              <i class="fas fa-calendar-week"></i>
+               <input class='form-control' type="date" name='end_date' required='True' value='end_date' id="txtDate" />
+            <br/>
+                <div class='text-center'>
+                    <button type='submit' class='btn btn-success'>Add it</button>
+                </div>
+                <br/>
+            </form>
+
+            <div class='text-right'>
+                <a href='{% url "addproductdetails" %}' ><button class='btn btn-warning'>Complete --></button></a>
+            </div>
+    
+{% else %}
+<h2 class='text-center'> Oops! Access denied.</h2>
+{% endif %}
+</div>
+{% endblock %}

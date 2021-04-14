@@ -1,130 +1,678 @@
 {% extends "supplier_base.html" %}
-
-
+{% load static %}
 {% block content %}
-<div class='row'>
-    <div class='col-12 col-md-6 mx-auto'>
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>CodePen - Hamburger Menu - HTML, CSS &amp; jQuery </title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:700'><link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+  <style media="screen">
+
+body {
+      background-color: #f7f7f7 !important;
+    }
+    
+    .color{
+       color: #e06a3b;         
+    }
+    .color1{
+        color: #1DAF9E;
+    }
+    b{
+        font-family: YuGothic;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .background-color{
+        background-color: #f7f7f7;
+    }
+    .c{
+        color: #555555;
+        font-family: YuGothic;
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .Rectangle-1119 {
+        width: 220px;
+        height: 60px;
+        margin: 6px 8px 12px 0;
+        padding: 20px 50px 19px 69.5px;
+        border-radius: 4px;
+        background-color: #aaaaaa;
+    }
+
+    .Rectangle-1118 {
+        width: 220px;
+        height: 60px;
+        margin: 6px 8px 12px 0;    
+        padding: 20px 75px 19px 69.5px;
+        border-radius: 4px;
+        background-color: #e06a3b;
+    }
+    .co{
+        color:#ffffff;
+    }
+     .button_color  {
+        background-color: #e06a3b !important;
+        color: white !important;
+        text-decoration: none;
+        border-style: none;
         
-         <h4 class="d-flex justify-content-between align-items-center mb-3">
-    <span class="text-muted">Your order details</span>
+    }
     
-    </h4>
-          <hr/>
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-6 col-lg-3 p-0 m-0">
+        <button class="hamburger">&#9776;</button>
+        <button class="cross">&#735;</button>
+        <div class="menu p-3">
+          <div class="row mb-2">
+            <div class="col-3 text-left">
+              <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important" src="pb_1.svg" alt="">
+            </div>
+            <div class="col text-left pt-1">
+              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">ニックネーム</p>
+              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">マイページ</p>
+            </div>
+          </div>
+          {% if request.user.is_authenticated %}
+          <ul>
+            <div class="row">
+              <div class="col">
+                <a class="text-white" href="{% url 'supplier_notification_page' %}">  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お知らせ</p> </a>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">{{ request.session.supplier_notification_count }} </p>
+              </div>
+            </div>
+          </ul>
+          {% endif %}
+          <ul>
+            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
+            <a href="#"  style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">出品中のアイテム</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+          </ul>
+          <ul>
+            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+          </ul>
+          <ul>
+            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">よくある質問</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="m-0 p-0" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+                </div>
+              </div>
+            </a>
+            <a href="#" style="height: 50px;">
+              <div class="row">
+                <div class="col">
+                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
+                </div>
+                <div class="col-2 text-left">
+                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+                </div>
+              </div>
+            </a>
+          </ul>
+        </div>
+      </div>
+
+
+<div class="col">
+    <div class="container">
+      <div class="container p-3" style="background: #fff !important">
+        <div class="row" style='margin-top: 4rem;'>
+          <div class="col-xs-2 col-md-1">
+            <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="">
+          </div>
+          <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+            <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                        font-weight: normal;
+                                        font-stretch: normal;
+                                        font-style: normal;
+                                        letter-spacing: normal;
+                                        text-align: left;
+                                        color: #555555;">{{ object.product.product_name }}</p>
+            <div class="d-flex flex-row flex-wrap justify-content-start text-left mt-2">
+              <div class="col-sm-3 col-md-2 pr-0 pl-0 ml-0">
+                <p style="font-size: 16px;
+                          font-weight: normal;
+                          font-stretch: normal;
+                          font-style: normal;
+                          letter-spacing: normal;
+                          color: #1daf9e;">{% if object.product.discount_price %}
+                           <strike>Y{{ object.product.cost_per_day }} </strike>
+
+     Y{{ object.product.discount_price }}/日 
+        <span class="badge badge-success">Saving ${{ object.get_amount_saved }}</span> 
+      {% else %}
+      <td>${{ object.product.cost_per_day }}/日 
+      {% endif %}</p>
+              </div>
+              <div class="col-sm-2 col-md-3 ml-0">
+                <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ object.product.brand }}</p>
+              </div>
+              {% if object.variations.all %}
+              {% for subitem in object.variations.all %} 
+              {% if subitem.category == 'size' %}
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 {{ subitem.title|capfirst }}サイズ 
+                 
+                </p>
+              </div>
+              {% endif %}
+                 {% endfor %}
+              {% for subitem in object.variations.all %} 
+                 {% if subitem.category == 'color' %}
+          
+              <div class="col-sm-3 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
+                  
+                 {{ subitem.title|capfirst }} {{ subitem.category }}
+                 
+          
+                </p>
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+              <!-- <div class="col-sm-2 col-md-3">
+                <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
+              </div> -->
+            </div>
+          </div>
+          <div class="col-sm-2 col-lg-2 text-right float-right">
+            <div class="row justify-content-end">
+              <p class="pr-3" style="color: #1daf9e;">Total
+              </p>      
+            </div>
+            <div class="row justify-content-end">
+              <p class="pl-3" style="font-size: 125%;
+                        color: #1daf9e;">Y {{ object.line_total }}
+              </p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+<br/>
+<div class="container">
+  <div class="container p-0">
+    <div class="d-flex flex-row justify-content-around mt-2 pt-2" style="background-color: #fff">
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">申請</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">支払</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #e06a3b; color: #555555">発送</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">返送</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+      </div>
+      <div class="col">
+        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
+      </div>
+    </div>
+  </div>
 </div>
+  <br/>
 
- {% for item in object.cart.order_set.all %}
-     {% if object.product.user == request.user %}
- 
- <br/>
- <h4 class='text-center'>Order Id {{ item.order_id }}</h4>
- 
-<div class='row'>
-    <div class='col-12 col-md-6 mx-auto'>
-        <div class="col-md-12 mb-4">
+    <div class="col">
     
-    <ul class="list-group mb-3 z-depth-1">
+    <div class="container p-3" style="background: #fff !important">
+    <div class='row'>
+        <div class='col mx-auto'>
+            {% if object.order_confirmed == 'none' %}
+        
+                <b class='color'>レンタル申請がありました。</b>
+
+                <h6 class='my-4 c'>商品のレンタル申請がありました。注文内容をご確認の上、レンタルの可否を返答してください。</h6>
+            
+
+            {% elif object.status == 'paid' %}
+
+            <b class='color1'>注文確定までしばらくお待ちください。</b>
+            <h6 class='my-4 c'>レンタル申請を承認しました。購入者の注文手続きが完了するまでしばらくお待ちください。</h6>
+
+            {% elif object.status == 'shipped' %}
+
+            <b class='color1'>レンタル期間中です。</b>
+            <h6 class='my-4 c'>{{ object.start_date }} ~ {{ object.end_date }}までレンタル期間です。レンタル期間が終了するまでお待ちください。</h6>
+
+            {% elif object.status == 'returned back' %}
+
+            <b class='color1'>レンタル期間中です。</b>
+            <h6 class='my-4 c'>{{ object.start_date }} ~ {{ object.end_date }}までレンタル期間です。レンタル期間が終了するまでお待ちください。</h6>
     
-        {% if object.product.image %}
-        <img style="width:4rem !important; height:4rem !important;"  src='{{ object.product.image.url }}' class='img-fluid' />
-        {% endif %}
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
-
-        <div>
-        <h6 class="my-0">{{ object.quantity }} x {{ object.product.product_name|capfirst }}</h6>
-        <small class="text-muted">{{ object.product.description}}</small>
-        <b><h6> Rental Period -: {{ object.start_date }} - {{ object.end_date }}( {{ object.days }} days )</h6> </b>
-        </div>
-         
-     <div>
-        <span class="text-muted">${{ object.line_total }}</span>
-        </div>
-       
-    </li>
-    <div>
-        <strong> <font color='green'>Status: {{ object.status }} </font> </strong>
-             {% if object.status == 'paid' %}  
-
-
-            <form method='POST' id='order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_shipped" item.order_id object.id %}' style="display:none;">
-            {% csrf_token %}
-
-            </form>
-            <button onclick="if(confirm('Are you sure to change order status to shipped?')){
-            event.preventDefault();
-            document.getElementById('order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}').submit();
-
-            }
-            else{
-                event.preventDefault();
-            }"
-            
-            class='btn btn-raised btn-primary btn-sm mx-2' title='If this Item is Shipped to the customer then click it' href=''>Update Status to Shipped </button>
-
-             {% endif %}
-
-             {% if object.status == 'shipped' or object.status == 'refund requested' or object.status == 'cancellation request' %} 
-             
-
-            <form method='POST' id='order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_returned" item.order_id object.id %}' style="display:none;">
-            {% csrf_token %}
-
-            </form>
-            <button onclick="if(confirm('Are you sure to change the order status to Retuned Back?')){
-            event.preventDefault();
-            document.getElementById('order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}').submit();
-
-            }
-            else{
-                event.preventDefault();
-            }"
-            
-            class='btn btn-raised btn-primary btn-sm mx-2' title='If this Item is Returned back after completion of its rental period by customer then click it' href=''>Update Status to Retuned back </button>
-
             {% endif %}
-             <hr/> 
+        </div>
     </div>
         
+
+
+    {% for item in object.cart.order_set.all %}
+        {% if object.product.user == request.user %}
     
-    <li class="list-group-item d-flex justify-content-between bg-light">
-        <div class="text-success">
-        <h6 class="my-0">Shipping Address</h6>
-        <small>{{ item.shipping_address.get_address }}</small>
+    <div class='row'>
+        <div class='col-md-8 mx-auto'>
+            {% if object.order_confirmed == 'none' and object.status != 'refund requested'  %}
+
+        <div class='row'>
+            <div class='text-center'>
+            <!-- <a style='text-decoration:none;' href="{% url 'orders:reject_order' item.order_id object.id %}"><div class='Rectangle-1119'><p class='co'>&#10005; &nbsp; &nbsp; レンタルできません</p></div></a>
+            <a style='text-decoration:none;' href="{% url 'orders:confirm_order' item.order_id object.id %}"><div class='Rectangle-1118'><p class='co'>&#10003; &nbsp; &nbsp; レンタル可能</p></div></a> -->
+            <a style='text-decoration:none;' href="{% url 'orders:reject_order' item.order_id object.id %}"><button class='btn-lg mx-2 my-2 Rectangle-1119' style='border-style: none; color:white;'>レンタルできません</button> </a>
+            <a style='text-decoration:none;' href="{% url 'orders:confirm_order' item.order_id object.id %}"><button class='btn-lg mx-4 my-2 Rectangle-1118' style='border-style: none; color:white;'>レンタル可能</button></a>
+            </div>
         </div>
-    </li>
-   <li class="list-group-item d-flex justify-content-between bg-light">
-        <div class="text-success">
-        <h6 class="my-0">Billing Address</h6>
-        <small>{{ item.billing_address.get_address }}</small>
-        </div>
-    </li>
-    <li class="list-group-item d-flex justify-content-between lh-condensed">
-        <div class="text-danger">
-        <h6 class="my-0">Customer's Email</h6>
-        <small>{{ item.billing_profile }}</small>
-        </div>
-    </li>
-   
-    <!-- <li class="list-group-item d-flex justify-content-between lh-condensed">
-        <div class="text-danger">
-        <h6 class="my-0">Order's Status</h6>
-        <small>{{ object.status }}</small> 
-        </div>
-    </li> -->
-      
-    </ul>
+        <br/>
+
+        {% elif object.order_confirmed == 'rejected' %}
+            <h6><font color='red'> This order is rejected by supplier. </font></h6>
+        {% endif %}
+        <br/>
     </div>
-  
-    <div class='text-center'>
-<a href="/supplierreviews/"> <button class='btn btn-primary'>Rate your customer!</button></a>
-<a href="{% url 'supplierpdf' object.id item.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+    </div>
 </div>
- 
-</div>
-</div>
-{% else %}
-<h4> Oops! You are unauthorized to see this content.</h4>
- {% endif %}
-{% endfor %} 
+
+<br/>
+
+
     
+        <div class="container p-0">
+          <p class="pb-3" style="color: #555555; font-size: 130%; font-weight: bold;">レンタル内容</p>
+        </div>
+     
+      
+        <div class="container p-3" style="background-color: #ffffff;">
+
+        <div class="row p-3">
+                <div class="col col-md-2">
+                  <p class="p-2" style="color: #1daf9e;">Product Description</p>
+                </div>
+                <div class="col">
+                    <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.product.description }}</p>
+                </div>
+        </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;" >数量</p>
+            </div>
+            <div class="col">
+              <p class="p-2" style="border-radius: 4px; width: 132px; color: #aaaaaa;">{{ object.quantity }}個</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Order Id</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.order_id }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">レンタル期間</p>
+            </div>
+            <div class="col">
+              <div class="d-flex flex-row justify-content-between">
+                <div class="col">
+                  <div class="row">
+                    <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.start_date }} ~ {{ object.end_date }}</p>
+                    <p class="p-2" style="border-radius: 4px; background-color: #fff; color: #1daf9e;">{{ object.days }}日間</p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">備考</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">備考なし</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Status</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ object.status }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Shipping Address</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.shipping_address.get_address }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Billing Address</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.billing_address.get_address }}</p>
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;">Mobile Number</p>
+            </div>
+            <div class="col">
+                <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ item.shipping_address.mobile_number }}</p>
+            </div>
+          </div>
+        </div>
+
+
+
+   
+      
+        <hr/>
+        <div class='row'>
+        
+            {% if object.order_confirmed == 'confirmed' or object.status == 'refund requested'  %}
+            
+                {% if object.status == 'paid' %}  
+                <div class='col-6 text-right'>
+                    <form method='POST' id='order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_shipped" item.order_id object.id %}' style="display:none;">
+                    {% csrf_token %}
+
+                    </form>
+                    <button onclick="if(confirm('Are you sure to change order status to shipped?')){
+                    event.preventDefault();
+                    document.getElementById('order-change-status-shipped-form-{{ item.order_id }}-{{ object.id }}').submit();
+
+                    }
+                    else{
+                        event.preventDefault();
+                    }"
+                    
+                    class='btn btn-raised btn-primary btn-bg mt-2' title='If this Item is Shipped to the customer then click it' href=''>Update->Shipped </button>
+                
+                
+
+                    {% endif %}
+
+                    {% if object.status == 'shipped' or object.status == 'refund requested' or object.status == 'cancellation request' %} 
+                    
+                        <div class='col-6 text-right'>
+                        <form method='POST' id='order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:update_status_to_returned" item.order_id object.id %}' style="display:none;">
+                        {% csrf_token %}
+
+                        </form>
+                        <button onclick="if(confirm('Are you sure to change the order status to Retuned Back?')){
+                        event.preventDefault();
+                        document.getElementById('order-change-status-return-back-form-{{ item.order_id }}-{{ object.id }}').submit();
+
+                        }
+                        else{
+                            event.preventDefault();
+                        }"
+                        
+                        class='btn btn-raised btn-primary btn-bg mx-2' title='If this Item is Returned back after completion of its rental period by customer then click it' href=''>Update->Retuned back </button>
+                    
+                    {% elif object.status == 'returned back' %}
+                        <div class='col-6 text-center'>
+                    
+                    {% endif %}
+                </div>
+                
+                <div class='col-6 text-left'>
+                    <a href="{% url 'orders:user_item_tracker' object.id item.order_id %}"> <button class='btn btn-bg mx-2 mt-2 button_color'> Track</button></a> 
+                </div>
+                    <hr/> 
+                {% endif %}
+        </div>
+        <br/>
+        
+        
+        
+        </div>
+    <hr/>
+        
+    
+        
+
+        <div class="container">
+          <div class="container p-0">
+            <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">取引メッセージ</p>
+          </div>
+        </div>
+        {% for message in messages1 %}
+        <div class="container">
+          <div class="container p-0">
+            <div class="d-flex flex-row">
+              <div class="col-1">
+                {% if message.user.profile_image %}
+                <img class="rounded-circle thumbnail rounded float-left" style="width: 60px; height: 60px" src="{{ message.user.profile_image.url }}" alt="" height="50" width="50" />
+                {% else %}
+                <img class="rounded-circle thumbnail rounded float-left" style="width: 60px; height: 60px" src='{% static "img/images.jpg" %}' alt="" height="50" width="50" />
+                {% endif %}
+              </div>
+              <div class="col">
+                <div class="d-flex flex-row justify-content-start">
+                  {% if object.product.user == message.user %}
+                  <div class="col-lg-2 col-md-2 col-sm-4 text-center">
+                    <p class="py-1" style="border-radius: 4px; background-color: #1daf9e; color: #fff; font-size: 70%">出品者</p>
+                  </div>
+                  {% endif %}
+                    <p class="px-1" style="color: #555555; font-size: 70%;">{{ message.user.full_name }}</p>
+                    <div class="col">
+                      <p class="px-1 float-right" style="color: #555555; font-size: 70%;">{{ message.timestamp|timesince }} ago</p>
+                    </div>
+                </div>
+                <div class="d-flex flex-row" style="background-color: #c8efea;">
+                  <p class="p-2" style="font-weight: normal;">{{ message.message }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <hr/>
+        {% endfor %}
+        <form class='transaction-form'  method="POST" action='{{ request.build_absolute_uri }}'>
+          {% csrf_token %}
+        <div class="container mt-3">
+         
+            <!-- <p class="p-2" style="color: #68cfc3;">メッセージを書く</p> -->        
+              <input class="input" type="hidden" placeholder="id" required name="cart_id" value='{{ cart_id }}'>
+              <input class="container input p-0 mb-3 pb-5" placeholder="メッセージを書く" style="color: #68cfc3; border-style: none; text-decoration: none;;" type="text"  required name="message" >  </input>      
+         
+        </div>
+        <div class="container">
+          <div class="d-flex flex-row justify-content-end">
+            <button class='py-2' style="background-color: #1daf9e; color: #fff; border-radius: 4px; text-decoration: none; border-style: none;" type='submit'>  メッセージを送信する</button>
+          </div>
+        </div>
+        </form>
+        <br/>
+
+
+
+    
+    {% if object.order_confirmed == 'confirmed' %}
+        
+        <div class='row'>
+            <div class='col-6 text-right'>
+                <a href="/supplierreviews/"> <button class='btn btn-primary btn-bg mx-2'>Rate customers!</button></a>
+            </div>
+            <div class='col-6 text-left'>
+                <a href="{% url 'supplierpdf' object.id item.order_id %}"> <button class='btn btn-bg mx-2 button_color'>Print Invoice!</button></a>
+            </div>
+        </div>
+
+        {% if object.supplier_cancellation == False and object.status != 'returned back' %}
+        <br/>
+        <b>取引のキャンセル</b>
+        <br/>
+        <hr/>
+        取引を途中で終了したい場合、下記より注文者へキャンセルの申請を送ることができます。キャンセルが承認された場合、取引を終了することができます。事前に取引メッセージにて終了についての確認をお願い致します。
+        <div class='text-center'>
+            <br/>
+        <form method='POST' id='supplier-cancellation-form-{{ item.order_id }}-{{ object.id }}' action='{% url "orders:supplier_cancellation_order" item.order_id object.id %}' style="display:none;">
+            {% csrf_token %}
+
+            </form>
+            <button onclick="if(confirm('Are you sure to cancel this order?')){
+            event.preventDefault();
+            document.getElementById('supplier-cancellation-form-{{ item.order_id }}-{{ object.id }}').submit();
+
+            }
+            else{
+                event.preventDefault();
+            }"
+            
+            class='btn btn-raised btn-lg button_color' title='If you want to cancel the order then click it' href=''>Cancel Order </button>
+        </div>
+        <br/>
+        {% elif object.status != 'returned back'  %}
+        <h6> Order cancelled by you. </h6>
+        {% endif %}
+    {% endif %}
+
+        
+        </div>
+        </div>
+    {% else %}
+    <h4> Oops! You are unauthorized to see this content.</h4>
+    {% endif %}
+    {% endfor %}
+
+</div> 
+
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{% static 'js/vertical-nav.js' %}"></script>
+
+</body>
+</html>
+
+
 {% endblock %}
