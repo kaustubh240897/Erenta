@@ -1,168 +1,837 @@
 {% extends "supplier_base.html" %}
-
+{% load static %}
 {% block content %}
-<div class='container-fluid' style='background-color: #f7f7f7 ;'>
-
-<div class='row'>
-    <div class='col-12'>
-        <h2 class='text-center'>Orders</h2>
-    </div>
-</div>
-<div class='container' style='background-color: black;'>
-  <div class='row'>
-    {% if application_orders %}
-    <div class='col-md-3 col-sm-3  text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-3 col-sm-3 text-center'>
-      {% endif %}
-<strong><a href="{% url 'orders:ordersapplication' %}">Applications</a> </strong>
-</div>
- 
-    {% if paid_orders %}
-    <div class='col-md-3 col-sm-3  text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-3 col-sm-3 text-center'>
-      {% endif %}
-<strong><a href="{% url 'orders:orders' %}">Paid orders</a> </strong>
-</div>
-{% if shipped_orders %}
-    <div class='col-md-2 col-sm-2 text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-2 col-sm-2 text-center'>
-      {% endif %}
-<strong><a href="{% url 'orders:shippedsupplierorders' %}">Shipped orders</a>  </strong>
-</div>
-{% if refunded_orders %}
-    <div class='col-md-2 col-sm-2 text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-2 col-sm-2 text-center'>
-      {% endif %}
-<strong><a href="{% url 'orders:refundedsupplierorders' %}">Refunded orders</a>  </strong>
-</div>
-{% if returned_orders %}
-    <div class='col-md-3 col-sm-3 text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-3 col-sm-3 text-center'>
-      {% endif %}
-<strong><a href="{% url 'orders:returnedsupplierorders' %}">Return back orders after timeperiod</a> </strong>
-</div>
-  {% if cancelled_orders %}
-    <div class='col-md-2 col-sm-2 text-center' style='background-color: white;'>
-      {% else %}
-    <div class='col-md-2 col-sm-2 text-center'>
-      {% endif %}
-      
-<strong><a href="{% url 'orders:cancelsupplierorders' %}">Cancelled orders</a> </strong>
-</div>
-
-</div>
-</div>
-
-
-
-
- 
-<!-- <div class='row'>
-    <div class='col'>
-        <table class='table table-dark'>
-            <thead><th>#</th><th>Product_name</th><th>Order_id</th><th>Date</th><th>View</th></thead>
-
-            <tbody>
-                {% for object in products %}
-                    <tr>
-                        <td>{{ forloop.counter }}.</td>
-                        <td>{% for item in object.cart.cartitem_set.all %} 
-                
-                           {% if item.product.user == request.user %}  {{ item.quantity }} X {{ item.product|capfirst }}   {% endif %}{% endfor %}</td>
-                        
-                        <td>{{ object.order_id }}</td>
-                      
-                        <td>{{ object.timestamp }}</td>
-                        <td><a class='btn btn-lg  btn-primary' href='{{ object.get_absolute_url1 }}'>View your Order</a></td> -->
-                            
-                         <!-- <td>{{ object.cart.products.size.all }}</td>  -->
-                        
-                    <!-- </tr>
-                {% empty %}
-                <tr><td colspan="3"><p class='lead'>No orders yet.</td></tr>
-                
-                    {% endfor %}
-            </tbody>
-
-        </table>
-    </div>
-</div> -->
-
-
- {% for object in products %}
-     {% if object.product.user == request.user %}
-   {% for item in object.cart.order_set.all %}
- <div class='container' style='background-color:rgb(182, 182, 182);'>
-  <div class='row'>
-    <div class='col-md-1 col-sm-1'>
-      <b> Id. {{ object.id }}</b>
-    </div>
-    <div class='col-md-4 col-sm-4'>
-    <b>Order Id -:  {{ item.order_id }} </b> <br/>
-    <b>Customer's email -: {{ item.billing_profile }}</b>
-    </div>
-    <div class='col-md-3 col-sm-3'>
-    <b>Order Placed -: {{ item.timestamp }} </b>
-    </div>
-    <div class='col-md-4 col-sm-4'>
-      <b><a href='{% url "orders:supplierorderdetail" object.id %}'>Order details</a> </b> |
-      <b>  <a href="{% url 'supplierpdf' object.id item.order_id %}"> View Invoice</a>
-      </b>
-
-    </div>
-  </div>
-  </div>
-   
   
-  {% endfor %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title> Orders</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:700'>
+  <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+  <style media="screen">
+    body {
+      background-color: #f7f7f7 !important;
+    }
+    .scrolling-wrapper {
+    background-color: #fff;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+    .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+    }
+    .tabBtn {
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: solid 1px #f7f7f7 !important;
+      border-bottom: solid 1px #68cfc3 !important;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .tabBtnActive {
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: solid 1px #68cfc3 !important;
+      border-bottom: none !important;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .greenBorder {
+      border: solid 1px #68cfc3;
+      border-top: none;
+    }
+  </style>
 
-<div class="container"  style="background-color: #263238; color: white;">
-  <br/>
-  <div class='text-right'>
-<strong> <font color='green'> Status -:  {% if object.refund_granted %} Refund granted {% elif object.cancel_granted %} Cancellation request accepted, Please check your notifications. {% else %} {{ object.status }} {% endif %}  </font> </strong>
-<h6> (from {{ object.updated }})</h6>
-  </div>
-  {{ forloop.counter }}.
-  {% if object.product.image %}
-  <img src="{{ object.product.image.url }}" class="card-img-top" style="height:100px;width:100px" alt="{{ object.product.title }} logo">
-  
-  {% endif %}
-  <div class="card-body">
-                    
-    <h5 class="card-title"><a href='{{ object.product.get_absolute_url }}'> {{ object.quantity }} X {{ object.product|capfirst }} </a></h5>
-     <h6 class="card-title"> {% if object.product.discount_price %}
-            <strike> ${{ object.product.cost_per_day }}</strike> ${{ object.product.discount_price }}/day ({{ object.product.get_amount_percent_saved }}% Off)
+<body>
+    
+    <div class="col">
+      <div class="container">
+        <div class="container p-0">
+          <p class="pl-3" style="color: #555555; font-size: 130%; font-weight: bold;">Your Orders</p>
+        </div>
+      </div>
+      <div class="container">
+        <div class="d-flex flex-row scrolling-wrapper justify-content-between">
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn1" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtnActive w-100" data-toggle="collapse" data-target="#content_tab1" aria-expanded="false" aria-controls="content_tab1" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Applications
+            </div>
+          </div>
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn2" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtn w-100" data-toggle="collapse" data-target="#content_tab2" aria-expanded="false" aria-controls="content_tab2" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Paid orders
+            </div>
+          </div>
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn3" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtn w-100" data-toggle="collapse" data-target="#content_tab3" aria-expanded="false" aria-controls="content_tab3" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Shipped orders
+            </div>
+          </div>
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn4" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtn w-100" data-toggle="collapse" data-target="#content_tab4" aria-expanded="false" aria-controls="content_tab4" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Refunded Orders
+            </div>
+          </div>
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn5" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtn w-100" data-toggle="collapse" data-target="#content_tab5" aria-expanded="false" aria-controls="content_tab5" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Completed Orders
+            </div>
+          </div>
+          <div class="col text-center mx-0 px-0">
+            <div id="tab_btn6" onclick="changeTab(this.id)" class="btn btn-primary text-nowrap tabBtn w-100" data-toggle="collapse" data-target="#content_tab6" aria-expanded="false" aria-controls="content_tab6" style="background-color: #ffffff; border: none; color: #555; font-weight: bold">
+              Cancelled orders
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="content_tab1" class="container collapse show">
+        <div id="infList" class="container p-0 greenBorder pt-3"  style="background: #fff">
+
+          {% for object in products %}
+            {% if object.product.user == request.user %}
+            {% if object.order_confirmed == 'none' and object.status == 'paid' %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3">
+              
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;"> {% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
            {% else %}
            ${{ object.product.cost_per_day }}/day
            {% endif %}
-           </h6>
-    <p class="card-text">{{ object.product.description|linebreaks|truncatewords:14 }}</p>
-    <h6> Cost -: ${{ object.line_total }}</h6>
-    <h6> Rental Period -: {{ object.start_date }} - {{ object.end_date }}( {{ object.days }} days )</h6>
-   
-    
-  
+                    </p>
+                    <h6> Total -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class=" text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff;">申請</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3 mb-1">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color: #aaa;background-color: #aaa;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+               
+              </div>
+              </div>
+              </div>
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+          {% if application_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+      </div>
+    </div>
+          
+          
+        
+          
+
+      <div id="content_tab2" class="container collapse">
+        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+          
+            {% for object in products %}
+        
+            {% if object.product.user == request.user %}
+            {% if object.order_confirmed == 'confirmed' and object.status == 'paid' %}
+            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;">{% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ object.product.cost_per_day }}/day
+           {% endif %}
+                    </p>
+                    <h6> Cost -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">支払</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7 ; color: #555555">発送</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+          {% if paid_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+        
+        </div>
+      </div>
+
+
+      <div id="content_tab3" class="container collapse">
+        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+          
+          
+            {% for object in products %}
+            {% if object.product.user == request.user %}
+            {% if object.order_confirmed == 'confirmed' and object.status == 'shipped' %}
+            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;">{% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ object.product.cost_per_day }}/day
+           {% endif %}
+                    </p>
+                    <h6> Cost -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">発送</p> 
+                          </div>
+                          {% for item in object.cart.order_set.all %}
+                          <div class="col">
+                            <a href="{% url 'supplierpdf' object.id item.order_id %}" class="pt-2"> <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">受取</p> </a>
+                          </div>
+                          {% endfor %}
+                          <div class="col">
+                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+
+          {% if shipped_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+        
+        </div>
+      </div>
+
+      <div id="content_tab4" class="container collapse">
+        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+          
+          
+            {% for object in products %}
+            {% if object.product.user == request.user %}
+            {% if object.refund_requested == True %}
+            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;">{% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ object.product.cost_per_day }}/day
+           {% endif %}
+                    </p>
+                    <h6> Cost -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">{% if object.refund_granted %} Refund granted {% else %}  Refund requested {% endif %}</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+
+          {% if refunded_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+        
+        </div>
+      </div>
+
+      <div id="content_tab5" class="container collapse">
+        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+          
+          
+            {% for object in products %}
+            {% if object.product.user == request.user %}
+            {% if object.status == 'returned back' and object.order_confirmed == 'confirmed' %}
+            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;">{% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ object.product.cost_per_day }}/day
+           {% endif %}
+                    </p>
+                    <h6> Cost -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p> 
+                          </div>
+                          <div class="col">
+                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
+                          </div>
+                          <div class="col">
+                           <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p> 
+                          </div>
+                          {% for item in object.cart.order_set.all %}
+                          <div class="col">
+                            <a href="{% url 'supplierpdf' object.id item.order_id %}" class="pt-2"> <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">受取</p> </a>
+                          </div>
+                          {% endfor %}
+                          <div class="col">
+                             <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">取引終了</p> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+
+          {% if complete_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+        
+        </div>
+      </div>
+
+      <div id="content_tab6" class="container collapse">
+        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+          
+          
+            {% for object in products %}
+            {% if object.product.user == request.user %}
+            {% if object.cancel_request == True %}
+            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
+            <div class="row">
+              <div class="col-xs-2 col-md-1">
+                {% if object.product.image %}
+                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
+                {% endif %}
+              </div>
+              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
+                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
+                                            font-weight: normal;
+                                            font-stretch: normal;
+                                            font-style: normal;
+                                            letter-spacing: normal;
+                                            text-align: left;
+                                            color: #555555;">
+                                            {% for item in object.cart.order_set.all %}
+                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
+                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
+                                            {% endfor %}
+                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
+                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
+                  <div class="col pr-0 pl-0 ml-0">
+                    <p class="mb-0 pb-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #aaa;">{% if object.product.discount_price %}
+            <strike> Y{{ object.product.cost_per_day }} / 日</strike> 
+            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ object.product.cost_per_day }}/day
+           {% endif %}
+                    </p>
+                    <h6> Cost -: Y{{ object.line_total }}</h6>
+                    <p class="pt-0 mt-0" style="font-size: 16px;
+                              font-weight: normal;
+                              font-stretch: normal;
+                              font-style: normal;
+                              letter-spacing: normal;
+                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
+                    </p>
+                    <div class="container d-flex pl-0 ml-0">
+                      <div class="container pl-0 ml-0">
+                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p> 
+                          </div>
+                          <div class="col">
+                             <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">{% if object.cancel_granted %} Cancellation granted {% else %} Cancellation request {% endif %}</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p> 
+                          </div>
+                          <div class="col">
+                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col text-right float-right">
+                <div class="row justify-content-center mt-3 pt-3">
+                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+           
+          {% endif %}
+          {% endif %}
+          
+          {% endfor %}
+
+          {% if cancelled_count == 0 %}
+          <h3 class='text-center'>No Orders yet!</h3>
+          {% endif %}
+        
+        </div>
+      </div>
+      <script type="text/javascript">
+        function changeTab(id) {
+          console.log("id", id);
+          document.getElementById('content_tab1').className = "container collapse";
+          document.getElementById('content_tab2').className = "container collapse";
+          document.getElementById('content_tab3').className = "container collapse";
+          document.getElementById('content_tab4').className = "container collapse";
+          document.getElementById('content_tab5').className = "container collapse";
+          document.getElementById('content_tab6').className = "container collapse";
+          document.getElementById('tab_btn1').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById('tab_btn2').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById('tab_btn3').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById('tab_btn4').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById('tab_btn5').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById('tab_btn6').className = "btn btn-primary text-nowrap tabBtn w-100";
+          document.getElementById(id).className = "btn btn-primary text-nowrap tabBtnActive w-100";
+        }
+
+
+        var listElm = document.getElementById('infList');
+
+      // Add 20 items.
+      var start = 0;
+      var end = 0;
+      var loadMore = function() {
+        end += 10;
+        if (end > 50) {
+          end = 50;
+        }
+        while (start < end) {
+          var mainCont = document.createElement('div');
+          mainCont.className = "container";
+          mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+          var imgRow = document.createElement('div');
+          imgRow.className = "row pt-3";
+          var imgCol = document.createElement('div');
+          imgCol.className = "col-xs-2 col-md-1";
+          var img = document.createElement('img');
+          img.className = "img-thumbnail rounded flaot-left";
+          img.setAttribute("style", "width: 60px; height: 60px");
+          img.src = "pb_1.svg";
+          imgCol.appendChild(img);
+          imgRow.appendChild(imgCol);
+          var textCol = document.createElement('div');
+          textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+          var p1 = document.createElement('p');
+          p1.className = "pb-0 mb-0 text-left";
+          p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+          var node1 = document. createTextNode("Dolce & Gappana limited white crush denim leg length effect white / white");
+          p1.appendChild(node1);
+          textCol.appendChild(p1);
+          var textRow = document.createElement('div');
+          textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+          var textCol2 = document.createElement('div');
+          textCol2.className = "col pr-0 pl-0 ml-0";
+          var p2 = document.createElement('p');
+          p2.className = "pb-0 mb-0 text-left";
+          p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+          var node2 = document. createTextNode("Y 100 / #");
+          p2.appendChild(node2);
+          var p3 = document.createElement('p');
+          p3.className = "pb-0 mb-0 text-left";
+          p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+          var node3 = document. createTextNode("レンタル期間：2019/09/01～2019/9/4（4日間）");
+          p3.appendChild(node3);
+          textCol2.appendChild(p2);
+          textCol2.appendChild(p3);
+          var btnCont = document.createElement('div');
+          btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+          btnCont.innerHTML = btnCont.innerHTML + document.getElementById('btnCont').innerHTML;
+          textCol2.appendChild(btnCont);
+          textRow.appendChild(textCol2);
+          textCol.appendChild(textRow);
+          imgRow.appendChild(textCol);
+          var btn_right = document.createElement('div');
+          btn_right.className = "col text-right float-right";
+          btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
+          imgRow.appendChild(btn_right);
+          mainCont.appendChild(imgRow);
+          listElm.appendChild(mainCont);
+          start++;
+        }
+        start = end;
+      }
+
+      // Detect when scrolled to bottom.
+      // $(window).on("scroll", function() {
+      //   var scrollHeight = $(document).height();
+      //   var scrollPos = $(window).height() + $(window).scrollTop();
+      //   if ((scrollHeight - scrollPos) / scrollHeight == 0) {
+      //     loadMore();
+      //     console.log("bottom!");
+      //   }
+      // });
+      window.addEventListener("scroll", function () {
+          var scrollHeight = $(document).height();
+          var scrollPos = $(window).height() + $(window).scrollTop();
+          console.log("sh", scrollHeight);
+          console.log("sp", scrollPos);
+          console.log("ifCond", (scrollHeight - scrollPos));
+          if ((scrollHeight - scrollPos) <= 1) {
+            loadMore();
+            console.log("bottom!");
+          }
+      }, false);
+
+      // Initially load some items.
+      loadMore();
+      </script>
+    </div>
   </div>
 </div>
 
- 
- 
-  <hr/>
-    {% endif %}
-     {% empty %}
-  <strong><p class='lead'>No orders yet.</p> </strong>
-  {% endfor %}
+
+
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script src="{% static 'js/vertical-nav.js' %}"></script>
+
+
+</body>
+</div>
 
 
 
 
 
-{% if products.has_other_pages %}
+
+
+<!-- {% if products.has_other_pages %}
   <ul class="pagination justify-content-center">
     {% if products.has_previous %}
       <li class='page-item'><a class='page-link' href="?page={{ products.previous_page_number }}">&laquo;</a></li>
@@ -182,8 +851,8 @@
       <li class='page-item'><span class='step-links'>&raquo;</span></li>
     {% endif %}
   </ul>
-{% endif %}
+{% endif %} -->
 
-</div>
+
 
 {% endblock %}

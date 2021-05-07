@@ -24,11 +24,11 @@ from addresses.views import checkout_address_create_view, checkout_address_reuse
 #from products.views import ProductDetailSlugView
 from accounts.views import LoginView,RegisterView,guest_register_view,BusinessDetailUpdateView,join_us_page,AddSupplierbankdetailView,AddSupplierpersonaldetailView,BankDetailUpdateView
 from billing.views import payment_method_view,payment_method_createview,CardUpdateView
-from products.views import SupplierHomeView,AddProductView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierAddProductView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView,SupplierRentalPeriodView
+from products.views import SupplierHomeView,my_productsView,ProductDetailUpdateView,ReviewView,SupplierReviewView,SupplierProductListView,SupplierAddProductImageView,SupplierAddProductVariationsView,SupplierAddProductQuantityView,SupplierTagView,ProductRefundView,SupplierRentalPeriodView,load_sub_category,load_sub_sub_category
 #from carts.views import cart_detail_api_view
 #from products.views import OtherDetailFormView
 from analytics.views import SalesView,SalesAjaxView,Supplier_SalesView,Supplier_SalesAjaxView
-from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf,landing_page,home_redirect
+from .views import home_page, about_page, contact_page,notification_page,supplier_notification_page,GeneratePdf,GenerateSupplierPdf,landing_page,home_redirect,order_current_status_notification_page,order_notification_page,low_quantity_notification_page,supplier_order_current_status_notification_page
 from orders.views import RequestCancelView
 from django.conf.urls.i18n import i18n_patterns
 from .views import change_language
@@ -54,8 +54,13 @@ urlpatterns += i18n_patterns(
     path('home/Tokyo/',home_page, name='home'),
     path('home/Osaka/',home_page, name='home1'),
     path('home/Kyoto/',home_page, name='home2'),
+    #path('selection_notification_page/',selection_of_notification_page,name='selection_notification_page'),
     path('notification_page/',notification_page,name='notification_page'),
+    path('order_notification_page/',order_notification_page,name='order_notification_page'),
+    path('order_current_status_notification_page/',order_current_status_notification_page,name='order_current_status_notification_page'),
     path('supplier_notification_page/',supplier_notification_page,name='supplier_notification_page'),
+    path('low_quantity_notification_page/',low_quantity_notification_page,name='low_quantity_notification_page'),
+    path('supplier_order_current_status_notification_page/',supplier_order_current_status_notification_page,name='supplier_order_current_status_notification_page'),
     path('contact/',contact_page, name='contact'),
     path('notification/', include(("notification.urls", 'notification'), namespace='notification')),
     path('cart/', include(("carts.urls", 'carts'), namespace='cart')),
@@ -88,7 +93,7 @@ urlpatterns += i18n_patterns(
     path('search/', include(("search.urls", 'search'), namespace='search')),
     path('category/', include(("category.urls", 'category'), namespace='category')),
     path('supplier/',SupplierHomeView.as_view(),name='supplier'),
-    path('add/',AddProductView.as_view(),name='add'),
+    #path('add/',AddProductView.as_view(),name='add'),
     path('myproduct/',my_productsView.as_view(), name='myproduct'),
     path('updateproduct/<slug:slug>/',ProductDetailUpdateView.as_view(),name='update'),
     #path('products/<slug:slug>/',ProductDetailSlugView.as_view(),name='other'),
@@ -100,7 +105,7 @@ urlpatterns += i18n_patterns(
     path('bankdetailupdate/',BankDetailUpdateView.as_view(),name='bankdetailupdate'),
     path('addpersonaldetails/',AddSupplierpersonaldetailView.as_view(),name='addsupplierpersonaldetail'),
     path('addbankaccountdetails/',AddSupplierbankdetailView.as_view(),name='addsupplierbankdetail'),
-    path('add_product/',SupplierAddProductView.as_view(),name='addproduct'),
+    #path('add_product/',SupplierAddProductView.as_view(),name='addproduct'),
     path('add_product_details/',SupplierProductListView.as_view(),name='addproductdetails'),
     path('add_product_details/add_image/<int:id>/',SupplierAddProductImageView.as_view(),name='productimage'),
     path('add_product_details/add_variations/<int:id>/',SupplierAddProductVariationsView.as_view(),name='productvariations'),
@@ -110,6 +115,8 @@ urlpatterns += i18n_patterns(
     path('<order_id>/pdf/',GeneratePdf.as_view(),name='pdf'),
     path('<id>/<order_id>/supplier/pdf/',GenerateSupplierPdf.as_view(),name='supplierpdf'),
     #prefix_default_language = False,
+    path('load-sub_category/', load_sub_category, name='ajax_load_sub_category'), # AJAX
+    path('load-sub_sub_category/', load_sub_sub_category, name='ajax_load_sub_sub_category'), # AJAX
 
 
 )

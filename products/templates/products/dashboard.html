@@ -3,15 +3,17 @@
 {% load static %}
 {% block content %}
 <title>{{ title }}</title>
-<strong>Welcome {{ request.user.full_name }}! </strong>
-</br>
+<br/>
+
+<link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
 <style>
 body, html {
   height: 100%;
 }
 .bg {
   /* The image used */
-  background-image: url('{% static "img/accessories.jpg" %}');
+  /* background-image: url('{% static "img/accessories.jpg" %}'); */
 
   /* Full height */
   
@@ -22,97 +24,109 @@ body, html {
   background-size: cover;
 }
 .lg {
-  background-color:#293238 !important; color:white
+  background-color:#ffffff !important;
 }
+.color-text{
+  color:#1daf9e;
+}
+
 </style>
-<div class='bg'>
-<div class='container'>
-<div class='row'>
-    <div class='col-12'>
-        <h2 class='text-center text-white'>Dashboard</h2>
-        <hr/>
-    </div>
 
 
-<div class='col-12 col-md-4 my-3'>
-<div class="card lg">
-  <div class="card-body">
-    <h5 class="card-title text-center">Add New Products</h5>
-      <strong> <a class='list-group-item' href='{% url "addproduct" %}'>Add new Product details </a></strong>
-    
-  </div>
-</div>
-</div>
+    <div class="col">
+      <div class='bg'>
+      <div class='container pt-2 lg'>
+      <div class='row'>
+          <div class='col-12'>
+              <h2 class='text-center color-text'> Welcome <strong>{{ request.user.full_name }}, </strong> to Lender's Dashboard</h2>
+              <hr/>
+          </div>
 
 
-<div class='col-12 col-md-4 my-3'>
-<div class="card lg" >
-  <div class="card-body">
-    <h5 class="card-title text-center">My Products(want to see or update?)</h5>
-      <strong> <a class='list-group-item' href='{% url "myproduct" %}'>My Products </a></strong>
-    
-  </div>
-</div>
-</div>
-
-
-<div class='col-12 col-md-4 my-3'>
-<div class="card lg" >
-  <div class="card-body">
-    <h5 class="card-title text-center">Support</h5>
-      <div class='list-group'>
-        <strong> <a class='list-group-item' href='{% url "about" %}'>About </a> </strong>
-        <strong> <a class='list-group-item' href='{% url "contact" %}'>Contact </a> </strong>
-      </div>
-      
-    
-  </div>
-</div>
-</div>
-
-
-<div class='col-12 col-md-4 my-3'>
-<div class="card lg" >
-  <div class="card-body">
-    <h5 class="card-title text-center">Orders and Sales</h5>
-     <div class='list-group'>
-        <strong> <a class='list-group-item' href='{% url "orders:orders" %}'>My Orders </a></strong>
-        <strong>  <a class='list-group-item' href='{% url "supplier-sales-analytics" %}'>My Sales </a></strong>
+      <div class='col-12 col-md-4 my-3'>
+      <div class="card lg">
+        <div class="card-body">
+          <h5 class="card-title text-center">Add New Products</h5>
+            <strong> <a class='list-group-item color-text' href='{% url "addproductdetails" %}'>Add new Product details </a></strong>
           
-            <!-- <a class='list-group-item' href='#'>Addresses </a> -->
+        </div>
       </div>
-    
+      </div>
+
+
+      <div class='col-12 col-md-4 my-3'>
+      <div class="card lg" >
+        <div class="card-body">
+          <h5 class="card-title text-center">My Products(want to see or update?)</h5>
+            <strong> <a class='list-group-item color-text' href='{% url "myproduct" %}'>My Products </a></strong>
+          
+        </div>
+      </div>
+      </div>
+
+
+      <div class='col-12 col-md-4 my-3'>
+      <div class="card lg" >
+        <div class="card-body">
+          <h5 class="card-title text-center">Support</h5>
+            <div class='list-group'>
+              <strong> <a class='list-group-item color-text' href='{% url "about" %}'>About </a> </strong>
+              <strong> <a class='list-group-item color-text' href='{% url "contact" %}'>Contact </a> </strong>
+            </div>
+            
+          
+        </div>
+      </div>
+      </div>
+
+
+      <div class='col-12 col-md-4 my-3'>
+      <div class="card lg" >
+        <div class="card-body">
+          <h5 class="card-title text-center">Orders and Sales</h5>
+          <div class='list-group'>
+              <strong> <a class='list-group-item color-text' href='{% url "orders:orders" %}'>My Orders </a></strong>
+              <strong>  <a class='list-group-item color-text' href='{% url "supplier-sales-analytics" %}'>My Sales </a></strong>
+                
+                  <!-- <a class='list-group-item' href='#'>Addresses </a> -->
+            </div>
+          
+        </div>
+      </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+      <div class='col-12 col-md-4 my-3'>
+      <div class="card lg" >
+        <div class="card-body">
+          <h5 class="card-title text-center">Your Account Information</h5>
+            <strong> <a class='list-group-item color-text' href='{% url "account:user-update" %}'>Update Profile details </a> </strong>
+            <strong> <a class='list-group-item color-text' href='{% url "businessdetailupdate" %}'>Update Personal details. </a> </strong>
+            <strong>  <a class='list-group-item color-text' href='{% url "bankdetailupdate" %}'>Update Bank details. </a> </strong>
+            
+          
+        </div>
+      </div>
+      </div>
+
+
+
+
+      </div>
+      </div>
+      </div>
   </div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<div class='col-12 col-md-4 my-3'>
-<div class="card lg" >
-  <div class="card-body">
-    <h5 class="card-title text-center">Your Account Information</h5>
-      <strong> <a class='list-group-item' href='{% url "account:user-update" %}'>Update Profile details </a> </strong>
-      <strong> <a class='list-group-item' href='{% url "businessdetailupdate" %}'>Update Personal details. </a> </strong>
-      <strong>  <a class='list-group-item' href='{% url "bankdetailupdate" %}'>Update Bank details. </a> </strong>
-       
-    
   </div>
-</div>
-</div>
-
-
-
-
-</div>
-</div>
-</div>
+  </div>
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script src="{% static 'js/vertical-nav.js' %}"></script>
 {% endblock %}

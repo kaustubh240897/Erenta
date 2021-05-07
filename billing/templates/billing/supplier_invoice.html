@@ -50,6 +50,16 @@
 
    {% for item in object.cart.cartitem_set.all %}
      {% if item.product.user == user %}
+
+    <h6> 
+        {% if object.status == 'returned back' %}
+        Order Status: Transaction completed.
+    
+        {% elif object.status == 'shipped' %}
+        Order status: Delivered. 
+        {% endif %}
+
+    </h6>
     <li class="list-group-item d-flex justify-content-between lh-condensed">
         <div>
         <h6 class="my-0">{{ item.quantity }} x {{ item.product.product_name}}</h6>

@@ -6,13 +6,16 @@
   background-color:#293238 !important; color:white
 }
 </style>
+
 <br/>
+<html>
+<body>
 <div class='container lg'>
 
 <h1 class='text-center'>Add your Products</h1>
 <h6>Note: Image size should be less than 1 MB.</h6>
 </br>
-<form method='POST' enctype="multipart/form-data">{% csrf_token %}
+<form method='POST' enctype="multipart/form-data" id="personForm" data-sub_category-url="{% url 'ajax_load_sub_category' %}" data-sub_sub_category-url="{% url 'ajax_load_sub_sub_category' %}">{% csrf_token %}
        {% if form.errors %}
        <h6>Sorry your image size is greater than 1 MB.please upload image less than 1 MB.</h6>
        {% endif %}
@@ -25,5 +28,65 @@
 </div>
 <br/>
 </form>
+
+
+
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_category").change(function () {
+        const url = $("#personForm").attr("data-sub_category-url");  // get the url of the `load_cities` view
+        const categoryId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'category_id': categoryId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+              console.log(data);  
+              $("#id_sub_category").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+                */
+            }
+        });
+
+    });
+</script>
+
+<script>
+  $("#id_sub_category").change(function () {
+      const url = $("#personForm").attr("data-sub_sub_category-url");  // get the url of the `load_cities` view
+      const sub_categoryId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+          url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+          data: {
+              'sub_category_id': sub_categoryId       // add the country id to the GET parameters
+          },
+          success: function (data) {   // `data` is the return of the `load_cities` view function
+            console.log(data);  
+            $("#id_sub_sub_category").html(data);  // replace the contents of the city input with the data that came from the server
+              /*
+              let html_data = '<option value="">---------</option>';
+              data.forEach(function (city) {
+                  html_data += `<option value="${city.id}">${city.name}</option>`
+              });
+              console.log(html_data);
+              $("#id_city").html(html_data);
+              */
+          }
+      });
+
+  });
+</script>
+</body>
+
+</html>
 {% endblock %}

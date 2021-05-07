@@ -1,4 +1,5 @@
 {% extends "supplier_base.html" %}
+{% load static %}
 
 {% block javascript %}
 <script>
@@ -66,85 +67,95 @@
 {% endblock %}
 
 {% block content %}
-<div class='container'>
-<div class='row my-5'>
-    <div class='col-12'>
-        <h1>Sales Data</h1>
-    </div>
+<link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+<div class='col p-3'>
+
+        <div class='container'>
+        <div class='row'>
+            <div class='col-12'>
+                <h1>Sales Data</h1>
+            </div>
+        </div>
+
+        <hr/>
+        <div class='row my-5'>
+            <div class='col-4'>
+                <h3>Today's Sales</h3>
+            <hr/>
+                <p>Recent Total: ${{ today.recent_cart_data.cart__cartitem__line_total__sum }}</p>
+                <ol>
+                {% for order in today.recent.distinct %}
+                <li class='my-3'>Order #{{ order.order_id }}
+                
+                {% for item in order.cart.cartitem_set.all %}
+                {% if item.product.user == request.user %}
+                {{ item.product.product_name }}
+                ${{ item.line_total }}
+                {% if not forloop.last %} , {% endif %}
+                {% endif %}
+                {% endfor %}
+                {{ order.updated|timesince }}ago</li>
+            {% endfor %}
+            </ol>
+            
+                <h3>This Week's Sales</h3>
+            <hr/>
+                <p>Recent Total: ${{ this_week.recent_cart_data.cart__cartitem__line_total__sum }}</p>
+                <ol>
+                {% for order in this_week.recent.distinct %}
+                <li class='my-3'>Order #{{ order.order_id }}
+                {% for item in order.cart.cartitem_set.all %}
+                {% if item.product.user == request.user %}
+                {{ item.product.product_name }}
+                ${{ item.line_total }}
+                {% if not forloop.last %} , {% endif %}
+                {% endif %}
+                {% endfor %}
+                {{ order.updated }}</li>
+            {% endfor %}
+            </ol>
+            </div>
+
+            <div class='col'>
+                <canvas class='erenta-render-chart1' id="thisWeekSales" data-type='week' width="400" height="400"></canvas>
+            </div>
+
+        </div>
+
+
+        <hr/>
+
+
+        <div class='row my-5'>
+            <div class='col-12'>
+                <h1>Previous 4 Week's Sales</h1>
+            </div>
+            <div class='col'>
+                <p>Recent Orders Total: ${{ last_four_weeks.recent_cart_data.cart__cartitem__line_total__sum }}</p>
+                <p>Shipped Orders Total: {% if last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum %}
+                    ${{ last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum }}
+                                        {% endif %}
+                    </p>
+                    <p>Paid Orders Total: 
+                    ${{ last_four_weeks.paid_cart_data.cart__cartitem__line_total__sum }}
+                    </p>
+            
+            </div>
+
+            <div class='col'>
+                <canvas class='erenta-render-chart1' id="fourWeekSales" data-type='4weeks' width="400" height="400"></canvas>
+            </div>
+
+        </div>
+        </div>
+</div>
+</div>
 </div>
 
- <hr/>
-<div class='row my-5'>
-      <div class='col-4'>
-          <h3>Today's Sales</h3>
-      <hr/>
-        <p>Recent Total: ${{ today.recent_cart_data.cart__cartitem__line_total__sum }}</p>
-        <ol>
-        {% for order in today.recent.distinct %}
-         <li class='my-3'>Order #{{ order.order_id }}
-         
-          {% for item in order.cart.cartitem_set.all %}
-          {% if item.product.user == request.user %}
-          {{ item.product.product_name }}
-          ${{ item.line_total }}
-          {% if not forloop.last %} , {% endif %}
-          {% endif %}
-          {% endfor %}
-          {{ order.updated|timesince }}ago</li>
-       {% endfor %}
-       </ol>
-    
-          <h3>This Week's Sales</h3>
-       <hr/>
-        <p>Recent Total: ${{ this_week.recent_cart_data.cart__cartitem__line_total__sum }}</p>
-        <ol>
-        {% for order in this_week.recent.distinct %}
-         <li class='my-3'>Order #{{ order.order_id }}
-           {% for item in order.cart.cartitem_set.all %}
-          {% if item.product.user == request.user %}
-          {{ item.product.product_name }}
-          ${{ item.line_total }}
-          {% if not forloop.last %} , {% endif %}
-          {% endif %}
-          {% endfor %}
-          {{ order.updated }}</li>
-       {% endfor %}
-       </ol>
-    </div>
-
-     <div class='col'>
-        <canvas class='erenta-render-chart1' id="thisWeekSales" data-type='week' width="400" height="400"></canvas>
-    </div>
-
-</div>
 
 
-<hr/>
 
 
-<div class='row my-5'>
-      <div class='col-12'>
-          <h1>Previous 4 Week's Sales</h1>
-      </div>
-    <div class='col'>
-        <p>Recent Orders Total: ${{ last_four_weeks.recent_cart_data.cart__cartitem__line_total__sum }}</p>
-         <p>Shipped Orders Total: {% if last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum %}
-             ${{ last_four_weeks.shipped_cart_data.cart__cartitem__line_total__sum }}
-                                  {% endif %}
-            </p>
-            <p>Paid Orders Total: 
-             ${{ last_four_weeks.paid_cart_data.cart__cartitem__line_total__sum }}
-             </p>
-       
-    </div>
 
-     <div class='col'>
-        <canvas class='erenta-render-chart1' id="fourWeekSales" data-type='4weeks' width="400" height="400"></canvas>
-    </div>
-
-</div>
-
-</div>
-
-
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script src="{% static 'js/vertical-nav.js' %}"></script>
 {% endblock %}

@@ -64,6 +64,7 @@ class CartItem(models.Model):
     cancel_granted    = models.BooleanField(default=False)
     supplier_cancellation = models.BooleanField(default=False)
     shipped    = models.BooleanField(default=False)
+    return_initiated = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     

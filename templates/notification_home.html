@@ -2,70 +2,163 @@
 {% load crispy_forms_tags %}
 {% load static i18n %}
 {% block content %}
-{% if order_notifications.count > 0 or notifications.count > 0 or item_current_status.count > 0 %}
-<h3 class='text-center'>{% trans "Notifications" %}</h3>
-<hr/>
-<div class='container' style='background-color: white;'>
-{% for n in notifications %}
-{% if n.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right'>{{ n.timestamp }} </div></li>
-</ul>
+<div class='container'>
+        <h3 class='text-left'>{% trans "Notifications" %}</h3>
+        <br/>
+     
+        <div class='row' style='background-color: #1daf9e;'>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'notification_page' %}">Erenta Notifications ({{ count }} unread)</a>
+                </div>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'order_notification_page' %}">Order's Notifications ({{ count1 }} unread)</a>
+                </div>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'order_current_status_notification_page' %}"> Order item's status Notifications ({{ count2 }} unread)</a>
+                </div>
+        </div>
+
+{% if count > 0 or count1 > 0 or count2 > 0 %}  
+
+
+        {% if notifications %}
+        {% for n in notifications %}
+        {% if n.seen %}
+
+        <p><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right' style='color:#1daf9e'>{{ n.timestamp }} </div></p>
+        <hr/>
+
+        {% else %}
+
+        <p> <span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right' style='color:#1daf9e'>{{ n.timestamp }} </div> </strong></p>
+        <hr/>
+        {% endif %}
+        {% endfor %}
+        {% if notifications.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if notifications.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ notifications.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in notifications.paginator.page_range %}
+                {% if notifications.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if notifications.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ notifications.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
+        {% endif %}
+
+        {% if order_notifications %}
+        {% for n1 in order_notifications %}
+        {% if n1.seen %}
+
+        <p><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right' style='color:#1daf9e'>{{ n1.timestamp }} </div></p>
+        <hr/>
+        {% else %}
+
+        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right' style='color:#1daf9e'>{{ n1.timestamp }} </div></strong></p>
+        <hr/>
+        {% endif %}
+        {% endfor %}
+        {% if order_notifications.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if order_notifications.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ order_notifications.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in order_notifications.paginator.page_range %}
+                {% if order_notifications.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if order_notifications.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ order_notifications.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
+        {% endif %}
+
+
+        <!-- {% if userorder_status_notifications %}
+        {% for n3 in userorder_status_notifications %}
+        {% if n3.seen %}
+
+        <p><a href="{% url 'notification:userorder_status_notification' n3.id %}"><font color='black'>Dear {{ n3.cart.user.full_name }}, our Order (Id-:{% for item in n3.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n3.product }} has been {{ n3.order_confirmed }}. </font></a><div class='text-right' style='color:#1daf9e'>{{ n3.timestamp }} </div></p>
+        <hr/>
+        {% else %}
+
+        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:userorder_status_notification' n3.id %}"><font color='black'>Dear {{ n3.cart.user.full_name }}, Your Order (Id-:{% for item in n3.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n3.product }} has been {{ n3.order_confirmed }}. </font></a><div class='text-right' style='color:#1daf9e'>{{ n3.timestamp }} </div></strong></p>
+        <hr/>
+        {% endif %}
+        {% endfor %}
+        {% endif %} -->
+
+
+        {% if item_current_status %}
+        {% for n2 in item_current_status %}
+        {% if n2.seen %}
+                {% if n2.status == 'paid' %}
+                <p><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.cart.user.full_name }}, Your Order (Id-:{% for item in n2.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n2.product }} has been {{ n2.order_confirmed }}. </font></a><div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }}  </div> </p>
+                {% else %}
+
+                <p><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
+                {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }} </div></p>
+                <hr/>
+                {% endif %}
+        {% else %}
+                        {% if n2.status == 'paid' %}
+                        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.cart.user.full_name }}, Your Order (Id-:{% for item in n2.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n2.product }} has been {{ n2.order_confirmed }}. </font></a><div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }} </div></strong></p>
+                        {% else %}
+
+                        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
+                        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }} </div></strong></p>
+                        <hr/>
+                        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% if item_current_status.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if item_current_status.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ item_current_status.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in item_current_status.paginator.page_range %}
+                {% if item_current_status.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if item_current_status.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ item_current_status.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
+        {% endif %}
+
 
 {% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"> <span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_notification' n.id %}"><font color='black'>Dear {{ n.user.full_name }}, {{ n.title }}</font></a> <div class='text-right'>{{ n.timestamp }} </div> </strong></li>
-</ul>
+<h3 class='text-center'>There is no new notifications.</h3>
+
 {% endif %}
-{% endfor %}
 
-{% for n1 in order_notifications %}
-{% if n1.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right'>{{ n1.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:show_order_notification' n1.id %}"><font color='black'>Dear {{ n1.billing_profile.user.full_name }}, Your Order (Id-:{{ n1.order_id }}) has been {{ n1.status }} successfully. </font></a><div class='text-right'>{{ n1.timestamp }} </div></strong></li>
-</ul>
-{% endif %}
-{% endfor %}
-
-
-{% for n3 in userorder_status_notifications %}
-{% if n3.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:userorder_status_notification' n3.id %}"><font color='black'>Dear {{ n3.cart.user.full_name }}, our Order (Id-:{% for item in n3.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n3.product }} has been {{ n3.order_confirmed }}. </font></a><div class='text-right'>{{ n3.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:userorder_status_notification' n3.id %}"><font color='black'>Dear {{ n3.cart.user.full_name }}, Your Order (Id-:{% for item in n3.cart.order_set.all %}{{ item.order_id }} {% endfor %}) {{ n3.product }} has been {{ n3.order_confirmed }}. </font></a><div class='text-right'>{{ n3.timestamp }} </div></strong></li>
-</ul>
-{% endif %}
-{% endfor %}
-
-
-
-{% for n2 in item_current_status %}
-{% if n2.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right'>{{ n2.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:order_item_status' n2.id %}"><font color='black'>Dear {{ n2.user.full_name }}, Your product item {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endfor %} {% endif %} {% endfor %}  is {{ n2.status }}, Thank you.</font></a><div class='text-right'>{{ n2.timestamp }} </div></strong></li>
-</ul>
-{% endif %}
-{% endfor %}
 
 </div>
-{% else %}
-<h3>There is no new notifications.</h3>
-</div>
-{% endif %}
-
-
-
 {% endblock %}

@@ -28,7 +28,7 @@ User = settings.AUTH_USER_MODEL
 def product_list_view(request):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
-    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names']).order_by('?')
+    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('?')
     page = request.GET.get('page', 1)
     paginator = Paginator(queryset, 16)
     try:
@@ -41,7 +41,7 @@ def product_list_view(request):
         'qs': queryset ,
         "title":"Products",
         'products': products,
-        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7]
         
     }
     return render(request,"products/product_list.html", context)
@@ -77,10 +77,21 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         # context['cart'] = cart_obj
         if(self.request.user.is_authenticated == True):
             cart_obj = Cart.objects.filter(user=self.request.user).last()
-            self.request.session['cart_items']=cart_obj.cartitem_set.count()
+            if cart_obj:
+                self.request.session['cart_items']=cart_obj.cartitem_set.count()
+            else:
+                self.request.session['cart_items'] = 0
         else:
-            cart_obj = Cart.objects.get(id=self.request.session['cart_id'])
-            self.request.session['cart_items']=cart_obj.cartitem_set.count()
+            cart_id = self.request.session.get("cart_id", None)
+            if cart_id == None:
+                self.request.session['cart_items'] = 0
+            else:
+                cart_obj, new_obj = Cart.objects.get_or_create(id=cart_id)
+                if new_obj:
+                    self.request.session['cart_items'] = 0
+                else:
+                    self.request.session['cart_items']=cart_obj.cartitem_set.count()
+
 
         slug = self.kwargs.get('slug')
         product= Product_description.objects.get(slug=slug)
@@ -189,7 +200,7 @@ def sub_category_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=color)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
@@ -215,7 +226,7 @@ def sub_sub_category_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=color)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
@@ -371,21 +382,50 @@ class SupplierHomeView(LoginRequiredMixin, DetailView):
         return self.request.user
     
 
-class SupplierAddProductView(LoginRequiredMixin, DetailView):
-    template_name = 'products/product_dashboard.html'
-    def get_object(self):
-        return self.request.user
+# class SupplierAddProductView(LoginRequiredMixin, DetailView):
+#     template_name = 'products/product_dashboard.html'
+#     def get_object(self):
+#         return self.request.user
     
 
-class SupplierProductListView(LoginRequiredMixin,ListView):
+class SupplierProductListView(LoginRequiredMixin,CreateView):
     model = Product_description
-    template_name='products/add_product_details.html'
-    context_object_name = 'qs'
+    form_class = ProductForm
+    template_name = 'products/add_product_details.html'
+    def form_valid(self,form):
+        obj = form.save(commit=False)
+        if Supplier.objects.filter(email=self.request.user).count()==0:
+            return HttpResponseRedirect(self.get_success_url1())
+        elif Bank_Account_Detail.objects.filter(email=self.request.user).count()==0:
+            return HttpResponseRedirect(self.get_success_url2())
+        else:
+            obj.user = self.request.user # logged in user is available on a view func's `request` instance
+            #obj.supplier = self.request.user 
+            obj.save()
+            
+            return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['qs'] = Product_description.objects.filter(user = self.request.user).order_by('-timestamp')
         return context
+
+    def get_success_url(self):
+        messages.success(self.request, 'added Successfully now add more details for your product !!!')
+        return reverse("addproductdetails")
+    
+    def get_success_url1(self):
+        messages.success(self.request, 'Please add your personal details first !!!')
+        return reverse("addsupplierpersonaldetail")
+    
+    def get_success_url2(self):
+        messages.success(self.request, 'Please add your bank details first !!!')
+        return reverse("addsupplierbankdetail")
+
+        
+    
+
+    
 
 class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
     
@@ -425,6 +465,15 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         messages.success(self.request, 'Image added Successfully now add more details for your product !!!')
         return reverse("productimage", kwargs={'id': self.kwargs.get('id')})
 
+def remove_image(request,id1,id):
+    try:
+        obj = ProductImage.objects.get(id=id1)
+        obj.delete()
+        messages.success(request, 'removed Successfully !!!')
+        return HttpResponseRedirect(reverse("productimage", args=(id,)))
+    except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
 
 class SupplierRentalPeriodView(LoginRequiredMixin,CreateView):
     
@@ -517,7 +566,15 @@ class SupplierTagView(LoginRequiredMixin,CreateView):
         messages.success(self.request, 'Tag added Successfully now, you can add more tags for your product again !!!')
         return reverse("producttags", kwargs={'id': self.kwargs.get('id')})
 
-
+def remove_tags(request,id1,id):
+    try:
+        obj = Tag.objects.get(id=id1)
+        obj.delete()
+        messages.success(request, 'removed Successfully !!!')
+        return HttpResponseRedirect(reverse("producttags", args=(id,)))
+    except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
 
 
 class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
@@ -561,6 +618,19 @@ class SupplierAddProductVariationsView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         messages.success(self.request, 'Variations added Successfully, You can add more(unique) variations again !!!')
         return reverse("productvariations", kwargs={'id': self.kwargs.get('id')})
+
+def remove_variations(request,id1,id):
+    try:
+        obj = Variation.objects.get(id=id1)
+        obj1 = Quantity.objects.filter(product__id=id,variations__id = id1)
+        obj.delete()
+        for object1 in obj1:
+            object1.delete()
+        messages.success(request, 'removed Successfully !!!')
+        return HttpResponseRedirect(reverse("productvariations", args=(id,)))
+    except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
 
 class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
     
@@ -664,38 +734,57 @@ class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
         return reverse("productquantity", kwargs={'id': self.kwargs.get('id')})      
 
 
+def remove_quantity(request,id1,id):
+    try:
+        obj = Quantity.objects.get(id=id1)
+        obj.delete()
+        messages.success(request, 'removed Successfully !!!')
+        return HttpResponseRedirect(reverse("productquantity", args=(id,)))
+    except ObjectDoesNotExist:
+            messages.warning(self.request, "your product does not exist.")
+            return redirect("addproductdetails")
 
 
-class AddProductView(LoginRequiredMixin,CreateView):
+def load_sub_category(request):
+    category_id = request.GET.get('category_id')
+    sub_category = Sub_Category.objects.filter(category_id=category_id)
+    return render(request, 'products/sub_category_dropdown_list_options.html', {'sub_category': sub_category})
+
+def load_sub_sub_category(request):
+    sub_category_id = request.GET.get('sub_category_id')
+    sub_sub_category = Sub_Sub_Category.objects.filter(sub_category_id=sub_category_id)
+    return render(request, 'products/sub_sub_category_dropdown_list_options.html', {'sub_sub_category': sub_sub_category})
+
+# class AddProductView(LoginRequiredMixin,CreateView):
     
-    model = Product_description
-    form_class = ProductForm
-    template_name = 'products/add_products.html'
-    def form_valid(self,form):
-        obj = form.save(commit=False)
-        if Supplier.objects.filter(email=self.request.user).count()==0:
-            return HttpResponseRedirect(self.get_success_url1())
-        elif Bank_Account_Detail.objects.filter(email=self.request.user).count()==0:
-            return HttpResponseRedirect(self.get_success_url2())
-        else:
-            obj.user = self.request.user # logged in user is available on a view func's `request` instance
-            #obj.supplier = self.request.user 
-            obj.save()
+#     model = Product_description
+#     form_class = ProductForm
+#     template_name = 'products/add_products.html'
+#     def form_valid(self,form):
+#         obj = form.save(commit=False)
+#         if Supplier.objects.filter(email=self.request.user).count()==0:
+#             return HttpResponseRedirect(self.get_success_url1())
+#         elif Bank_Account_Detail.objects.filter(email=self.request.user).count()==0:
+#             return HttpResponseRedirect(self.get_success_url2())
+#         else:
+#             obj.user = self.request.user # logged in user is available on a view func's `request` instance
+#             #obj.supplier = self.request.user 
+#             obj.save()
             
-            return HttpResponseRedirect(self.get_success_url())
+#             return HttpResponseRedirect(self.get_success_url())
 
 
-    def get_success_url(self):
-        messages.success(self.request, 'added Successfully now add more details for your product !!!')
-        return reverse("addproductdetails")
+#     def get_success_url(self):
+#         messages.success(self.request, 'added Successfully now add more details for your product !!!')
+#         return reverse("addproductdetails")
     
-    def get_success_url1(self):
-        messages.success(self.request, 'Please add your personal details first !!!')
-        return reverse("addsupplierpersonaldetail")
+#     def get_success_url1(self):
+#         messages.success(self.request, 'Please add your personal details first !!!')
+#         return reverse("addsupplierpersonaldetail")
     
-    def get_success_url2(self):
-        messages.success(self.request, 'Please add your bank details first !!!')
-        return reverse("addsupplierbankdetail")
+#     def get_success_url2(self):
+#         messages.success(self.request, 'Please add your bank details first !!!')
+#         return reverse("addsupplierbankdetail")
 
         
         
@@ -755,7 +844,7 @@ class ProductDetailUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Updated Successfully !!!')
-        return reverse("myproduct")
+        return reverse("update" , kwargs={'slug': self.kwargs.get('slug')})
 
 
 class my_productsimageView(LoginRequiredMixin,ListView):
@@ -805,7 +894,7 @@ class ProductImageUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Updated Successfully !!!')
-        return reverse("supplier")
+        return reverse("product:imageupdate" , kwargs={'id': self.kwargs.get('id')})
 
 
 
@@ -857,7 +946,7 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
     
     def get_success_url(self):
         messages.success(self.request, 'Updated Successfully !!!')
-        return reverse("supplier")
+        return reverse("products:quantityupdate" , kwargs={'id': self.kwargs.get('id')})
 
 
 

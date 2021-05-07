@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% if not request.user.is_authenticated %}
+<br/>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -58,6 +59,20 @@
        color: #68cfc3 !important;
      }
    </style>
+   {% if form.errors %}
+   {% for field in form %}
+       {% for error in field.errors %}
+           <div class="alert alert-danger">
+               <strong>{{ field.label }}</strong><span>{{ error|escape }}</strong>
+           </div>
+       {% endfor %}
+   {% endfor %}
+   {% for error in form.non_field_errors %}
+       <div class="alert alert-danger">
+           <strong>{{ error|escape }}</strong>
+       </div>
+   {% endfor %}
+ {% endif %}
 </head>
 <body>
      <div class="container-fluid" style="background-color: #fafafa !important;">

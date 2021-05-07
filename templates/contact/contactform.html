@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
 <br/>
 <br/>
 <br/>
-<div class='container' style="background-color: #263238; color:white">
+<link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+
+<div class='container' style="background-color: #ffffff;">
            
                <div class='row'>
                    <div class='col'>
@@ -29,7 +33,7 @@
                            
                                            {{ form|crispy }}
                                            <div class="text-center">
-                                           <button type='submit' class='btn btn-primary'>Submit</button>
+                                           <button type='submit' class='btn' style='background-color: #1daf9e; color:white;'>Submit</button>
                                        </div>
                                         <br/>
                                        </form>

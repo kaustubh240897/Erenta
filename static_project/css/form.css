@@ -1,0 +1,63 @@
+                body {
+                background-color: #f7f7f7 !important;
+                }
+                ol.breadcrumb {
+                font-size: 80%;
+                background: #fafafa;
+                }
+                ol.breadcrumb li+li:before {
+                color: black;
+                content: ">" !important;
+                }
+                ol.breadcrumb li a {
+                color: #7f7f7f;
+                text-decoration: none;
+                }
+                ol.breadcrumb li.active {
+                color: #7f7f7f;
+                font-weight: bold;
+                }
+                span.input-group-text {
+                border-radius: 4px;
+                border-color: #f6fcfb;
+                background-color: #f6fcfb;
+                font-size: 90%
+                }
+                input.form-control {
+                border-radius: 4px;
+                border-color: #f6fcfb;
+                background-color: #f6fcfb;
+                font-size: 90%;
+                color: #68cfc3 !important;
+                outline: none !important;
+                box-shadow: none;
+                }
+                .form-control:focus {
+                border: none;
+                background-color: #f6fcfb;
+                box-shadow: 0 0 0 0rem rgba(40, 167, 69, 0.25);
+                }
+                ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                color: #68cfc3 !important;
+                opacity: 1; /* Firefox */
+                }
+
+                :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: #68cfc3 !important;
+                }
+
+                ::-ms-input-placeholder { /* Microsoft Edge */
+                color: #68cfc3 !important;
+                }
+                select{
+                        border-radius: 4px !important;
+                        border-color: #f6fcfb !important;
+                        color: #68cfc3 !important;
+                        background-color: #f6fcfb !important;
+                }
+                textarea{
+                        border-radius: 4px !important;
+                        border-color: #f6fcfb !important;
+                        color: #68cfc3 !important;
+                        background-color: #f6fcfb !important;
+                }

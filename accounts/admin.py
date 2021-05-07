@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .forms import UserAdminCreationForm, UserAdminChangeForm
-from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail
+from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail,Crousel
 
 User = get_user_model()
 class UserAdmin(BaseUserAdmin):
@@ -74,3 +74,5 @@ class BankRegisterAdmin(admin.ModelAdmin):
     class Meta:
         model = Bank_Account_Detail
 admin.site.register(Bank_Account_Detail, BankRegisterAdmin)
+
+admin.site.register(Crousel)

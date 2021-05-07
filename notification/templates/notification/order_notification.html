@@ -4,11 +4,11 @@
 
 {% if order_notification.billing_profile.user == request.user %}
 
-<div class='container' style='background-color: white;'>
+<div class='container my-2 py-4' style='background-color: white;'>
   
   <br/>
 
-  
+  <p style='color:#1daf9e;'>{{ order_notification.timestamp }}  </p>
 <div class='text-center'>  <h3> {{ order_notification.title }} </h3> </div>
  <br/>
   <list class="list-group-item list-group-item-action">Dear {{ order_notification.billing_profile.user.full_name }}, {% if order_notification.status == 'paid' %}<a href="{% url 'orders:list' %}">Your Order(Id-: {{ order_notification.order_id }}) </a> {% else %} Your Order(Id-: {{ order_notification.order_id }}) {% endif %}has been {{ order_notification.status }} successfully.

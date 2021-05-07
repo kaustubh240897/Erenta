@@ -1,13 +1,18 @@
 {% extends "supplier_base.html" %}
-
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+<link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+
+<div class='col'>
 {% if request.user == name.user %}
+<div class='container'>
         <div class='row'>
-            <div class='col-12 my-3'>
+            <div class='col-12'>
                     <h2 class='text-center'>My Product Quantity</h2>
                     <hr/>
             </div>
-      <div class='container' style='background-color:teal; color:white'>
+    <div class='container' style='background-color:#1daf9e; color:white'>
     <h4 class='text-center'> Product's colors and sizes available now.</h4>
      {% for obj in qs1 %}
      
@@ -20,21 +25,21 @@
       </strong>
       </div>
        {% empty %}
-      <p class='col-12'>  You have not added color and sizes yet.</p>
+      <p class='col-12'>You have not added color and sizes yet.</p>
        {% endfor %}
     
     <hr/>
-    </br>
+    <br/>
         </div>
-    
-         <div class='container' style='background-color: #263238; color:white'>
-           <h4 class='text-center'> Available Product quantity (for each variations).</h4>
+        <br/>
+         <div class='container' style='background-color:#ffffff;'>
+           <h4 class='text-center pt-3'> Available Product quantity (for each variations).</h4>
             {% for obj in qs %}
             <div class='col-12 my-3'>
       <strong>  {{ forloop.counter }}.
        {{ obj.product }},
        {% for item in obj.variations.all %}
-       {{ item.title }} {{ item.category }}, 
+       {{ item.title }} {{ item.category }},
        {% endfor %}
        
        {% if obj.quantity > 8 %}
@@ -44,11 +49,14 @@
        {% endif %}
       
       </strong>
-       <a href="{% url 'products:quantityupdate' obj.id %}" class=" btn btn-success">Update Quantity? </a>
-         </div>
+      <div class='text-right'>
+       <a href="{% url 'products:quantityupdate' obj.id %}" class="btn px-2" style='background-color: #1daf9e; color:white'>Update Quantity? </a>
+       </div>
+       <hr/>
+    </div>
       <br/>
       {% empty %}
-      <p class='col-12'>  You have not added quantity yet.</p>
+      <p class='col-12'> You have not added quantity yet.</p>
     {% endfor %}
   <hr/>
     <strong>Note: If quantity for any size and color not available, Then <a href='{% url "addproductdetails" %}'> Add here.</a>  </strong>
@@ -57,4 +65,12 @@
 {% else %}
 <h2 class='text-center mt-4'>Oops! Access Denied.</h2>
 {% endif %}
+</div>
+
+</div>
+</div>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script src="{% static 'js/vertical-nav.js' %}"></script>
+
 {% endblock %}

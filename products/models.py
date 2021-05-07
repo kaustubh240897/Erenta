@@ -84,7 +84,8 @@ class Category(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
     slug = models.SlugField(unique=True)
-    featured = models.BooleanField(default=None)
+    image = models.ImageField(upload_to=upload_image_path,null=True, blank=True,validators=[MaxSizeValidator(1050, 1050)])
+    featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     timestamp= models.DateTimeField(auto_now_add=True)
     updated  = models.DateTimeField(auto_now=True)
@@ -94,10 +95,11 @@ class Category(models.Model):
     #     return reverse ("products:query", kwargs={"slug":self.slug})
 
     def __str__(self):
-        return self.title
+        return self.slug
     
 
 class Sub_Category(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
     title = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
     slug = models.SlugField(unique=True)
@@ -114,6 +116,7 @@ class Sub_Category(models.Model):
         return self.title
 
 class Sub_Sub_Category(models.Model):
+    sub_category = models.ForeignKey(Sub_Category,on_delete=models.CASCADE,null=True,blank=True)
     title = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
     slug = models.SlugField(unique=True)

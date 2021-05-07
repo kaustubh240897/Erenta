@@ -313,6 +313,22 @@ class Bank_Account_Detail(models.Model):
         return '%s %s'%(self.email, self.Account_holder_name)
 
 
+class Crousel(models.Model):
+    image = models.ImageField(upload_to=upload_image_path,validators=[MaxSizeValidator(1050, 1050)])
+    description = models.CharField(max_length=300)
+    is_active = models.BooleanField(default=True) # can login
+    timestamp = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '%s %s'%(self.image, self.description)
+
+
+
+
+
+
+
 
     
 

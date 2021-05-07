@@ -1,11 +1,19 @@
 {% load staticfiles %}
-<div class="container"  style="background-color: #263238; color: white;">
-  <br/>
+    <style>
+              
+
+          .checked {
+                  color: orange;
+                }
+    </style>
+<div class="container" style="background-color: #ffffff">
+ <div class='row'>
   {% if instance.image %}
-  <img src="{{ instance.image.url }}" class="card-img-top" style="height:100px;width:100px" alt="{{ instance.title }} logo">
+  <img src="{{ instance.image.url }}" class="card-img-top pt-2 pl-2" style="height:100px;width:100px" alt="{{ instance.title }} logo">
   
   {% endif %}
-  <div class="card-body">
+  <div class="card-body text-center">
+    
        {% if instance.rating >= 1 %}
               ({{ instance.rating }})
               {% endif %}
@@ -44,7 +52,8 @@
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
-        {% endif %}                  
+        {% endif %} 
+                    
     <h5 class="card-title"> {{ instance.product_name|capfirst }}</h5>
      <h6 class="card-title"> {% if instance.discount_price %}
             <strike> ${{ instance.cost_per_day }}</strike> ${{ instance.discount_price }}/day ({{ instance.get_amount_percent_saved }}% Off)
@@ -53,12 +62,12 @@
            {% endif %}
            </h6>
     <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
-    <a href="{{ instance.get_absolute_url1 }}" class="btn btn-warning mb-2">Update product details! </a>
-    <a href="{% url 'products:image' instance.slug %}" class="btn btn-primary mb-2">Update images! </a>
-    <a href="{% url 'products:quantity' instance.slug %}" class="btn btn-success mb-2">Update Quantity! </a>
+    <a href="{{ instance.get_absolute_url1 }}" class="btn mb-2" style='background-color: #1daf9e; color:#ffffff;'>Update product details </a>
+    <a href="{% url 'products:image' instance.slug %}" class="btn mb-2" style='background-color: #1daf9e; color:#ffffff;'>Update product images </a>
+    <a href="{% url 'products:quantity' instance.slug %}" class="btn mb-2" style='background-color: #1daf9e; color:#ffffff;'>Update product quantity </a>
 
     
     
-    
+  </div>  
   </div>
 </div>

@@ -53,7 +53,18 @@
             Time: {{ time }}
             <hr class='hrItem' />
 
+            
+
 <p><strong>Items</strong><hr/> {% for item in object.cart.cartitem_set.all %} {{ item.quantity }} X {{ item.product }} :  {% if item.product.discount_price %}
+    <h6> 
+        {% if item.status == 'returned back' %}
+        Order Status: <font color='green'>Transaction completed. </font>
+    
+        {% elif item.status == 'shipped' %}
+        Order status: <font color='red'> Delivered. </font> 
+        {% endif %}
+
+    </h6>
            <h4> Cost per unit : <strike> ${{ item.product.cost_per_day }}</strike> ${{ item.product.discount_price }}/day ({{ item.product.get_amount_percent_saved }}% Off)</h4>
            {% else %}
            <h4> Cost per unit : ${{ item.product.cost_per_day }}/day</h4>

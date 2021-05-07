@@ -5,10 +5,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
-from products.models import Product_description,Contact,Subscribers
+from products.models import Product_description,Contact,Subscribers,Category
+from accounts.models import Crousel
 from orders.models import Order,Low_Quantity_Notification
 from carts.models import CartItem
-from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status,User_Order_Status_Notification
+from notification.models import Notification,Order_Notification,Supplier_Order_Notification,Order_current_status
 from django.views.generic import ListView
 from django.views.generic import View
 from django.template.loader import get_template
@@ -19,6 +20,7 @@ from .utils import render_to_pdf #created in step 4
 from django.utils import translation 
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def home_page(request):
@@ -37,7 +39,9 @@ def home_page(request):
        "title":"Erenta!",
        "content" : "Welcome to shopnow!",
        "premium_content": "Welcome",
-       "trending": View_Count.objects.all().filter(product__Current_City__iexact=c)[:8]
+       "trending": View_Count.objects.all().filter(product__Current_City__iexact=c)[:8],
+       "crousel_images": Crousel.objects.all(),
+       "category_images": Category.objects.all(),
       
     }
     
@@ -58,38 +62,167 @@ def about_page(request):
     }
     return render(request,"home_page.html",context)
 
+
+
+
 @login_required
 def notification_page(request):
     request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
-    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count() + User_Order_Status_Notification.objects.filter(cart__user=request.user, viewed=False).count()
-    n= Notification.objects.filter(user=request.user, viewed=False)
+    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count()
+    queryset= Notification.objects.filter(user=request.user, viewed=False).order_by('-timestamp')
 
-    n1 = Order_Notification.objects.filter(billing_profile__user=request.user,viewed=False)
-    n2 = Order_current_status.objects.filter(user=request.user, viewed=False)
-    n3 = User_Order_Status_Notification.objects.filter(cart__user=request.user, viewed=False)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n = paginator.page(page)
+    except PageNotAnInteger:
+        n = paginator.page(1)
+    except EmptyPage:
+        n = paginator.page(paginator.num_pages)
+
+    
     # n2 = Order_Notification.objects.filter(billing_profile__order__cart__cartitem__product__user=request.user, viewed=False)
     context = {
        "title":"Notifications",
        "notifications": n ,
-       "order_notifications": n1,
-       "item_current_status": n2,
-       "userorder_status_notifications": n3,
+       "count": Notification.objects.filter(user=request.user, viewed=False).count(),
+       "count1": Order_Notification.objects.filter(billing_profile__user = request.user, viewed=False).count(),
+       "count2": Order_current_status.objects.filter(user=request.user, viewed=False).count(),
     }
     return render(request,"notification_home.html",context)
+
+
+
+@login_required
+def order_notification_page(request):
+    request.session['notification_count']=Notification.objects.filter(user=request.user, viewed=False).count() + Order_Notification.objects.filter(billing_profile__user
+    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, viewed=False).count() 
+    
+    queryset = Order_Notification.objects.filter(billing_profile__user=request.user,viewed=False).order_by('-timestamp')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n1 = paginator.page(page)
+    except PageNotAnInteger:
+        n1 = paginator.page(1)
+    except EmptyPage:
+        n1 = paginator.page(paginator.num_pages)
+    
+    context = {
+       "title":"Notifications",
+       
+       "order_notifications": n1,
+       "count": Notification.objects.filter(user=request.user, seen=False).count(),
+       "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
+       "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
+    }
+    return render(request,"notification_home.html",context)
+
+
+@login_required
+def order_current_status_notification_page(request):
+    request.session['notification_count']=Notification.objects.filter(user=request.user, seen=False).count() + Order_Notification.objects.filter(billing_profile__user
+    = request.user, viewed=False).count() + Order_current_status.objects.filter(user=request.user, seen=False).count()
+
+    queryset = Order_current_status.objects.filter(user=request.user, viewed=False).order_by('-timestamp')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n2 = paginator.page(page)
+    except PageNotAnInteger:
+        n2 = paginator.page(1)
+    except EmptyPage:
+        n2 = paginator.page(paginator.num_pages)
+    
+    context = {
+       "title":"Notifications",
+       
+       "item_current_status": n2,
+       "count": Notification.objects.filter(user=request.user, seen=False).count(),
+       "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
+       "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
+    }
+    return render(request,"notification_home.html",context)
+
+
+
+
 
 @login_required
 def supplier_notification_page(request):
     request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count() + Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).count()
-    n2 = Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid',viewed=False)
-    n3 = Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False)
-    n4 = Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False)
-
+    queryset = Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid',viewed=False).order_by('-timestamp')
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n2 = paginator.page(page)
+    except PageNotAnInteger:
+        n2 = paginator.page(1)
+    except EmptyPage:
+        n2 = paginator.page(paginator.num_pages)
     
     context = {
        "title":"Notifications",
        "supplier_order_notifications":n2,
+       "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
+       "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
+       "count2": Order_current_status.objects.filter(product__user=request.user, supplier_seen=False).count(),
+       
+    }
+    return render(request,"supplier_order_notification_home.html",context)
+
+@login_required
+def low_quantity_notification_page(request):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count() + Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).count()
+    
+    queryset = Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).order_by('-timestamp')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n3 = paginator.page(page)
+    except PageNotAnInteger:
+        n3 = paginator.page(1)
+    except EmptyPage:
+        n3 = paginator.page(paginator.num_pages)
+       
+    context = {
+       "title":"Notifications",
        "low_quantity_notification":n3,
+       "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
+       "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
+       "count2": Order_current_status.objects.filter(product__user=request.user, supplier_seen=False).count(),
+       
+       
+       
+    }
+    return render(request,"supplier_order_notification_home.html",context)
+
+
+@login_required
+def supplier_order_current_status_notification_page(request):
+    request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count() + Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).count()
+    
+    queryset = Order_current_status.objects.filter(product__user=request.user, supplier_viewed=False).order_by('-timestamp')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 10)
+    try:
+        n4 = paginator.page(page)
+    except PageNotAnInteger:
+        n4 = paginator.page(1)
+    except EmptyPage:
+        n4 = paginator.page(paginator.num_pages)
+
+    
+    context = {
+       "title":"Notifications",
        "item_current_status": n4,
+       "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
+       "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
+       "count2": Order_current_status.objects.filter(product__user=request.user, supplier_seen=False).count(),
+       
+       
        
     }
     return render(request,"supplier_order_notification_home.html",context)

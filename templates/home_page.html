@@ -31,6 +31,11 @@
 
     		<div class="site-slider">
     			<div class="slider-one carr1">
+            {% for crousel_image in crousel_images %}
+            <div>
+    					<img src='{{ crousel_image.image.url }}' class="img-fluid carr1" alt="Banner 1" />
+    				</div>
+            {% endfor %}
     				<div>
     					<img src="{% static 'img/b.jpg' %}" class="img-fluid carr1" alt="Banner 1" />
     				</div>
@@ -86,6 +91,15 @@
     	<div class="container-fluid">
     		<div class="site-slider-two">
     			<div class="row slider-two text-center">
+            {% for category_image in category_images %}
+            {% if category_image.image %}
+            <div class="col-md-4 col-lg-4 text-center">
+              <a href="{% url 'products:query1' category_image.slug %}"> <img src='{{ category_image.image.url }}' class="responsive carr" alt="Product 1"/></a>
+               <b>{% trans category_image.title %}</b>
+             </div>
+             {% endif %}
+             {% endfor %}
+
     				<div class="col-md-4 col-lg-4 text-center">
              <a href="{% url 'products:query1' 'playstations' %}"> <img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/></a>
               <b>{% trans "Playstation" %}</b>

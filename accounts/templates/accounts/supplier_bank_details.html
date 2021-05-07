@@ -1,8 +1,12 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
-<br/>
-<div class='container' style='background-color:#263238 ; color: white'>
+<link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+
+<div class='col'>
+<div class='container pt-3' style='background-color:#ffffff;'>
 <div class='text-left'>
     <h5>Step 2 of 2 </h5>
 </div>
@@ -18,10 +22,18 @@
      {{ form|crispy }}<br/>
      
 <div class='text-center'>
-<button type='submit' class='btn-lg btn btn-success'> Launch your business </button>
+<button type='submit' class='btn-bg btn' style='background-color: #1daf9e; color:white;'> Launch your business </button>
 </div>
 <br/>
 </form>
 </div>
 </div>
+
+
+</div>
+</div>
+</div>
+
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="{% static 'js/vertical-nav.js' %}"></script>
 {% endblock %}

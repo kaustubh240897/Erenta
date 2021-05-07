@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import product_list_view,ProductDetailSlugView,ProductImageUpdateView,my_productsimageView,my_productsquantityView,ProductQuantityUpdateView
 from .views import category_product_view_1,sub_category_product_view,sub_sub_category_product_view
-from .views import sub_category_product_view_by_color,sub_sub_category_product_view_by_color,remove_rentalperiod
+from .views import sub_category_product_view_by_color,sub_sub_category_product_view_by_color,remove_rentalperiod,remove_variations,remove_quantity,remove_image,remove_tags
 
 
 
@@ -18,6 +18,10 @@ urlpatterns = [
     path('quantity/update/<int:id>/',ProductQuantityUpdateView.as_view(),name='quantityupdate'),
     path('image/update/<int:id>/',ProductImageUpdateView.as_view(),name='imageupdate'),
     path('remove/<int:id1>/<int:id>/',remove_rentalperiod,name='remove_rentalperiod'),
+    path('removevariations/<int:id1>/<int:id>/',remove_variations,name='remove_variations'),
+    path('removequantity/<int:id1>/<int:id>/',remove_quantity,name='remove_quantity'),
+    path('removeimage/<int:id1>/<int:id>/',remove_image,name='remove_image'),
+    path('removetags/<int:id1>/<int:id>/',remove_tags,name='remove_tags'),
     #path('other/<slug:slug>/',OtherDetailFormView.as_view(),name='other'), 
     path('category/<slug:slug>/',category_product_view_1 , name='query'),
     path('sub_category/<slug:slug>/',sub_category_product_view , name='query1'),

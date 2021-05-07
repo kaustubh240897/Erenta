@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product_description,ProductImage,Variation,Product_Refund
+from .models import Product_description,ProductImage,Variation,Product_Refund,Sub_Category,Category,Sub_Sub_Category
 from tags.models import Tag
 from carts.models import Quantity
 # from django.template.defaultfilters import filesizeformat
@@ -14,12 +14,38 @@ class ProductForm(forms.ModelForm):
         ('Osaka', 'Osaka'),
         ('Kyoto', 'Kyoto'),
                )
-    Current_City = forms.ChoiceField(choices=MY_CHOICES)
-    
-
     class Meta:
         model = Product_description
         fields = ['product_name','category','sub_category','sub_sub_category','brand','description','cost_per_day','discount_price','Current_City','image']
+    
+    # def clean(self):
+    #     category = self.cleaned_data.get("category")
+    #     qs = Category.objects.get(slug=category).id
+    #     sub_category = forms.ModelChoiceField(queryset= Sub_Category.objects.filter(category__id = qs))
+        
+    
+    Current_City = forms.ChoiceField(choices=MY_CHOICES)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['sub_category'].queryset = Sub_Category.objects.none()
+        self.fields['sub_sub_category'].queryset = Sub_Sub_Category.objects.none()
+
+        if 'category' in self.data:
+            try:
+                category_id = int(self.data.get('category'))
+                sub_category_id = int(self.data.get('sub_category'))
+                #qs = Category.objects.get(slug=category_slug).id
+                self.fields['sub_category'].queryset = Sub_Category.objects.filter(category_id=category_id)
+                self.fields['sub_sub_category'].queryset = Sub_Sub_Category.objects.filter(sub_category_id=sub_category_id)
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['sub_category'].queryset = self.instance.category.sub_category_set
+            self.fields['sub_sub_category'].queryset = self.instance.sub_category.sub_sub_category_set
+    
+    
+
+    
     
     
 

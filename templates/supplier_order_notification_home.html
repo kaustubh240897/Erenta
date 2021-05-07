@@ -1,50 +1,128 @@
 {% extends "supplier_base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% if supplier_order_notifications.count > 0 or low_quantity_notification.count > 0 or item_current_status.count > 0%}
+
 <h3 class='text-center'>Notifications</h3>
 <hr/>
 <div class='container' style='background-color: white;'>
-{% for n2 in supplier_order_notifications %}
 
-{% if n2.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} .</font> </a> <div class='text-right'>{{ n2.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} . </font> </a> <div class='text-right'>{{ n2.timestamp }} </div> </strong></li>
-</ul>
-{% endif %}
-{% endfor %}
+        <div class='row' style='background-color: #1daf9e;'>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'supplier_notification_page' %}">Supplier Notifications ({{ count }} unread)</a>
+                </div>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'low_quantity_notification_page' %}">Low quantity Notifications ({{ count1 }} unread)</a>
+                </div>
+                <div class='col-4'> 
+                <a style='color:white; text-decoration: none;' href="{% url 'supplier_order_current_status_notification_page' %}"> Order item's status Notifications ({{ count2 }} unread)</a>
+                </div>
+        </div>
+        {% if count > 0 or count1 > 0 or count2 > 0%}
+        {% if supplier_order_notifications %}
+        {% for n2 in supplier_order_notifications %}
 
-{% for n3 in low_quantity_notification %}
-{% if n3.seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font> </a><div class='text-right'>{{ n3.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font></a> <div class='text-right'>{{ n3.timestamp }} </div></strong></li>
-</ul>
-{% endif %}
-{% endfor %}
+        {% if n2.seen %}
+        <p><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} .</font> </a> <div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }} </div></p>
+        <hr/>
+        {% else %}
+        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_notification' n2.id %}"><font color='black'>Dear {{ n2.product.user.full_name }}, Congrates you received an Order of {{ n2.product }} {% for item in n2.cart.cartitem_set.all %}   {% if item.variations.all %}  {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %} . </font> </a> <div class='text-right' style='color:#1daf9e'>{{ n2.timestamp }} </div> </strong>
+                <hr/>
+        {% endif %}
+        {% endfor %}
+        {% if supplier_order_notifications.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if supplier_order_notifications.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ supplier_order_notifications.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in supplier_order_notifications.paginator.page_range %}
+                {% if supplier_order_notifications.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if supplier_order_notifications.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ supplier_order_notifications.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
+        {% endif %}
 
-{% for n4 in item_current_status %}
-{% if n4.supplier_seen %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></li>
-</ul>
-{% else %}
-<ul class="list-group">
-<li class="list-group-item list-group-item-dark"><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
-        {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right'>{{ n4.timestamp }} </div></strong></li>
-</ul>
-{% endif %}
+        {% if low_quantity_notification %}
+        {% for n3 in low_quantity_notification %}
+        {% if n3.seen %}
+        <p><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font> </a><div class='text-right' style='color:#1daf9e'>{{ n3.timestamp }} </div></p>
+        <hr/>
+        {% else %}
+        <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_quantity_notification' n3.id %}"><font color='black'>Dear {{ n3.product.user.full_name }}, You have only {{ n3.quantity }} {{ n3.product }} left, To Update now <a href='{% url "products:quantity" n3.product.slug %}'>Click here </a>. </font></a> <div class='text-right' style='color:#1daf9e'>{{ n3.timestamp }} </div></strong></p>
+        <hr/>
+        {% endif %}
+        {% endfor %}
 
+        {% if low_quantity_notification.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if low_quantity_notification.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ low_quantity_notification.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in low_quantity_notification.paginator.page_range %}
+                {% if low_quantity_notification.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if low_quantity_notification.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ low_quantity_notification.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
 
-{% endfor %}
+        {% endif %}
+
+        {% if item_current_status %}
+        {% for n4 in item_current_status %}
+        {% if n4.supplier_seen %}
+        <a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
+                {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right' style='color:#1daf9e'>{{ n4.timestamp }} </div></p>
+                <hr/>
+        {% else %}
+       <p><span class="badge badge-pill badge-warning">Unseen</span> <strong><a href="{% url 'notification:supplier_order_item_status' n4.id %}"><font color='black'>Dear {{ n4.product.user.full_name }}, Your product item {{ n4.product }} {% for item in n4.cart.cartitem_set.all %}   {% if item.variations.all %} 
+                {% for subitem in item.variations.all %}  {% if subitem.product.user == request.user %} {{ subitem.category|capfirst }} : {{ subitem.title|capfirst }} {% endif %} {% endfor %} {% endif %} {% endfor %}  is {{ n4.status }}, Thank you.</font></a><div class='text-right' style='color:#1daf9e'>{{ n4.timestamp }} </div></strong>
+                <hr/>
+        {% endif %}
+        {% endfor %}
+
+        {% if item_current_status.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                {% if item_current_status.has_previous %}
+                <li class='page-item'><a class='page-link' href="?page={{ item_current_status.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='current'>&laquo;</span></li>
+                {% endif %}
+                {% for i in item_current_status.paginator.page_range %}
+                {% if item_current_status.number == i %}
+                        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if item_current_status.has_next %}
+                <li class='page-item'><a class='page-link' href="?page={{ item_current_status.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class='page-item'><span class='step-links'>&raquo;</span></li>
+                {% endif %}
+                </ul>
+        {% endif %}
+
+        {% endif %}
 </div>
 {% else %}
 <h3>There is no new notifications.</h3>

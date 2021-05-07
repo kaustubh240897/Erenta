@@ -18,42 +18,52 @@
     body {
       background-color: #f7f7f7 !important;
     }
+    .scrolling-wrapper {
+    background-color: #fff;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+    .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+    }
   </style>
 </head>
 <body>
 <!-- partial:index.partial.html -->
  
     <div class="col">
-        <div class="container">
-            <div class="container p-0">
-              <div class="d-flex flex-row justify-content-around mt-2 pt-2" style="background-color: #fff">
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">申請</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">支払</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #e06a3b; color: #555555">発送</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">返送</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
-                </div>
-                <div class="col">
-                  <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
-                </div>
-              </div>
+      <div class="container d-flex pt-1 w-100">
+        <div class="container col-12 w-100">
+          <div class="scrolling-wrapper row flex-row flex-nowrap mt-2 pt-2" style="background-color: #fff">
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555;">申請</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">支払</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #e06a3b; color: #555555">発送</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">返送</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+            </div>
+            <div class="col">
+              <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
             </div>
           </div>
+        </div>
+      </div>
           <br/>
           {% if not paid %}
             <div class="container">
@@ -163,6 +173,21 @@
             
             </div>
           </div>
+
+          <div class="row p-3">
+            <div class="col col-md-2">
+              <p class="p-2" style="color: #1daf9e;" >Returned By</p>
+            </div>
+            <div class="col">
+              <p class="p-2" style="border-radius: 4px; color: #aaaaaa; font-weight: bold;">{{ item.end_date|date:"c" }}　23時59分</p>
+            </div>
+            <div class="col">
+            
+              <p class="p-2" style="border-radius: 4px; color: #e06a3b;">残り時間:{{ item.end_date|timeuntil }}</p>
+            
+            </div>
+          </div>
+
           <div class="row p-3">
             <div class="col col-md-2">
               <p class="p-2" style="color: #1daf9e;">数量</p>
@@ -371,11 +396,13 @@
        
      {% endif %}
     {% elif item.cancel_request and not item.cancel_granted %}
-   <b><font color='red'><p>** Cancel request has been initiated.</p> </font> </b>
+      <b><font color='red'><p>** Cancel request has been initiated.</p> </font> </b>
    {% elif item.cancel_granted %}
-   <b><font color='red'><p>** Cancellation has been done.</p> </font></b>
-        {% endif %}
-    
+    <b><font color='red'><p>** Cancellation has been done.</p> </font></b>
+    {% endif %}
+
+
+    {% if object.status != 'created' %}
       <div class="container">
         <div class="container p-0">
           <p class="py-3 mt-3" style="color: #555555; font-size: 130%; font-weight: bold;">取引メッセージ</p>
@@ -416,41 +443,77 @@
       <hr/>
       {% endif %}
       {% endfor %}
-      <form class='transaction-form'  method="POST" action='{{ request.build_absolute_uri }}'>
-        {% csrf_token %}
-      <div class="container mt-3">
-       
-          <!-- <p class="p-2" style="color: #68cfc3;">メッセージを書く</p> -->        
-            <input class="input" type="hidden" placeholder="id" required name="cart_id" value='{{ item.id }}'>
-            <input class="container input p-0 mb-3 pb-5" placeholder="メッセージを書く" style="color: #68cfc3; border-style: none; text-decoration: none;;" type="text"  required name="message" >  </input>      
-       
-      </div>
-      <div class="container">
-        <div class="d-flex flex-row justify-content-end">
-          <button class='py-2' style="background-color: #1daf9e; color: #fff; border-radius: 4px; text-decoration: none; border-style: none;" type='submit'>  メッセージを送信する</button>
+      
+        <form class='transaction-form'  method="POST" action='{{ request.build_absolute_uri }}'>
+          {% csrf_token %}
+        <div class="container mt-3">
+        
+            <!-- <p class="p-2" style="color: #68cfc3;">メッセージを書く</p> -->        
+              <input class="input" type="hidden" placeholder="id" required name="cart_id" value='{{ item.id }}'>
+              <input class="container input p-0 mb-3 pb-5" placeholder="メッセージを書く" style="color: #68cfc3; border-style: none; text-decoration: none;;" type="text"  required name="message" >  </input>      
+        
         </div>
-      </div>
-      </form>
+        <div class="container">
+          <div class="d-flex flex-row justify-content-end">
+            <button class='py-2' style="background-color: #1daf9e; color: #fff; border-radius: 4px; text-decoration: none; border-style: none;" type='submit'>  メッセージを送信する</button>
+          </div>
+        </div>
+        </form>
+      {% endif %}
       <br/>
 
 
     
-
-    {% endfor %}
+    {% if item.status == 'paid' %}
       <div class="container">
         <div class="container p-0 mt-3">
-          <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">商品を発送してください。</p>
+          <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">Your Payment is completed please wait untill product is shipped.</p>
         </div>
       </div>
       <div class="container">
         <div class="container p-0">
-          <p class="pb-3" style="color: #555555; font-size: 100%;">商品代金のお支払が完了しました。下記発送内容をご確認の上、期日までに商品を発送してください。</p>
+          <p class="pb-3" style="color: #555555; font-size: 100%;">Your order is complete please wait untill supplier shipped the item.</p>
         </div>
       </div>
+    {% elif item.status == 'shipped' and item.end_date > today %}
+    <div class="container">
+      <div class="container p-0 mt-3">
+        <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">It is during rental period.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="pb-3" style="color: #555555; font-size: 100%;">your rental period is from {{ item.start_date }} ~ {{ item.end_date }}. Please return on time Thankyou.</p>
+      </div>
+    </div>
+    {% elif item.status == 'shipped' and item.end_date <= today %}
+    <div class="container">
+      <div class="container p-0 mt-3">
+        <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">Your returned date is now.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="pb-3" style="color: #555555; font-size: 100%;"> Your return date is occured. Return the product now.</p>
+      </div>
+    </div>
+
+    {% elif item.status == 'returned back' %}
+    <div class="container">
+      <div class="container p-0 mt-3">
+        <p class="pb-3" style="color: #e06a3b; font-size: 130%; font-weight: bold;">Your trading is ended.</p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="container p-0">
+        <p class="pb-3" style="color: #555555; font-size: 100%;"> Your order is returned successfully.</p>
+      </div>
+    </div>
+    {% endif %}
 
     
       
-      
+    {% endfor %}  
       
       <div class="container mt-3">
         <div class="container p-0">
@@ -569,7 +632,9 @@
         </div>
       </div>
       <div class='text-center'>
+        {% if object.status != 'created' %}
         <a href="{% url 'pdf' object.order_id %}"> <button class='btn btn-primary'>Print Invoice!</button></a>
+        {% endif %}
         {% if object.refund_requested and not object.refund_granted %}
         <p> <strong>Status: Order is cancelled and refund is requested it will take 7 days to proceed. </strong></p>
         {% elif object.status == 'refunded' or object.refund_granted %}

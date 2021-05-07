@@ -7,12 +7,21 @@
 {% url 'register' as register_url %}
 {% url 'account:home' as account_url %}
 {% url 'supplier_notification_page' as supplier_notification_url %}
+
 <!-- {% url 'cart:home' as cart_url %} -->
-<header>
+<style>
+  @media only screen and (max-width: 600px) {
+                .marbot {
+                  margin-bottom: 4rem !important;
+              }
+              }
+ 
+</style>
+<header class='marbot'>
 
 <div class='container-fluid' style='background-color: white;'>
 
-<nav class="navbar navbar-light">
+<nav class="navbar navbar-light" id='navbar'>
   
 
 

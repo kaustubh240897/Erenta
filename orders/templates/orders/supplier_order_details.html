@@ -8,8 +8,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <title>CodePen - Hamburger Menu - HTML, CSS &amp; jQuery </title>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:700'><link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+  <title>Order detail </title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:700'>
+  <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
   <style media="screen">
 
 body {
@@ -63,159 +64,21 @@ body {
         border-style: none;
         
     }
+
+    .scrolling-wrapper {
+    background-color: #fff;
+    overflow-x: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    }
+    .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+    }
     
   </style>
 </head>
 <body>
-
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-6 col-lg-3 p-0 m-0">
-        <button class="hamburger">&#9776;</button>
-        <button class="cross">&#735;</button>
-        <div class="menu p-3">
-          <div class="row mb-2">
-            <div class="col-3 text-left">
-              <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important" src="pb_1.svg" alt="">
-            </div>
-            <div class="col text-left pt-1">
-              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">ニックネーム</p>
-              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">マイページ</p>
-            </div>
-          </div>
-          {% if request.user.is_authenticated %}
-          <ul>
-            <div class="row">
-              <div class="col">
-                <a class="text-white" href="{% url 'supplier_notification_page' %}">  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お知らせ</p> </a>
-              </div>
-              <div class="col-2 text-left">
-                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">{{ request.session.supplier_notification_count }} </p>
-              </div>
-            </div>
-          </ul>
-          {% endif %}
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
-            <a href="#"  style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">出品中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-          </ul>
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-          </ul>
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">よくある質問</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="m-0 p-0" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
-              </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
-              </div>
-            </a>
-          </ul>
-        </div>
-      </div>
 
 
 <div class="col">
@@ -299,32 +162,32 @@ body {
       </div>
     </div>
 <br/>
-<div class="container">
-  <div class="container p-0">
-    <div class="d-flex flex-row justify-content-around mt-2 pt-2" style="background-color: #fff">
+<div class="container d-flex pt-1 w-100">
+  <div class="container col-12 w-100">
+    <div class="scrolling-wrapper row flex-row flex-nowrap mt-2 pt-2" style="background-color: #fff">
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">申請</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555;">申請</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">支払</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">支払</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #e06a3b; color: #555555">発送</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #e06a3b; color: #555555">発送</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">受取</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">レンタル期間</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">返送</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">返送</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">受取</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">受取</p> </a>
       </div>
       <div class="col">
-        <a href="#" class="pt-2"> <p style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
+        <a href="#" class="pt-2"> <p class="text-nowrap" style="background-color: #f7f7f7; color: #555555">取引終了</p> </a>
       </div>
     </div>
   </div>
@@ -513,7 +376,7 @@ body {
                         event.preventDefault();
                     }"
                     
-                    class='btn btn-raised btn-primary btn-bg mt-2' title='If this Item is Shipped to the customer then click it' href=''>Update->Shipped </button>
+                    class='btn btn-raised btn-primary btn-bg mt-2' title='If this Item is Shipped to the customer then click it' href=''>Status->Shipped </button>
                 
                 
 
@@ -535,7 +398,7 @@ body {
                             event.preventDefault();
                         }"
                         
-                        class='btn btn-raised btn-primary btn-bg mx-2' title='If this Item is Returned back after completion of its rental period by customer then click it' href=''>Update->Retuned back </button>
+                        class='btn btn-raised btn-primary btn-bg mx-2 mt-2' title='If this Item is Returned back after completion of its rental period by customer then click it' href=''>Status->Retuned </button>
                     
                     {% elif object.status == 'returned back' %}
                         <div class='col-6 text-center'>
@@ -666,6 +529,8 @@ body {
     {% endfor %}
 
 </div> 
+
+
 
 
 <!-- partial -->

@@ -3,8 +3,9 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <br/>
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
 <head>
-<style media="screen">
+<!-- <style media="screen">
   body {
     background-color: #f7f7f7 !important;
   }
@@ -56,7 +57,7 @@
   ::-ms-input-placeholder { /* Microsoft Edge */
     color: #68cfc3;
   }
-</style>
+</style> -->
 </head>
 
 <body>
@@ -83,7 +84,7 @@
   <div class="container p-3">
 <div class='container' style='background-color:#ffffff ; color: black'>
     <div class="col-12 col-md-6 mx-auto">
-        {% if title %} <h2 class='my-3 text-center'>{{ title }}</h2> {% endif %}
+        {% if title %} <h2 class='my-3 py-3 text-center'>{{ title }}</h2> {% endif %}
        
 <form  method='POST' enctype="multipart/form-data" action='{% if action_url %} {{ action_url }}{% endif %}'>
      {% csrf_token %}
@@ -111,8 +112,8 @@
      <label for='email'>Email</label>
      <input type='text' class='form-control disabled' value='{{ request.user.email }}' disabled="disabled" /> <br/>
 <div class='text-center'>
-<button type='submit' class='btn-lg btn btn-success'> Save </button>
-<a href='{% url "password_change" %}' >Change Password?</a>
+<button type='submit' class='btn-lg btn' style='background-color: #e06a3b; color:#ffffff'> Save </button>
+<a href='{% url "password_change" %}' ><font color='#1daf9e'>Change Password?</font></a>
 </div>
 <br/>
 </form>
@@ -132,11 +133,13 @@
         <div class="col col-md-2">
           <p class="p-2" style="color: #1daf9e;" >カード{{ forloop.counter }}</p>
         </div>
+      </div>
+      <div class="row p-3">
         <div class="col">
           <p class="p-2" style="border-radius: 4px; color: #aaaaaa;">{{ card.brand }} {{ card.country }} ********{{ card.last4 }} {{ card.exp_month }}/{{ card.exp_year }}</p>
         </div>
-        <div class="col-1 text-center">
-          <a href='{% url "card_update_view" card.id %}'>  <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p></a>
+        <div class="col-3 text-right">
+          <a href='{% url "card_update_view" card.id %}'>  <button class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</button></a>
         </div>
       </div>
      
@@ -157,6 +160,8 @@
         <div class="col col-md-2">
           <p class="p-2" style="color: #1daf9e;">Address {{ forloop.counter }}</p>
         </div>
+      </div>
+      <div class="row p-3">
         <div class="col">
           <div class="d-flex flex-row justify-content-between">
             <div class="col">
@@ -168,8 +173,8 @@
            
           </div>
         </div>
-        <div class="col-1 text-center">
-          <a href='{% url "address_update_view" address.id %}'>  <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p> </a>
+        <div class="col-3 text-right">
+          <a href='{% url "address_update_view" address.id %}'>  <button class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</button> </a>
         </div>
       </div>
     </div>
@@ -186,18 +191,19 @@
         <div class="col">
           <p class="p-2" style="color: #555;">ニックネーム</p>
           <p class="mt-3 w-50" style="color: #555;">We promise quick and courteous transactions.
-We will show you the goods you have collected as a hobby.
-There is no problem with immediate purchase without confirmation comments.
-Discount
-We do not accept discounts for single items.
-In the case of summary, we will correspond depending on the contents.
-Extreme discounts are not available.
-Some products are not discounted.
-You may not be able to reply immediately
-I will reply as soon as I confirm.</p>
+              We will show you the goods you have collected as a hobby.
+              There is no problem with immediate purchase without confirmation comments.
+              Discount
+              We do not accept discounts for single items.
+              In the case of summary, we will correspond depending on the contents.
+              Extreme discounts are not available.
+              Some products are not discounted.
+              You may not be able to reply immediately
+              I will reply as soon as I confirm.</p>
         </div>
-        <div class="col-1 text-center mt-3">
-          <p class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</p>
+      
+        <div class="col-3 text-right mt-3">
+          <button class="p-2 mt-3" style="border-radius: 4px; border: solid 2px #1daf9e; color: #1daf9e; font-size: 80%;">変更</button>
         </div>
       </div>
     </div>

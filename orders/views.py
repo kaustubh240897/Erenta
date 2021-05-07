@@ -13,6 +13,7 @@ from products.models import Product_description
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
+from datetime import date
 from django.utils import timezone
 from django.conf import settings
 from django.views.generic import CreateView
@@ -39,12 +40,16 @@ class OrderListView(LoginRequiredMixin,ListView):
     model = Order
     template_name = 'orders/order_list.html'
     
-    # def get_queryset(self):
-    #     return Order.objects.by_request(self.request).not_created()
     
     def get_context_data(self, *args, **kwargs):
         context = super(OrderListView, self).get_context_data(*args, **kwargs)
-        queryset = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status = 'paid').not_created().distinct()
+        queryset = Order.objects.filter(billing_profile__email=self.request.user).not_created().distinct()
+        queryset1 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status = 'paid').not_created().distinct()
+        queryset2 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status = 'shipped').not_created().distinct()
+        queryset3 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__refund_requested = True).not_created().distinct()
+        queryset4 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status='returned back').not_created().distinct()
+        queryset5 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__cancel_request = True).not_created().distinct()
+        
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, 10)
         try:
@@ -55,6 +60,11 @@ class OrderListView(LoginRequiredMixin,ListView):
             products = paginator.page(paginator.num_pages)
         context['paid_orders'] = 'paid orders',
         context['products'] = products
+        context['paid_count'] = queryset1.count()
+        context['shipped_count'] = queryset2.count()
+        context['refund_count'] = queryset3.count()
+        context['complete_count'] = queryset4.count()
+        context['cancel_count'] = queryset5.count()
         return context
 
 class ShippedOrderListView(LoginRequiredMixin,ListView):
@@ -157,6 +167,7 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         context['title'] = 'Order Detail'
         context['paid'] = 'Paid'
         context['messages1'] = TransactionMessage.objects.filter(order_id=self.kwargs.get('order_id'))
+        context['today'] = date.today()
         #context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
         #context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=timezone.now() - datetime.timedelta(hours=24))
         #context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=timezone.now() - datetime.timedelta(hours=24))
@@ -211,119 +222,132 @@ class CreatedOrderDetailView(LoginRequiredMixin,DetailView):
             return qs.first()
         raise Http404
 
-class SupplierOrdersApplicationListView(LoginRequiredMixin,ListView):
-    model =  Order
-    template_name = 'orders/view_orders.html'
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super(SupplierOrdersApplicationListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user , order_confirmed='none', status='paid').distinct()
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['application_orders'] = "Your Applications",
-        context['products'] = products
-        return context
-
 class SupplierOrdersListView(LoginRequiredMixin,ListView):
     model =  Order
     template_name = 'orders/view_orders.html'
     
     def get_context_data(self, *args, **kwargs):
         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user ,order_confirmed='confirmed',status='paid').distinct()
+        queryset = CartItem.objects.filter(product__user=self.request.user).distinct()
+        queryset1 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'none', status = 'paid').distinct()
+        queryset2 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'confirmed', status = 'paid').distinct()
+        queryset3 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'confirmed', status = 'shipped').distinct()
+        queryset4 = CartItem.objects.filter(product__user=self.request.user, refund_requested=True).distinct()
+        queryset5 = CartItem.objects.filter(product__user=self.request.user, status='returned back',order_confirmed='confirmed').distinct()
+        queryset6 = CartItem.objects.filter(product__user=self.request.user, cancel_request=True).distinct()
         page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['paid_orders'] = "paid supplier orders",
-        context['products'] = products
+        paginator = Paginator(queryset, 50)
+        # try:
+        #     products = paginator.page(page)
+        # except PageNotAnInteger:
+        #     products = paginator.page(1)
+        # except EmptyPage:
+        #     products = paginator.page(paginator.num_pages)
+        context['title']  = "Orders"
+        context['application_orders'] = "Your Applications",
+        context['application_count'] = queryset1.count()
+        context['paid_count'] = queryset2.count()
+        context['shipped_count'] = queryset3.count()
+        context['refunded_count'] = queryset4.count()
+        context['complete_count'] = queryset5.count()
+        context['cancelled_count'] = queryset6.count()
+        context['products'] = queryset
         return context
 
-class ShippedSupplierOrdersListView(LoginRequiredMixin,ListView):
-    model =  Order
-    template_name = 'orders/view_orders.html'
+# class SupplierOrdersApplicationListView(LoginRequiredMixin,ListView):
+#     model =  Order
+#     template_name = 'orders/view_orders.html'
     
-    def get_context_data(self, *args, **kwargs):
-        context = super(ShippedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, status='shipped',order_confirmed='confirmed').distinct()
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['shipped_orders'] = 'shipped suplier orders',
-        context['products'] = products
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
+#         queryset = CartItem.objects.filter(product__user=self.request.user ,order_confirmed='confirmed',status='paid').distinct()
+#         page = self.request.GET.get('page', 1)
+#         paginator = Paginator(queryset, 10)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context['paid_orders'] = "paid supplier orders",
+#         context['products'] = products
+#         return context
 
-class RefundedSupplierOrdersListView(LoginRequiredMixin,ListView):
-    model =  Order
-    template_name = 'orders/view_orders.html'
+# class ShippedSupplierOrdersListView(LoginRequiredMixin,ListView):
+#     model =  Order
+#     template_name = 'orders/view_orders.html'
     
-    def get_context_data(self, *args, **kwargs):
-        context = super(RefundedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, refund_requested=True).distinct()
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['refunded_orders'] = 'refunded supplier oders',
-        context['products'] = products
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(ShippedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
+#         queryset = CartItem.objects.filter(product__user=self.request.user, status='shipped',order_confirmed='confirmed').distinct()
+#         page = self.request.GET.get('page', 1)
+#         paginator = Paginator(queryset, 10)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context['shipped_orders'] = 'shipped suplier orders',
+#         context['products'] = products
+#         return context
 
-class ReturnedSupplierOrdersListView(LoginRequiredMixin,ListView):
-    model =  Order
-    template_name = 'orders/view_orders.html'
+# class RefundedSupplierOrdersListView(LoginRequiredMixin,ListView):
+#     model =  Order
+#     template_name = 'orders/view_orders.html'
     
-    def get_context_data(self, *args, **kwargs):
-        context = super(ReturnedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, status='returned back',order_confirmed='confirmed').distinct()
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['returned_orders'] = 'returned supplier orders',
-        context['products'] = products
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(RefundedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
+#         queryset = CartItem.objects.filter(product__user=self.request.user, refund_requested=True).distinct()
+#         page = self.request.GET.get('page', 1)
+#         paginator = Paginator(queryset, 10)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context['refunded_orders'] = 'refunded supplier oders',
+#         context['products'] = products
+#         return context
 
-class CancelSupplierOrdersListView(LoginRequiredMixin,ListView):
-    model =  Order
-    template_name = 'orders/view_orders.html'
+# class ReturnedSupplierOrdersListView(LoginRequiredMixin,ListView):
+#     model =  Order
+#     template_name = 'orders/view_orders.html'
     
-    def get_context_data(self, *args, **kwargs):
-        context = super(CancelSupplierOrdersListView, self).get_context_data(*args, **kwargs)
-        queryset = CartItem.objects.filter(product__user=self.request.user, cancel_request=True).distinct()
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context['cancelled_orders'] = 'cancelled supplier orders',
-        context['products'] = products
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(ReturnedSupplierOrdersListView, self).get_context_data(*args, **kwargs)
+#         queryset = CartItem.objects.filter(product__user=self.request.user, status='returned back',order_confirmed='confirmed').distinct()
+#         page = self.request.GET.get('page', 1)
+#         paginator = Paginator(queryset, 10)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context['returned_orders'] = 'returned supplier orders',
+#         context['products'] = products
+#         return context
+
+# class CancelSupplierOrdersListView(LoginRequiredMixin,ListView):
+#     model =  Order
+#     template_name = 'orders/view_orders.html'
+    
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(CancelSupplierOrdersListView, self).get_context_data(*args, **kwargs)
+#         queryset = CartItem.objects.filter(product__user=self.request.user, cancel_request=True).distinct()
+#         page = self.request.GET.get('page', 1)
+#         paginator = Paginator(queryset, 10)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context['cancelled_orders'] = 'cancelled supplier orders',
+#         context['products'] = products
+#         return context
 
 
 class SupplierOrderDetailView(LoginRequiredMixin,DetailView):

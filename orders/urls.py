@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view,update_status_to_shipped_view,update_status_to_returned_view,ShippedOrderListView,RefundedOrderListView,ReturnedOrderListView,CancelOrderListView,ShippedSupplierOrdersListView,RefundedSupplierOrdersListView,ReturnedSupplierOrdersListView,CancelSupplierOrdersListView,track_item_user_view,supplier_cancellation_order_view,SupplierOrdersApplicationListView,confirm_order_view,reject_order_view
+from .views import OrderListView, OrderDetailView,SupplierOrdersListView,SupplierOrderDetailView,add_coupon,CreatedOrderDetailView,CreatedOrderView,shipping_address_update_view,billing_address_update_view,update_status_to_shipped_view,update_status_to_returned_view,ShippedOrderListView,RefundedOrderListView,ReturnedOrderListView,CancelOrderListView,track_item_user_view,supplier_cancellation_order_view,confirm_order_view,reject_order_view
 
 urlpatterns = [
    
@@ -13,11 +13,11 @@ urlpatterns = [
     path('created/', CreatedOrderView.as_view(), name='created'),
     path('created/<order_id>/', CreatedOrderDetailView.as_view(), name='createddetail'),
     path('orders/',SupplierOrdersListView.as_view(),name='orders'),
-    path('orders/application',SupplierOrdersApplicationListView.as_view(),name='ordersapplication'),
-    path('orders/shipped/', ShippedSupplierOrdersListView.as_view(), name='shippedsupplierorders'),
-    path('orders/refunded/', RefundedSupplierOrdersListView.as_view(), name='refundedsupplierorders'),
-    path('orders/returned/', ReturnedSupplierOrdersListView.as_view(), name='returnedsupplierorders'),
-    path('orders/cancelled/', CancelSupplierOrdersListView.as_view(), name='cancelsupplierorders'),
+    # path('orders/application',SupplierOrdersApplicationListView.as_view(),name='ordersapplication'),
+    # path('orders/shipped/', ShippedSupplierOrdersListView.as_view(), name='shippedsupplierorders'),
+    # path('orders/refunded/', RefundedSupplierOrdersListView.as_view(), name='refundedsupplierorders'),
+    # path('orders/returned/', ReturnedSupplierOrdersListView.as_view(), name='returnedsupplierorders'),
+    # path('orders/cancelled/', CancelSupplierOrdersListView.as_view(), name='cancelsupplierorders'),
     path('orders/detail/<id>/', SupplierOrderDetailView.as_view(), name='supplierorderdetail'),
     path('trackitem/<cart_id>/<order_id>', track_item_user_view, name='user_item_tracker'),
     path('add_coupon/<cart>/',add_coupon,name='add-coupon'),
