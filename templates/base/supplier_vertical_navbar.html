@@ -54,7 +54,7 @@
         </ul>
         <ul>
           <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
-          <a href="#"  style="height: 50px;">
+          <a href='{% url "addproductdetails" %}'  style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
@@ -64,40 +64,31 @@
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          <a href='{% url "myproduct" %}' style="height: 50px;">
             <div class="row">
               <div class="col">
-                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">出品中のアイテム</p>
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">Update products</p>
               </div>
               <div class="col-2 text-left">
                 <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          <a href='{% url "orders:orders" %}' style="height: 50px;">
             <div class="row">
               <div class="col">
-                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">My Orders</p>
               </div>
               <div class="col-2 text-left">
                 <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
-            <div class="row">
-              <div class="col">
-                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
-              </div>
-              <div class="col-2 text-left">
-                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-              </div>
-            </div>
-          </a>
+          
         </ul>
         <ul>
           <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
-          <a href="#" style="height: 50px;">
+          <a href="{% url 'account:home' %}" style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
@@ -107,7 +98,7 @@
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          <a href="{% url 'account:home' %}" style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
@@ -120,7 +111,7 @@
         </ul>
         <ul>
           <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
-          <a href="#" style="height: 50px;">
+          <a href='{% url "supplier-sales-analytics" %}' style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
@@ -130,13 +121,20 @@
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          <a href='{% url "businessdetailupdate" %}' style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
               </div>
               <div class="col-2 text-left">
                 <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "bankdetailupdate" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">Change Bank details</p>
               </div>
             </div>
           </a>
@@ -150,7 +148,7 @@
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          <a href="{% url 'contact' %}" style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
@@ -160,7 +158,8 @@
               </div>
             </div>
           </a>
-          <a href="#" style="height: 50px;">
+          
+          <a href="{% url 'logout' %}" style="height: 50px;">
             <div class="row">
               <div class="col">
                 <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
