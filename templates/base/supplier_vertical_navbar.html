@@ -8,154 +8,325 @@
   @media only screen and (min-width: 600px) {
                 .pdtop {
                   padding-top: 2rem !important;
-                  padding-bottom: 25rem;
+                  /* padding-bottom: 10rem; */
               }
               }
  
 </style>
 <div class="container-fluid pdtop">
-    <div class="row">
-      <div class="col-xs-6 col-lg-3 p-0 m-0">
-        <button class="hamburger">&#9776;</button>
-        <button class="cross">&#735;</button>
-        <div class="menu p-3">
-          <div class="row mb-2">
-            <div class="col-3 text-left">
-              <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important" src="pb_1.svg" alt="">
+  <div class="row">
+    <div class="col-xs-6 col-lg-3 p-0 m-0 d-lg-none">
+      <button class="hamburger pl-1 pr-1">&#9776;</button>
+      <button class="cross pl-1 pr-1">&#735;</button>
+      <div class="menu p-3">
+        <div class="row mb-2">
+          <div class="col-3 text-left">
+            {% if request.user.is_authenticated %}
+            {% if request.user.profile_image %}
+            <a href="{% url 'accounts:user-update' %}"> <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important;" src="{{ user.profile_image.url }}"
+                  alt="avatar image" height="50" width="50" />
+            </a>
+            {% else %}
+           <a href="{% url 'accounts:user-update' %}"><img src='{% static "img/images.jpg" %}' class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important;"
+                  alt="avatar image" height="50" width="50" /> </a>
+            {% endif %}
+          {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> Log In</a>
+          {% endif %}
+
+          </div>
+          <div class="col text-left pt-1">
+            {% if request.user.is_authenticated %}
+              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">{{ request.user.full_name }}</p>
+            {% endif %}
+            <a href='{% url "myproduct" %}'><p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">マイページ</p> </a>
+          </div>
+        </div>
+        <ul>
+          <div class="row">
+            <div class="col">
+             <a href='{% url "supplier_order_current_status_notification_page" %}'> <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お知らせ</p> </a>
             </div>
-            <div class="col text-left pt-1">
-              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">ニックネーム</p>
-              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">マイページ</p>
+            <div class="col-2 text-left">
+              <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">{{ request.session.supplier_notification_count }}</p>
             </div>
           </div>
-          <ul>
+        </ul>
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
+          <a href="#"  style="height: 50px;">
             <div class="row">
               <div class="col">
-                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お知らせ</p>
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
               </div>
               <div class="col-2 text-left">
-                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">20</p>
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
             </div>
-          </ul>
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
-            <a href="#"  style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">出品中のアイテム</p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">出品中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
-                </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
               </div>
-            </a>
-          </ul>
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
-            </a>
-          </ul>
-          <ul>
-            <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
-                </div>
+            </div>
+          </a>
+        </ul>
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">よくある質問</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="m-0 p-0" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
-                </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
               </div>
-            </a>
-            <a href="#" style="height: 50px;">
-              <div class="row">
-                <div class="col">
-                  <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
-                </div>
-                <div class="col-2 text-left">
-                  <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
-                </div>
+            </div>
+          </a>
+        </ul>
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
               </div>
-            </a>
-          </ul>
-        </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">よくある質問</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="m-0 p-0" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
+              </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+        </ul>
       </div>
+    </div>
+    <div class="col-lg-3 p-0 m-0 d-none d-lg-block">
+      <div class="container p-3" style="background: #555;">
+        <div class="row mb-2">
+          <div class="col-3 text-left">
+            {% if request.user.is_authenticated %}
+            {% if request.user.profile_image %}
+            <a href="{% url 'accounts:user-update' %}"> <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important;" src="{{ user.profile_image.url }}"
+                  alt="avatar image" height="50" width="50" />
+            </a>
+            {% else %}
+           <a href="{% url 'accounts:user-update' %}"><img src='{% static "img/images.jpg" %}' class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px; border-radius: 50% !important;"
+                  alt="avatar image" height="50" width="50" /> </a>
+            {% endif %}
+          {% else %}
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="far fa-user mr-1"></i> Log In</a>
+          {% endif %}
+          </div>
+          {% if request.user.is_authenticated %}
+          <div class="col text-left pt-1">  
+              <p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">{{ request.user.full_name }}</p>
+            <a href='{% url "myproduct" %}'><p class="p-0 m-0" style="font-weight: normal; color: #ffffff;">マイページ</p> </a>
+          </div>
+        </div>
+        <ul>
+          <div class="row">
+            <div class="col">
+              <a href='{% url "supplier_order_current_status_notification_page" %}'> <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お知らせ</p> </a>
+            </div>
+            <div class="col-2 text-left">
+              <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">{{ request.session.supplier_notification_count }}</p>
+            </div>
+          </div>
+        </ul>
+        {% endif %}
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">貸し出す</p>
+          <a href='{% url "addproductdetails" %}'  style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">アイテムを出品する</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "myproduct" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">Update Products</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "orders:orders" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">My Orders</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          
+        </ul>
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">借りる</p>
+          <a href="{% url 'account:home' %}" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">取引中のアイテム</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          <a href="{% url 'account:home' %}" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">過去の取引</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+        </ul>
+        <ul>
+          <p class="p-0 m-0 my-2" style="font-weight: bold; color: #ffffff;">設定・その他</p>
+          <a href='{% url "supplier-sales-analytics" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">売上げ金管理</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"></p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "businessdetailupdate" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">登録情報の確認・変更</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "bankdetailupdate" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">Change Bank details</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href="#" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">よくある質問</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="m-0 p-0" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%">2</p>
+              </div>
+            </div>
+          </a>
+          <a href='{% url "contact" %}' style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">お問い合せ</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+          <a href="{% url 'logout' %}" style="height: 50px;">
+            <div class="row">
+              <div class="col">
+                <p class="p-0 py-1 m-0" style="font-weight: normal; color: #ffffff;">ログアウト</p>
+              </div>
+              <div class="col-2 text-left">
+                <p class="mt-2" style="width: 30px; background-color: #e06a3b; border-radius: 50% !important; color: #fff; text-align: center; font-size: 75%"> </p>
+              </div>
+            </div>
+          </a>
+        </ul>
+      </div>
+    </div>
+  

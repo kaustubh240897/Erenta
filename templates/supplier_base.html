@@ -11,7 +11,7 @@
     {% include 'base/css.html' %}
     
     {% include 'base/supplier_navbar.html' with brand_name='ShopNow' %}
-    {% include 'base/supplier_vertical_navbar.html' %}
+    
     {% block base_head %} {% endblock %}
     
    
@@ -33,7 +33,7 @@
    
 
     
-     
+    {% include 'base/supplier_vertical_navbar.html' %}   
     {% block content %}
 
     {% endblock %}

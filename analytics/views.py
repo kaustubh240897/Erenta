@@ -68,7 +68,7 @@ class SalesView(LoginRequiredMixin,TemplateView):
         today_data = qs.by_range(start_date, end_date=end_date).get_sales_breakdown()
         context['today'] = today_data
         context['this_week'] = qs.by_weeks_range(weeks_ago=1,number_of_weeks=1).get_sales_breakdown()
-        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown()
+        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=4, number_of_weeks=4).get_sales_breakdown()
         
         return context
 
@@ -135,7 +135,7 @@ class Supplier_SalesView(LoginRequiredMixin,TemplateView):
         today_data = qs.by_range(start_date, end_date=end_date).get_sales_breakdown_supplier()
         context['today'] = today_data
         context['this_week'] = qs.by_weeks_range(weeks_ago=1,number_of_weeks=1).get_sales_breakdown_supplier()
-        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=5, number_of_weeks=4).get_sales_breakdown_supplier()
+        context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=4, number_of_weeks=4).get_sales_breakdown_supplier()
         
         return context
 
