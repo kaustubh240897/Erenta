@@ -87,7 +87,6 @@
       </div>
       <div id="content_tab1" class="container collapse show">
         <div id="infList" class="container p-0 greenBorder pt-3"  style="background: #fff">
-
           {% for object in products %}
             {% if object.product.user == request.user %}
             {% if object.order_confirmed == 'none' and object.status == 'paid' %}

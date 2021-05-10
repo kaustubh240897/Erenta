@@ -27,6 +27,7 @@ from products.models import  Variation
 from accounts.models import GuestEmail
 from accounts.forms import LoginForm, GuestForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core import serializers
 # Create your views here.
 
 import stripe
@@ -229,6 +230,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(SupplierOrdersListView, self).get_context_data(*args, **kwargs)
         queryset = CartItem.objects.filter(product__user=self.request.user).distinct()
+        qs_json = serializers.serialize('json', queryset)
         queryset1 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'none', status = 'paid').distinct()
         queryset2 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'confirmed', status = 'paid').distinct()
         queryset3 = CartItem.objects.filter(product__user=self.request.user, order_confirmed = 'confirmed', status = 'shipped').distinct()
@@ -252,6 +254,7 @@ class SupplierOrdersListView(LoginRequiredMixin,ListView):
         context['complete_count'] = queryset5.count()
         context['cancelled_count'] = queryset6.count()
         context['products'] = queryset
+        context['qs_json'] = qs_json
         return context
 
 # class SupplierOrdersApplicationListView(LoginRequiredMixin,ListView):
