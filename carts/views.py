@@ -10,7 +10,7 @@ from addresses.forms import AddressForm
 from addresses.models import Address
 from billing.models import BillingProfile,Card
 from notification.models import Notification,Order_Notification,Supplier_Order_Notification
-from products.models import Product_description, Variation
+from products.models import Product_description, Variation, Category, Sub_Category, Sub_Sub_Category
 from orders.models import Order,Low_Quantity_Notification
 from accounts.models import GuestEmail
 import datetime
@@ -73,7 +73,7 @@ def cart_home(request):
     else:
         cart_obj=None
 
-    return render(request,"carts/view.html", {"cart" : cart_obj})
+    return render(request,"carts/view.html", {"cart" : cart_obj, "category_images": Category.objects.all(), "sub_categorys": Sub_Category.objects.all(), "sub_sub_categorys": Sub_Sub_Category.objects.all()})
 
 # def update_cart(request,slug):
 #     request.session.set_expiry(1200000)
@@ -344,7 +344,10 @@ def checkout_home(request):
         "address_qs" : address_qs,
         "has_card"   : has_card,
         "publish_key": STRIPE_PUB_KEY,
-        "couponform" : CouponForm()
+        "couponform" : CouponForm(),
+        "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
         
     }
     return render(request,"carts/checkout.html", context)
@@ -354,7 +357,7 @@ def checkout_home(request):
 def checkout_done_view(request):
     request.session['supplier_notification_count']=Supplier_Order_Notification.objects.filter(cart__cartitem__product__user=request.user,status='paid', viewed=False).count() + Low_Quantity_Notification.objects.filter(product__user=request.user,viewed=False).count()
     
-    return render(request, "carts/checkout-done.html", {})
+    return render(request, "carts/checkout-done.html", {"category_images": Category.objects.all(), "sub_categorys": Sub_Category.objects.all(), "sub_sub_categorys": Sub_Sub_Category.objects.all()})
 
 
     # cart_id = request.build_absolute_uri().split('/')

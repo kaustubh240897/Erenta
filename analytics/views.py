@@ -6,7 +6,7 @@ from django.db.models import Count,Avg,Sum
 from django.views.generic import TemplateView,View
 from django.shortcuts import render
 from orders.models import Order
-from products.models import Product_description
+from products.models import Product_description,Category,Sub_Category,Sub_Sub_Category
 from .models import ObjectViewed,View_Count
 from django.utils import timezone
 from datetime import timedelta
@@ -69,6 +69,9 @@ class SalesView(LoginRequiredMixin,TemplateView):
         context['today'] = today_data
         context['this_week'] = qs.by_weeks_range(weeks_ago=1,number_of_weeks=1).get_sales_breakdown()
         context['last_four_weeks'] = qs.by_weeks_range(weeks_ago=4, number_of_weeks=4).get_sales_breakdown()
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         
         return context
 

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .forms import ContactForm
-from products.models import Product_description,Contact,Subscribers,Category
+from products.models import Product_description,Contact,Subscribers,Category,Sub_Category,Sub_Sub_Category
 from accounts.models import Crousel
 from orders.models import Order,Low_Quantity_Notification
 from carts.models import CartItem
@@ -42,6 +42,8 @@ def home_page(request):
        "trending": View_Count.objects.all().filter(product__Current_City__iexact=c)[:8],
        "crousel_images": Crousel.objects.all(),
        "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
       
     }
     
@@ -58,7 +60,10 @@ def home_redirect(request):
 def about_page(request):
     context = {
        "title":"About",
-       "content":"welcome to about page"
+       "content":"welcome to about page",
+       "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
     return render(request,"home_page.html",context)
 
@@ -88,6 +93,9 @@ def notification_page(request):
        "count": Notification.objects.filter(user=request.user, viewed=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, viewed=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, viewed=False).count(),
+       "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
     return render(request,"notification_home.html",context)
 
@@ -116,6 +124,9 @@ def order_notification_page(request):
        "count": Notification.objects.filter(user=request.user, seen=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
+       "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
     return render(request,"notification_home.html",context)
 
@@ -142,6 +153,9 @@ def order_current_status_notification_page(request):
        "count": Notification.objects.filter(user=request.user, seen=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
+       "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
     return render(request,"notification_home.html",context)
 
@@ -235,6 +249,9 @@ def contact_page(request):
        "title":"Contact",
        "content":"welcome to contact page",
         "form": contact_form ,
+        "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
 
     

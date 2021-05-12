@@ -33,18 +33,10 @@
     			<div class="slider-one carr1">
             {% for crousel_image in crousel_images %}
             <div>
-    					<img src='{{ crousel_image.image.url }}' class="img-fluid carr1" alt="Banner 1" />
+    					<img src='{{ crousel_image.image.url }}' class="img-fluid carr1" alt="Banner" />
     				</div>
             {% endfor %}
-    				<div>
-    					<img src="{% static 'img/b.jpg' %}" class="img-fluid carr1" alt="Banner 1" />
-    				</div>
-    				<div>
-    					<img src="{% static 'img/furniture.jpg' %}" class="img-fluid carr1" alt="Banner 2" />
-    				</div>
-    				<div>
-    					<img src="{% static 'img/clothing.jpg' %}" class="img-fluid carr1" alt="Banner 3" />
-    				</div>
+    				
     			</div>
 
     			<div class="slider-btn">
@@ -94,41 +86,12 @@
             {% for category_image in category_images %}
             {% if category_image.image %}
             <div class="col-md-4 col-lg-4 text-center">
-              <a href="{% url 'products:query1' category_image.slug %}"> <img src='{{ category_image.image.url }}' class="responsive carr" alt="Product 1"/></a>
+              <a href="{% url 'products:query' category_image.slug %}"> <img src='{{ category_image.image.url }}' class="responsive carr" alt="Product"/></a>
                <b>{% trans category_image.title %}</b>
              </div>
              {% endif %}
              {% endfor %}
 
-    				<div class="col-md-4 col-lg-4 text-center">
-             <a href="{% url 'products:query1' 'playstations' %}"> <img src="{% static 'img/videogame.jpg' %}" class="responsive carr" alt="Product 1"/></a>
-              <b>{% trans "Playstation" %}</b>
-    				</div>
-    				<div class="col-md-4 col-lg-4 text-center">
-            	<a href="{% url 'products:query1' 'menaccessories' %}"> <img src="{% static 'img/accessories.jpg' %}" class="responsive carr" alt="Product 2"/></a>
-               <b>{% trans "Accessories" %}</b>
-    				</div>
-    				<div class="col-md-4 col-lg-4 text-center">
-            	<a href="{% url 'products:query' 'booksnovels' %}"> <img src="{% static 'img/books.jpg' %}" class="responsive carr" alt="Product 3"/></a>
-               <b>{% trans "Books" %}</b>
-    				</div>
-    				<div class="col-md-4 col-lg-4 text-center">
-            	<a href="{% url 'products:query1' 'menclothing' %}"> <img src="{% static 'img/clothing.jpg' %}" class="responsive carr" alt="Product 4"/></a>
-               <b>{% trans "Clothing" %}</b>
-    				</div>
-    				<div class="col-md-4 col-lg-4 text-center">
-             <a href="{% url 'products:query' 'electronics' %}"> <img src="{% static 'img/electronics.jpg' %}" class="responsive carr" alt="Product 5"/></a>
-               <b>{% trans "Electronics" %}</b>
-    				</div>
-            
-            <div class="col-md-4 col-lg-4 text-center">
-             <a href="{% url 'products:query' 'furniture' %}"><img src="{% static 'img/furniture.jpg' %}" class="responsive carr" alt="Product 7"/> </a>
-               <b>{% trans "Furniture" %}</b>
-            </div>
-            <div class="col-md-4 col-lg-4 text-center">
-            	 <a href="{% url 'products:query' 'music' %}"> <img src="{% static 'img/music.jpg' %}" class="responsive carr" alt="Product 8"/></a>
-               <b>{% trans "Music" %}</b>
-    				</div>
     			</div>
     			<div class="slider-btn" style="color:brown">
     				<span class="prev position-top"><i class="fas fa-chevron-left fa-2x text-secondry"></i> </span>

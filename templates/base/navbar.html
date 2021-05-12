@@ -472,108 +472,51 @@ ul.social-icons li {
         {% endif %}
         </li>
        
+
         <li class="nav-item dropdown">
-                 <a class="nav-link dropdown-toggle"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {% trans "CATEGORIES" %}
-                    </a>
-                                <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
-                                  
-                                       <li class="dropdown-submenu">
-                                        
-                                        <a class="dropdown-item"  tabindex="-1" href="{% url 'products:query' 'men' %}">  <img class='img10' src="{% static 'img/videogame.jpg' %}" alt="Avatar">
-                                            MEN
-                                        </a>
-                                        
-                                        <ul class="dropdown-menu">
-                                          <li><a class="dropdown-item" tabindex="-1" href="#">Accessories</a></li>
-                                            <li class='dropdown-submenu'>
-                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menclothing' %}">
-                                                Clothing
-                                              </a>
-                                            <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'blazers' %}">Blazer</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'suits' %}">Suit</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'menfootwear' %}">
-                                                    Footwear
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'menshoes' %}">Shoes</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a></li>
-                                                </ul>
-                                            </li>
-                                            
-                                           
-                                        </ul>
-                                    </li>
-                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'booksnovels' %}"><img class='img10' src="{% static 'img/books.jpg' %}" alt="Avatar">Books</a></li>
-                                     
-                                    
-                                   
+          <a class="nav-link dropdown-toggle"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           {% trans "CATEGORIES" %}
+          </a>
+             
+                         <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
+                          {% for category in category_images %}
 
-                                    <li class='dropdown-submenu'><a class="dropdown-item" tabindex="1" href="{% url 'products:query' 'electronics' %}"><img class='img10' src="{% static 'img/electronics.jpg' %}" alt="Avatar">Electronics
-
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                            <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'fitnessband' %}">
-                                                Fitness band
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'laptops' %}">
-                                                Laptops
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'mobiles' %}">
-                                                Mobiles
-                                              </a>
-                                              </li>
-                                              <li>
-                                              <a class="dropdown-item" tabindex="1" href="{% url 'products:query1' 'playstations' %}">
-                                                Playstations
-                                              </a>
-                                              </li>
-                                    </ul>
-
-                                  </li>
-                                   <li class="dropdown-submenu">
-                                        <a class="dropdown-item" tabindex="-1" href="{% url 'products:query' 'women' %}"><img class='img10' src="{% static 'img/music.jpg' %}" alt="Avatar">
-                                            WOMEN
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" tabindex="-1" href="#">Footwear</a></li>
-                                            <li class='dropdown-submenu'>
-                                              <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenclothing' %}">
-                                                Women's clothing
-                                              </a>
-                                          
-                                            <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item"  tabindex="-1"href="{% url 'products:query2' 'womenjackets' %}">Jackets</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womendresses' %}">Dresses</a></li>
-                                                </ul>
-                                            </li>
-                                            <li class="dropdown-submenu">
-                                                <a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' 'womenaccessories' %}">
-                                                    Women's Accessories
-                                                </a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenhandbags' %}">Handbag</a></li>
-                                                    <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' 'womenwatches' %}">Watch</a></li>
-                                                </ul>
-                                            </li>
-                                          
-                                           
-                                        </ul>
-                                    </li>
-                                   
+                                <li class="dropdown-submenu">
                                  
-                                   
-                                </ul>
-        </li>
+                                 <a class="dropdown-item"  tabindex="-1" href="{% url 'products:query' category.slug %}">  <img class='img10' src='{{ category.image.url }}' alt="Avatar">
+                                     {{ category.title }}
+                                 </a>
+                                 
+                                 <ul class="dropdown-menu">
+                                   {% for sub_category in sub_categorys %}
+                                    {% if category.slug == sub_category.category.slug %}
+                                   <li class='dropdown-submenu'><a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }}</a>
+                                    <ul class="dropdown-menu">
+                                      {% for sub_sub_category in sub_sub_categorys %}
+                                        {% if sub_category.slug == sub_sub_category.sub_category.slug %}
+                                      <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' sub_sub_category.slug %}">{{ sub_sub_category.title }}</a></li>
+                                        {% endif %}
+                                      {% endfor %}
+                                    
+                                      
+                                  </ul>
+                                  </li>
+                                     
+                                  {% endif %}     
+                                {% endfor %}    
+                                 </ul>
+                             </li>
+                            {% endfor %}
+                          </ul>
+      </li>
+                            
+
+
+
+
+
+
+
           {% if request.user.is_authenticated %}
         <li class="nav-item dropdown {% if request.path == account_url or request.path == about_url %}active {% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -590,7 +533,7 @@ ul.social-icons li {
          <li class="nav-item {% if request.path == product_list_url %}active {% endif %}">
           <a class="nav-link" href="{{ product_list_url }}">{% trans "COLLECTION" %}</a>
         </li>
-        <li class="nav-item {% if request.path == conttact_url %}active {% endif %}">
+        <li class="nav-item {% if request.path == contact_url %}active {% endif %}">
           <a class="nav-link" href="{% url 'contact' %}">{% trans "CONTACT" %}</a>
         </li>
        
@@ -703,99 +646,36 @@ ul.social-icons li {
 
   <h6 class="text-uppercase mb-1">{% trans "Categories" %}</h6>
   <ul class="list-unstyled components mb-3">
+    {% for category in category_images %}
     <li>
-      <a href="{% url 'products:query' 'men' %}">Men</a>
+      <a href="{% url 'products:query' category.slug %}"><b>{{ category.title }} </b></a>
       <ul class=" mb-6">
-        <li>
-      <a href="{% url 'products:query1' 'menclothing' %}">Men's Clothing</a>
-      <ul class='mb-9'>
-        <li>
-           <a href="{% url 'products:query2' 'blazers' %}">Blazer</a>
-        </li>
-        <li>
-           <a href="{% url 'products:query2' 'suits' %}">Suit</a>
-        </li>
-      </ul>
-      </li>
-       <li>
-      <a href="#">Men's Accessories</a>
-      </li>
-       <li>
-      <a href="{% url 'products:query1' 'menfootwear' %}">Footwear</a>
-      <ul class="mb-9">
-        <li>
-           <a href="{% url 'products:query2' 'menshoes' %}">Shoes</a>
-        </li>
-        <li>
-           <a href="{% url 'products:query2' 'mensneakers' %}">Sneakers</a>
-        </li>
-      </ul>
-      </li>
-      </ul>
-    </li>
-    <li>
-      <a href="{% url 'products:query' 'women' %}">Women</a>
-       <ul class=" mb-6">
-        <li>
-      <a href="{% url 'products:query1' 'womenclothing' %}">Women's Clothing</a>
-        <ul class='mb-9'>
-          <li>
-           <a href="{% url 'products:query2' 'womendreeses' %}">Dresses</a>
-        </li>
-        <li>
-           <a href="{% url 'products:query2' 'womenjackets' %}">Jackets</a>
-        </li>
-        </ul>
-      </li>
-       <li>
-      <a href="{% url 'products:query1' 'womenaccessories' %}">Women's Accessories</a>
-      <ul class='mb-9'>
-        <li>
-           <a href="{% url 'products:query2' 'womenhandbags' %}">Handbags</a>
-        </li>
-        <li>
-           <a href="{% url 'products:query2' 'womenwatches' %}">Watch</a>
-        </li>
-      </ul>
-      </li>
-       <li>
-      <a href="#">Women's Footwear</a>
-      </li>
-      </ul>
-    </li>
-    <li>
-      <a href="{% url 'products:query' 'booksnovels' %}">Books/Novels</a>
-       <ul class=" mb-6">
-        <li>
-      <a href="#">Japnese Novels</a>
-      </li>
-       <li>
-      <a href="#">English Novels</a>
-      </li>
-       <li>
-      <a href="#">Other language</a>
-      </li>
-      </ul>
-    </li>
-    <li>
-      <a href="{% url 'products:query' 'electronics' %}">Electronics</a>
-       <ul class=" mb-6">
-        <li>
-      <a href="{% url 'products:query1' 'fitnessband' %}">Fitness Gadgets</a>
-      </li>
-       <li>
-      <a href="{% url 'products:query1' 'laptops' %}">Laptops</a>
-      </li>
-       <li>
-      <a href="{% url 'products:query1' 'mobiles' %}">Mobiles</a>
-      </li>
+        {% for sub_category in sub_categorys %}
+          {% if category.slug == sub_category.category.slug %}
       <li>
-      <a href="{% url 'products:query1' 'playstations' %}">Playstations</a>
+      <a href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }}</a>
+      <ul class='mb-9'>
+        {% for sub_sub_category in sub_sub_categorys %}
+            {% if sub_category.slug == sub_sub_category.sub_category.slug %}
+        <li>
+           <a href="{% url 'products:query2' sub_sub_category.slug %}">{{ sub_sub_category.title }}</a>
+        </li>
+          {% endif %}
+        {% endfor %}
+        
+      </ul>
       </li>
+      
+      {% endif %}
+      {% endfor %}
       </ul>
     </li>
     
-  </ul>
+      {% endfor %}
+      
+    </ul>
+    
+  
 
   <ul class="social-icons">
     <li><a href="#" target="_blank" title=""><i class="fa fa-facebook"></i></a></li>

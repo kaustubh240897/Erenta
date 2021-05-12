@@ -9,7 +9,7 @@ from .models import Order,Cancel_Item
 from .forms import RefundForm
 from carts.forms import CouponForm,TransactionForm
 from django.contrib import messages
-from products.models import Product_description
+from products.models import Product_description,Category,Sub_Category,Sub_Sub_Category
 from django.shortcuts import render,redirect
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
@@ -66,6 +66,9 @@ class OrderListView(LoginRequiredMixin,ListView):
         context['refund_count'] = queryset3.count()
         context['complete_count'] = queryset4.count()
         context['cancel_count'] = queryset5.count()
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
 
 class ShippedOrderListView(LoginRequiredMixin,ListView):
@@ -169,6 +172,9 @@ class OrderDetailView(LoginRequiredMixin,DetailView):
         context['paid'] = 'Paid'
         context['messages1'] = TransactionMessage.objects.filter(order_id=self.kwargs.get('order_id'))
         context['today'] = date.today()
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         #context['order_status'] = Order.objects.filter(order_id=order_id, cart__cartitem__status='shipped')
         #context['time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__gte=timezone.now() - datetime.timedelta(hours=24))
         #context['cancel_time']=Order.objects.filter(order_id=order_id,cart__cartitem__updated__lte=timezone.now() - datetime.timedelta(hours=24))
@@ -445,7 +451,7 @@ class RequestCancelView(LoginRequiredMixin,View):
 def track_item_user_view(request,cart_id,order_id):
     try:
         item = CartItem.objects.get(id=cart_id)
-        return render(request,"orders/track_user_item.html", {"item" : item})
+        return render(request,"orders/track_user_item.html", {"item" : item, "category_images": Category.objects.all(), "sub_categorys": Sub_Category.objects.all(),"sub_sub_categorys": Sub_Sub_Category.objects.all()})
     except ObjectDoesNotExist:
         messages.info(request, "You don't have an active order")
         return redirect("orders:detail" 'order_id')

@@ -12,6 +12,7 @@ from .forms import LoginForm,RegisterForm,GuestForm,UserDetailChangeForm,Busines
 from .models import GuestEmail,Supplier,EmailActivation, Bank_Account_Detail,User
 from addresses.models import Address
 from billing.models import Card
+from products.models import Category,Sub_Sub_Category,Sub_Category
 from .signals import user_logged_in
 from notification.models import Supplier_Order_Notification, Order_current_status
 from orders.models import Low_Quantity_Notification
@@ -32,7 +33,10 @@ def join_us_page(request):
     context = {
        "title":"E-renta: Start lending",
        'personal_details': Supplier.objects.filter(email=request.user),
-       'bank_details': Bank_Account_Detail.objects.filter(email=request.user)
+       'bank_details': Bank_Account_Detail.objects.filter(email=request.user),
+       "category_images": Category.objects.all(),
+       "sub_categorys": Sub_Category.objects.all(),
+       "sub_sub_categorys": Sub_Sub_Category.objects.all()
        
     }
     return render(request,"accounts/join_us.html",context)
@@ -43,6 +47,13 @@ class AccountHomeView(LoginRequiredMixin, DetailView):
     template_name = 'accounts/home.html'
     def get_object(self):
         return self.request.user
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(AccountHomeView,self).get_context_data(*args,**kwargs)
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
+        return context
     
     
     
@@ -68,7 +79,7 @@ class AccountEmailActivateView(FormMixin,View):
                             Do you need to <a href="{link}"> reset your password</a>?""".format(link=reset_link)
                     messages.success(request, mark_safe(msg))
                     return redirect("login")
-        context = {'form': self.get_form() , 'key': key}
+        context = {'form': self.get_form() , 'key': key, "category_images": Category.objects.all(), "sub_categorys": Sub_Category.objects.all(), "sub_sub_categorys": Sub_Sub_Category.objects.all()}
         return render(request, 'registration/activation-error.html', context)
     
     def post(self, request, *args, **kwargs):
@@ -146,6 +157,9 @@ class UserDetailUpdateView(LoginRequiredMixin,UpdateView):
         context['title']='Your profile details'
         context['addresses']=Address.objects.filter(billing_profile__user=self.request.user)
         context['cards'] = Card.objects.filter(billing_profile__user=self.request.user)
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         #context['instance'] = User.objects.filter(email=self.request.user)
         
         return context
@@ -160,6 +174,13 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     success_url='/'
     template_name='accounts/login.html'
     default_next = '/'
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(LoginView,self).get_context_data(*args,**kwargs)
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
+        return context
     
     def form_valid(self, form):
         next_path = self.get_next_url()
@@ -200,6 +221,15 @@ class RegisterView(CreateView):
     form_class=RegisterForm
     template_name= 'accounts/register.html'
     success_url = '/login'
+
+    def get_context_data(self,*args,**kwargs):
+        context = super(RegisterView,self).get_context_data(*args,**kwargs)
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
+        
+        return context
+
     def get_success_url(self):
         messages.warning(self.request, 'Activation link has been sent to your email address, Please confirm your email then login.')
         return reverse("login")
@@ -248,6 +278,9 @@ class BusinessDetailUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self,*args,**kwargs):
         context = super(BusinessDetailUpdateView,self).get_context_data(*args,**kwargs)
         context['title']='Update your personal details'
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
     def get_success_url(self):
         messages.success(self.request, 'Your details updated successfully!') 
@@ -276,6 +309,9 @@ class BankDetailUpdateView(LoginRequiredMixin,UpdateView):
     def get_context_data(self,*args,**kwargs):
         context = super(BankDetailUpdateView,self).get_context_data(*args,**kwargs)
         context['title']='Update your bank details'
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
     def get_success_url(self):
         messages.success(self.request, 'Your details updated successfully!') 

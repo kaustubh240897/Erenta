@@ -6,13 +6,17 @@ from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.urls import reverse
 from billing.models import BillingProfile
+from products.models import Category,Sub_Sub_Category,Sub_Category
 from .models import Address
 from django.http import Http404
 
 def checkout_address_create_view(request):
     form = AddressForm(request.POST or None)
     context = {
-        "form": form
+        "form": form,
+        "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(), 
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
     }
     #print(request.user.is_authenticated)
     next_ = request.GET.get('next')
@@ -97,6 +101,9 @@ class AddressUpdateView(LoginRequiredMixin,UpdateView):
         id = self.kwargs.get('id')
         context['title']="Edit your Address"
         context['name'] = Address.objects.get(id=id).billing_profile
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
     
     def get_success_url(self):

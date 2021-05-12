@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 from django.contrib.auth.mixins import LoginRequiredMixin
+from products.models import Category,Sub_Sub_Category,Sub_Category
 from django.views.generic.edit import UpdateView
 from django.contrib import messages
 from django.urls import reverse
@@ -29,7 +30,7 @@ def payment_method_view(request):
     next_ = request.GET.get('next')
     if is_safe_url(next_ , request.get_host()):
         next_url = next_
-    return render(request,'billing/payment-method.html', {"publish_key": STRIPE_PUB_KEY, "next_url": next_url, 'cards': my_cards})
+    return render(request,'billing/payment-method.html', {"publish_key": STRIPE_PUB_KEY, "next_url": next_url, 'cards': my_cards, "category_images": Category.objects.all(), "sub_categorys": Sub_Category.objects.all(), "sub_sub_categorys": Sub_Sub_Category.objects.all()})
 
 
 def payment_method_createview(request):
@@ -77,6 +78,9 @@ class CardUpdateView(LoginRequiredMixin,UpdateView):
         id = self.kwargs.get('id')
         context['title']="Edit your Card"
         context['name'] = Card.objects.get(id=id).billing_profile
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
     
     def get_success_url(self):

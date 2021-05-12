@@ -41,7 +41,11 @@ def product_list_view(request):
         'qs': queryset ,
         "title":"Products",
         'products': products,
-        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7]
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
+        "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
         
     }
     return render(request,"products/product_list.html", context)
@@ -55,6 +59,9 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
         context = super(UserProductHistoryView, self).get_context_data(*args, **kwargs)
         cart_obj, new_obj = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
 
     def get_queryset(self, *args, **kwargs):
@@ -135,6 +142,9 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
 
         context['images']= qq
         context['reviews']=User_Review.objects.filter(product_id=product_id)
+        context["category_images"] = Category.objects.all()
+        context["sub_categorys"] =  Sub_Category.objects.all()
+        context["sub_sub_categorys"] =  Sub_Sub_Category.objects.all()
         return context
     
     
@@ -207,7 +217,11 @@ def sub_category_product_view_by_color(request,slug, color):
           'qs': queryset ,
           'slug': slug_type,
          "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
     }
     
 
@@ -233,7 +247,11 @@ def sub_sub_category_product_view_by_color(request,slug, color):
           'qs': queryset ,
           'sub_slug': slug_type,
          "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
     }
     
 
@@ -283,7 +301,11 @@ def category_product_view_1(request, slug,*args, **kwargs):
           
          'cat_slug': slug_type,
          "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
@@ -318,7 +340,11 @@ def sub_category_product_view(request, slug,*args, **kwargs):
           'slug': slug_type,
           #'clothing_category': query,
          "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
@@ -353,7 +379,11 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
           'sub_slug': slug_type,
           #'clothing_category': query,
          "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7]
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+         "sub_categorys": Sub_Category.objects.all(),
+         "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
     }
     # def get_context_data(self,*args, **kwargs):
     #     context=super(category_product_view ,self).get_context_data(*args, **kwargs)
@@ -958,7 +988,11 @@ class ReviewView(LoginRequiredMixin,View):
         context={
             'form': form,
             'item' : CartItem.objects.get(id=id),
-            'count' : User_Review.objects.filter(cartitem_id=id).count()
+            'count' : User_Review.objects.filter(cartitem_id=id).count(),
+            "category_images": Category.objects.all(),
+            "sub_categorys": Sub_Category.objects.all(),
+            "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
         }
         return render(self.request, "products/review.html" ,context)
     def post(self,*args, **kwargs):
@@ -999,7 +1033,11 @@ class ProductRefundView(LoginRequiredMixin,View):
             'form': form,
             'product_refund': 'product_refund',
             'item': CartItem.objects.get(id=id),
-            'count': Product_Refund.objects.filter(cartitem_id=id).count()
+            'count': Product_Refund.objects.filter(cartitem_id=id).count(),
+            "category_images": Category.objects.all(),
+            "sub_categorys": Sub_Category.objects.all(),
+            "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
         }
         return render(self.request, "products/review.html" ,context)
     def post(self,*args, **kwargs):
