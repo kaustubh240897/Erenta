@@ -389,7 +389,7 @@ ul.social-icons li {
         <a class="btn btn-link" style='text-decoration: none;' href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
       </li>
         {% endif %}
-        <li class="nav-item mt-2">
+        <li class="nav-item mt-2" style='cursor: pointer;'>
         <a title='select your city here' id="myBtn3"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
        </li>
       </div>
@@ -404,14 +404,14 @@ ul.social-icons li {
 
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="btn btn-link" style='text-decoration:none;' href="{{ cart_url }}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
+          <a class="btn btn-link" style='text-decoration:none; color:#1daf9e;;' href="{{ cart_url }}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-danger">{{ request.session.cart_items }}</span></a>
         </li>
          {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="btn btn-link" href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
+          <a class="btn btn-link" style='text-decoration:none; color:#1daf9e;;' href="{{ notification_url }}"> <i class="fas fa-bell"></i> <span class="badge badge-danger">{{ request.session.notification_count }}</span></a>
         </li>
         {% endif %}
-       <li class="nav-item mt-2">
+       <li class="nav-item mt-2" style='cursor: pointer;'>
         <a title='select your city here' id="myBtn"><i class="fas fa-map-marker-alt"></i> {{ request.session.city_names }}</a>
        </li>
        

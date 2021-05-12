@@ -3,22 +3,42 @@
 {% load static i18n %}
 {% block content %}
 <div class='container'>
-        <h3 class='text-left'>{% trans "Notifications" %}</h3>
+        <h3 class='text-center'>{% trans "Notifications" %}</h3>
         <br/>
      
-        <div class='row' style='background-color: #1daf9e;'>
-                <div class='col-4'> 
-                <a style='color:white; text-decoration: none;' href="{% url 'notification_page' %}">Erenta Notifications ({{ count }} unread)</a>
+        <div class='row mt-1' style='height:2rem; margin-bottom:5rem;'>
+                {% if a %} 
+                <div class='col-4 text-center' style='background-color: white;'>
+                        <a style='color:black; text-decoration: none;' href="{% url 'notification_page' %}">Erenta Notifications ({{ count }} unread)</a>
                 </div>
-                <div class='col-4'> 
-                <a style='color:white; text-decoration: none;' href="{% url 'order_notification_page' %}">Order's Notifications ({{ count1 }} unread)</a>
+                {% else %}
+                <div class='col-4 text-center' style='background-color: #1daf9e;'>
+                        <a style='color: white; text-decoration: none;' href="{% url 'notification_page' %}">Erenta Notifications ({{ count }} unread)</a>
                 </div>
-                <div class='col-4'> 
+                {% endif %}
+                
+                {% if a1 %} 
+                <div class='col-4 text-center' style='background-color:white;'> 
+                        <a style='color:black; text-decoration: none;' href="{% url 'order_notification_page' %}"><b>Order's Notifications ({{ count1 }} unread) </b></a>
+                </div>
+                {% else %}
+                <div class='col-4 text-center' style='background-color: #1daf9e;'> 
+                        <a style='color:white; text-decoration: none;' href="{% url 'order_notification_page' %}">Order's Notifications ({{ count1 }} unread)</a>
+                </div>
+                {% endif %}
+                {% if a2 %} 
+                <div class='col-4 text-center' style='background-color:white;'> 
+                <a style='color:black; text-decoration: none;' href="{% url 'order_current_status_notification_page' %}"><b>Order item's status Notifications ({{ count2 }} unread) </b></a>
+                </div>
+                {% else %}
+                <div class='col-4 text-center' style='background-color: #1daf9e;'>
                 <a style='color:white; text-decoration: none;' href="{% url 'order_current_status_notification_page' %}"> Order item's status Notifications ({{ count2 }} unread)</a>
                 </div>
+                {% endif %}
+                
         </div>
 
-{% if count > 0 or count1 > 0 or count2 > 0 %}  
+{% if a and count > 0 or a1 and count1 > 0 or a2 and count2 > 0 %}  
 
 
         {% if notifications %}

@@ -90,6 +90,7 @@ def notification_page(request):
     context = {
        "title":"Notifications",
        "notifications": n ,
+       "a":"a",
        "count": Notification.objects.filter(user=request.user, viewed=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, viewed=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, viewed=False).count(),
@@ -121,6 +122,7 @@ def order_notification_page(request):
        "title":"Notifications",
        
        "order_notifications": n1,
+       "a1":"a",
        "count": Notification.objects.filter(user=request.user, seen=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
@@ -150,6 +152,7 @@ def order_current_status_notification_page(request):
        "title":"Notifications",
        
        "item_current_status": n2,
+       "a2":"a",
        "count": Notification.objects.filter(user=request.user, seen=False).count(),
        "count1": Order_Notification.objects.filter(billing_profile__user = request.user, seen=False).count(),
        "count2": Order_current_status.objects.filter(user=request.user, seen=False).count(),
@@ -179,6 +182,7 @@ def supplier_notification_page(request):
     
     context = {
        "title":"Notifications",
+       "aa":"a",
        "supplier_order_notifications":n2,
        "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
        "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
@@ -203,6 +207,7 @@ def low_quantity_notification_page(request):
        
     context = {
        "title":"Notifications",
+       "aa1":"a",
        "low_quantity_notification":n3,
        "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
        "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
@@ -231,6 +236,7 @@ def supplier_order_current_status_notification_page(request):
     
     context = {
        "title":"Notifications",
+       "aa2":"a",
        "item_current_status": n4,
        "count": Supplier_Order_Notification.objects.filter(product__user=request.user,status='paid', seen=False).count(),
        "count1": Low_Quantity_Notification.objects.filter(product__user=request.user,seen=False).count(),
