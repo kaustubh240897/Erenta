@@ -11,15 +11,30 @@
     body {
       background-color: #f7f7f7 !important;
     }
-    .scrolling-wrapper {
-    background-color: #fff;
-    overflow-x: scroll;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    @media only screen and (max-width: 992px) {
+      .scrolling-wrapper {
+      background-color: #fff;
+      overflow-x: scroll;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      }
+      .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+      width: 0;
+      height: 0;
+      }
     }
-    .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
-    width: 0;
-    height: 0;
+    @media only screen and (min-width: 992px) {
+      .scrolling-wrapper {
+        background-color: #fff;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+      }
+      /* .scrolling-wrapper:hover {
+        overflow-x: scroll;
+      } */
+      .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+        display: none;
+      }
     }
     .tabBtn {
       background-color: #ffffff;
@@ -118,7 +133,7 @@
                       </div>
                     </div>
                   </div>
-                  <div id="btn_right" class="col text-right float-right">
+            <div id="btn_right" class="col text-right float-right">
               <div class="row justify-content-center mt-3 pt-3 mb-1">
                 <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color: #aaa;background-color: #aaa;" name="button">お支払完了までおまちください</button>
               </div>
@@ -128,105 +143,29 @@
       </div>
 
 
+      <div id="content_tab1" class="container collapse">
+        <div id="infList" class="container p-0 greenBorder pt-3" style="background: #fff">
+
+          {% if application_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+
 
 
 
       <div id="content_tab2" class="container collapse">
-        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+        <div id="infList2" class="container p-0 greenBorder pt-3" style="background: #fff">
 
-            {% for object in products %}
-
-            {% if object.product.user == request.user %}
-            {% if object.order_confirmed == 'confirmed' and object.status == 'paid' %}
-            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
-            <div class="row">
-              <div class="col-xs-2 col-md-1">
-                {% if object.product.image %}
-                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
-                {% endif %}
-              </div>
-              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
-                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
-                                            font-weight: normal;
-                                            font-stretch: normal;
-                                            font-style: normal;
-                                            letter-spacing: normal;
-                                            text-align: left;
-                                            color: #555555;">
-                                            {% for item in object.cart.order_set.all %}
-                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
-                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
-                                            {% endfor %}
-                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
-                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
-                  <div class="col pr-0 pl-0 ml-0">
-                    <p class="mb-0 pb-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #aaa;">{% if object.product.discount_price %}
-            <strike> Y{{ object.product.cost_per_day }} / 日</strike>
-            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
-           {% else %}
-           ${{ object.product.cost_per_day }}/day
-           {% endif %}
-                    </p>
-                    <h6> Cost -: Y{{ object.line_total }}</h6>
-                    <p class="pt-0 mt-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
-                    </p>
-                    <div class="container d-flex pl-0 ml-0">
-                      <div class="container pl-0 ml-0">
-                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">支払</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7 ; color: #555555">発送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col text-right float-right">
-                <div class="row justify-content-center mt-3 pt-3">
-                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
-                </div>
-              </div>
-            </div>
+          {% if paid_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
           </div>
-
-          {% endif %}
-          {% endif %}
-
-          {% endfor %}
-          {% if paid_count == 0 %}
-          <h3 class='text-center'>No Orders yet!</h3>
           {% endif %}
 
         </div>
@@ -234,422 +173,60 @@
 
 
       <div id="content_tab3" class="container collapse">
-        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+        <div id="infList3" class="container p-0 greenBorder pt-3" style="background: #fff">
 
-
-            {% for object in products %}
-            {% if object.product.user == request.user %}
-            {% if object.order_confirmed == 'confirmed' and object.status == 'shipped' %}
-            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
-            <div class="row">
-              <div class="col-xs-2 col-md-1">
-                {% if object.product.image %}
-                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
-                {% endif %}
-              </div>
-              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
-                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
-                                            font-weight: normal;
-                                            font-stretch: normal;
-                                            font-style: normal;
-                                            letter-spacing: normal;
-                                            text-align: left;
-                                            color: #555555;">
-                                            {% for item in object.cart.order_set.all %}
-                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
-                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
-                                            {% endfor %}
-                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
-                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
-                  <div class="col pr-0 pl-0 ml-0">
-                    <p class="mb-0 pb-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #aaa;">{% if object.product.discount_price %}
-            <strike> Y{{ object.product.cost_per_day }} / 日</strike>
-            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
-           {% else %}
-           ${{ object.product.cost_per_day }}/day
-           {% endif %}
-                    </p>
-                    <h6> Cost -: Y{{ object.line_total }}</h6>
-                    <p class="pt-0 mt-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
-                    </p>
-                    <div class="container d-flex pl-0 ml-0">
-                      <div class="container pl-0 ml-0">
-                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">発送</p>
-                          </div>
-                          {% for item in object.cart.order_set.all %}
-                          <div class="col">
-                            <a href="{% url 'supplierpdf' object.id item.order_id %}" class="pt-2"> <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">受取</p> </a>
-                          </div>
-                          {% endfor %}
-                          <div class="col">
-                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col text-right float-right">
-                <div class="row justify-content-center mt-3 pt-3">
-                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
-                </div>
-              </div>
-            </div>
+          {% if shipped_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
           </div>
-
-          {% endif %}
-          {% endif %}
-
-          {% endfor %}
-
-          {% if shipped_count == 0 %}
-          <h3 class='text-center'>No Orders yet!</h3>
           {% endif %}
 
         </div>
       </div>
 
       <div id="content_tab4" class="container collapse">
-        <div class="container p-0 greenBorder pt-3" style="background: #fff">
+        <div id="infList4" class="container p-0 greenBorder pt-3" style="background: #fff">
 
-
-            {% for object in products %}
-            {% if object.product.user == request.user %}
-            {% if object.refund_requested == True %}
-            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
-            <div class="row">
-              <div class="col-xs-2 col-md-1">
-                {% if object.product.image %}
-                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
-                {% endif %}
-              </div>
-              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
-                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
-                                            font-weight: normal;
-                                            font-stretch: normal;
-                                            font-style: normal;
-                                            letter-spacing: normal;
-                                            text-align: left;
-                                            color: #555555;">
-                                            {% for item in object.cart.order_set.all %}
-                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
-                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
-                                            {% endfor %}
-                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
-                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
-                  <div class="col pr-0 pl-0 ml-0">
-                    <p class="mb-0 pb-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #aaa;">{% if object.product.discount_price %}
-            <strike> Y{{ object.product.cost_per_day }} / 日</strike>
-            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
-           {% else %}
-           ${{ object.product.cost_per_day }}/day
-           {% endif %}
-                    </p>
-                    <h6> Cost -: Y{{ object.line_total }}</h6>
-                    <p class="pt-0 mt-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
-                    </p>
-                    <div class="container d-flex pl-0 ml-0">
-                      <div class="container pl-0 ml-0">
-                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">{% if object.refund_granted %} Refund granted {% else %}  Refund requested {% endif %}</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col text-right float-right">
-                <div class="row justify-content-center mt-3 pt-3">
-                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
-                </div>
-              </div>
-            </div>
+          {% if refunded_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
           </div>
-
-          {% endif %}
           {% endif %}
 
-          {% endfor %}
-
-          {% if refunded_count == 0 %}
-          <h3 class='text-center'>No Orders yet!</h3>
-          {% endif %}
 
         </div>
       </div>
 
       <div id="content_tab5" class="container collapse">
-        <div class="container p-0 greenBorder pt-3" style="background: #fff">
-
-            {% for object in products %}
-            {% if object.product.user == request.user %}
-            {% if object.status == 'returned back' and object.order_confirmed == 'confirmed' %}
-            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
-            <div class="row">
-              <div class="col-xs-2 col-md-1">
-                {% if object.product.image %}
-                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
-                {% endif %}
-              </div>
-              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
-                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
-                                            font-weight: normal;
-                                            font-stretch: normal;
-                                            font-style: normal;
-                                            letter-spacing: normal;
-                                            text-align: left;
-                                            color: #555555;">
-                                            {% for item in object.cart.order_set.all %}
-                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
-                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
-                                            {% endfor %}
-                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
-                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
-                  <div class="col pr-0 pl-0 ml-0">
-                    <p class="mb-0 pb-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #aaa;">{% if object.product.discount_price %}
-            <strike> Y{{ object.product.cost_per_day }} / 日</strike>
-            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
-           {% else %}
-           ${{ object.product.cost_per_day }}/day
-           {% endif %}
-                    </p>
-                    <h6> Cost -: Y{{ object.line_total }}</h6>
-                    <p class="pt-0 mt-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
-                    </p>
-                    <div class="container d-flex pl-0 ml-0">
-                      <div class="container pl-0 ml-0">
-                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
-                          </div>
-                          <div class="col">
-                             <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
-                          </div>
-                          <div class="col">
-                           <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">返送</p>
-                          </div>
-                          {% for item in object.cart.order_set.all %}
-                          <div class="col">
-                            <a href="{% url 'supplierpdf' object.id item.order_id %}" class="pt-2"> <p class="text-nowrap text-center px-2" style="background-color: #aaa; color: #ffffff">受取</p> </a>
-                          </div>
-                          {% endfor %}
-                          <div class="col">
-                             <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">取引終了</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col text-right float-right">
-                <div class="row justify-content-center mt-3 pt-3">
-                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
-                </div>
-              </div>
-            </div>
+        <div id="infList5" class="container p-0 greenBorder pt-3" style="background: #fff">
+          {% if complete_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
           </div>
-
-          {% endif %}
           {% endif %}
 
-          {% endfor %}
-
-          {% if complete_count == 0 %}
-          <h3 class='text-center'>No Orders yet!</h3>
-          {% endif %}
 
         </div>
       </div>
 
       <div id="content_tab6" class="container collapse">
-        <div class="container p-0 greenBorder pt-3" style="background: #fff">
-
-
-            {% for object in products %}
-            {% if object.product.user == request.user %}
-            {% if object.cancel_request == True %}
-            <div class="container" style="background: #fff !important; border-bottom: 1px solid #68cfc3;">
-            <div class="row">
-              <div class="col-xs-2 col-md-1">
-                {% if object.product.image %}
-                <img class="img-thumbnail rounded flaot-left" style="width: 60px; height: 60px" src="{{ object.product.image.url }}" alt="img">
-                {% endif %}
-              </div>
-              <div class="col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start">
-                <p class="pb-0 mb-0 text-left" style="font-size: 16px;
-                                            font-weight: normal;
-                                            font-stretch: normal;
-                                            font-style: normal;
-                                            letter-spacing: normal;
-                                            text-align: left;
-                                            color: #555555;">
-                                            {% for item in object.cart.order_set.all %}
-                                            <h6 class='text-center'> Order Id: {{ item.order_id }} </h6>
-                                            <p class='text-center'>Placed at : {{ item.timestamp }}</p>
-                                            {% endfor %}
-                                            {{ object.quantity }} X {{ object.product.product_name }}</p>
-                <div class="d-flex flex-row flex-wrap justify-content-start text-left ">
-                  <div class="col pr-0 pl-0 ml-0">
-                    <p class="mb-0 pb-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #aaa;">{% if object.product.discount_price %}
-            <strike> Y{{ object.product.cost_per_day }} / 日</strike>
-            Y{{ object.product.discount_price }} / 日 ({{ object.product.get_amount_percent_saved }}% Off)
-           {% else %}
-           ${{ object.product.cost_per_day }}/day
-           {% endif %}
-                    </p>
-                    <h6> Cost -: Y{{ object.line_total }}</h6>
-                    <p class="pt-0 mt-0" style="font-size: 16px;
-                              font-weight: normal;
-                              font-stretch: normal;
-                              font-style: normal;
-                              letter-spacing: normal;
-                              color: #555;">レンタル期間：{{ object.start_date }}～{{ object.end_date }}（{{ object.days }}日間）
-                    </p>
-                    <div class="container d-flex pl-0 ml-0">
-                      <div class="container pl-0 ml-0">
-                        <div class="scrolling-wrapper row flex-row flex-nowrap" style="background-color: #fff">
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555;">申請</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">支払</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">発送</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">レンタル期間</p>
-                          </div>
-                          <div class="col">
-                             <p class="text-nowrap text-center px-2" style="background-color: #e06a3b; color: #ffffff">{% if object.cancel_granted %} Cancellation granted {% else %} Cancellation request {% endif %}</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">受取</p>
-                          </div>
-                          <div class="col">
-                            <p class="text-nowrap text-center px-2" style="background-color: #f7f7f7; color: #555555">取引終了</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col text-right float-right">
-                <div class="row justify-content-center mt-3 pt-3">
-                  <a href='{% url "orders:supplierorderdetail" object.id %}'>  <button class="py-1" type="button" style="color: #ffffff; border-radius: 4px; border-color:#e06a3b;background-color: #e06a3b;" name="button">お支払完了までおまちください</button> </a>
-                </div>
-              </div>
-            </div>
+        <div id="infList6" class="container p-0 greenBorder pt-3" style="background: #fff">
+          {% if cancelled_count <= 0 %}
+          <div class="container" style="background: #fff !important; border-bottom: 1px solid #68CFC3;">
+            <h3 class="text-center">No orders!</h3>
           </div>
-
-          {% endif %}
           {% endif %}
 
-          {% endfor %}
-
-          {% if cancelled_count == 0 %}
-          <h3 class='text-center'>No Orders yet!</h3>
-          {% endif %}
 
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 <script type="text/javascript">
+  var selTab = "tab_btn1";
   function changeTab(id) {
     console.log("id", id);
+    selTab = id;
     document.getElementById('content_tab1').className = "container collapse";
     document.getElementById('content_tab2').className = "container collapse";
     document.getElementById('content_tab3').className = "container collapse";
@@ -663,15 +240,16 @@
     document.getElementById('tab_btn5').className = "btn btn-primary text-nowrap tabBtn w-100";
     document.getElementById('tab_btn6').className = "btn btn-primary text-nowrap tabBtn w-100";
     document.getElementById(id).className = "btn btn-primary text-nowrap tabBtnActive w-100";
+    loadTabData();
   }
 
   var prod = {{ qs_json | safe }};
   console.log("json", prod);
   var listElm = document.getElementById('infList');
 
-// Add 20 items.
-var start = 0;
-var end = 0;
+  // Add 20 items.
+  var start = 0;
+  var end = 0;
 var qs = [
   {% for object in products %}
     {% if object.product.user == request.user %}
@@ -707,91 +285,1050 @@ var qs = [
     {% endif %}
   {% endfor %}
  ];
- console.log("art", qs);
-var loadMore = function() {
-  end += 3;
-  if (end >= qs.length) {
-    end = qs.length;
-  }
-  for (var i = start; i < end; i++) {
-    var object = qs[i];
-    console.log("in");
-    var mainCont = document.createElement('div');
-    mainCont.className = "container";
-    mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
-    var imgRow = document.createElement('div');
-    imgRow.className = "row pt-3";
-    var imgCol = document.createElement('div');
-    imgCol.className = "col-xs-2 col-md-1";
-    var img = document.createElement('img');
-    img.className = "img-thumbnail rounded flaot-left";
-    img.setAttribute("style", "width: 60px; height: 60px");
-    img.src = object.src;
-    imgCol.appendChild(img);
-    imgRow.appendChild(imgCol);
-    var textCol = document.createElement('div');
-    textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
-    var p1 = document.createElement('p');
-    p1.className = "pb-0 mb-0 text-left";
-    p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
-    var p1_oid = document.createElement('p');
-    p1_oid.className = "text-center";
-    var node1_oid = document.createTextNode("Order Id:- "+object.oid);
-    p1_oid.appendChild(node1_oid);
-    var p1_pat = document.createElement('p');
-    p1_pat.className = "text-center";
-    var node1_pat = document.createTextNode("Placed At:- "+object.pat);
-    p1_pat.appendChild(node1_pat);
-    p1.appendChild(p1_oid);
-    p1.appendChild(p1_pat);
-    var node1 = document. createTextNode(object.quant + " X " + object.p_name);
-    p1.appendChild(node1);
-    textCol.appendChild(p1);
-    var textRow = document.createElement('div');
-    textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
-    var textCol2 = document.createElement('div');
-    textCol2.className = "col pr-0 pl-0 ml-0";
-    var p2 = document.createElement('p');
-    p2.className = "pb-0 mb-0 text-left";
-    p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
-    if (object.strike) {
-      var str = document.createElement('strike');
-      str.innerHTML = "Y"+object.cpd+ " / 日";
-      p2.appendChild(str);
-      var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
-      p2.appendChild(node2);
-    } else {
-      var node2 = document. createTextNode("Y" + object.cpd);
-      p2.appendChild(node2);
+
+console.log("qs",qs);
+ var loadMore = function() {
+   console.log('start',start);
+   console.log('end',end);
+  if (qs.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm.appendChild(h3);
+  } else {
+    end += 5;
+    if (end >= qs.length) {
+      end = qs.length;
     }
-    var h = document.createElement('h6');
-    h.innerHTML = "Total:- Y"+object.total;
-    var p3 = document.createElement('p');
-    p3.className = "pb-0 mb-0 text-left";
-    p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
-    var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
-    p3.appendChild(node3);
-    textCol2.appendChild(p2);
-    textCol2.appendChild(h);
-    textCol2.appendChild(p3);
-    var btnCont = document.createElement('div');
-    btnCont.className = "container d-flex pl-0 ml-0 pt-2";
-    btnCont.innerHTML = btnCont.innerHTML + document.getElementById('btnCont').innerHTML;
-    textCol2.appendChild(btnCont);
-    textRow.appendChild(textCol2);
-    textCol.appendChild(textRow);
-    imgRow.appendChild(textCol);
-    var a_btn = document.createElement('a');
-    a_btn.href = object.btn;
-    var btn_right = document.createElement('div');
-    btn_right.className = "col text-right float-right";
-    btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
-    a_btn.appendChild(btn_right);
-    imgRow.appendChild(a_btn);
-    mainCont.appendChild(imgRow);
-    listElm.appendChild(mainCont);
+    for (var i = start; i < end; i++) {
+      console.log('start',start);
+      console.log('end',end);
+      var object = qs[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      var btnCont2 = document.createElement('div');
+      btnCont2.className = "container pl-0 ml-0";
+      var btnContSW = document.createElement('div');
+      btnContSW.className = "scrolling-wrapper row flex-row flex-nowrap";
+      btnContSW.setAttribute("style", "background-color: #fff");
+      for (var j = 0; j < 8; j++) {
+        var colSw = document.createElement('div');
+        colSw.className = "col";
+        var pSw = document.createElement("p");
+        pSw.className = "text-nowrap text-center px-2";
+        pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+        if (j == 0) {
+          var nodeSw = document.createTextNode("申請");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 1) {
+          var nodeSw = document.createTextNode("支払");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 2) {
+          var nodeSw = document.createTextNode("発送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 3) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 4) {
+          var nodeSw = document.createTextNode("レンタル期間");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 5) {
+          var nodeSw = document.createTextNode("Cancellation requested");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 6) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 7) {
+          var nodeSw = document.createTextNode("取引終了");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        }
+        btnContSW.appendChild(colSw);
+      }
+      btnCont2.appendChild(btnContSW);
+      btnCont.appendChild(btnCont2);
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var col_btn_right = document.createElement('div');
+      col_btn_right.className = "col text-right float-right";
+      var row_btn_right = document.createElement('div');
+      row_btn_right.className = "row justify-content-center mt-3 pt-3 px-0";
+      var a_btn = document.createElement('a');
+      a_btn.className = "px-0 mx-0";
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('button');
+      btn_right.className = "py-1 px-1 mx-0";
+      btn_right.type = "button";
+      btn_right.setAttribute("style", "color: #ffffff; border-radius: 4px; border-color:#aaa;background-color: #aaa;");
+      btn_right.innerHTML = "お支払完了までおまちください";
+      a_btn.appendChild(btn_right);
+      row_btn_right.appendChild(a_btn);
+      col_btn_right.appendChild(row_btn_right);
+      imgRow.appendChild(col_btn_right);
+      mainCont.appendChild(imgRow);
+      listElm.appendChild(mainCont);
+    }
+    start = end;
   }
-  start = end;
+}
+
+var listElm2 = document.getElementById('infList2');
+
+// Add 20 items.
+var start2 = 0;
+var end2 = 0;
+var qs_2 = [
+  {% for object in products %}
+    {% if object.product.user == request.user %}
+      {% if object.order_confirmed == 'confirmed' and object.status == 'paid' %}
+      {
+        {% if object.product.image %}
+          src: "{{ object.product.image.url }}",
+        {% else %}
+          src: "",
+        {% endif %}
+        {% for item in object.cart.order_set.all %}
+          oid: "{{ item.order_id }}",
+          pat: "{{ item.timestamp }}",
+        {% endfor %}
+        quant: "{{ object.quantity }}",
+        p_name: "{{ object.product.product_name }}",
+        {% if object.product.discount_price %}
+        strike: "true",
+        cpd: "{{ object.product.cost_per_day }}",
+        dp: "{{ object.product.discount_price }}",
+        ps: "{{ object.product.get_amount_percent_saved }}",
+        {% else %}
+        strike: "false",
+        cpd: "{{ object.product.cost_per_day }}",
+        {% endif %}
+        total: "{{ object.line_total }}",
+        sd: "{{ object.start_date }}",
+        ed: "{{ object.end_date }}",
+        days:"{{ object.days }}",
+        btn: '{% url "orders:supplierorderdetail" object.id %}',
+      },
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+ ];
+console.log("qs2",qs_2);
+ var loadMore2 = function() {
+  if (qs_2.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm2.appendChild(h3);
+  } else {
+    end2 += 5;
+    if (end2 >= qs_2.length) {
+      end2 = qs_2.length;
+    }
+    for (var i = start2; i < end2; i++) {
+      var object = qs_2[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      btnCont.innerHTML = btnCont.innerHTML + document.getElementById('btnCont').innerHTML;
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var col_btn_right = document.createElement('div');
+      col_btn_right.className = "col text-right float-right";
+      var row_btn_right = document.createElement('div');
+      row_btn_right.className = "row justify-content-center mt-3 pt-3 px-0";
+      var a_btn = document.createElement('a');
+      a_btn.className = "px-0 mx-0";
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('button');
+      btn_right.className = "py-1 px-1 mx-0";
+      btn_right.type = "button";
+      btn_right.setAttribute("style", "color: #ffffff; border-radius: 4px; border-color:#aaa;background-color: #aaa;");
+      btn_right.innerHTML = "お支払完了までおまちください";
+      a_btn.appendChild(btn_right);
+      row_btn_right.appendChild(a_btn);
+      col_btn_right.appendChild(row_btn_right);
+      imgRow.appendChild(col_btn_right);
+      mainCont.appendChild(imgRow);
+      listElm2.appendChild(mainCont);
+    }
+    start2 = end2;
+  }
+}
+
+var listElm3 = document.getElementById('infList3');
+
+// Add 20 items.
+var start3 = 0;
+var end3 = 0;
+var qs_3 = [
+  {% for object in products %}
+    {% if object.product.user == request.user %}
+      {% if object.order_confirmed == 'confirmed' and object.status == 'shipped' %}
+      {
+        {% if object.product.image %}
+          src: "{{ object.product.image.url }}",
+        {% else %}
+          src: "",
+        {% endif %}
+        {% for item in object.cart.order_set.all %}
+          oid: "{{ item.order_id }}",
+          pat: "{{ item.timestamp }}",
+          col_href: "{% url 'supplierpdf' object.id item.order_id %}",
+        {% endfor %}
+        quant: "{{ object.quantity }}",
+        p_name: "{{ object.product.product_name }}",
+        {% if object.product.discount_price %}
+        strike: "true",
+        cpd: "{{ object.product.cost_per_day }}",
+        dp: "{{ object.product.discount_price }}",
+        ps: "{{ object.product.get_amount_percent_saved }}",
+        {% else %}
+        strike: "false",
+        cpd: "{{ object.product.cost_per_day }}",
+        {% endif %}
+        total: "{{ object.line_total }}",
+        sd: "{{ object.start_date }}",
+        ed: "{{ object.end_date }}",
+        days:"{{ object.days }}",
+        btn: '{% url "orders:supplierorderdetail" object.id %}',
+      },
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+ ];
+console.log("qs3",qs_3);
+ var loadMore3 = function() {
+  if (qs_3.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm3.appendChild(h3);
+  } else {
+    end3 += 5;
+    if (end3 >= qs_3.length) {
+      end3 = qs_3.length;
+    }
+    for (var i = start3; i < end3; i++) {
+      var object = qs_3[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      var btnCont2 = document.createElement('div');
+      btnCont2.className = "container pl-0 ml-0";
+      var btnContSW = document.createElement('div');
+      btnContSW.className = "scrolling-wrapper row flex-row flex-nowrap";
+      btnContSW.setAttribute("style", "background-color: #fff");
+      for (var j = 0; j < 8; j++) {
+        var colSw = document.createElement('div');
+        colSw.className = "col";
+        var pSw = document.createElement("p");
+        pSw.className = "text-nowrap text-center px-2";
+        pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+        if (j == 0) {
+          var nodeSw = document.createTextNode("申請");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 1) {
+          var nodeSw = document.createTextNode("支払");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 2) {
+          var nodeSw = document.createTextNode("発送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 3) {
+          var nodeSw = document.createTextNode("受取");
+          var a = document.createElement('a');
+          a.className = "pt-2";
+          a.href = object.col_href;
+          pSw.setAttribute("style", "background-color: #aaa; color: #ffffff");
+          a.appendChild(pSw);
+          colSw.appendChild(a);
+        } else if (j == 4) {
+          var nodeSw = document.createTextNode("レンタル期間");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 5) {
+          var nodeSw = document.createTextNode("返送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 6) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 7) {
+          var nodeSw = document.createTextNode("取引終了");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        }
+        btnContSW.appendChild(colSw);
+      }
+      btnCont2.appendChild(btnContSW);
+      btnCont.appendChild(btnCont2);
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var a_btn = document.createElement('a');
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('div');
+      btn_right.className = "col text-right float-right";
+      btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
+      a_btn.appendChild(btn_right);
+      imgRow.appendChild(a_btn);
+      mainCont.appendChild(imgRow);
+      listElm3.appendChild(mainCont);
+    }
+    start3 = end3;
+  }
+}
+
+var qs_4 = [
+  {% for object in products %}
+    {% if object.product.user == request.user %}
+      {% if object.refund_requested == True %}
+      {
+        {% if object.product.image %}
+          src: "{{ object.product.image.url }}",
+        {% else %}
+          src: "",
+        {% endif %}
+        {% for item in object.cart.order_set.all %}
+          oid: "{{ item.order_id }}",
+          pat: "{{ item.timestamp }}",
+        {% endfor %}
+        quant: "{{ object.quantity }}",
+        p_name: "{{ object.product.product_name }}",
+        {% if object.product.discount_price %}
+        strike: "true",
+        cpd: "{{ object.product.cost_per_day }}",
+        dp: "{{ object.product.discount_price }}",
+        ps: "{{ object.product.get_amount_percent_saved }}",
+        {% else %}
+        strike: "false",
+        cpd: "{{ object.product.cost_per_day }}",
+        {% endif %}
+        total: "{{ object.line_total }}",
+        sd: "{{ object.start_date }}",
+        ed: "{{ object.end_date }}",
+        days:"{{ object.days }}",
+        btn: '{% url "orders:supplierorderdetail" object.id %}',
+        rg: "{{ object.refund_granted }}"
+      },
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+ ];
+console.log("qs4",qs_4);
+ var listElm4 = document.getElementById('infList4');
+
+ // Add 20 items.
+ var start4 = 0;
+ var end4 = 0;
+ var loadMore4 = function() {
+  if (qs_4.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm4.appendChild(h3);
+  } else {
+    end4 += 5;
+    if (end4 >= qs_4.length) {
+      end4 = qs_4.length;
+    }
+    for (var i = start4; i < end4; i++) {
+      var object = qs_4[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      var btnCont2 = document.createElement('div');
+      btnCont2.className = "container pl-0 ml-0";
+      var btnContSW = document.createElement('div');
+      btnContSW.className = "scrolling-wrapper row flex-row flex-nowrap";
+      btnContSW.setAttribute("style", "background-color: #fff");
+      for (var j = 0; j < 8; j++) {
+        var colSw = document.createElement('div');
+        colSw.className = "col";
+        var pSw = document.createElement("p");
+        pSw.className = "text-nowrap text-center px-2";
+        pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+        if (j == 0) {
+          var nodeSw = document.createTextNode("申請");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 1) {
+          var nodeSw = document.createTextNode("支払");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 2) {
+          var nodeSw = document.createTextNode("発送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 3) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 4) {
+          var nodeSw = document.createTextNode("レンタル期間");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 5) {
+          if (object.rg) {
+            var nodeSw = document.createTextNode("Refund granted");
+          } else {
+            var nodeSw = document.createTextNode("Refund requested");
+          }
+          pSw.setAttribute("style", "background-color: #aaa; color: #ffffff");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 6) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 7) {
+          var nodeSw = document.createTextNode("取引終了");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        }
+        btnContSW.appendChild(colSw);
+      }
+      btnCont2.appendChild(btnContSW);
+      btnCont.appendChild(btnCont2);
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var a_btn = document.createElement('a');
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('div');
+      btn_right.className = "col text-right float-right";
+      btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
+      a_btn.appendChild(btn_right);
+      imgRow.appendChild(a_btn);
+      mainCont.appendChild(imgRow);
+      listElm4.appendChild(mainCont);
+    }
+    start4 = end4;
+  }
+}
+
+var listElm5 = document.getElementById('infList5');
+
+// Add 20 items.
+var start5 = 0;
+var end5 = 0;
+var qs_5 = [
+  {% for object in products %}
+    {% if object.product.user == request.user %}
+      {% if object.status == 'returned back' and object.order_confirmed == 'confirmed' %}
+      {
+        {% if object.product.image %}
+          src: "{{ object.product.image.url }}",
+        {% else %}
+          src: "",
+        {% endif %}
+        {% for item in object.cart.order_set.all %}
+          oid: "{{ item.order_id }}",
+          pat: "{{ item.timestamp }}",
+          col_href: "{% url 'supplierpdf' object.id item.order_id %}",
+        {% endfor %}
+        quant: "{{ object.quantity }}",
+        p_name: "{{ object.product.product_name }}",
+        {% if object.product.discount_price %}
+        strike: "true",
+        cpd: "{{ object.product.cost_per_day }}",
+        dp: "{{ object.product.discount_price }}",
+        ps: "{{ object.product.get_amount_percent_saved }}",
+        {% else %}
+        strike: "false",
+        cpd: "{{ object.product.cost_per_day }}",
+        {% endif %}
+        total: "{{ object.line_total }}",
+        sd: "{{ object.start_date }}",
+        ed: "{{ object.end_date }}",
+        days:"{{ object.days }}",
+        btn: '{% url "orders:supplierorderdetail" object.id %}'
+      },
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+ ];
+console.log("qs5",qs_5);
+ var loadMore5 = function() {
+  if (qs_5.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm5.appendChild(h3);
+  } else {
+    end5 += 5;
+    if (end5 >= qs_5.length) {
+      end5 = qs_5.length;
+    }
+    for (var i = start5; i < end5; i++) {
+      var object = qs_5[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      var btnCont2 = document.createElement('div');
+      btnCont2.className = "container pl-0 ml-0";
+      var btnContSW = document.createElement('div');
+      btnContSW.className = "scrolling-wrapper row flex-row flex-nowrap";
+      btnContSW.setAttribute("style", "background-color: #fff");
+      for (var j = 0; j < 8; j++) {
+        var colSw = document.createElement('div');
+        colSw.className = "col";
+        var pSw = document.createElement("p");
+        pSw.className = "text-nowrap text-center px-2";
+        pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+        if (j == 0) {
+          var nodeSw = document.createTextNode("申請");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 1) {
+          var nodeSw = document.createTextNode("支払");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 2) {
+          var nodeSw = document.createTextNode("発送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 3) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 4) {
+          var nodeSw = document.createTextNode("レンタル期間");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 5) {
+          var nodeSw = document.createTextNode("返送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 6) {
+          var nodeSw = document.createTextNode("受取");
+          var a = document.createElement('a');
+          a.className = "pt-2";
+          a.href = object.col_href;
+          pSw.setAttribute("style", "background-color: #aaa; color: #ffffff");
+          pSw.appendChild(nodeSw);
+          a.appendChild(pSw);
+          colSw.appendChild(a);
+        } else if (j == 7) {
+          var nodeSw = document.createTextNode("取引終了");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        }
+        btnContSW.appendChild(colSw);
+      }
+      btnCont2.appendChild(btnContSW);
+      btnCont.appendChild(btnCont2);
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var a_btn = document.createElement('a');
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('div');
+      btn_right.className = "col text-right float-right";
+      btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
+      a_btn.appendChild(btn_right);
+      imgRow.appendChild(a_btn);
+      mainCont.appendChild(imgRow);
+      listElm5.appendChild(mainCont);
+    }
+    start5 = end5;
+  }
+}
+
+var listElm6 = document.getElementById('infList6');
+
+// Add 20 items.
+var start6 = 0;
+var end6 = 0;
+var qs_6 = [
+  {% for object in products %}
+    {% if object.product.user == request.user %}
+      {% if object.cancel_request == True %}
+      {
+        {% if object.product.image %}
+          src: "{{ object.product.image.url }}",
+        {% else %}
+          src: "",
+        {% endif %}
+        {% for item in object.cart.order_set.all %}
+          oid: "{{ item.order_id }}",
+          pat: "{{ item.timestamp }}",
+          col_href: "{% url 'supplierpdf' object.id item.order_id %}",
+        {% endfor %}
+        quant: "{{ object.quantity }}",
+        p_name: "{{ object.product.product_name }}",
+        {% if object.product.discount_price %}
+        strike: "true",
+        cpd: "{{ object.product.cost_per_day }}",
+        dp: "{{ object.product.discount_price }}",
+        ps: "{{ object.product.get_amount_percent_saved }}",
+        {% else %}
+        strike: "false",
+        cpd: "{{ object.product.cost_per_day }}",
+        {% endif %}
+        total: "{{ object.line_total }}",
+        sd: "{{ object.start_date }}",
+        ed: "{{ object.end_date }}",
+        days:"{{ object.days }}",
+        btn: '{% url "orders:supplierorderdetail" object.id %}',
+        cg: "{{object.cancel_granted}}",
+      },
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+ ];
+console.log("qs6",qs_6);
+ var loadMore6 = function() {
+  if (qs_6.length <= 0) {
+    var h3 = document.createElement('h3');
+    h3.className = "text-center";
+    h3.innerHTML = "No Orders yet!";
+    listElm6.appendChild(h3);
+  } else {
+    end6 += 5;
+    if (end6 >= qs_6.length) {
+      end6 = qs_6.length;
+    }
+    for (var i = start6; i < end6; i++) {
+      var object = qs_6[i];
+      console.log("in");
+      var mainCont = document.createElement('div');
+      mainCont.className = "container";
+      mainCont.setAttribute("style", "background: #fff !important; border-bottom: 1px solid #000");
+      var imgRow = document.createElement('div');
+      imgRow.className = "row pt-3";
+      var imgCol = document.createElement('div');
+      imgCol.className = "col-xs-2 col-md-1";
+      var img = document.createElement('img');
+      img.className = "img-thumbnail rounded flaot-left";
+      img.setAttribute("style", "width: 60px; height: 60px");
+      img.src = object.src;
+      imgCol.appendChild(img);
+      imgRow.appendChild(imgCol);
+      var textCol = document.createElement('div');
+      textCol.className = "col-xs-9 col-md-8 text-left pr-0 mr-0 justify-content-start";
+      var p1 = document.createElement('p');
+      p1.className = "pb-0 mb-0 text-left";
+      p1.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var p1_oid = document.createElement('p');
+      p1_oid.className = "text-center";
+      var node1_oid = document.createTextNode("Order Id:- "+object.oid);
+      p1_oid.appendChild(node1_oid);
+      var p1_pat = document.createElement('p');
+      p1_pat.className = "text-center";
+      var node1_pat = document.createTextNode("Placed At:- "+object.pat);
+      p1_pat.appendChild(node1_pat);
+      p1.appendChild(p1_oid);
+      p1.appendChild(p1_pat);
+      var node1 = document. createTextNode(object.quant + " X " + object.p_name);
+      p1.appendChild(node1);
+      textCol.appendChild(p1);
+      var textRow = document.createElement('div');
+      textRow.className = "d-flex flex-row flex-wrap justify-content-start text-left";
+      var textCol2 = document.createElement('div');
+      textCol2.className = "col pr-0 pl-0 ml-0";
+      var p2 = document.createElement('p');
+      p2.className = "pb-0 mb-0 text-left";
+      p2.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #aaa;");
+      if (object.strike) {
+        var str = document.createElement('strike');
+        str.innerHTML = "Y"+object.cpd+ " / 日";
+        p2.appendChild(str);
+        var node2 = document. createTextNode("Y"+object.dp+ " / 日" + " (" + object.ps + "% Off)");
+        p2.appendChild(node2);
+      } else {
+        var node2 = document. createTextNode("Y" + object.cpd);
+        p2.appendChild(node2);
+      }
+      var h = document.createElement('h6');
+      h.innerHTML = "Total:- Y"+object.total;
+      var p3 = document.createElement('p');
+      p3.className = "pb-0 mb-0 text-left";
+      p3.setAttribute("style", "font-size: 16px;font-weight: normal;font-stretch: normal;font-style: normal;letter-spacing: normal;text-align: left;color: #555;");
+      var node3 = document. createTextNode("レンタル期間："+object.sd+"~"+object.ed+" ("+object.days+"日間");
+      p3.appendChild(node3);
+      textCol2.appendChild(p2);
+      textCol2.appendChild(h);
+      textCol2.appendChild(p3);
+      var btnCont = document.createElement('div');
+      btnCont.className = "container d-flex pl-0 ml-0 pt-2";
+      var btnCont2 = document.createElement('div');
+      btnCont2.className = "container pl-0 ml-0";
+      var btnContSW = document.createElement('div');
+      btnContSW.className = "scrolling-wrapper row flex-row flex-nowrap";
+      btnContSW.setAttribute("style", "background-color: #fff");
+      for (var j = 0; j < 8; j++) {
+        var colSw = document.createElement('div');
+        colSw.className = "col";
+        var pSw = document.createElement("p");
+        pSw.className = "text-nowrap text-center px-2";
+        pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+        if (j == 0) {
+          var nodeSw = document.createTextNode("申請");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 1) {
+          var nodeSw = document.createTextNode("支払");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 2) {
+          var nodeSw = document.createTextNode("発送");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 3) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 4) {
+          var nodeSw = document.createTextNode("レンタル期間");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 5) {
+          if (object.cg) {
+            var nodeSw = document.createTextNode("Cancellation granted");
+          } else {
+            var nodeSw = document.createTextNode("Cancellation requested");
+          }
+          pSw.setAttribute("style", "background-color: #aaa; color: #ffffff");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 6) {
+          var nodeSw = document.createTextNode("受取");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        } else if (j == 7) {
+          var nodeSw = document.createTextNode("取引終了");
+          pSw.appendChild(nodeSw);
+          colSw.appendChild(pSw);
+        }
+        btnContSW.appendChild(colSw);
+      }
+      btnCont2.appendChild(btnContSW);
+      btnCont.appendChild(btnCont2);
+      textCol2.appendChild(btnCont);
+      textRow.appendChild(textCol2);
+      textCol.appendChild(textRow);
+      imgRow.appendChild(textCol);
+      var a_btn = document.createElement('a');
+      a_btn.href = object.btn;
+      var btn_right = document.createElement('div');
+      btn_right.className = "col text-right float-right";
+      btn_right.innerHTML = btn_right.innerHTML + document.getElementById('btn_right').innerHTML;
+      a_btn.appendChild(btn_right);
+      imgRow.appendChild(a_btn);
+      mainCont.appendChild(imgRow);
+      listElm6.appendChild(mainCont);
+    }
+    start6 = end6;
+  }
 }
 
 // Detect when scrolled to bottom.
@@ -803,16 +1340,61 @@ var loadMore = function() {
 //     console.log("bottom!");
 //   }
 // });
+function loadTabData() {
+  switch (selTab) {
+    case "tab_btn1":
+      if (qs.length>0) {
+        loadMore();
+        console.log("st", selTab);
+      }
+      break;
+    case "tab_btn2":
+      if (qs_2.length>0) {
+        loadMore2();
+        console.log("st", selTab);
+      }
+      break;
+    case "tab_btn3":
+      if (qs_3.length>0) {
+        loadMore3();
+        console.log("st", selTab);
+      }
+      break;
+    case "tab_btn4":
+      if (qs_4.length>0) {
+        loadMore4();
+        console.log("st", selTab);
+      }
+      break;
+    case "tab_btn5":
+      if (qs_5.length>0) {
+        loadMore5();
+        console.log("st", selTab);
+      }
+      break;
+    case "tab_btn6":
+      if (qs_6.length>0) {
+        loadMore6();
+        console.log("st", selTab);
+      }
+      break;
+    default:
+  }
+}
 window.addEventListener("scroll", function () {
     var scrollHeight = $(document).height();
     var scrollPos = $(window).height() + $(window).scrollTop();
-    var dh = $(infList).height() + $(window).scrollTop();
-    console.log("dh", dh);
+    var elmnt = document.getElementById("infList");
+    var footer = document.getElementById("footer");
+    var fh = footer.clientHeight;
+    console.log("fh", fh);
+    var dh = elmnt.clientHeight + elmnt.scrollTop;
+    //console.log("dh", dh);
     console.log("sh", scrollHeight);
     console.log("sp", scrollPos);
-    console.log("ifCond", (scrollHeight - scrollPos));
-    if ((scrollHeight - dh) <= 1) {
-      loadMore();
+    console.log("ifCond", (scrollHeight - (scrollPos + fh)));
+    if ((scrollHeight - (scrollPos + fh)) <= 1) {
+      loadTabData();
       console.log("bottom!");
     }
 }, false);
@@ -827,6 +1409,7 @@ loadMore();
 
 
 </body>
+</div>
 </div>
 
 

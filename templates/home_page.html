@@ -32,9 +32,11 @@
     		<div class="site-slider">
     			<div class="slider-one carr1">
             {% for crousel_image in crousel_images %}
+            {% if crousel_image.image %}
             <div>
     					<img src='{{ crousel_image.image.url }}' class="img-fluid carr1" alt="Banner" />
     				</div>
+            {% endif %}
             {% endfor %}
     				
     			</div>

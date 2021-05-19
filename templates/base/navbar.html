@@ -118,9 +118,70 @@
   box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.1) !important;
 }
 
-.user-dropdown .nav-link {
-  padding: 0.15rem 0 !important;
+.dropdown-menu {
+  border-radius: 8px !important;
+  background: #D3D3D3 !important;
+  color: #1daf9e !important;
 }
+
+            .dropdown-submenu> a:after {
+                content: "" !important;
+            }
+            .dropdown-submenu> a:hover {
+                background: #1daf9e !important;
+                color: #fff !important;
+                border-radius: 4px !important;
+            }
+
+            .dropdown-submenu>.dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: 0px;
+                margin-left: 0px;
+            }
+
+            .dropdown-submenu:hover>.dropdown-menu {
+                display: block;
+			}
+
+      .dropdown-item {
+        color: #1daf9e !important;
+        font-size: 1.0rem !important;
+      }
+
+
+      .dropdown-item:hover {
+        background: #1daf9e !important;
+        border-radius: 4px !important;
+        color: #fff !important;
+      }
+
+      .speech-bubble {
+  position: relative;
+  background: #fff;
+  border-radius: .4em;
+  padding-left: 10px;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 95%;
+  right: 65%;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom:20px solid #d3d3d3;
+  margin-left: 0px;
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  z-index: 10;
+}
+
+/* .user-dropdown .nav-link {
+  padding: 0.15rem 0 !important;
+} */
 
 #sidebar {
   background: #fff;
@@ -136,9 +197,15 @@
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
   padding: 1.25rem 1rem 1rem;
 }
-.dropdown-menu{
+/* .dropdown-menu{
   font-size: 1.4rem !important;
+  background: #fff !important;
+  border-radius: 8px !important;
 }
+.dropdown-submenu a:hover {
+  background: #1daf9e !important;
+  color: #fff;
+} */
 
 #sidebar.active {
   left: 0;
@@ -269,10 +336,10 @@ ul.social-icons li {
   height: 2.25rem;
 }
 
-.user-dropdown .dropdown-menu {
+/* .user-dropdown .dropdown-menu {
   left: auto;
   right: 0;
-}
+} */
 
 .sticky {
   position: fixed;
@@ -297,7 +364,6 @@ ul.social-icons li {
   border-radius: 50%;
 }
 </style>
-
 <!-- new nav-->
 
 <!DOCTYPE html>
@@ -478,23 +544,24 @@ ul.social-icons li {
            {% trans "CATEGORIES" %}
           </a>
              
-                         <ul class="dropdown-menu col-md-4 col-sm-6" role="menu" aria-labelledby="dropdownMenu">
+                         <ul class="dropdown-menu speech-bubble" role="menu" aria-labelledby="dropdownMenu" style="width: 250px !important;">
                           {% for category in category_images %}
 
                                 <li class="dropdown-submenu">
-                                 
+                                {% if category.image %} 
                                  <a class="dropdown-item"  tabindex="-1" href="{% url 'products:query' category.slug %}">  <img class='img10' src='{{ category.image.url }}' alt="Avatar">
-                                     {{ category.title }}
+                                     {{ category.title }} <i class="pl-3"> > </i>
                                  </a>
+                                {% endif %}
                                  
                                  <ul class="dropdown-menu">
                                    {% for sub_category in sub_categorys %}
                                     {% if category.slug == sub_category.category.slug %}
-                                   <li class='dropdown-submenu'><a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }}</a>
+                                   <li class='dropdown-submenu'><a class="dropdown-item" tabindex="-1" href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }} <i class="pl-3"> > </i></a>
                                     <ul class="dropdown-menu">
                                       {% for sub_sub_category in sub_sub_categorys %}
                                         {% if sub_category.slug == sub_sub_category.sub_category.slug %}
-                                      <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' sub_sub_category.slug %}">{{ sub_sub_category.title }}</a></li>
+                                      <li><a class="dropdown-item" tabindex="-1" href="{% url 'products:query2' sub_sub_category.slug %}">{{ sub_sub_category.title }} <i class="pl-3"> > </i></a></li>
                                         {% endif %}
                                       {% endfor %}
                                     

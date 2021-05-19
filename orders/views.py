@@ -51,16 +51,16 @@ class OrderListView(LoginRequiredMixin,ListView):
         queryset4 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__status='returned back').not_created().distinct()
         queryset5 = Order.objects.filter(billing_profile__email=self.request.user, cart__cartitem__cancel_request = True).not_created().distinct()
         
-        page = self.request.GET.get('page', 1)
-        paginator = Paginator(queryset, 10)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
+        # page = self.request.GET.get('page', 1)
+        # paginator = Paginator(queryset, 10)
+        # try:
+        #     products = paginator.page(page)
+        # except PageNotAnInteger:
+        #     products = paginator.page(1)
+        # except EmptyPage:
+        #     products = paginator.page(paginator.num_pages)
         context['paid_orders'] = 'paid orders',
-        context['products'] = products
+        context['products'] = queryset
         context['paid_count'] = queryset1.count()
         context['shipped_count'] = queryset2.count()
         context['refund_count'] = queryset3.count()

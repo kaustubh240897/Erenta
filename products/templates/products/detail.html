@@ -8,7 +8,9 @@
 
 <script>
   
-  const dates = "{{ rent_periods_list|safe }}"
+  const date_s = "{{ rent_periods_list|safe }}";
+  var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '');
+  const dates = datesStr.split(',');
   
   function DisableSpecificDates(date) {
     var string = jQuery.datepicker.formatDate('dd-mm-yy', date);
@@ -36,7 +38,36 @@ $(function() {
     beforeShowDay: DisableSpecificDates
   });
 });
-  </script>
+</script>
+
+<script type="text/javascript">
+  function checkRentDates() {
+    console.log("onChange", document.getElementById('txtDate1').value);
+    var dStart = document.getElementById('txtDate').value;
+    var dEnd = document.getElementById('txtDate1').value;
+    console.log("ds",dStart);
+    console.log("de",dEnd);
+    var td = new Date();
+    var d = td.getDate();
+    var m = td.getMonth() + 1;
+    if (m < 10 ) {
+      m = "0" + m.toString();
+    }
+    var y = td.getFullYear();
+    var ntd = d + "-" + m + "-" + y;
+    console.log("ntd", ntd);
+    for (var i = 0; i < dates.length; i++) {
+      if ((dates[i] > dStart && dates[i] < dEnd) || (dates[i] == dStart || dates[i] == dEnd) || (dStart < ntd || dEnd <ntd)) {
+        console.log(i, dates[i]);
+        alert("Select correct dates");
+        console.log("td",td);
+        document.getElementById('txtDate1').value = ntd;
+        document.getElementById('txtDate').value = ntd;
+        break;
+      }
+    }
+  }
+</script>
 
 <script>
 
@@ -457,13 +488,13 @@ function showSlides(n) {
               {% trans "Start Date" %}-:
                <br/>
               <i class="fas fa-calendar-week"></i>
-               <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" />
+               <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" onchange="checkRentDates()" />
           
              
               {% trans "End Date" %}-: 
               <br/>
               <i class="fas fa-calendar-week"></i>
-              <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" />
+              <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" onchange="checkRentDates()" />
               
           {% if object.variation_set.all %}
 

@@ -5,7 +5,43 @@
 
 </br>
   <title>{{ title }}</title>
- 
+
+  {% if high_to_low %}
+  <h6 class='text-center'> {{ high_to_low }} </h6>
+  {% elif low_to_high %}
+  <h6 class='text-center'>{{ low_to_high }} </h6>
+  {% endif %}
+
+  <div class='container py-2'>
+    <div class='row'>
+    <span class="badge badge-pill badge-secondary py-2 px-4 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter">
+    <b> Sort &#8593;&#8595; </b>
+    </span>
+   </div>
+  </div>
+
+
+
+  <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Sort products.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <a href="{% url 'products:high_to_low' %}"> High to Low Price</a>
+        <br/>
+        <a href="{% url 'products:low_to_high' %}"> Low to High Price</a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
         
     <div class="container" style="background-color: white;">
   <br/>
@@ -29,11 +65,7 @@
           
            {% endfor %}
      </div>
-    
-    
-    
-    
-    
+        
     
     {% if products.has_other_pages %}
   <ul class="pagination justify-content-center">

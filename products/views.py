@@ -51,6 +51,60 @@ def product_list_view(request):
     return render(request,"products/product_list.html", context)
 
 
+def product_list_sort_by_high_to_low_view(request):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
+    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('-discount_price')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 16)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    context = {
+        'qs': queryset ,
+        "title":"Products",
+        'products': products,
+        'high_to_low': "Sorted by High to Low price",
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
+        "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
+        
+    }
+    return render(request,"products/product_list.html", context)
+
+
+def product_list_sort_by_low_to_high_view(request):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
+    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('discount_price')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 16)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    context = {
+        'qs': queryset ,
+        "title":"Products",
+        'products': products,
+        'low_to_high': "Sorted by Low to High price",
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
+        "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
+        
+    }
+    return render(request,"products/product_list.html", context)
+
+
 class UserProductHistoryView(LoginRequiredMixin ,ListView):
     template_name = "products/user-history.html"
     
@@ -196,12 +250,48 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
 
 
 
-def sub_category_product_view_by_color(request,slug, color):
+def sub_category_product_view_by_color(request, slug, color):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
     
     slug_type = request.build_absolute_uri().split('/')
-    slug_type = slug_type[len(slug_type)-2]
+    slug_type = slug_type[len(slug_type)-3]
+    print("lllllll",slug_type)
+    print('ccc', color)
+    try:
+        sub_cat_query = Sub_Category.objects.get(slug=slug)
+        print("qqqq",sub_cat_query)
+    except Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
+    
+    if sub_cat_query is not None:
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=color).distinct()
+    else:
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
+    context = {
+          'qs': queryset ,
+          'slug': slug_type,
+          'cc': colors,
+          'ss': sizes,
+          'color': color,
+         "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
+    }
+    return render(request,"products/sub_cat_views.html", context)
+
+def sub_category_product_view_by_size(request,slug,size):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
+    
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-3]
     print(slug_type)
     try:
         sub_cat_query = Sub_Category.objects.get(slug=slug)
@@ -210,12 +300,52 @@ def sub_category_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_cat_query is not None:
-        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=size).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
     context = {
           'qs': queryset ,
           'slug': slug_type,
+          'cc' : colors,
+          'ss': sizes,
+          'size': size,
+         "title":"Products",
+         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "category_images": Category.objects.all(),
+        "sub_categorys": Sub_Category.objects.all(),
+        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+
+    }
+    
+
+    return render(request,"products/sub_cat_views.html", context)
+
+def sub_sub_category_product_view_by_color(request,slug, color):
+    if request.session.get('city_names',None) == None:
+        request.session['city_names'] = "Tokyo"
+    slug_type = request.build_absolute_uri().split('/')
+    slug_type = slug_type[len(slug_type)-3]
+    print(slug_type)
+    try:
+        sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
+    except Sub_Sub_Category.DoesNotExist:
+        print("Product does not exist now!")
+        return redirect("products:list")
+    
+    if sub_sub_cat_query is not None:
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=color).distinct()
+    else:
+        queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    context = {
+          'qs': queryset ,
+          'sub_slug': slug_type,
+          'cc': colors,
+          'ss' : sizes,
+          'color':color,
          "title":"Products",
          'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
          "category_images": Category.objects.all(),
@@ -227,11 +357,12 @@ def sub_category_product_view_by_color(request,slug, color):
 
     return render(request,"products/view.html", context)
 
-def sub_sub_category_product_view_by_color(request,slug, color):
+
+def sub_sub_category_product_view_by_size(request,slug, size):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
     slug_type = request.build_absolute_uri().split('/')
-    slug_type = slug_type[len(slug_type)-2]
+    slug_type = slug_type[len(slug_type)-3]
     print(slug_type)
     try:
         sub_sub_cat_query = Sub_Sub_Category.objects.get(slug=slug)
@@ -240,12 +371,17 @@ def sub_sub_category_product_view_by_color(request,slug, color):
         return redirect("products:list")
     
     if sub_sub_cat_query is not None:
-        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=color)
+        queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=size).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
     context = {
           'qs': queryset ,
           'sub_slug': slug_type,
+          'cc' :colors,
+          'ss': sizes,
+          'size': size,
          "title":"Products",
          'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
          "category_images": Category.objects.all(),
@@ -254,7 +390,6 @@ def sub_sub_category_product_view_by_color(request,slug, color):
 
     }
     
-
     return render(request,"products/view.html", context)
 
 
@@ -297,12 +432,13 @@ def category_product_view_1(request, slug,*args, **kwargs):
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     context = {
-          'qs': queryset ,
+        'qs': queryset ,
           
-         'cat_slug': slug_type,
-         "title":"Products",
-         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
-         "category_images": Category.objects.all(),
+        'cat_slug': slug_type,
+        "title":"Products",
+        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+        "category_images": Category.objects.all(),
+        "sub_cats": Sub_Category.objects.filter(category__slug=slug),
         "sub_categorys": Sub_Category.objects.all(),
         "sub_sub_categorys": Sub_Sub_Category.objects.all()
 
@@ -335,12 +471,17 @@ def sub_category_product_view(request, slug,*args, **kwargs):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
     context = {
           'qs': queryset ,
           'slug': slug_type,
+          'cc': colors,
+          'ss': sizes,
           #'clothing_category': query,
          "title":"Products",
          'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
+         "sub_sub_cats": Sub_Sub_Category.objects.filter(sub_category__slug=slug),
          "category_images": Category.objects.all(),
         "sub_categorys": Sub_Category.objects.all(),
         "sub_sub_categorys": Sub_Sub_Category.objects.all()
@@ -374,9 +515,13 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_sub_category=sub_sub_cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
     context = {
           'qs': queryset ,
+          'cc': colors,
           'sub_slug': slug_type,
+          'ss': sizes,
           #'clothing_category': query,
          "title":"Products",
          'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
