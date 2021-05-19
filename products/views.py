@@ -28,19 +28,24 @@ User = settings.AUTH_USER_MODEL
 def product_list_view(request):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
-    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('?')
-    page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, 16)
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+    products_list = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True)
+    queryset = products_list.order_by('?')
+    queryset_low_to_high = products_list.order_by('discount_price')
+    queryset_high_to_low = products_list.order_by('-discount_price')
+    # page = request.GET.get('page', 1)
+    # paginator = Paginator(queryset, 16)
+    # try:
+    #     products = paginator.page(page)
+    # except PageNotAnInteger:
+    #     products = paginator.page(1)
+    # except EmptyPage:
+    #     products = paginator.page(paginator.num_pages)
     context = {
         'qs': queryset ,
         "title":"Products",
-        'products': products,
+        'products': queryset,
+        'products_low_to_high': queryset_low_to_high,
+        'products_high_to_low': queryset_high_to_low,
         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
         "category_images": Category.objects.all(),
         "sub_categorys": Sub_Category.objects.all(),
@@ -55,18 +60,18 @@ def product_list_sort_by_high_to_low_view(request):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
     queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('-discount_price')
-    page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, 16)
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+    # page = request.GET.get('page', 1)
+    # paginator = Paginator(queryset, 16)
+    # try:
+    #     products = paginator.page(page)
+    # except PageNotAnInteger:
+    #     products = paginator.page(1)
+    # except EmptyPage:
+    #     products = paginator.page(paginator.num_pages)
     context = {
         'qs': queryset ,
         "title":"Products",
-        'products': products,
+        'products': queryset,
         'high_to_low': "Sorted by High to Low price",
         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
         "category_images": Category.objects.all(),
@@ -82,18 +87,18 @@ def product_list_sort_by_low_to_high_view(request):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
     queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('discount_price')
-    page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, 16)
-    try:
-        products = paginator.page(page)
-    except PageNotAnInteger:
-        products = paginator.page(1)
-    except EmptyPage:
-        products = paginator.page(paginator.num_pages)
+    # page = request.GET.get('page', 1)
+    # paginator = Paginator(queryset, 16)
+    # try:
+    #     products = paginator.page(page)
+    # except PageNotAnInteger:
+    #     products = paginator.page(1)
+    # except EmptyPage:
+    #     products = paginator.page(paginator.num_pages)
     context = {
         'qs': queryset ,
         "title":"Products",
-        'products': products,
+        'products': queryset,
         'low_to_high': "Sorted by Low to High price",
         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
         "category_images": Category.objects.all(),
