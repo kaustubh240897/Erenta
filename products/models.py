@@ -3,6 +3,7 @@ from django.conf import settings
 import random
 import os
 import datetime
+#from PIL import Image
 from datetime import timedelta
 from django.contrib import messages
 from django.db import models
@@ -166,6 +167,18 @@ class Product_description(models.Model):
     objects = ProductManager()
 
     @property
+
+    # def save(self):
+    #     super().save()  # saving image first
+
+    #     img = Image.open(self.image.path) # Open image using self
+
+    #     if img.height > 225 or img.width > 225:
+    #         new_img = (225, 225)
+    #         img.thumbnail(new_img)
+    #         img.save(self.image.path)  # saving image at the same path
+
+        
     def product_posted_days(self):
         return timezone.now()-datetime.timedelta(hours=1488)
     
@@ -200,17 +213,7 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(product_pre_save_receiver, sender=Product_description)
 
 
-class ProductImage(models.Model):
-    product =models.ForeignKey(Product_description,on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_image_path,validators=[MaxSizeValidator(1050, 1050)])
-    featured = models.BooleanField(default=False)
-    thumbnail = models.BooleanField(default=False)
-    active = models.BooleanField(default=True)
-    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
 
-    def __str__(self):
-        return str(self.product.id)
-    
 
 
 
@@ -236,7 +239,6 @@ class Variation(models.Model):
     product = models.ForeignKey(Product_description,on_delete=models.CASCADE)
     category = models.CharField(max_length=120, choices=VAR_CATEGORIES,default='size')
     title = models.CharField(max_length=120)
-    image = models.ForeignKey(ProductImage,null=True,blank=True,on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=15, decimal_places=2 ,null=True,blank=True)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=False,auto_now=True)
@@ -245,6 +247,19 @@ class Variation(models.Model):
 
     def __str__(self):
         return "%s %s" %(self.title, self.product.product_name)
+
+class ProductImage(models.Model):
+    product =models.ForeignKey(Product_description,on_delete=models.CASCADE)
+    variations = models.ManyToManyField(Variation,blank=True)
+    image = models.ImageField(upload_to=upload_image_path,validators=[MaxSizeValidator(1050, 1050)])
+    featured = models.BooleanField(default=False)
+    thumbnail = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+    updated = models.DateTimeField(auto_now_add=False,auto_now=True)
+
+    def __str__(self):
+        return str(self.product.id)
+    
 
 
 class Contact(models.Model):

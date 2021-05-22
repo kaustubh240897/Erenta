@@ -120,8 +120,37 @@
      {% if next_url %}
      <input type='hidden' name='next' value='{{ next_url }}' />
      {% endif %}
-     <div class='col-12 text-center'>
+     <div class='col-12'>
      {{ form|crispy }}
+
+     {% if object %}
+         
+             
+             <!-- Size-:
+              <select class='form-control' name='size'>
+                {% for item in object %}
+                {% if item.category == 'size' %}
+                <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                {% endif %}
+                {% endfor %}
+              </select> -->
+              
+            
+              
+            <br/>
+              Color-:
+              <select class='form-control' name='color'>
+                {% for item in object %}
+                {% if item.category == 'color' %}
+                <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              
+            
+
+
+          {% endif %} 
      </div>
  <div class='text-center pt-3'>
     <button type='submit' class='btn' style='background-color: #1daf9e; color:#ffffff;'>Add it</button>

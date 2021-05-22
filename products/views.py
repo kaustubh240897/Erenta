@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect ,get_object_or_404
 from .models import Product_description,User_Review,Supplier_Review,ProductImage,Category,Sub_Category,Sub_Sub_Category,ProductImage,Variation,Product_Refund,RentalPeriod
 from carts.models import Quantity,CartItem
 from tags.models import Tag
+from django.db.models import Count
 from analytics.models import View_Count
 #from accounts.forms import SupplierpersonaldetailForm, SupplierbankdetailForm
 from accounts.models import User,Supplier,Bank_Account_Detail
@@ -125,7 +126,7 @@ class UserProductHistoryView(LoginRequiredMixin ,ListView):
 
     def get_queryset(self, *args, **kwargs):
         request = self.request
-        views = request.user.objectviewed_set.by_model(Product_description, model_queryset=False).distinct()[:10]
+        views = request.user.objectviewed_set.by_model(Product_description, model_queryset=False).order_by('-timestamp').distinct()[:12]
         return views
 
 
@@ -188,17 +189,15 @@ class ProductDetailSlugView(ObjectViewedMixin ,DetailView):
         context['all']=Product_description.objects.filter(Current_City__iexact= self.request.session['city_names'], slug=slug)
         context['similar_products']= View_Count.objects.filter(product__Current_City__iexact= self.request.session['city_names'], product__sub_category=product.sub_category).exclude(product__slug=slug)[:8]
         qq = ProductImage.objects.filter(product=product)
-        if qq.count()==3:
-            context['images0'] = qq[0]
-            context['images1'] = qq[1]
-            context['images2'] = qq[2]
-        elif qq.count()==2:
-            context['images0'] = qq[0]
-            context['images1'] = qq[1]
-        elif qq.count()==1:
-            context['images0'] = qq[0]
-
-
+        # if qq.count()==3:
+        #     context['images0'] = qq[0]
+        #     context['images1'] = qq[1]
+        #     context['images2'] = qq[2]
+        # elif qq.count()==2:
+        #     context['images0'] = qq[0]
+        #     context['images1'] = qq[1]
+        # elif qq.count()==1:
+        #     context['images0'] = qq[0]
         context['images']= qq
         context['reviews']=User_Review.objects.filter(product_id=product_id)
         context["category_images"] = Category.objects.all()
@@ -274,8 +273,8 @@ def sub_category_product_view_by_color(request, slug, color):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=color).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'slug': slug_type,
@@ -308,8 +307,8 @@ def sub_category_product_view_by_size(request,slug,size):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_category=sub_cat_query, variation__title__icontains=size).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'slug': slug_type,
@@ -343,8 +342,8 @@ def sub_sub_category_product_view_by_color(request,slug, color):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=color).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'sub_slug': slug_type,
@@ -379,8 +378,8 @@ def sub_sub_category_product_view_by_size(request,slug, size):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__icontains=size).distinct()
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'sub_slug': slug_type,
@@ -476,8 +475,8 @@ def sub_category_product_view(request, slug,*args, **kwargs):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'slug': slug_type,
@@ -520,8 +519,8 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], sub_sub_category=sub_sub_cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
-    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug)
-    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug)
+    colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     context = {
           'qs': queryset ,
           'cc': colors,
@@ -617,17 +616,42 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
         id = self.kwargs.get('id')
         context['name'] = Product_description.objects.get(id=id)
         context['product_images'] = ProductImage.objects.filter(product__id=id)
+        context['object']=Variation.objects.filter(product__id=id)
         return context
 
     def form_valid(self,form):
         try:
+            product_variations = []
             obj = form.save(commit=False)
             id = self.kwargs.get('id')
-            obj.product = Product_description.objects.get(id=id)
+            image = self.request.FILES['image']
+            product_obj = Product_description.objects.get(id=id)
+            #obj.product = Product_description.objects.get(id=id)
+
             if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
                 if ProductImage.objects.filter(product__id=id).count() < 3:
-                    obj.save()
+                    for item in self.request.POST:
+                        key = item
+                        val = self.request.POST[key]
+                        try:
+                            v = Variation.objects.get(product__id=id, category__iexact=key, title__iexact=val)
+                            product_variations.append(v)
+                            print(v)
+                        except:
+                            pass
+
+                    # obj.save()
+                    # return HttpResponseRedirect(self.get_success_url()) 
+                    productimage_item = ProductImage.objects.create(product=product_obj)
+                            
+                    if len(product_variations)>0:
+                        obj.variation_set=productimage_item.variations.add(*product_variations)
+                    productimage_item.product = Product_description.objects.get(id=id)
+                    productimage_item.image = image
+                    productimage_item.save()
                     return HttpResponseRedirect(self.get_success_url())
+                        
+
                 else:
                     messages.warning(self.request, "You cannot add more than 3 images.")
                     return redirect("addproductdetails")

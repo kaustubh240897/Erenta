@@ -337,26 +337,23 @@ function showSlides(n) {
          
               <!-- <a class="prev"  onclick="plusSlides(-1)">&#10094;</a>
               <a class="next margin-a"  onclick="plusSlides(1)">&#10095;</a> -->
+            {% if images %}
+              {% for img in images %}
               <div class="mySlides margin-l">
-                <div class="numbertext">1 / 4</div>
-                  <img src="{{ object.image.url }}"  class="zoom wid" />
+                <div class="numbertext">{{ forloop.counter }} / {{ images.count }}</div>
+                  <img src="{{ img.image.url }}"  class="zoom wid" />
               </div>
+             {% endfor %}
+            {% else %}
 
-              <div class="mySlides margin-l">
-                <div class="numbertext">2 / 4</div>
-                  <img src='{{ images0.image.url }}'  class="zoom wid" />
-              </div>
+            <div class="mySlides margin-l">
+              <div class="numbertext">1 / 1</div>
+                <img src="{{ object.image.url }}"  class="zoom wid" />
+            </div>
 
-              <div class="mySlides margin-l">
-                <div class="numbertext">3 / 4</div>
-                  <img src='{{ images1.image.url }}'  class="zoom wid" />
-              </div>
+            {% endif %}
 
-              <div class="mySlides margin-l">
-                <div class="numbertext">4 / 4</div>
-                  <img src='{{ images2.image.url }}'  class="zoom wid"/>
-              </div>
-
+              
               
 
               <!-- Next and previous buttons -->
@@ -373,19 +370,11 @@ function showSlides(n) {
               
               <!-- Thumbnail images -->
               <div class="row margin-l2">
+              {% for img in images %}
                 <div class="column mr-4">
-                  <img class="demo cursor" src="{{ object.image.url }}" style=" width:100%" onclick="currentSlide(1)" alt="img.1">
+                  <img class="demo cursor" src="{{ img.image.url }}" style=" width:100%" onclick="currentSlide({{ forloop.counter }})" alt="img.1">
                 </div>
-                <div class="column mr-4">
-                  <img class="demo cursor" src="{{ images0.image.url }}" style="width:100%" onclick="currentSlide(2)" alt="img.2">
-                </div>
-                <div class="column mr-4">
-                  <img class="demo cursor" src="{{ images1.image.url }}" style=" width:100%;" onclick="currentSlide(3)" alt="img.3">
-                </div>
-                <div class="column mr-4">
-                  <img class="demo cursor" src="{{ images2.image.url }}" style="width:100%;" onclick="currentSlide(4)" alt="img.4">
-                </div>
-                
+              {% endfor %}
               </div>
             <br/>
           <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
@@ -528,7 +517,9 @@ function showSlides(n) {
           <br/>
           
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
-           <h3 class='text-center'> {% trans "Variations available" %}</h3>
+
+           
+           <!-- <h3 class='text-center'> {% trans "Variations available" %}</h3>
           <br/>
             <table class="table" style="background-color: #263238; color: white;">
             <thead>
@@ -556,7 +547,7 @@ function showSlides(n) {
           {{ item.category|capfirst }} <br/>
         
           
-            <!-- {% if not forloop.last %} , {% endif %} -->
+           
             {% endfor %} </td>
           <td>  <font color="orange">Sufficient</font> </td>
            
@@ -576,7 +567,7 @@ function showSlides(n) {
             {% if obj.variations.all %}
            <td>{% for item in obj.variations.all %}
            {{ item.title|capfirst }} {{ item.category|capfirst }} 
-            <!-- {% if not forloop.last %} , {% endif %} -->
+           
             <br/>
             {% endfor %} </td>
             {% else %}
@@ -597,11 +588,23 @@ function showSlides(n) {
           </tr>
               </tbody>
             </table>  
+          -->
+          {% for q in qs %}
+          {% if q.variations.all %}
+            {% for item in q.variations.all %}
+            {{ item.title|capfirst }}  
+            {{ item.category|capfirst }} 
+            
+            {% endfor %}
+            {{ q.quantity }} <br/>
+          {% endif %}
+          
+          {% endfor %}
         
          
         </div>
               </div>
-         <hr/>
+         <hr/> 
          
            
              <!-- slider -->
@@ -667,7 +670,7 @@ function showSlides(n) {
         , {{ rev.timestamp|timesince }} ago
 
       
-          <div class="container p-3 my-3 border" style="background-color: lightblue;">
+          <div class="container p-3 my-3 border" style="background-color:#c8efea;;">
             {{ rev.review }}
           </div>
           <hr/>

@@ -5,7 +5,38 @@
 
 </br>
   <title>{{ title }}</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
 
+    $(document).on("change", ".price-sorting", function() {
+        var sortingMethod = $(this).val();
+        if(sortingMethod == 'l2h')
+        {
+          console.log("l2h");
+            sortProductsPriceAscending();
+        }
+        else if(sortingMethod == 'h2l')
+        {console.log("h2l");
+            sortProductsPriceDescending();
+        }
+    });
+            function sortProductsPriceAscending() {
+                var products = $('.prod');
+                var productsXS = $('.prodXS');
+                products.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+                productsXS.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+                $(".prodList").html(products);
+                $(".prodListXS").html(productsXS);
+            }
+            function sortProductsPriceDescending(){
+                var products = $('.prod');
+                var productsXS = $('.prodXS');
+                products.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+                productsXS.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+                $(".prodList").html(products);
+                $(".prodListXS").html(productsXS);
+            }
+  </script>
   {% if high_to_low %}
   <h6 class='text-center'> {{ high_to_low }} </h6>
   {% elif low_to_high %}
@@ -23,50 +54,38 @@
 
 
   <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Sort products.</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <a href="{% url 'products:high_to_low' %}"> High to Low Price</a>
-        <br/>
-        <a href="{% url 'products:low_to_high' %}"> Low to High Price</a>
-      </div>
-      
-    </div>
-  </div>
-</div>
+  <!-- Drop down for sorting prices -->
+          <select class="price-sorting selectBox" name="price-sorting" id="price-sorting">
+              <option value="1">Relevance</option>
+              <option value="l2h">Price: Low - High</option>
+              <option value="h2l">Price: High - Low</option>
+          </select>
 
-        
-    <div class="container" style="background-color: white;">
+
+    <div class="container d-none d-md-block" style="background-color: white;">
   <br/>
    <!-- <section class="text-center"> -->
 
-    <div class="row">
+    <div id="row_lg" class="row prodList">
 
           <!--Grid column-->
            {% for obj in products %}
-          <div class="col-lg-3 col-md-4 col-sm-4 mb-4" style="display: flex;
+          <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}" style="display: flex;
         flex-wrap: wrap; flex-grow: 1;
         flex-basis: 100px; flex-shrink: inherit;
 
         justify-content: space-between;flex: calc(30% - 5em);" >
-   
-    
+
+
                   {% include 'products/snippets/card.html' with instance=obj %}
-                 
+
                   </div>
-          
-          
+
+
            {% endfor %}
      </div>
-        
-    
+
+
     <!-- {% if products.has_other_pages %}
   <ul class="pagination justify-content-center">
     {% if products.has_previous %}
@@ -90,10 +109,54 @@
 {% endif %} -->
 
 </div>
-    
+<div class="container d-md-none" style="background-color: white;">
+<br/>
+<!-- <section class="text-center"> -->
 
- 
+<div class="d-flex flex-row flex-wrap prodListXS">
 
+      <!--Grid column-->
+       {% for obj in products %}
+      <div class="col-6 text-center p-0 m-0 prodXS" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}">
+
+
+              {% include 'products/snippets/card.html' with instance=obj %}
+
+              </div>
+
+
+       {% endfor %}
+ </div>
+
+
+<!-- {% if products.has_other_pages %}
+<ul class="pagination justify-content-center">
+{% if products.has_previous %}
+  <li class='page-item'><a class='page-link' href="?page={{ products.previous_page_number }}">&laquo;</a></li>
+{% else %}
+  <li class='page-item'><span class='current'>&laquo;</span></li>
+{% endif %}
+{% for i in products.paginator.page_range %}
+  {% if products.number == i %}
+    <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
+  {% else %}
+    <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+  {% endif %}
+{% endfor %}
+{% if products.has_next %}
+  <li class='page-item'><a class='page-link' href="?page={{ products.next_page_number }}">&raquo;</a></li>
+{% else %}
+  <li class='page-item'><span class='step-links'>&raquo;</span></li>
+{% endif %}
+</ul>
+{% endif %} -->
+
+</div>
+
+
+<script type="text/javascript">
+  document.getElementById("price-sorting").value = "1"; 
+</script>
 
 
 

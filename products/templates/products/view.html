@@ -36,7 +36,7 @@
       
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for c in cc %}
-        <a class="dropdown-item" href="{% url 'products:query_5' slug c.title %}">{{ c.title }}</a>
+        <a class="dropdown-item" href="{% url 'products:query_5' slug c.title %}"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;  {{ c.title|capfirst }} ({{ c.title__count }})</span> </a>
         {% endfor %}
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Red' %}">Red</a>
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">Black</a>
@@ -54,7 +54,7 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for s in ss %}
-        <a class="dropdown-item" href="{% url 'products:size_sub_query' slug s.title %}">{{ s.title }}</a>
+        <a class="dropdown-item" href="{% url 'products:size_sub_query' slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a>
         {% endfor %}
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">XL</a>
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">L</a>
@@ -72,7 +72,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
     {% for c in cc %}
-        <a class="dropdown-item" href="{% url 'products:query_6' sub_slug c.title %}">{{ c.title }}</a>
+        <a class="dropdown-item" href="{% url 'products:query_6' sub_slug c.title %}"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span></a>
     {% endfor %}
     <!-- <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Red' %}">Red</a>
     <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Black' %}">Black</a>
@@ -90,7 +90,7 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for s in ss %}
-        <a class="dropdown-item" href="{% url 'products:size_sub_sub_query' sub_slug s.title %}">{{ s.title }}</a>
+        <a class="dropdown-item" href="{% url 'products:size_sub_sub_query' sub_slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a>
         {% endfor %}
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Black' %}">XL</a>
         <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Green' %}">L</a>
@@ -187,7 +187,7 @@
 
 
 
-    <div class="container" style="background-color: white;">
+<div class="container d-none d-md-block" style="background-color: white;">
       <br/>
     
          <div class='row'>
@@ -195,11 +195,12 @@
 
          {% for obj in qs %}
 
-          <div class="col-lg-3 col-md-3 col-sm-4 mb-4" style="display: flex;
+         <div class="col-lg-3 col-md-4 col-sm-4 mb-4" style="display: flex;
         flex-wrap: wrap; flex-grow: 1;
         flex-basis: 100px; flex-shrink: inherit;
 
         justify-content: space-between;flex: calc(30% - 5em);" >
+
    
           
        
@@ -211,10 +212,36 @@
      
      </div>
 
-     {% else %}
-     <h2>Oops There are no items in this category..</h2>
-   {% endif %}
+     
 
     </div>
+
+
+    <div class="container d-md-none" style="background-color: white;">
+      <br/>
+      <!-- <section class="text-center"> -->
+      
+      <div class="d-flex flex-row flex-wrap">
+      
+            <!--Grid column-->
+             {% for obj in qs %}
+            <div class="col-6 text-center p-0 m-0" >
+      
+      
+                    {% include 'products/snippets/card.html' with instance=obj %}
+      
+                    </div>
+      
+      
+             {% endfor %}
+       </div>
+      
+      
+      
+      </div>
+
+    {% else %}
+     <h2>Oops There are no items in this category..</h2>
+   {% endif %}
     </div>
 {% endblock %}
