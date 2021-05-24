@@ -340,7 +340,7 @@ function showSlides(n) {
             {% if images %}
               {% for img in images %}
               <div class="mySlides margin-l">
-                <div class="numbertext">{{ forloop.counter }} / {{ images.count }}</div>
+                <div class="numbertext">{{ forloop.counter }} / {{ images.count }} {{ img.variations.title }}</div>
                   <img src="{{ img.image.url }}"  class="zoom wid" />
               </div>
              {% endfor %}

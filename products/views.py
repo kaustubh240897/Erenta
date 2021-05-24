@@ -629,7 +629,7 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
             #obj.product = Product_description.objects.get(id=id)
 
             if Product_description.objects.filter(id=id,user=self.request.user).count()>0:
-                if ProductImage.objects.filter(product__id=id).count() < 3:
+                if ProductImage.objects.filter(product__id=id).count() < 8:
                     for item in self.request.POST:
                         key = item
                         val = self.request.POST[key]
@@ -653,7 +653,7 @@ class SupplierAddProductImageView(LoginRequiredMixin,CreateView):
                         
 
                 else:
-                    messages.warning(self.request, "You cannot add more than 3 images.")
+                    messages.warning(self.request, "You cannot add more than 8 images.")
                     return redirect("addproductdetails")
             else:
                 messages.warning(self.request, "You are not authorized to add the image.")
@@ -676,7 +676,7 @@ def remove_image(request,id1,id):
         messages.success(request, 'removed Successfully !!!')
         return HttpResponseRedirect(reverse("productimage", args=(id,)))
     except ObjectDoesNotExist:
-            messages.warning(self.request, "your product does not exist.")
+            messages.warning(request, "your product does not exist.")
             return redirect("addproductdetails")
 
 class SupplierRentalPeriodView(LoginRequiredMixin,CreateView):
@@ -727,7 +727,7 @@ def remove_rentalperiod(request,id1,id):
         messages.success(request, 'removed Successfully !!!')
         return HttpResponseRedirect(reverse("productrentalperiods", args=(id,)))
     except ObjectDoesNotExist:
-            messages.warning(self.request, "your product does not exist.")
+            messages.warning(request, "your product does not exist.")
             return redirect("addproductdetails")
 
 class SupplierTagView(LoginRequiredMixin,CreateView):
@@ -777,7 +777,7 @@ def remove_tags(request,id1,id):
         messages.success(request, 'removed Successfully !!!')
         return HttpResponseRedirect(reverse("producttags", args=(id,)))
     except ObjectDoesNotExist:
-            messages.warning(self.request, "your product does not exist.")
+            messages.warning(request, "your product does not exist.")
             return redirect("addproductdetails")
 
 
@@ -833,7 +833,7 @@ def remove_variations(request,id1,id):
         messages.success(request, 'removed Successfully !!!')
         return HttpResponseRedirect(reverse("productvariations", args=(id,)))
     except ObjectDoesNotExist:
-            messages.warning(self.request, "your product does not exist.")
+            messages.warning(request, "your product does not exist.")
             return redirect("addproductdetails")
 
 class SupplierAddProductQuantityView(LoginRequiredMixin,CreateView):
@@ -945,7 +945,7 @@ def remove_quantity(request,id1,id):
         messages.success(request, 'removed Successfully !!!')
         return HttpResponseRedirect(reverse("productquantity", args=(id,)))
     except ObjectDoesNotExist:
-            messages.warning(self.request, "your product does not exist.")
+            messages.warning(request, "your product does not exist.")
             return redirect("addproductdetails")
 
 
@@ -1080,7 +1080,7 @@ class ProductImageUpdateView(LoginRequiredMixin,UpdateView):
         except ProductImage.DoesNotExist:
             raise Http404("Not found..")
         except ProductImage.MultipleObjectsReturned:
-            qs = ProductImage.objects.filter(slug=slug, active=True)
+            qs = ProductImage.objects.filter(id=id, active=True)
             instance = qs.first()
         except:
             raise Http404("Uhhmmm ")
@@ -1131,7 +1131,7 @@ class ProductQuantityUpdateView(LoginRequiredMixin,UpdateView):
         except Quantity.DoesNotExist:
             raise Http404("Not found..")
         except Quantity.MultipleObjectsReturned:
-            qs = Quantity.objects.filter(slug=slug, active=True)
+            qs = Quantity.objects.filter(id=id, active=True)
             instance = qs.first()
         except:
             raise Http404("Uhhmmm ")
