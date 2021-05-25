@@ -3,6 +3,22 @@
 {% block content %}
 {% url 'products:query_5' as category_list_url_5 %}
   <title>{{ title }}</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('.colorcheckedvalues').click(function(){
+        var txt = "";
+        $('.colorcheckedvalues:checked').each(function(){
+          txt+=$(this).val()+","
+
+        });
+        $('#allcolorsvalues').val(txt);
+        $('#allcolorsvalues1').val(txt);
+
+      });
+    });
+  </script>
+
     {% if qs.exists %}
 
   <div class='container'>
@@ -29,6 +45,9 @@
   </div>
      </div> -->
       {% if slug  %}
+
+  <form class='form' method='GET' action='{% url "products:query1" slug %}'>
+
       <div class="dropdown mx-2">
         <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Filter by Color
@@ -36,8 +55,26 @@
       
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for c in cc %}
-        <a class="dropdown-item" href="{% url 'products:query_5' slug c.title %}"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;  {{ c.title|capfirst }} ({{ c.title__count }})</span> </a>
+
+        <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;  {{ c.title|capfirst }} ({{ c.title__count }})</span>
+
+          {% if c.title in get_params %}
+        
+          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
+
+          {% else %}
+
+          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
+
+          {% endif %}
+          
+          <span class="checkmark"></span>
+        </label>
+
+        <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug c.title %}"> -->
+          
         {% endfor %}
+
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Red' %}">Red</a>
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">Black</a>
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">Green</a>
@@ -46,7 +83,9 @@
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Other' %}">Other</a> -->
 
       </div>
+      <input style='display: none;' type="text" name='allselectedparameters' id="allcolorsvalues" size="10"> 
       </div>
+      
 
       <div class="dropdown mx-2">
         <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,7 +93,17 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for s in ss %}
-        <a class="dropdown-item" href="{% url 'products:size_sub_query' slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a>
+
+        <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
+          {% if s.title in get_params %}
+            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
+          {% else %}
+            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
+          {% endif %}
+          <span class="checkmark"></span>
+        </label>
+
+        <!-- <a class="dropdown-item" href="{% url 'products:size_sub_query' slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a> -->
         {% endfor %}
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">XL</a>
         <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">L</a>
@@ -64,15 +113,28 @@
 
       </div>
       </div>
+      <button class='submit' class='btn btn-success'>Apply</button>
+    </form>
       {% elif sub_slug %}
-
+  <form class='form' method='GET' action='{% url "products:query2" sub_slug %}'>
       <div class="dropdown mx-2">
     <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Filter by Color
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
     {% for c in cc %}
-        <a class="dropdown-item" href="{% url 'products:query_6' sub_slug c.title %}"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span></a>
+    <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
+      {% if c.title in get_params %}
+          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
+
+          {% else %}
+
+          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
+
+      {% endif %}
+      <span class="checkmark"></span>
+    </label>
+        <!-- <a class="dropdown-item" href="{% url 'products:query_6' sub_slug c.title %}"></a> -->
     {% endfor %}
     <!-- <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Red' %}">Red</a>
     <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Black' %}">Black</a>
@@ -82,7 +144,9 @@
     <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Other' %}">Other</a> -->
 
   </div>
-      </div>
+  <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues1" size="10"> 
+</div>
+
 
       <div class="dropdown mx-2">
         <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,7 +154,17 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         {% for s in ss %}
-        <a class="dropdown-item" href="{% url 'products:size_sub_sub_query' sub_slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a>
+
+        <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
+          {% if s.title in get_params %}
+            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
+          {% else %}
+            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
+          {% endif %}
+          <span class="checkmark"></span>
+        </label>
+
+        <!-- <a class="dropdown-item" href="{% url 'products:size_sub_sub_query' sub_slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a> -->
         {% endfor %}
         <!-- <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Black' %}">XL</a>
         <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Green' %}">L</a>
@@ -100,6 +174,8 @@
 
       </div>
       </div>
+      <button class='submit' class='btn btn-success'>Apply</button>
+    </form>
       {% endif %}
 
     </div>
@@ -123,9 +199,9 @@
           Sub Sub Categories >
         </span>
 
-        <span class="badge badge-pill badge-secondary py-2 px-4 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter1">
+        <!-- <span class="badge badge-pill badge-secondary py-2 px-4 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter1">
           <b> Sort &#8593;&#8595; </b>
-          </span>
+          </span> -->
        
       </div>
 
@@ -147,7 +223,7 @@
       {% if cat_slug %}
         {% for sub_category in sub_cats %}
         <div class='px-2'>
-          <a href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }} </a>
+           <a href="{% url 'products:query1' sub_category.slug %}">{{ sub_category.title }} </a>
         </div>
         {% endfor %}
       {% elif slug %}
@@ -164,26 +240,6 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Sort products.</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <a href="{% url 'products:high_to_low' %}"> High to Low Price</a>
-        <br/>
-        <a href="{% url 'products:low_to_high' %}"> Low to High Price</a>
-      </div>
-      
-    </div>
-  </div>
-</div>
-
 
 
 

@@ -1,19 +1,16 @@
-
-
-
 from django.contrib import admin
 from django.urls import path
 from .views import product_list_view,ProductDetailSlugView,ProductImageUpdateView,my_productsimageView,my_productsquantityView,ProductQuantityUpdateView
 from .views import category_product_view_1,sub_category_product_view,sub_sub_category_product_view,sub_category_product_view_by_size,sub_sub_category_product_view_by_size
 from .views import sub_category_product_view_by_color,sub_sub_category_product_view_by_color,remove_rentalperiod,remove_variations,remove_quantity,remove_image,remove_tags
-from .views import  product_list_sort_by_low_to_high_view, product_list_sort_by_high_to_low_view
+#from .views import  product_list_sort_by_low_to_high_view, product_list_sort_by_high_to_low_view
 
 
 urlpatterns = [
    
     path('',product_list_view, name='list'),
-    path('low_to_high/',product_list_sort_by_low_to_high_view, name='low_to_high'),
-    path('high_to_low/',product_list_sort_by_high_to_low_view, name='high_to_low'),
+    #path('low_to_high/',product_list_sort_by_low_to_high_view, name='low_to_high'),
+    #path('high_to_low/',product_list_sort_by_high_to_low_view, name='high_to_low'),
     path('<slug:slug>/',ProductDetailSlugView.as_view(), name='detail'),
     path('image/<slug:slug>/',my_productsimageView.as_view(),name='image'),
     path('quantity/<slug:slug>/',my_productsquantityView.as_view(),name='quantity'),

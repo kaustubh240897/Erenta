@@ -57,58 +57,58 @@ def product_list_view(request):
     return render(request,"products/product_list.html", context)
 
 
-def product_list_sort_by_high_to_low_view(request):
-    if request.session.get('city_names',None) == None:
-        request.session['city_names'] = "Tokyo"
-    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('-discount_price')
-    # page = request.GET.get('page', 1)
-    # paginator = Paginator(queryset, 16)
-    # try:
-    #     products = paginator.page(page)
-    # except PageNotAnInteger:
-    #     products = paginator.page(1)
-    # except EmptyPage:
-    #     products = paginator.page(paginator.num_pages)
-    context = {
-        'qs': queryset ,
-        "title":"Products",
-        'products': queryset,
-        'high_to_low': "Sorted by High to Low price",
-        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
-        "category_images": Category.objects.all(),
-        "sub_categorys": Sub_Category.objects.all(),
-        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+# def product_list_sort_by_high_to_low_view(request):
+#     if request.session.get('city_names',None) == None:
+#         request.session['city_names'] = "Tokyo"
+#     queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('-discount_price')
+#     # page = request.GET.get('page', 1)
+#     # paginator = Paginator(queryset, 16)
+#     # try:
+#     #     products = paginator.page(page)
+#     # except PageNotAnInteger:
+#     #     products = paginator.page(1)
+#     # except EmptyPage:
+#     #     products = paginator.page(paginator.num_pages)
+#     context = {
+#         'qs': queryset ,
+#         "title":"Products",
+#         'products': queryset,
+#         'high_to_low': "Sorted by High to Low price",
+#         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
+#         "category_images": Category.objects.all(),
+#         "sub_categorys": Sub_Category.objects.all(),
+#         "sub_sub_categorys": Sub_Sub_Category.objects.all()
 
         
-    }
-    return render(request,"products/product_list.html", context)
+#     }
+#     return render(request,"products/product_list.html", context)
 
 
-def product_list_sort_by_low_to_high_view(request):
-    if request.session.get('city_names',None) == None:
-        request.session['city_names'] = "Tokyo"
-    queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('discount_price')
-    # page = request.GET.get('page', 1)
-    # paginator = Paginator(queryset, 16)
-    # try:
-    #     products = paginator.page(page)
-    # except PageNotAnInteger:
-    #     products = paginator.page(1)
-    # except EmptyPage:
-    #     products = paginator.page(paginator.num_pages)
-    context = {
-        'qs': queryset ,
-        "title":"Products",
-        'products': queryset,
-        'low_to_high': "Sorted by Low to High price",
-        'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
-        "category_images": Category.objects.all(),
-        "sub_categorys": Sub_Category.objects.all(),
-        "sub_sub_categorys": Sub_Sub_Category.objects.all()
+# def product_list_sort_by_low_to_high_view(request):
+#     if request.session.get('city_names',None) == None:
+#         request.session['city_names'] = "Tokyo"
+#     queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True).order_by('discount_price')
+#     # page = request.GET.get('page', 1)
+#     # paginator = Paginator(queryset, 16)
+#     # try:
+#     #     products = paginator.page(page)
+#     # except PageNotAnInteger:
+#     #     products = paginator.page(1)
+#     # except EmptyPage:
+#     #     products = paginator.page(paginator.num_pages)
+#     context = {
+#         'qs': queryset ,
+#         "title":"Products",
+#         'products': queryset,
+#         'low_to_high': "Sorted by Low to High price",
+#         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],
+#         "category_images": Category.objects.all(),
+#         "sub_categorys": Sub_Category.objects.all(),
+#         "sub_sub_categorys": Sub_Sub_Category.objects.all()
 
         
-    }
-    return render(request,"products/product_list.html", context)
+#     }
+#     return render(request,"products/product_list.html", context)
 
 
 class UserProductHistoryView(LoginRequiredMixin ,ListView):
@@ -470,16 +470,32 @@ def sub_category_product_view(request, slug,*args, **kwargs):
     print(sub_cat_query)
     slug_type = request.build_absolute_uri().split('/')
     slug_type = slug_type[len(slug_type)-2]
-    print(slug_type)
+    print("nnn",slug_type)
     if sub_cat_query is not None:
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     colors = Variation.objects.filter(category='color', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     sizes = Variation.objects.filter(category='size', product__sub_category__slug=sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    present = []
+    #getallselectedparams = request.GET.get('allselectedparameters', None)
+    if request.GET.get('allselectedparameters'):
+        getallselectedparams = request.GET.get('allselectedparameters', None)
+        get_all_selected_colors = str(getallselectedparams)
+        le = len(get_all_selected_colors)
+        get_all_selected_colors = getallselectedparams[0:le-1]
+        present = get_all_selected_colors.split(",")
+    if len(present) == 0:
+        filtered_productList = queryset
+    else:
+        filtered_productList = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query, variation__title__in=present).distinct()
+    
+
     context = {
-          'qs': queryset ,
-          'slug': slug_type,
+          #'qs': queryset ,
+          "qs": filtered_productList,
+          'slug': slug,
+          'get_params': present,
           'cc': colors,
           'ss': sizes,
           #'clothing_category': query,
@@ -521,10 +537,19 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
     colors = Variation.objects.filter(category='color', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
     sizes = Variation.objects.filter(category='size', product__sub_sub_category__slug=sub_sub_cat_query.slug).order_by().values('title').distinct().annotate(Count('title'))
+    present = []
+    if request.GET.get('allselectedcolors'):
+        getallselectedcolors = request.GET.get('allselectedcolors', None)
+        get_all_selected_colors = str(getallselectedcolors)
+        le = len(get_all_selected_colors)
+        get_all_selected_colors = getallselectedcolors[0:le-1]
+        present = get_all_selected_colors.split(",")
+        queryset_filtered_productList = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__in=present).distinct()
     context = {
           'qs': queryset ,
           'cc': colors,
-          'sub_slug': slug_type,
+          'sub_slug': slug,
+          'get_params': present,
           'ss': sizes,
           #'clothing_category': query,
          "title":"Products",
@@ -542,9 +567,6 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
     #     return context
 
     return render(request,"products/view.html", context)
-
-
-
 
 
 

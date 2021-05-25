@@ -7,11 +7,11 @@
 
 
 <script>
-  
+
   const date_s = "{{ rent_periods_list|safe }}";
   var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '');
   const dates = datesStr.split(',');
-  
+
   function DisableSpecificDates(date) {
     var string = jQuery.datepicker.formatDate('dd-mm-yy', date);
     return [dates.indexOf(string) == -1];
@@ -37,6 +37,36 @@ $(function() {
     maxDate: '+1Y',
     beforeShowDay: DisableSpecificDates
   });
+});
+
+$(function(){
+    var dtToday = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
+    var dtToday1 = new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000);
+    var month1 =  dtToday1.getMonth()+1;
+    var day1 = dtToday1.getDate();
+    var year1 = dtToday1.getFullYear();
+    if(month1 < 10)
+        month1 = '0' + month1.toString();
+    if(day1 < 10)
+        day1 = '0' + day1.toString();
+    var maxDate1 = year1 + '-' + month1 + '-' + day1;
+    //$('#txtDate').attr('max', maxDate1);
+
+
+
+    var month = dtToday.getMonth()+1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+        month = '0' + month.toString();
+    if(day < 10)
+        day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day;
+    // alert(maxDate);
+    $('#txtDate').attr('min', maxDate);
+    //$('#txtDate1').attr('min', maxDate);
+    $('#txtDate1').attr('min', maxDate1);
 });
 </script>
 
@@ -69,73 +99,7 @@ $(function() {
   }
 </script>
 
-<script>
 
-$(function(){
-    var dtToday = new Date(new Date().getTime() + 2 * 24 * 60 * 60 * 1000);
-    var dtToday1 = new Date(new Date().getTime() + 9 * 24 * 60 * 60 * 1000);
-    var month1 =  dtToday1.getMonth()+1;
-    var day1 = dtToday1.getDate();
-    var year1 = dtToday1.getFullYear();
-    if(month1 < 10)
-        month1 = '0' + month1.toString();
-    if(day1 < 10)
-        day1 = '0' + day1.toString();
-    var maxDate1 = year1 + '-' + month1 + '-' + day1;
-    //$('#txtDate').attr('max', maxDate1);
-
-
-
-    var month = dtToday.getMonth()+1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
-    if(month < 10)
-        month = '0' + month.toString();
-    if(day < 10)
-        day = '0' + day.toString();
-    
-    var maxDate = year + '-' + month + '-' + day;
-    // alert(maxDate);
-    $('#txtDate').attr('min', maxDate);
-    //$('#txtDate1').attr('min', maxDate);
-    $('#txtDate1').attr('min', maxDate1);
-});
-
-
-
-var slideIndex = 1;
-showSlides(slideIndex);
-
-// Next/previous controls
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-// Thumbnail image controls
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("demo");
-  var captionText = document.getElementById("caption");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " active";
-  captionText.innerHTML = dots[slideIndex-1].alt;
-}
-
-
-</script>
 
 
 {% endblock %}
@@ -145,7 +109,7 @@ function showSlides(n) {
 <div class='container'>
 </br>
 <style>
-  
+
              .zoom{
                 padding: 10px;
                 background-color:rgb(241, 241, 241);;
@@ -242,8 +206,8 @@ function showSlides(n) {
                 .demo:hover {
                   opacity: 1;
                 }
-             
-              
+
+
               @media screen and (max-width: 992px) {
                .wid {
                   width: 17rem !important ;
@@ -255,14 +219,14 @@ function showSlides(n) {
                 .wid2{
                   width: 19rem !important;
                 }
-                
+
                 .margin-l{
                   margin-left: 20px !important;
                 }
               .margin-l2{
                 margin-left: 40px !important;
               }
-               
+
               }
               @media only screen and (min-width: 1200px) {
                 .wid {
@@ -277,9 +241,9 @@ function showSlides(n) {
               }
               .margin-a{
                 margin-left: 30rem !important;
-        
+
               }
-             
+
               .margin-l2{
                 margin-left: 50px !important;
               }
@@ -292,8 +256,8 @@ function showSlides(n) {
               .margin-l4{
                 margin-left: 20rem !important;
               }
-              
-              
+
+
                   }
 
               /* On screens that are 600px or less, set the background color to olive */
@@ -308,9 +272,9 @@ function showSlides(n) {
                 .wid2{
                   width: 21rem !important;
                 }
-               
-              
-                
+
+
+
                 .margin-l{
                   margin-left: 2rem !important;
                     }
@@ -321,29 +285,31 @@ function showSlides(n) {
                   margin-right: 10px !important;
                 }
                 }
-         
+
 
            </style>
           <title>{{ title }}</title>
 
               <div class='row'>
-                  
+
                 <div class='col-lg-4 col-md-6 col-sm-12' >
                       <br/>
             <h2 class="text-center margin-r"> <strong>{{ object.product_name|capfirst }} </strong></h2>
-           
-           
-        
-         
+
+
+
+
               <!-- <a class="prev"  onclick="plusSlides(-1)">&#10094;</a>
               <a class="next margin-a"  onclick="plusSlides(1)">&#10095;</a> -->
             {% if images %}
-              {% for img in images %}
-              <div class="mySlides margin-l">
-                <div class="numbertext">{{ forloop.counter }} / {{ images.count }} {{ img.variations.title }}</div>
-                  <img src="{{ img.image.url }}"  class="zoom wid" />
+              <div id="ms_div" class="">
+                <!-- {% for img in images %}
+                <div class="mySlides margin-l">
+                  <div class="numbertext">{{ forloop.counter }} / {{ images.count }} {{ img.variations.title }}</div>
+                    <img src="{{ img.image.url }}"  class="zoom wid" />
+                </div>
+               {% endfor %} -->
               </div>
-             {% endfor %}
             {% else %}
 
             <div class="mySlides margin-l">
@@ -353,42 +319,42 @@ function showSlides(n) {
 
             {% endif %}
 
-              
-              
+
+
 
               <!-- Next and previous buttons -->
-             
-            
-              
-             
+
+
+
+
 
               <!-- Image text -->
               <!-- <div class="caption-container">
                 <p id="caption"></p>
               </div> -->
               <br/>
-              
+
               <!-- Thumbnail images -->
-              <div class="row margin-l2">
-              {% for img in images %}
+              <div id="thumbnail_img" class="row margin-l2">
+              <!-- {% for img in images %}
                 <div class="column mr-4">
                   <img class="demo cursor" src="{{ img.image.url }}" style=" width:100%" onclick="currentSlide({{ forloop.counter }})" alt="img.1">
                 </div>
-              {% endfor %}
+              {% endfor %} -->
               </div>
             <br/>
           <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
             <h3 class="text-center">{% trans "AboutItem" %}</h3>
-            
+
                {{ object.description|linebreaks }}<br/>
-              
+
           </div>
           <br/>
            <div class="container text-center wid1" style="background-color: white; color: black;">
             * If you have any query for item contact to supplier.
              {% for obj in object.user.supplier_set.all %}
             <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
-               
+
               {% trans "Contact" %} -: {{ obj.Mobile_number }} <br/>
               {% trans "ContactTiming" %} -:  {{ obj.receive_message_time }}
 
@@ -397,13 +363,13 @@ function showSlides(n) {
 
 
       </div>
-            
-        
+
+
         <div class=' col-lg-3 col-md-1'>
-        
+
         </div>
-        
-        
+
+
          <div class='col-sm-12 col-lg-5 col-md-4 container'>
         <br/>
         <br/>
@@ -448,14 +414,14 @@ function showSlides(n) {
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
-        {% endif %}      
-            
+        {% endif %}
+
            <p>{% trans "Posted" %} : {{ object.timestamp|timesince }} ago   {% if object.timestamp >= object.product_posted_days %}
-                     
+
                       <span class="badge badge-pill badge-danger">NEW</span>
-                    
+
                       {% endif %}</p>
-           
+
            <h5>{% trans "Brand" %} : {{ object.brand }}</h5>
            <br/>
            {% if object.discount_price %}
@@ -463,28 +429,28 @@ function showSlides(n) {
            {% else %}
            <h4> {% trans "Cost" %} : ${{ object.cost_per_day }}/day</h4>
            {% endif %}
-          
+
         </div>
         </div>
-          
 
 
-    
+
+
           <div style=" background-color: lavender;">
            <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
-            
+
               {% trans "Quantity" %}-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
               {% trans "Start Date" %}-:
                <br/>
               <i class="fas fa-calendar-week"></i>
                <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" onchange="checkRentDates()" />
-          
-             
-              {% trans "End Date" %}-: 
+
+
+              {% trans "End Date" %}-:
               <br/>
               <i class="fas fa-calendar-week"></i>
               <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" onchange="checkRentDates()" />
-              
+
           {% if object.variation_set.all %}
 
              {% if object.variation_set.sizes %}
@@ -494,17 +460,17 @@ function showSlides(n) {
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
                 {% endfor %}
               </select>
-              
+
              {% endif %}
-              
+
               {% if  object.variation_set.colors %}
               {% trans "Color" %}-:
-              <select class='form-control' name='color'>
+              <select class='form-control' id="sel_color" name='color' onchange="changeColor()">
                 {% for item in object.variation_set.colors %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
                 {% endfor %}
               </select>
-              
+
              {% endif %}
 
 
@@ -512,13 +478,13 @@ function showSlides(n) {
           <br/>
            <input class='btn btn-light btn-block' style="background-color: #263238;  ; color:white;" type='submit' value='Add to cart' />
            </form>
-          
+
           <br/>
           <br/>
-          
+
            <!-- <a  href='{% url "cart:home" %}'><button type='submit' class='btn btn-primary'> Go to Cart </button> </a> -->
 
-           
+
            <!-- <h3 class='text-center'> {% trans "Variations available" %}</h3>
           <br/>
             <table class="table" style="background-color: #263238; color: white;">
@@ -530,55 +496,55 @@ function showSlides(n) {
               </tr>
             </thead>
             <tbody>
-              
-        
-     
-    
+
+
+
+
 
              {% for obj in qs %}
              <tr>
              {% if obj.quantity > 5 %}
-           
-           
+
+
            <td> {{ forloop.counter }}. </td>
             {% if obj.variations.all %}
           <td>{% for item in obj.variations.all %}
-           {{ item.title|capfirst }}  
+           {{ item.title|capfirst }}
           {{ item.category|capfirst }} <br/>
-        
-          
-           
+
+
+
             {% endfor %} </td>
           <td>  <font color="orange">Sufficient</font> </td>
-           
+
 
             {% else %}
             <td> as in image
               </td>
              <td>  <font color="orange">Sufficient</font> </td>
             {% endif %}
-            
-           
-          
+
+
+
              {% else %}
-         
-           
+
+
             <td> {{ forloop.counter }}. </td>
             {% if obj.variations.all %}
            <td>{% for item in obj.variations.all %}
-           {{ item.title|capfirst }} {{ item.category|capfirst }} 
-           
+           {{ item.title|capfirst }} {{ item.category|capfirst }}
+
             <br/>
             {% endfor %} </td>
             {% else %}
             <td> as in image
              </td>
-             
+
             {% endif %}
-       
+
           <td> <font color="red">({{ obj.quantity }} left only) </font> </td>
             </div>
-           
+
             {% endif %}
             {% empty %}
             <td>
@@ -587,26 +553,31 @@ function showSlides(n) {
             {% endfor %}
           </tr>
               </tbody>
-            </table>  
+            </table>
           -->
-          {% for q in qs %}
-          {% if q.variations.all %}
-            {% for item in q.variations.all %}
-            {{ item.title|capfirst }}  
-            {{ item.category|capfirst }} 
-            
+          <!-- <div class="container pb-3">
+            {% for q in qs %}
+            {% if q.variations.all %}
+              {% for item in q.variations.all %}
+              <span class="px-2 col" style="border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff">{{ item.title|capfirst }}</span>
+
+              {% endfor %}
+              <span class="px-2 col" style="border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff">{{ q.quantity }}</span> <br/>
+            {% endif %}
+
             {% endfor %}
-            {{ q.quantity }} <br/>
-          {% endif %}
-          
-          {% endfor %}
-        
-         
+          </div> -->
+
+          <div id="div_variants" class="container">
+
+          </div>
+
+
         </div>
               </div>
-         <hr/> 
-         
-           
+         <hr/>
+
+
              <!-- slider -->
     <div class='col-lg-12 col-md-12 col-sm-12' style="margin-top: 5rem;">
       <style>
@@ -620,17 +591,17 @@ function showSlides(n) {
       {% for rev in reviews %}
      <strong>{{ forloop.counter }}.</strong>
 
-      
+
        {% if rev.email.profile_image %}
                 <img src="{{ rev.email.profile_image.url }}" class="rounded-circle z-depth-0"
                   alt="avatar image" height="50" width="50" />
-            
+
                   {% else %}
                   <img src='{% static "img/images.jpg" %}' class="rounded-circle z-depth-0"
                   alt="avatar image" height="50" width="50" />
       {% endif %}
       , {{ rev.email.full_name }} ,
-      
+
        {% ifequal rev.rating 1 %}
        <span class="fa fa-star checked"></span>
         <span class="fa fa-star-o"></span>
@@ -669,7 +640,7 @@ function showSlides(n) {
         {% endif %}
         , {{ rev.timestamp|timesince }} ago
 
-      
+
           <div class="container p-3 my-3 border" style="background-color:#c8efea;;">
             {{ rev.review }}
           </div>
@@ -680,19 +651,19 @@ function showSlides(n) {
         <div class="container p-3 my-3 border" style="background-color: white;"> Not Reviewed yet! </div>
         {% endif %}
 
-       
+
     </div>
 
 
 
         {% if similar_products %}
     <div class='col-lg-12 col-md-12 col-sm-12' style="margin-top: 2rem; background-color: white;">
-    
 
-       
+
+
         <h3 class="text-center" style="margin-top: 5rem;">Similar Products</h3>
               </br>
-                       
+
 
    <!-- <section class="text-center"> -->
 
@@ -705,17 +676,17 @@ function showSlides(n) {
         flex-basis: 100px; flex-shrink: inherit;
 
         justify-content: space-between;flex: calc(30% - 5em);" >
-   
-  
+
+
        {% include 'analytics/trending_card.html' with instance=object %}
     </div>
-          
-          
+
+
      {% endfor %}
 
 
     </div>
-   
+
   </div>
    {% endif %}
 
@@ -724,6 +695,170 @@ function showSlides(n) {
 
 </div>
 
- {% endblock %}
+<script type="text/javascript">
 
- 
+  function currentSlide(n) {
+    showSlides(slideIndex = n);
+  }
+
+  function showSlides(n) {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("demo");
+    var captionText = document.getElementById("caption");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " active";
+    captionText.innerHTML = dots[slideIndex-1].alt;
+  }
+
+  function allVariants() {
+    document.getElementById("div_variants").innerHTML = "";
+    var sel_color = document.getElementById('sel_color');
+    var sel_color_value = sel_color.value.toLowerCase();
+    console.log("allVBar");
+    {% for q in qs %}
+    {% if q.variations.all %}
+      var title = ["x"];
+      {% for item in q.variations.all %}
+      // <span class="px-2 col" style="border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff">{{ item.title|capfirst }}</span>
+        console.log("item", "{{item.title}}");
+        title[title.length] = "{{item.title}}";
+      {% endfor %}
+      console.log("title", title);
+      console.log("inc", title.includes(sel_color_value));
+      console.log("quant", "{{q.quantity}}");
+      if (title.includes(sel_color_value)) {
+        var p_row = document.createElement('div');
+        p_row.className = "d-flex flex-row justify-content-start";
+        var p1 = document.createElement('p');
+        p1.className = "px-2 mx-2 text-wrap text-center";
+        p1.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
+        var p2 = document.createElement('p');
+        p2.className = "px-2 mx-2 text-wrap text-center";
+        p2.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
+        var p3 = document.createElement('p');
+        p3.className = "px-2 mx-2 text-wrap text-center";
+        p3.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
+        var n1 = document.createTextNode(title[1].toUpperCase());
+        p1.appendChild(n1);
+        var n2 = document.createTextNode(title[2].toUpperCase());
+        p2.appendChild(n2);
+        var n3 = document.createTextNode("{{q.quantity}}");
+        p3.appendChild(n3);
+        if ("{{q.quantity}}"<=5) {
+          console.log("bg");
+          p1.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
+          p2.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
+          p3.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
+        }
+        p_row.appendChild(p1);
+        p_row.appendChild(p2);
+        p_row.appendChild(p3);
+        document.getElementById("div_variants").appendChild(p_row);
+      }
+    {% endif %}
+
+    {% endfor %}
+  }
+
+  function changeColor() {
+      document.getElementById('thumbnail_img').innerHTML = "";
+      document.getElementById('ms_div').innerHTML = "";
+    var ic = 0;
+    var sel_color = document.getElementById('sel_color');
+    var sel_color_value = sel_color.value.toLowerCase();
+    console.log("sel", sel_color_value);
+    {% if images %}
+      {% for img in images %}
+        console.log("url", "{{ img.image.url }}");
+        {% for vari in img.variations.all %}
+          // {% if vari.category == "color" %}
+          //   {% if vari.title == sel_color_value %}
+          //     ic++;
+          //     console.log("ic", ic);
+          //   {% endif %}
+          // {% endif %}
+          var cat = "{{vari.category}}";
+          cat = cat.toLowerCase();
+          var title = "{{vari.title}}";
+          title = title.toLowerCase();
+          if ((cat.localeCompare("color") == 0) && (title.localeCompare(sel_color_value) == 0)) {
+              ic++;
+          }
+        {% endfor %}
+     {% endfor %}
+    {% endif %}
+    var imgIndex = 0;
+    {% if images %}
+      {% for img in images %}
+        console.log("url", "{{ img.image.url }}");
+        {% for vari in img.variations.all %}
+          // {% if vari.category == "color" %}
+          //   {% if vari.title == sel_color_value %}
+          //     ic++;
+          //     console.log("ic", ic);
+          //   {% endif %}
+          // {% endif %}
+          var cat = "{{vari.category}}";
+          cat = cat.toLowerCase();
+          var title = "{{vari.title}}";
+          title = title.toLowerCase();
+          var availList_row = document.createElement('div');
+          availList_row.className = "d-flex flex-row justify-content-start";
+          if ((cat.localeCompare("color") == 0) && (title.localeCompare(sel_color_value) == 0)) {
+              imgIndex++;
+              var ms = document.createElement('div');
+              ms.className = "mySlides margin-l";
+              var nt = document.createElement('div');
+              var img_1 = document.createElement('img');
+              nt.className = "numbertext";
+              nt.innerHTML = imgIndex + "/" + ic + " {{ img.variations.title }} ";
+              img_1.className = "zoom wid";
+              img_1.src = "{{img.image.url}}";
+              ms.appendChild(nt);
+              ms.appendChild(img_1);
+              document.getElementById('ms_div').appendChild(ms);
+              var thumbnail_col = document.createElement('div');
+              thumbnail_col.className = "column mr-4";
+              var thumbnailImg = document.createElement('img');
+              thumbnailImg.className = "demo cursor h-100";
+              thumbnailImg.src = "{{img.image.url}}";
+              thumbnailImg.id = imgIndex;
+              thumbnailImg.setAttribute("style", "width:100%");
+              thumbnailImg.setAttribute("onclick", "currentSlide(this.id)");
+              thumbnailImg.alt = "img.1";
+              thumbnail_col.appendChild(thumbnailImg);
+              document.getElementById('thumbnail_img').appendChild(thumbnail_col);
+          }
+        {% endfor %}
+     {% endfor %}
+    {% endif %}
+    allVariants();
+    currentSlide(1);
+  }
+  changeColor();
+
+
+
+</script>
+
+<script>
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+// Thumbnail image controls
+
+
+
+</script>
+ {% endblock %}
