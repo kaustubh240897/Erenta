@@ -1,29 +1,53 @@
 {% block content %}
-<div class="container" style="background-color:white">
- <br/>
-   <!-- <section class="text-center"> -->
 
-    <div class="row">
+
+    <div class="container d-none d-md-block" style="background-color: white;">
+      <br/>
+       <!-- <section class="text-center"> -->
+    
+        <div id="row_lg" class="row prodList">
           
 
           <!--Grid column-->
-           {% for object in trending %}
+           {% for obj in trending %}
 
-          <div class="col-lg-3 col-md-4 col-sm-4 mb-4" style="display: flex;
-          flex-wrap: wrap; flex-grow: 1;
-        flex-basis: 100px; flex-shrink: inherit;
-
-        justify-content: space-between;flex: calc(30% - 5em);" >
+           <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}" style="display: flex;
+           flex-wrap: wrap; flex-grow: 1;
+           flex-basis: 100px; flex-shrink: inherit;
+   
+           justify-content: space-between;flex: calc(30% - 5em);" >
    
    
 
-                  {% include 'analytics/trending_card.html' with instance=object %}
+                  {% include 'analytics/trending_card.html' with instance=obj %}
             </div>
           
           
      {% endfor %}
+     </div>
 
 </div>
+
+<div class="container d-md-none" style="background-color: white;">
+  <br/>
+  <!-- <section class="text-center"> -->
+  
+  <div class="d-flex flex-row flex-wrap prodListXS">
+  
+        <!--Grid column-->
+        {% for obj in trending %}
+        <div class="col-6 text-center p-0 m-0 prodXS" data-price-item="{% if obj.product.discount_price %} {{ obj.product.discount_price }} {%else%} {{ obj.product.cost_per_day }} {%endif%}">
+  
+  
+          {% include 'analytics/trending_card.html' with instance=obj %}
+  
+                </div>
+  
+  
+         {% endfor %}
+   </div>
+
+   </div>
 <!-- </section> -->
 <br/>
  <div class="wrapper">

@@ -16,7 +16,7 @@ body, html {
   /* background-image: url('{% static "img/accessories.jpg" %}'); */
 
   /* Full height */
-  
+
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -29,7 +29,9 @@ body, html {
 .color-text{
   color:#1daf9e;
 }
-
+.card:hover {
+  transform: scale(1.1) !important;
+}
 </style>
 
 
@@ -44,53 +46,53 @@ body, html {
 
 
       <div class='col-12 col-md-4 my-3'>
-      <div class="card lg">
+      <div class="card lg h-100">
         <div class="card-body">
           <h5 class="card-title text-center">Add New Products</h5>
             <strong> <a class='list-group-item color-text' href='{% url "addproductdetails" %}'>Add new Product details </a></strong>
-          
+
         </div>
       </div>
       </div>
 
 
       <div class='col-12 col-md-4 my-3'>
-      <div class="card lg" >
+      <div class="card lg h-100" >
         <div class="card-body">
           <h5 class="card-title text-center">My Products(want to see or update?)</h5>
             <strong> <a class='list-group-item color-text' href='{% url "myproduct" %}'>My Products </a></strong>
-          
+
         </div>
       </div>
       </div>
 
 
       <div class='col-12 col-md-4 my-3'>
-      <div class="card lg" >
+      <div class="card lg h-100" >
         <div class="card-body">
           <h5 class="card-title text-center">Support</h5>
             <div class='list-group'>
               <strong> <a class='list-group-item color-text' href='{% url "about" %}'>About </a> </strong>
               <strong> <a class='list-group-item color-text' href='{% url "contact" %}'>Contact </a> </strong>
             </div>
-            
-          
+
+
         </div>
       </div>
       </div>
 
 
       <div class='col-12 col-md-4 my-3'>
-      <div class="card lg" >
+      <div class="card lg h-100" >
         <div class="card-body">
           <h5 class="card-title text-center">Orders and Sales</h5>
           <div class='list-group'>
               <strong> <a class='list-group-item color-text' href='{% url "orders:orders" %}'>My Orders </a></strong>
               <strong>  <a class='list-group-item color-text' href='{% url "supplier-sales-analytics" %}'>My Sales </a></strong>
-                
+
                   <!-- <a class='list-group-item' href='#'>Addresses </a> -->
             </div>
-          
+
         </div>
       </div>
       </div>
@@ -112,8 +114,8 @@ body, html {
             <strong> <a class='list-group-item color-text' href='{% url "account:user-update" %}'>Update Profile details </a> </strong>
             <strong> <a class='list-group-item color-text' href='{% url "businessdetailupdate" %}'>Update Personal details. </a> </strong>
             <strong>  <a class='list-group-item color-text' href='{% url "bankdetailupdate" %}'>Update Bank details. </a> </strong>
-            
-          
+
+
         </div>
       </div>
       </div>

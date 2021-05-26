@@ -2,33 +2,39 @@
 {% load static i18n %}
 {% block content %}
 
-Welcome {{ request.user.full_name }}!
-</br>
+<style media="screen">
+  .card:hover {
+    transform: scale(1.1) !important; 
+  }
+</style>
+<div class="container" style="background-color: #1daf9e; color: #fff;">
+  Welcome {{ request.user.full_name }}!
+</div>
 <div class='container' style='background-color: white; color: white;'>
 <div class='row'>
-    <div class='col-12' style="background-color: #263238; color:white;">
+    <div class='col-12' style="background-color: #1daf9e; color:white;">
         <h2 class='text-center'>{% trans "Account" %}</h2>
         <hr/>
     </div>
 
 
 <div class='col-12 col-md-4 my-3'>
-<div class="card" style="background-color: #263238;">
+<div class="card h-100" style="background-color: #1daf9e;">
   <div class="card-body">
     <h5 class="card-title text-center">{% trans "History" %}</h5>
-        <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "account:user-product-history" %}'>{% trans "Products" %} </a>
-    
+        <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "account:user-product-history" %}'>{% trans "Products" %} </a>
+
   </div>
 </div>
 </div>
 
 
 <div class='col-12 col-md-4 my-3'>
-<div class="card" style="background-color: #263238;">
+<div class="card h-100" style="background-color: #1daf9e;">
   <div class="card-body">
     <h5 class="card-title text-center">{% trans "Add new card" %}</h5>
-        <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "billing-payment-method" %}'>{% trans "Payment Methods" %} </a>
-    
+        <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "billing-payment-method" %}'>{% trans "Payment Methods" %} </a>
+
   </div>
 </div>
 </div>
@@ -36,59 +42,44 @@ Welcome {{ request.user.full_name }}!
 
 
 <div class='col-12 col-md-4 my-3'>
-<div class="card" style="background-color: #263238;">
+<div class="card h-100" style="background-color: #1daf9e;">
   <div class="card-body">
     <h5 class="card-title text-center">{% trans "Support" %}</h5>
       <div class='list-group'>
-          <a class='list-group-item' style="background-color: #263238; color:white" href='{% url "about" %}'>{% trans "About" %} </a>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "contact" %}'>{% trans "Contact" %} </a>
+          <a class='list-group-item' style="background-color: #1daf9e; color:white" href='{% url "about" %}'>{% trans "About" %} </a>
+          <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "contact" %}'>{% trans "Contact" %} </a>
       </div>
-      
-    
+
+
   </div>
 </div>
 </div>
 
 <div class='col-12 col-md-4 my-3'>
-<div class="card" style="background-color: #263238;">
+<div class="card h-100" style="background-color: #1daf9e;">
   <div class="card-body">
     <h5 class="card-title text-center">{% trans "Personal Info" %}</h5>
-        <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "account:user-update" %}'>{% trans "Update details" %} </a>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "password_change" %}'> {% trans "ChangePassword" %} </a>
-    
+        <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "account:user-update" %}'>{% trans "Update details" %} </a>
+          <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "password_change" %}'> {% trans "ChangePassword" %} </a>
+
   </div>
 </div>
 </div>
 
 <div class='col-12 col-md-4 my-3'>
-<div class="card" style="background-color: #263238;">
+<div class="card h-100" style="background-color: #1daf9e;">
   <div class="card-body">
     <h5 class="card-title text-center">{% trans "Billing" %}</h5>
      <div class='list-group'>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:list" %}'>{% trans "My Orders(paid)" %} </a>
-          <a class='list-group-item' style="background-color: #263238; color: white;" href='{% url "orders:created" %}'>{% trans "My created(unpaid) Orders" %} </a>
-         
+          <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "orders:list" %}'>{% trans "My Orders(paid)" %} </a>
+          <a class='list-group-item' style="background-color: #1daf9e; color: white;" href='{% url "orders:created" %}'>{% trans "My created(unpaid) Orders" %} </a>
+
             <!-- <a class='list-group-item' href='#'>Addresses </a> -->
       </div>
-    
+
   </div>
 </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </div>

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
 
 </br>
   <title>{{ title }}</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  
   <script>
 
     $(document).on("change", ".price-sorting", function() {
@@ -45,7 +46,9 @@
 
   <div class='container py-2'>
     <div class='row'>
-   
+    <!-- <span class="badge badge-pill badge-secondary py-2 px-4 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter">
+    <b> Sort &#8593;&#8595; </b>
+    </span> -->
 
     <!-- Modal -->
   <!-- Drop down for sorting prices -->
@@ -63,52 +66,62 @@
 
 
     <div class="container d-none d-md-block" style="background-color: white;">
+      
   <br/>
    <!-- <section class="text-center"> -->
 
-    <div id="row_lg" class="row prodList">
+    <div id="row_lg" class="row prodList infinite-container">
 
           <!--Grid column-->
            {% for obj in products %}
-          <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}" style="display: flex;
+          <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod infinite-item" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}" style="display: flex;
         flex-wrap: wrap; flex-grow: 1;
         flex-basis: 100px; flex-shrink: inherit;
 
-        justify-content: space-between;flex: calc(30% - 5em);" >
+        justify-content: space-between;flex: calc(30% - 5em);" >           
 
 
                   {% include 'products/snippets/card.html' with instance=obj %}
 
-                  </div>
-
-
+                  </div> 
+              
            {% endfor %}
-     </div>
+     
+    </div>
 
+    
 
-    <!-- {% if products.has_other_pages %}
-  <ul class="pagination justify-content-center">
-    {% if products.has_previous %}
-      <li class='page-item'><a class='page-link' href="?page={{ products.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class='page-item'><span class='current'>&laquo;</span></li>
-    {% endif %}
-    {% for i in products.paginator.page_range %}
-      {% if products.number == i %}
-        <li class='page-item active'><span class='step-links'>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-        <li class='page-item active'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
     {% if products.has_next %}
-      <li class='page-item'><a class='page-link' href="?page={{ products.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class='page-item'><span class='step-links'>&raquo;</span></li>
+    <a class="infinite-more-link" href="?page={{ products.next_page_number }}">More</a>
     {% endif %}
-  </ul>
-{% endif %} -->
+    
+    <div class="loading" style="display: none;">
+    Loading...
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').hide();
+    }
+  });
+</script>
+  
+    
 
 </div>
+
+
+
+
+
 <div class="container d-md-none" style="background-color: white;">
 <br/>
 <!-- <section class="text-center"> -->
@@ -119,16 +132,21 @@
        {% for obj in products %}
       <div class="col-6 text-center p-0 m-0 prodXS" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}">
 
-
+         
               {% include 'products/snippets/card.html' with instance=obj %}
 
-              </div>
+          </div>
+            </div>
 
 
        {% endfor %}
  </div>
 
+ 
 
+ 
+  
+ 
 <!-- {% if products.has_other_pages %}
 <ul class="pagination justify-content-center">
 {% if products.has_previous %}
@@ -157,6 +175,8 @@
 <script type="text/javascript">
   document.getElementById("price-sorting").value = "1"; 
 </script>
+
+
 
 
 

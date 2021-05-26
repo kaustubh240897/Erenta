@@ -1,46 +1,72 @@
 {% load staticfiles %}
+<!-- <div class="card" style="width: 18rem">
+   {% if instance.image %}
+  <a href="{{ instance.get_absolute_url }}" ><img src="{{ instance.image.url }}" class="card-img-top" alt="{{ instance.title }} logo">
+  </a>
+  {% else %}
+  <img class='image-responsive' src='{% static "img/placeholder.png" %}'/>
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+    <h5 class="card-title"> {{ instance.product_name|capfirst }}</h5>
+    <h6 class="card-title"> {% if instance.discount_price %}
+            <strike> ${{ instance.cost_per_day }}</strike> ${{ instance.discount_price }}/day ({{ instance.get_amount_percent_saved }}% Off)
+           {% else %}
+           ${{ instance.cost_per_day }}/day
+           {% endif %}
+           </h6>
+    <p class="card-text">{{ instance.description|linebreaks|truncatewords:14 }}</p>
+    <a href="{{ instance.get_absolute_url }}" class="btn btn-primary">View! </a>
 
 
-        <!--Grid row-->
-        
 
-            <!--Card-->
-            <style>
-              @media screen and (max-width: 992px) {
-                #car {
-                  width: 15rem;
+  </div>
+</div> -->
+<style>
+              @media screen and ( max-width: 992px) {
+                #car1 {
+                  width: 15em !important;
+
+
                 }
               }
-               @media only screen and (min-width: 1200px) {
-                #car {
-                  width: 15rem ;
+              @media only screen and (min-width: 1200px) {
+                #car1 {
+                  width: 15rem !important;
               }
               }
-
 
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
-                #car {
-                  width: 12rem;
-                  margin-left: 3.5rem;
-  }
-}
+                #car1 {
+                  width: auto !important;
+
+            }
+          }
+
         .checked {
           color: orange;
         }
-    
-            </style>
-            <div id=car class="card">
+        .card:hover {
+              -ms-transform: scale(1.15); /* IE 9 */
+              -webkit-transform: scale(1.15); /* Safari 3-8 */
+              transform: scale(1.15);
+               transition: transform .2s;
+            }
+
+  </style>
+
+        <div id=car1 class="card m-0 p-0 h-100">
 
               <!--Card image-->
               <div class="view">
                  {% if instance.product.image %}
-                 <a href="{{ instance.product.get_absolute_url }}" target="_blank"><img src="{{ instance.product.image.url }}" class="card-img-top" alt="{{ instance.product.title }} logo">
+                 <a href="{{ instance.product.get_absolute_url }}" target="_blank" ><img src="{{ instance.product.image.url }}" class="card-img-top" alt="{{ instance.product.title }} logo">
                    </a>
                   {% else %}
                   <img class='card-img-top' src='{% static "img/placeholder.png" %}'/>
                   {% endif %}
-               
+
                 <a>
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -50,8 +76,7 @@
               <!--Card content-->
               <div class="card-body text-center">
                 <!--Category & Title-->
-        
-         {% if instance.product.rating >= 1 %}
+              {% if instance.product.rating >= 1 %}
               ({{ instance.product.rating }})
               {% endif %}
                 {% if instance.product.rating >= 1 and instance.product.rating < 2 %}
@@ -89,19 +114,24 @@
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
           <span class="fa fa-star checked"></span>
-        {% endif %}                  
-                 <h6 class="card-title text-grey"> {{ instance.product.category|capfirst }}, {{ instance.product.brand }}</h6>
-              
+        {% endif %}
+                 <h6 class="card-title text-grey"> {{ instance.product.category|capfirst }},{{ instance.product.brand|capfirst }}</h6>
+
+
                 <h5>
                   <strong>
                     <a href="{{ instance.product.get_absolute_url }}" target="_blank"><div class="text-grey">{{ instance.product.product_name|capfirst }}</div></a>
+                     {% for t in trending %}
+                     {% if t.product.id == instance.product.id %}
                       <span class="badge badge-pill badge-primary">Trending</span>
-                    {% if instance.product.timestamp >= instance.product.product_posted_days %}
-                     
-                      <span class="badge badge-pill badge-danger">NEW</span>
-                    
                       {% endif %}
-                    
+                      {% endfor %}
+                      {% if instance.product.timestamp >= instance.product.product_posted_days %}
+
+                      <span class="badge badge-pill badge-danger">NEW</span>
+
+                      {% endif %}
+
                   </strong>
                 </h5>
 
@@ -111,7 +141,7 @@
            {% else %}
            ${{ instance.product.cost_per_day }}/day
            {% endif %}
-           
+
            </strong>
                 </h6>
 
@@ -119,7 +149,3 @@
               <!--Card content-->
 
             </div>
-            <!--Card-->
-
-          
-     

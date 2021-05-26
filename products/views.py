@@ -30,21 +30,21 @@ def product_list_view(request):
     if request.session.get('city_names',None) == None:
         request.session['city_names'] = "Tokyo"
     products_list = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], active=True)
-    queryset = products_list.order_by('?')
+    queryset = products_list.order_by('-timestamp')
     queryset_low_to_high = products_list.order_by('discount_price')
     queryset_high_to_low = products_list.order_by('-discount_price')
-    # page = request.GET.get('page', 1)
-    # paginator = Paginator(queryset, 16)
-    # try:
-    #     products = paginator.page(page)
-    # except PageNotAnInteger:
-    #     products = paginator.page(1)
-    # except EmptyPage:
-    #     products = paginator.page(paginator.num_pages)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 2)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     context = {
         'qs': queryset ,
         "title":"Products",
-        'products': queryset,
+        'products': products,
         'products_low_to_high': queryset_low_to_high,
         'products_high_to_low': queryset_high_to_low,
         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'], active=True)[:7],

@@ -206,7 +206,31 @@ $(function(){
                 .demo:hover {
                   opacity: 1;
                 }
-
+                @media only screen and (max-width: 992px) {
+                  .scrolling-wrapper {
+                  background-color: #f7f7f7 !important;
+                  overflow-x: scroll;
+                  scrollbar-width: none; /* Firefox */
+                  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                  }
+                  .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+                  width: 0;
+                  height: 0;
+                  }
+                }
+                @media only screen and (min-width: 992px) {
+                  .scrolling-wrapper {
+                    background-color: #f7f7f7 !important;
+                    -ms-overflow-style: none;  /* IE and Edge */
+                    scrollbar-width: none;  /* Firefox */
+                  }
+                  /* .scrolling-wrapper:hover {
+                    overflow-x: scroll;
+                  } */
+                  .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+                    display: none;
+                  }
+                }
 
               @media screen and (max-width: 992px) {
                .wid {
@@ -257,7 +281,6 @@ $(function(){
                 margin-left: 20rem !important;
               }
 
-
                   }
 
               /* On screens that are 600px or less, set the background color to olive */
@@ -285,8 +308,9 @@ $(function(){
                   margin-right: 10px !important;
                 }
                 }
-
-
+                .scrolling-wrapper {
+                background-color: #f7f7f7 !important;
+                }
            </style>
           <title>{{ title }}</title>
 
@@ -335,7 +359,7 @@ $(function(){
               <br/>
 
               <!-- Thumbnail images -->
-              <div id="thumbnail_img" class="row margin-l2">
+              <div id="thumbnail_img" class="d-flex flex-row justify-content-center scrolling-wrapper" style="background: #f7f7f7 !important;">
               <!-- {% for img in images %}
                 <div class="column mr-4">
                   <img class="demo cursor" src="{{ img.image.url }}" style=" width:100%" onclick="currentSlide({{ forloop.counter }})" alt="img.1">
@@ -343,14 +367,14 @@ $(function(){
               {% endfor %} -->
               </div>
             <br/>
-          <div class="container text-center wid1" style="background-color: #007b5e; color: white;">
+          <div class="container text-center" style="background-color: #007b5e; color: white;">
             <h3 class="text-center">{% trans "AboutItem" %}</h3>
 
                {{ object.description|linebreaks }}<br/>
 
           </div>
           <br/>
-           <div class="container text-center wid1" style="background-color: white; color: black;">
+           <div class="container text-center " style="background-color: white; color: black;">
             * If you have any query for item contact to supplier.
              {% for obj in object.user.supplier_set.all %}
             <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
@@ -568,8 +592,10 @@ $(function(){
             {% endfor %}
           </div> -->
 
-          <div id="div_variants" class="container">
+          <div class="container">
+            <div id="div_variants" class="d-flex flex-row flex-wrap">
 
+            </div>
           </div>
 
 
@@ -667,15 +693,19 @@ $(function(){
 
    <!-- <section class="text-center"> -->
 
-    <div class="row wow fadeIn">
+    <div class="container d-none d-md-block" style="background-color: white;">
+      <br/>
+       <!-- <section class="text-center"> -->
+    
+        <div id="row_lg" class="row prodList">
 
           <!--Grid column-->
            {% for object in similar_products %}
-         <div class="col-lg-3 col-md-4 col-sm-4 mb-4 text-center" style="display: flex;
-        flex-wrap: wrap; flex-grow: 1;
-        flex-basis: 100px; flex-shrink: inherit;
-
-        justify-content: space-between;flex: calc(30% - 5em);" >
+           <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if object.discount_price %} {{ object.discount_price }} {%else%} {{ object.cost_per_day }} {%endif%}" style="display: flex;
+           flex-wrap: wrap; flex-grow: 1;
+           flex-basis: 100px; flex-shrink: inherit;
+   
+           justify-content: space-between;flex: calc(30% - 5em);" >
 
 
        {% include 'analytics/trending_card.html' with instance=object %}
@@ -689,10 +719,40 @@ $(function(){
 
   </div>
    {% endif %}
+  
+
+
+
+
+
+<div class="container d-md-none" style="background-color: white;">
+  <br/>
+  <!-- <section class="text-center"> -->
+  
+  <div class="d-flex flex-row flex-wrap prodListXS">
+  
+        <!--Grid column-->
+        {% for obj in similar_products %}
+        <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if obj.product.discount_price %} {{ obj.product.discount_price }} {%else%} {{ obj.product.cost_per_day }} {%endif%}" style="display: flex;
+           flex-wrap: wrap; flex-grow: 1;
+           flex-basis: 100px; flex-shrink: inherit;
+   
+           justify-content: space-between;flex: calc(30% - 5em);" >
+  
+  
+          {% include 'analytics/trending_card.html' with instance=obj %}
+  
+                </div>
+  
+  
+         {% endfor %}
+   </div>
+  
+  </div>
+
 
 </div>
-
-
+</div>
 </div>
 
 <script type="text/javascript">
@@ -737,31 +797,24 @@ $(function(){
       console.log("quant", "{{q.quantity}}");
       if (title.includes(sel_color_value)) {
         var p_row = document.createElement('div');
-        p_row.className = "d-flex flex-row justify-content-start";
+        p_row.className = "col-3 col-md-4 col-lg-2";
         var p1 = document.createElement('p');
-        p1.className = "px-2 mx-2 text-wrap text-center";
+        p1.className = "text-center text-wrap";
         p1.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
         var p2 = document.createElement('p');
-        p2.className = "px-2 mx-2 text-wrap text-center";
+        p2.className = "text-center text-wrap";
         p2.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
-        var p3 = document.createElement('p');
-        p3.className = "px-2 mx-2 text-wrap text-center";
-        p3.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
         var n1 = document.createTextNode(title[1].toUpperCase());
         p1.appendChild(n1);
-        var n2 = document.createTextNode(title[2].toUpperCase());
+        var n2 = document.createTextNode("{{q.quantity}}");
         p2.appendChild(n2);
-        var n3 = document.createTextNode("{{q.quantity}}");
-        p3.appendChild(n3);
         if ("{{q.quantity}}"<=5) {
           console.log("bg");
           p1.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
           p2.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
-          p3.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
         }
         p_row.appendChild(p1);
         p_row.appendChild(p2);
-        p_row.appendChild(p3);
         document.getElementById("div_variants").appendChild(p_row);
       }
     {% endif %}
@@ -828,11 +881,12 @@ $(function(){
               document.getElementById('ms_div').appendChild(ms);
               var thumbnail_col = document.createElement('div');
               thumbnail_col.className = "column mr-4";
+              thumbnail_col.setAttribute("style", "background: #f7f7f7");
               var thumbnailImg = document.createElement('img');
               thumbnailImg.className = "demo cursor h-100";
               thumbnailImg.src = "{{img.image.url}}";
               thumbnailImg.id = imgIndex;
-              thumbnailImg.setAttribute("style", "width:100%");
+              thumbnailImg.setAttribute("style", "width:100%; background: #f7f7f7");
               thumbnailImg.setAttribute("onclick", "currentSlide(this.id)");
               thumbnailImg.alt = "img.1";
               thumbnail_col.appendChild(thumbnailImg);
