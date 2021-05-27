@@ -5,7 +5,6 @@
 
 {% block javascript %}
 
-
 <script>
 
   const date_s = "{{ rent_periods_list|safe }}";
@@ -206,33 +205,20 @@ $(function(){
                 .demo:hover {
                   opacity: 1;
                 }
-                @media only screen and (max-width: 992px) {
-                  .scrolling-wrapper {
-                  background-color: #f7f7f7 !important;
-                  overflow-x: scroll;
-                  scrollbar-width: none; /* Firefox */
-                  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-                  }
-                  .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
-                  width: 0;
-                  height: 0;
-                  }
-                }
-                @media only screen and (min-width: 992px) {
-                  .scrolling-wrapper {
-                    background-color: #f7f7f7 !important;
-                    -ms-overflow-style: none;  /* IE and Edge */
-                    scrollbar-width: none;  /* Firefox */
-                  }
-                  /* .scrolling-wrapper:hover {
-                    overflow-x: scroll;
-                  } */
-                  .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
-                    display: none;
-                  }
-                }
+
+
 
               @media screen and (max-width: 992px) {
+                .scrolling-wrapper {
+                background-color: #f7f7f7 !important;
+                overflow-x: scroll;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                }
+                .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+                width: 0;
+                height: 0;
+                }
                .wid {
                   width: 17rem !important ;
                   height: 17rem !important;
@@ -252,7 +238,30 @@ $(function(){
               }
 
               }
-              @media only screen and (min-width: 1200px) {
+              @media only screen and (min-width: 992px) {
+                .scrolling-wrapper {
+                background-color: #f7f7f7 !important;
+                overflow-x: scroll;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                }
+                .scrolling-wrapper:hover {
+                  scrollbar-width: auto;
+                  overflow-x: scroll;
+                }
+                .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+                width: 0;
+                height: 0;
+                }
+                .scrolling-wrapper:hover::-webkit-scrollbar { /* WebKit */
+                width: auto;
+                height: auto;
+                /* background-color: #000 !important;
+                color: #fff !important; */
+                }
+                ::-webkit-scrollbar-thumb {
+                  background: #888;
+                }
                 .wid {
                   width: 30rem !important;
                   height: 30rem !important;
@@ -285,6 +294,16 @@ $(function(){
 
               /* On screens that are 600px or less, set the background color to olive */
               @media screen and (max-width: 600px) {
+                .scrolling-wrapper {
+                background-color: #f7f7f7 !important;
+                overflow-x: scroll;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                }
+                .scrolling-wrapper::-webkit-scrollbar { /* WebKit */
+                width: 0;
+                height: 0;
+                }
                 .wid {
                   width: 17rem !important ;
                   height: 17rem !important;
@@ -308,8 +327,8 @@ $(function(){
                   margin-right: 10px !important;
                 }
                 }
-                .scrolling-wrapper {
-                background-color: #f7f7f7 !important;
+                body {
+                  background-color: #f7f7f7 !important;
                 }
            </style>
           <title>{{ title }}</title>
@@ -335,11 +354,9 @@ $(function(){
                {% endfor %} -->
               </div>
             {% else %}
-
-            <div class="mySlides margin-l">
               <div class="numbertext">1 / 1</div>
                 <img src="{{ object.image.url }}"  class="zoom wid" />
-            </div>
+
 
             {% endif %}
 
@@ -359,14 +376,66 @@ $(function(){
               <br/>
 
               <!-- Thumbnail images -->
-              <div id="thumbnail_img" class="d-flex flex-row justify-content-center scrolling-wrapper" style="background: #f7f7f7 !important;">
-              <!-- {% for img in images %}
-                <div class="column mr-4">
-                  <img class="demo cursor" src="{{ img.image.url }}" style=" width:100%" onclick="currentSlide({{ forloop.counter }})" alt="img.1">
-                </div>
-              {% endfor %} -->
-              </div>
+                  <div class="container" style="background: #f7f7f7 !important;">
+                    <div id="thumbnail_img" class="d-flex flex-row scrolling-wrapper justify-content-between" style="background: #f7f7f7 !important;">
+
+                    </div>
+                  </div>
             <br/>
+            <div id="form_xs" class="d-md-none mb-3" style=" background-color: lavender;">
+             <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
+
+                {% trans "Quantity" %}-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
+                {% trans "Start Date" %}-:
+                 <br/>
+                <i class="fas fa-calendar-week"></i>
+                 <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" onchange="checkRentDates()" />
+
+
+                {% trans "End Date" %}-:
+                <br/>
+                <i class="fas fa-calendar-week"></i>
+                <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" onchange="checkRentDates()" />
+
+            {% if object.variation_set.all %}
+
+               {% if object.variation_set.sizes %}
+               {% trans "Size" %}-:
+                <select class='form-control' name='size' id="sel_size">
+                  <!-- {% for item in object.variation_set.sizes %}
+                  <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                  {% endfor %} -->
+                </select>
+
+               {% endif %}
+
+                {% if  object.variation_set.colors %}
+                {% trans "Color" %}-:
+                <select class='form-control' id="sel_color" name='color' onchange="changeColor()">
+                  {% for item in object.variation_set.colors %}
+                  <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
+                  {% endfor %}
+                </select>
+
+               {% endif %}
+
+
+            {% endif %}
+            <br/>
+             <input class='btn btn-light btn-block' style="background-color: #263238;  ; color:white;" type='submit' value='Add to cart' />
+             </form>
+
+            <br/>
+            <br/>
+
+            <div class="container">
+              <div id="div_variants" class="d-flex flex-row flex-wrap">
+
+              </div>
+            </div>
+
+
+          </div>
           <div class="container text-center" style="background-color: #007b5e; color: white;">
             <h3 class="text-center">{% trans "AboutItem" %}</h3>
 
@@ -460,7 +529,7 @@ $(function(){
 
 
 
-          <div style=" background-color: lavender;">
+          <div id="form_lg" class="d-none d-md-block" style=" background-color: lavender;">
            <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
 
               {% trans "Quantity" %}-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
@@ -479,17 +548,17 @@ $(function(){
 
              {% if object.variation_set.sizes %}
              {% trans "Size" %}-:
-              <select class='form-control' name='size'>
-                {% for item in object.variation_set.sizes %}
+              <select class='form-control' name='size_lg' id="sel_size_lg">
+                <!-- {% for item in object.variation_set.sizes %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
-                {% endfor %}
+                {% endfor %} -->
               </select>
 
              {% endif %}
 
               {% if  object.variation_set.colors %}
               {% trans "Color" %}-:
-              <select class='form-control' id="sel_color" name='color' onchange="changeColor()">
+              <select class='form-control' id="sel_color_lg" name='color' onchange="changeColor_lg()">
                 {% for item in object.variation_set.colors %}
                 <option value='{{ item.title|lower }}'>{{ item.title|capfirst }}</option>
                 {% endfor %}
@@ -593,7 +662,7 @@ $(function(){
           </div> -->
 
           <div class="container">
-            <div id="div_variants" class="d-flex flex-row flex-wrap">
+            <div id="div_variants_2" class="d-flex flex-row flex-wrap">
 
             </div>
           </div>
@@ -693,66 +762,25 @@ $(function(){
 
    <!-- <section class="text-center"> -->
 
-    <div class="container d-none d-md-block" style="background-color: white;">
-      <br/>
-       <!-- <section class="text-center"> -->
-    
-        <div id="row_lg" class="row prodList">
+    <div class="d-flex flex-row scrolling-wrapper justify-content-between" style="background: #fff !important;">
 
           <!--Grid column-->
-           {% for object in similar_products %}
-           <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if object.discount_price %} {{ object.discount_price }} {%else%} {{ object.cost_per_day }} {%endif%}" style="display: flex;
-           flex-wrap: wrap; flex-grow: 1;
-           flex-basis: 100px; flex-shrink: inherit;
-   
-           justify-content: space-between;flex: calc(30% - 5em);" >
-
-
-       {% include 'analytics/trending_card.html' with instance=object %}
-    </div>
-
-
-     {% endfor %}
+      {% for object in similar_products %}
+         <div class="col-lg-3 col-md-4 col-sm-4 mb-4 text-center" >
+            {% include 'analytics/trending_card.html' with instance=object %}
+        </div>
+      {% endfor %}
+     
 
 
     </div>
 
   </div>
    {% endif %}
-  
-
-
-
-
-
-<div class="container d-md-none" style="background-color: white;">
-  <br/>
-  <!-- <section class="text-center"> -->
-  
-  <div class="d-flex flex-row flex-wrap prodListXS">
-  
-        <!--Grid column-->
-        {% for obj in similar_products %}
-        <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod" data-price-item="{% if obj.product.discount_price %} {{ obj.product.discount_price }} {%else%} {{ obj.product.cost_per_day }} {%endif%}" style="display: flex;
-           flex-wrap: wrap; flex-grow: 1;
-           flex-basis: 100px; flex-shrink: inherit;
-   
-           justify-content: space-between;flex: calc(30% - 5em);" >
-  
-  
-          {% include 'analytics/trending_card.html' with instance=obj %}
-  
-                </div>
-  
-  
-         {% endfor %}
-   </div>
-  
-  </div>
-
 
 </div>
-</div>
+
+
 </div>
 
 <script type="text/javascript">
@@ -780,9 +808,16 @@ $(function(){
   }
 
   function allVariants() {
+    //var sel_size = document.getElementById("sel_size_lg");
+    var sel_size_2 = document.getElementById("sel_size");
+    //sel_size.innerHTML = "";
+    sel_size_2.innerHTML = "";
     document.getElementById("div_variants").innerHTML = "";
+    document.getElementById("div_variants_2").innerHTML = "";
     var sel_color = document.getElementById('sel_color');
     var sel_color_value = sel_color.value.toLowerCase();
+    // var sel_color_2 = document.getElementById('sel_color_lg');
+    // var sel_color_value_2 = sel_color_2.value.toLowerCase();
     console.log("allVBar");
     {% for q in qs %}
     {% if q.variations.all %}
@@ -795,7 +830,13 @@ $(function(){
       console.log("title", title);
       console.log("inc", title.includes(sel_color_value));
       console.log("quant", "{{q.quantity}}");
-      if (title.includes(sel_color_value)) {
+      if ((title.includes(sel_color_value))) {
+        var option = document.createElement("option");
+        option.value = title[1].toLowerCase();
+        option.text = title[1].toUpperCase();
+        //sel_size.add(option);
+        sel_size_2.add(option);
+        //console.log("option", sel_size);
         var p_row = document.createElement('div');
         p_row.className = "col-3 col-md-4 col-lg-2";
         var p1 = document.createElement('p');
@@ -803,33 +844,83 @@ $(function(){
         p1.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
         var p2 = document.createElement('p');
         p2.className = "text-center text-wrap";
-        p2.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
         var n1 = document.createTextNode(title[1].toUpperCase());
         p1.appendChild(n1);
-        var n2 = document.createTextNode("{{q.quantity}}");
-        p2.appendChild(n2);
-        if ("{{q.quantity}}"<=5) {
+        if ("{{q.quantity}}"<=11) {
           console.log("bg");
-          p1.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
-          p2.setAttribute("style", "border: 1px 	#DC143C solid; border-radius: 50%; background: 	#DC143C; color: #fff");
+          p2.setAttribute("style", "color: #ff0000; font-size: 70%");
+          var n2 = document.createTextNode("Hurry!, only " + "{{q.quantity}}" + " left");
+          p2.appendChild(n2);
         }
         p_row.appendChild(p1);
         p_row.appendChild(p2);
         document.getElementById("div_variants").appendChild(p_row);
+        //document.getElementById("div_variants_2").appendChild(p_row);
       }
     {% endif %}
 
     {% endfor %}
   }
 
-  function changeColor() {
-      document.getElementById('thumbnail_img').innerHTML = "";
-      document.getElementById('ms_div').innerHTML = "";
+  function allVariants_lg() {
+    var sel_size = document.getElementById("sel_size_lg");
+    sel_size.innerHTML = "";
+    document.getElementById("div_variants_2").innerHTML = "";
+    var sel_color_2 = document.getElementById('sel_color_lg');
+    var sel_color_value_2 = sel_color_2.value.toLowerCase();
+    console.log("allVBar_lg");
+    {% for q in qs %}
+    {% if q.variations.all %}
+      var title = ["x"];
+      {% for item in q.variations.all %}
+      // <span class="px-2 col" style="border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff">{{ item.title|capfirst }}</span>
+        console.log("item", "{{item.title}}");
+        title[title.length] = "{{item.title}}";
+      {% endfor %}
+      console.log("title", title);
+      console.log("inc", title.includes(sel_color_value_2));
+      console.log("quant", "{{q.quantity}}");
+      if ((title.includes(sel_color_value_2))) {
+        var option = document.createElement("option");
+        option.value = title[1].toLowerCase();
+        option.text = title[1].toUpperCase();
+        sel_size.add(option);
+        console.log("option", sel_size);
+        var p_row = document.createElement('div');
+        p_row.className = "col-3 col-md-4 col-lg-2";
+        var p1 = document.createElement('p');
+        p1.className = "text-center text-wrap";
+        p1.setAttribute("style", "border: 1px #1daf9e solid; border-radius: 50%; background: #1daf9e; color: #fff");
+        var p2 = document.createElement('p');
+        p2.className = "text-center text-wrap";
+        var n1 = document.createTextNode(title[1].toUpperCase());
+        p1.appendChild(n1);
+        if ("{{q.quantity}}"<=10) {
+          console.log("bg");
+          p2.setAttribute("style", "color: #ff0000; font-size: 70%");
+          var n2 = document.createTextNode("Hurry!, only " + "{{q.quantity}}" + " left");
+          p2.appendChild(n2);
+        }
+        p_row.appendChild(p1);
+        p_row.appendChild(p2);
+        document.getElementById("div_variants_2").appendChild(p_row);
+      }
+    {% endif %}
+
+    {% endfor %}
+  }
+
+  function changeColor_lg() {
+    console.log("cc_lg");
+    {% if images %}
+
+    document.getElementById('thumbnail_img').innerHTML = "";
+    document.getElementById('ms_div').innerHTML = "";
     var ic = 0;
-    var sel_color = document.getElementById('sel_color');
+    var sel_color = document.getElementById('sel_color_lg');
     var sel_color_value = sel_color.value.toLowerCase();
     console.log("sel", sel_color_value);
-    {% if images %}
+
       {% for img in images %}
         console.log("url", "{{ img.image.url }}");
         {% for vari in img.variations.all %}
@@ -880,7 +971,7 @@ $(function(){
               ms.appendChild(img_1);
               document.getElementById('ms_div').appendChild(ms);
               var thumbnail_col = document.createElement('div');
-              thumbnail_col.className = "column mr-4";
+              thumbnail_col.className = "col-3";
               thumbnail_col.setAttribute("style", "background: #f7f7f7");
               var thumbnailImg = document.createElement('img');
               thumbnailImg.className = "demo cursor h-100";
@@ -894,11 +985,101 @@ $(function(){
           }
         {% endfor %}
      {% endfor %}
+
+    allVariants_lg();
+    currentSlide(1);
     {% endif %}
+  }
+  function changeColor() {
+    console.log("cc");
+    {% if images %}
+
+    document.getElementById('thumbnail_img').innerHTML = "";
+    document.getElementById('ms_div').innerHTML = "";
+    var ic = 0;
+    var sel_color = document.getElementById('sel_color');
+    var sel_color_value = sel_color.value.toLowerCase();
+    console.log("sel", sel_color_value);
+
+      {% for img in images %}
+        console.log("url", "{{ img.image.url }}");
+        {% for vari in img.variations.all %}
+          // {% if vari.category == "color" %}
+          //   {% if vari.title == sel_color_value %}
+          //     ic++;
+          //     console.log("ic", ic);
+          //   {% endif %}
+          // {% endif %}
+          var cat = "{{vari.category}}";
+          cat = cat.toLowerCase();
+          var title = "{{vari.title}}";
+          title = title.toLowerCase();
+          if ((cat.localeCompare("color") == 0) && (title.localeCompare(sel_color_value) == 0)) {
+              ic++;
+          }
+        {% endfor %}
+     {% endfor %}
+    {% endif %}
+    var imgIndex = 0;
+    {% if images %}
+      {% for img in images %}
+        console.log("url", "{{ img.image.url }}");
+        {% for vari in img.variations.all %}
+          // {% if vari.category == "color" %}
+          //   {% if vari.title == sel_color_value %}
+          //     ic++;
+          //     console.log("ic", ic);
+          //   {% endif %}
+          // {% endif %}
+          var cat = "{{vari.category}}";
+          cat = cat.toLowerCase();
+          var title = "{{vari.title}}";
+          title = title.toLowerCase();
+          var availList_row = document.createElement('div');
+          availList_row.className = "d-flex flex-row justify-content-start";
+          if ((cat.localeCompare("color") == 0) && (title.localeCompare(sel_color_value) == 0)) {
+              imgIndex++;
+              var ms = document.createElement('div');
+              ms.className = "mySlides margin-l";
+              var nt = document.createElement('div');
+              var img_1 = document.createElement('img');
+              nt.className = "numbertext";
+              nt.innerHTML = imgIndex + "/" + ic + " {{ img.variations.title }} ";
+              img_1.className = "zoom wid";
+              img_1.src = "{{img.image.url}}";
+              ms.appendChild(nt);
+              ms.appendChild(img_1);
+              document.getElementById('ms_div').appendChild(ms);
+              var thumbnail_col = document.createElement('div');
+              thumbnail_col.className = "col-3";
+              thumbnail_col.setAttribute("style", "background: #f7f7f7");
+              var thumbnailImg = document.createElement('img');
+              thumbnailImg.className = "demo cursor h-100";
+              thumbnailImg.src = "{{img.image.url}}";
+              thumbnailImg.id = imgIndex;
+              thumbnailImg.setAttribute("style", "width:100%; background: #f7f7f7");
+              thumbnailImg.setAttribute("onclick", "currentSlide(this.id)");
+              thumbnailImg.alt = "img.1";
+              thumbnail_col.appendChild(thumbnailImg);
+              document.getElementById('thumbnail_img').appendChild(thumbnail_col);
+          }
+        {% endfor %}
+     {% endfor %}
+
     allVariants();
     currentSlide(1);
+    {% endif %}
   }
+
+var form_xs = document.getElementById('form_xs');
+if (window.getComputedStyle(form_xs).display === "none") {
+  console.log("invisi");
+  changeColor_lg();
+} else {
+  console.log("visi");
   changeColor();
+}
+
 
 
 

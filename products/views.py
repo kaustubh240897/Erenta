@@ -34,7 +34,7 @@ def product_list_view(request):
     queryset_low_to_high = products_list.order_by('discount_price')
     queryset_high_to_low = products_list.order_by('-discount_price')
     page = request.GET.get('page', 1)
-    paginator = Paginator(queryset, 2)
+    paginator = Paginator(queryset, 4)
     try:
         products = paginator.page(page)
     except PageNotAnInteger:

@@ -82,7 +82,7 @@ $(document).ready(function(){
       })
       function displaySearch(){
         searchBtn.addClass("disabled")
-        searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+        searchBtn.html("<i class='fa fa-spin fa-spinner'></i> <i class='fas fa-search'></i>")
       }
 
       function performSearch(){

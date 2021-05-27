@@ -3,98 +3,68 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style media="screen">
+
+</style>
 </br>
   <title>{{ title }}</title>
-  
-  
-  <script>
 
-    $(document).on("change", ".price-sorting", function() {
-        var sortingMethod = $(this).val();
-        if(sortingMethod == 'l2h')
-        {
-          console.log("l2h");
-            sortProductsPriceAscending();
-        }
-        else if(sortingMethod == 'h2l')
-        {console.log("h2l");
-            sortProductsPriceDescending();
-        }
-    });
-            function sortProductsPriceAscending() {
-                var products = $('.prod');
-                var productsXS = $('.prodXS');
-                products.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
-                productsXS.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
-                $(".prodList").html(products);
-                $(".prodListXS").html(productsXS);
-            }
-            function sortProductsPriceDescending(){
-                var products = $('.prod');
-                var productsXS = $('.prodXS');
-                products.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
-                productsXS.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
-                $(".prodList").html(products);
-                $(".prodListXS").html(productsXS);
-            }
-  </script>
+
+
   {% if high_to_low %}
   <h6 class='text-center'> {{ high_to_low }} </h6>
   {% elif low_to_high %}
   <h6 class='text-center'>{{ low_to_high }} </h6>
   {% endif %}
 
-  <div class='container py-2'>
-    <div class='row'>
+  <div class='container'>
     <!-- <span class="badge badge-pill badge-secondary py-2 px-4 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter">
     <b> Sort &#8593;&#8595; </b>
     </span> -->
 
     <!-- Modal -->
   <!-- Drop down for sorting prices -->
-  <select class="price-sorting selectBox" name="price-sorting" id="price-sorting">
-    <option value="1">Relevance</option>
-    <option value="l2h">Price: Low - High</option>
-    <option value="h2l">Price: High - Low</option>
-  </select>
-   </div>
+  <label>
+    <select class="price-sorting" name="price-sorting" id="price-sorting">
+      <option value="1">Relevance</option>
+      <option value="l2h">Price: Low - High</option>
+      <option value="h2l">Price: High - Low</option>
+    </select>
+  </label>
   </div>
 
 
 
-  
 
 
-    <div class="container d-none d-md-block" style="background-color: white;">
-      
+
+    <div class="container " style="background-color: white;">
+
   <br/>
    <!-- <section class="text-center"> -->
 
-    <div id="row_lg" class="row prodList infinite-container">
+    <div id="row_lg" class="d-flex flex-row flex-wrap prodList infinite-container">
 
           <!--Grid column-->
            {% for obj in products %}
-          <div class="col-lg-3 col-md-4 col-sm-4 mb-4 prod infinite-item" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}" style="display: flex;
-        flex-wrap: wrap; flex-grow: 1;
-        flex-basis: 100px; flex-shrink: inherit;
-
-        justify-content: space-between;flex: calc(30% - 5em);" >           
+          <div class="col-6 col-lg-3 col-md-4 col-sm-4 p-0 m-0 prod infinite-item" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}">
 
 
                   {% include 'products/snippets/card.html' with instance=obj %}
 
-                  </div> 
-              
+                  </div>
+
            {% endfor %}
-     
+
     </div>
 
-    
+
 
     {% if products.has_next %}
     <a class="infinite-more-link" href="?page={{ products.next_page_number }}">More</a>
     {% endif %}
-    
+
     <div class="loading" style="display: none;">
     Loading...
     </div>
@@ -113,8 +83,8 @@
     }
   });
 </script>
-  
-    
+
+
 
 </div>
 
@@ -122,31 +92,7 @@
 
 
 
-<div class="container d-md-none" style="background-color: white;">
-<br/>
-<!-- <section class="text-center"> -->
 
-<div class="d-flex flex-row flex-wrap prodListXS">
-
-      <!--Grid column-->
-       {% for obj in products %}
-      <div class="col-6 text-center p-0 m-0 prodXS" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}">
-
-         
-              {% include 'products/snippets/card.html' with instance=obj %}
-
-          </div>
-            </div>
-
-
-       {% endfor %}
- </div>
-
- 
-
- 
-  
- 
 <!-- {% if products.has_other_pages %}
 <ul class="pagination justify-content-center">
 {% if products.has_previous %}
@@ -171,9 +117,39 @@
 
 </div>
 
+<script>
 
+  $(document).on("change", ".price-sorting", function() {
+      var sortingMethod = $(this).val();
+      if(sortingMethod == 'l2h')
+      {
+        console.log("l2h");
+          sortProductsPriceAscending();
+      }
+      else if(sortingMethod == 'h2l')
+      {console.log("h2l");
+          sortProductsPriceDescending();
+      }
+  });
+          function sortProductsPriceAscending() {
+              var products = $('.prod');
+              var productsXS = $('.prodXS');
+              products.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+              productsXS.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+              $(".prodList").html(products);
+              $(".prodListXS").html(productsXS);
+          }
+          function sortProductsPriceDescending(){
+              var products = $('.prod');
+              var productsXS = $('.prodXS');
+              products.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+              productsXS.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+              $(".prodList").html(products);
+              $(".prodListXS").html(productsXS);
+          }
+</script>
 <script type="text/javascript">
-  document.getElementById("price-sorting").value = "1"; 
+  document.getElementById("price-sorting").value = "1";
 </script>
 
 
