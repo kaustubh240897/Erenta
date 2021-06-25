@@ -101,6 +101,7 @@ vienv/
 env/
 venv/
 ENV/
+*.sqlite3
 
 # Spyder project settings
 .spyderproject

@@ -39,6 +39,7 @@ stripe.api_key =  STRIPE_SECRET_KEY
 
 class OrderListView(LoginRequiredMixin,ListView):
     model = Order
+    #paginate_by = 5
     template_name = 'orders/order_list.html'
     
     

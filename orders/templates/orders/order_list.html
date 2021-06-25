@@ -289,7 +289,7 @@
               var node1_oid = document.createTextNode("Order Id:- "+object.oid);
               var p1_ot = document.createElement('p');
               p1_ot.className = "text-center";
-              var node1_ot = document.createTextNode(object.trans_1 + " :- " + "&#165;" + object.ototal);
+              var node1_ot = document.createTextNode(object.trans_1 + " :- " + "¥" + object.ototal);
               p1_ot.appendChild(node1_ot);
               var p1_pat = document.createElement('p');
               p1_pat.className = "text-center";
@@ -329,7 +329,7 @@
               var node4 = document.createTextNode(object.trans_3 + " -: " + object.sname);
               p4.appendChild(node4);
               var p5 = document.createElement('p');
-              var node5 = document.createTextNode(object.trans_4 + " -: " + object.mnos);
+              var node5 = document.createTextNode(object.trans_4 + " -: " + object.mno);
               p5.appendChild(node5);
               textCol2.appendChild(p2);
               textCol2.appendChild(h);
@@ -352,7 +352,7 @@
                 colSw.className = "col";
                 var pSw = document.createElement("p");
                 pSw.className = "text-nowrap text-center px-2";
-                pSw.setAttribute("style", "background-color: #f7f7f7; color: #555555;");
+                pSw.setAttribute("style", "background-color: #e06a3b; color: #555555;");
                 if (j == 0) {
                   var nodeSw = document.createTextNode("申請");
                   pSw.appendChild(nodeSw);
@@ -511,7 +511,7 @@
             var node1_oid = document.createTextNode("Order Id:- "+object.oid);
             var p1_ot = document.createElement('p');
             p1_ot.className = "text-center";
-            var node1_ot = document.createTextNode(object.trans_1 + " :- " + "&#165;" + object.ototal);
+            var node1_ot = document.createTextNode(object.trans_1 + " :- " + "¥" + object.ototal);
             p1_ot.appendChild(node1_ot);
             var p1_pat = document.createElement('p');
             p1_pat.className = "text-center";
@@ -551,7 +551,7 @@
             var node4 = document.createTextNode(object.trans_3 + " -: " + object.sname);
             p4.appendChild(node4);
             var p5 = document.createElement('p');
-            var node5 = document.createTextNode(object.trans_4 + " -: " + object.mnos);
+            var node5 = document.createTextNode(object.trans_4 + " -: " + object.mno);
             p5.appendChild(node5);
             textCol2.appendChild(p2);
             textCol2.appendChild(h);
@@ -740,7 +740,7 @@
           var node1_oid = document.createTextNode("Order Id:- "+object.oid);
           var p1_ot = document.createElement('p');
           p1_ot.className = "text-center";
-          var node1_ot = document.createTextNode(object.trans_1 + " :- " + "&#165;" + object.ototal);
+          var node1_ot = document.createTextNode(object.trans_1 + " :- " + "¥" + object.ototal);
           p1_ot.appendChild(node1_ot);
           var p1_pat = document.createElement('p');
           p1_pat.className = "text-center";
@@ -780,7 +780,7 @@
           var node4 = document.createTextNode(object.trans_3 + " -: " + object.sname);
           p4.appendChild(node4);
           var p5 = document.createElement('p');
-          var node5 = document.createTextNode(object.trans_4 + " -: " + object.mnos);
+          var node5 = document.createTextNode(object.trans_4 + " -: " + object.mno);
           p5.appendChild(node5);
           textCol2.appendChild(p2);
           textCol2.appendChild(h);
@@ -965,7 +965,7 @@
         var node1_oid = document.createTextNode("Order Id:- "+object.oid);
         var p1_ot = document.createElement('p');
         p1_ot.className = "text-center";
-        var node1_ot = document.createTextNode(object.trans_1 + " :- " + "&#165;" + object.ototal);
+        var node1_ot = document.createTextNode(object.trans_1 + " :- " + "¥" + object.ototal);
         p1_ot.appendChild(node1_ot);
         var p1_pat = document.createElement('p');
         p1_pat.className = "text-center";
@@ -1005,7 +1005,7 @@
         var node4 = document.createTextNode(object.trans_3 + " -: " + object.sname);
         p4.appendChild(node4);
         var p5 = document.createElement('p');
-        var node5 = document.createTextNode(object.trans_4 + " -: " + object.mnos);
+        var node5 = document.createTextNode(object.trans_4 + " -: " + object.mno);
         p5.appendChild(node5);
         textCol2.appendChild(p2);
         textCol2.appendChild(h);
@@ -1190,7 +1190,7 @@ console.log("qs5",qs_5);
       var node1_oid = document.createTextNode("Order Id:- "+object.oid);
       var p1_ot = document.createElement('p');
       p1_ot.className = "text-center";
-      var node1_ot = document.createTextNode(object.trans_1 + " :- " + "&#165;" + object.ototal);
+      var node1_ot = document.createTextNode(object.trans_1 + " :- " + "¥" + object.ototal);
       p1_ot.appendChild(node1_ot);
       var p1_pat = document.createElement('p');
       p1_pat.className = "text-center";
@@ -1230,7 +1230,7 @@ console.log("qs5",qs_5);
       var node4 = document.createTextNode(object.trans_3 + " -: " + object.sname);
       p4.appendChild(node4);
       var p5 = document.createElement('p');
-      var node5 = document.createTextNode(object.trans_4 + " -: " + object.mnos);
+      var node5 = document.createTextNode(object.trans_4 + " -: " + object.mno);
       p5.appendChild(node5);
       textCol2.appendChild(p2);
       textCol2.appendChild(h);
@@ -1417,6 +1417,30 @@ loadMore();
     {% endif %}
   </ul>
 {% endif %} -->
+
+
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
 
 </div>
 

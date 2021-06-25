@@ -435,9 +435,18 @@ def category_product_view_1(request, slug,*args, **kwargs):
         queryset = Product_description.objects.filter(Current_City__iexact=request.session['city_names'], category=cat_query)
     else:
         queryset=Product_description.objects.filter(Current_City__iexact=request.session['city_names'])
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 4)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    
     context = {
-        'qs': queryset ,
-          
+        'qs': products,      
         'cat_slug': slug_type,
         "title":"Products",
         'trending': View_Count.objects.filter(product__Current_City__iexact=request.session['city_names'])[:7],
@@ -490,10 +499,19 @@ def sub_category_product_view(request, slug,*args, **kwargs):
     else:
         filtered_productList = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_category=sub_cat_query, variation__title__in=present).distinct()
     
+    page = request.GET.get('page', 1)
+    paginator = Paginator(filtered_productList, 1)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+    
 
     context = {
           #'qs': queryset ,
-          "qs": filtered_productList,
+          "qs": products,
           'slug': slug,
           'get_params': present,
           'cc': colors,
@@ -544,9 +562,23 @@ def sub_sub_category_product_view(request, slug,*args, **kwargs):
         le = len(get_all_selected_colors)
         get_all_selected_colors = getallselectedcolors[0:le-1]
         present = get_all_selected_colors.split(",")
+    if len(present) == 0:
+        queryset_filtered_productList = queryset
+    else:
         queryset_filtered_productList = Product_description.objects.filter(Current_City__iexact=request.session['city_names'],sub_sub_category=sub_sub_cat_query, variation__title__in=present).distinct()
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset_filtered_productList, 1)
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+        
     context = {
-          'qs': queryset ,
+          'qs': products,
           'cc': colors,
           'sub_slug': slug,
           'get_params': present,

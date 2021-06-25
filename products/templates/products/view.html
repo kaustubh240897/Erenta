@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 {% url 'products:query_5' as category_list_url_5 %}
   <title>{{ title }}</title>
@@ -19,7 +19,7 @@
     });
   </script>
 
-    {% if qs.exists %}
+    {% if qs %}
 
   <div class='container'>
               <div class='text-center'>
@@ -243,58 +243,57 @@
 
 
 
-<div class="container d-none d-md-block" style="background-color: white;">
-      <br/>
-    
-         <div class='row'>
-        
+<div class="container " style="background-color: white;">
 
-         {% for obj in qs %}
+  <br/>
+   <!-- <section class="text-center"> -->
 
-         <div class="col-lg-3 col-md-4 col-sm-4 mb-4" style="display: flex;
-        flex-wrap: wrap; flex-grow: 1;
-        flex-basis: 100px; flex-shrink: inherit;
+    <div id="row_lg" class="d-flex flex-row flex-wrap prodList infinite-container">
 
-        justify-content: space-between;flex: calc(30% - 5em);" >
+          <!--Grid column-->
+           {% for obj in qs %}
+          <div class="col-6 col-lg-3 col-md-4 col-sm-4 p-0 m-0 prod infinite-item" data-price-item="{% if obj.discount_price %} {{ obj.discount_price }} {%else%} {{ obj.cost_per_day }} {%endif%}">
 
-   
-          
-       
-          {% include 'products/snippets/card.html' with instance=obj %}
-         
-      </div>
-     {% endfor %}
 
-     
-     </div>
+                  {% include 'products/snippets/card.html' with instance=obj %}
 
-     
+                  </div>
+
+           {% endfor %}
 
     </div>
 
 
-    <div class="container d-md-none" style="background-color: white;">
-      <br/>
-      <!-- <section class="text-center"> -->
-      
-      <div class="d-flex flex-row flex-wrap">
-      
-            <!--Grid column-->
-             {% for obj in qs %}
-            <div class="col-6 text-center p-0 m-0" >
-      
-      
-                    {% include 'products/snippets/card.html' with instance=obj %}
-      
-                    </div>
-      
-      
-             {% endfor %}
-       </div>
-      
-      
-      
-      </div>
+
+    {% if qs.has_next %}
+    <a class="infinite-more-link" href="?page={{ qs.next_page_number }}">More</a>
+    {% endif %}
+
+    <div class="loading" style="display: none;">
+    Loading...
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').hide();
+    }
+  });
+</script>
+
+
+
+</div>
+
+
+</div>
 
     {% else %}
      <h2>Oops There are no items in this category..</h2>

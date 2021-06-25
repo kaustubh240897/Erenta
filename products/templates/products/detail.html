@@ -463,7 +463,7 @@ $(function(){
         </div>
 
 
-         <div class='col-sm-12 col-lg-5 col-md-4 container'>
+         <div class='col-sm-12 col-lg-5 col-md-5 container'>
         <br/>
         <br/>
         <br/>
@@ -529,7 +529,7 @@ $(function(){
 
 
 
-          <div id="form_lg" class="d-none d-md-block" style=" background-color: lavender;">
+          <div id="form_lg" class="d-none d-md-block" style=" background-color:#ffffff;">
            <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
 
               {% trans "Quantity" %}-: <input class='form-control' name='qty' type='number' value='1' min='1' max='10' />
