@@ -8,7 +8,9 @@
 <script>
 
   const date_s = "{{ rent_periods_list|safe }}";
-  var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '');
+  console.log("backDate", date_s);
+  var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '') + ',03-07-2021' + ',04-07-2021' + ',05-07-2021';
+  console.log("backDateStr", datesStr);
   const dates = datesStr.split(',');
 
   function DisableSpecificDates(date) {
@@ -16,6 +18,7 @@
     return [dates.indexOf(string) == -1];
   }
 
+  $('input[type="date"]').attr('type','text');
   $(function() {
   $("#txtDate").datepicker({
     dateFormat: 'dd-mm-yy',
@@ -36,6 +39,28 @@ $(function() {
     maxDate: '+1Y',
     beforeShowDay: DisableSpecificDates
   });
+});
+
+$(function() {
+$("#txtDatelg").datepicker({
+  dateFormat: 'dd-mm-yy',
+  // changeYear: true,
+  // changeMonth:true,
+  minDate: new Date(),
+  maxDate: '+1Y',
+  beforeShowDay: DisableSpecificDates
+});
+});
+
+$(function() {
+$("#txtDatelg1").datepicker({
+  dateFormat: 'dd-mm-yy',
+  // changeYear: true,
+  // changeMonth:true,
+  minDate: new Date(),
+  maxDate: '+1Y',
+  beforeShowDay: DisableSpecificDates
+});
 });
 
 $(function(){
@@ -64,34 +89,95 @@ $(function(){
     var maxDate = year + '-' + month + '-' + day;
     // alert(maxDate);
     $('#txtDate').attr('min', maxDate);
+    $('#txtDatelg').attr('min', maxDate);
     //$('#txtDate1').attr('min', maxDate);
     $('#txtDate1').attr('min', maxDate1);
+    $('#txtDatelg1').attr('min', maxDate1);
 });
 </script>
 
 <script type="text/javascript">
-  function checkRentDates() {
+  function checkRentDates(id) {
     console.log("onChange", document.getElementById('txtDate1').value);
-    var dStart = document.getElementById('txtDate').value;
-    var dEnd = document.getElementById('txtDate1').value;
+    var dS = document.getElementById('txtDate').value;
+    var dE = document.getElementById('txtDate1').value;
+    var parts = dS.split('-');
+    var parts2 = dE.split('-');
+    var dStart = new Date(parts[2], parts[1] - 1, parts[0]);
+    var dEnd = new Date(parts2[2], parts2[1] - 1, parts2[0]);
     console.log("ds",dStart);
     console.log("de",dEnd);
     var td = new Date();
     var d = td.getDate();
     var m = td.getMonth() + 1;
+    if (d < 10 ) {
+      d = "0" + d.toString();
+    }
     if (m < 10 ) {
       m = "0" + m.toString();
     }
     var y = td.getFullYear();
-    var ntd = d + "-" + m + "-" + y;
+    var td2 = d + "-" + m + "-" + y;
+    var parts3 = td2.split('-');
+    var ntd = new Date(parts3[2], parts3[1] - 1, parts3[0]);
     console.log("ntd", ntd);
     for (var i = 0; i < dates.length; i++) {
-      if ((dates[i] > dStart && dates[i] < dEnd) || (dates[i] == dStart || dates[i] == dEnd) || (dStart < ntd || dEnd <ntd)) {
-        console.log(i, dates[i]);
+      var parts_temp = dates[i].split('-');
+      var tempDate = new Date(parts_temp[2], parts_temp[1] - 1, parts_temp[0]);
+
+      if ((tempDate.getTime() > dStart.getTime() && tempDate.getTime() < dEnd.getTime()) || (tempDate.getTime() == dStart.getTime() ||
+      tempDate.getTime() == dEnd.getTime()) || (dStart.getTime() < ntd.getTime() || dEnd.getTime() <ntd.getTime()) || (dEnd.getTime() < dStart.getTime())) {
+        console.log(i, tempDate);
+        console.log("td_gt", tempDate.getTime());
+        console.log("sd_gt", dStart.getTime());
+        console.log("ed_gt", dEnd.getTime());
+        console.log("ntd_gt", ntd.getTime());
         alert("Select correct dates");
-        console.log("td",td);
-        document.getElementById('txtDate1').value = ntd;
-        document.getElementById('txtDate').value = ntd;
+        document.getElementById(id).value = '';
+        // document.getElementById('txtDate').value = ntd;
+        break;
+      }
+    }
+  }
+
+  function checkRentDatesLg(id) {
+    console.log("onChange", document.getElementById('txtDatelg1').value);
+    var dS = document.getElementById('txtDatelg').value;
+    var dE = document.getElementById('txtDatelg1').value;
+    var parts = dS.split('-');
+    var parts2 = dE.split('-');
+    var dStart = new Date(parts[2], parts[1] - 1, parts[0]);
+    var dEnd = new Date(parts2[2], parts2[1] - 1, parts2[0]);
+    console.log("ds",dStart);
+    console.log("de",dEnd);
+    var ntd = new Date();
+    var td = new Date();
+    var d = td.getDate();
+    var m = td.getMonth() + 1;
+    if (d < 10 ) {
+      d = "0" + d.toString();
+    }
+    if (m < 10 ) {
+      m = "0" + m.toString();
+    }
+    var y = td.getFullYear();
+    var td2 = d + "-" + m + "-" + y;
+    var parts3 = td2.split('-');
+    var ntd = new Date(parts3[2], parts3[1] - 1, parts3[0]);
+    console.log("ntd", ntd);
+    for (var i = 0; i < dates.length; i++) {
+      var parts_temp = dates[i].split('-');
+      var tempDate = new Date(parts_temp[2], parts_temp[1] - 1, parts_temp[0]);
+      if ((tempDate.getTime() > dStart.getTime() && tempDate.getTime() < dEnd.getTime()) || (tempDate.getTime() == dStart.getTime() ||
+      tempDate.getTime() == dEnd.getTime()) || (dStart.getTime() < ntd.getTime() || dEnd.getTime() <ntd.getTime()) || (dEnd.getTime() < dStart.getTime())) {
+        console.log(i, tempDate);
+        console.log("td_gt", tempDate.getTime());
+        console.log("sd_gt", dStart.getTime());
+        console.log("ed_gt", dEnd.getTime());
+        console.log("ntd_gt", ntd.getTime());
+        alert("Select correct dates");
+        document.getElementById(id).value = '';
+        // document.getElementById('txtDate').value = ntd;
         break;
       }
     }
@@ -389,13 +475,13 @@ $(function(){
                 {% trans "Start Date" %}-:
                  <br/>
                 <i class="fas fa-calendar-week"></i>
-                 <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" onchange="checkRentDates()" />
+                 <input class='form-control' type="date" name='start_date' required='true' value='{{ today_date }}' id="txtDate" onchange="checkRentDates(this.id)" />
 
 
                 {% trans "End Date" %}-:
                 <br/>
                 <i class="fas fa-calendar-week"></i>
-                <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" onchange="checkRentDates()" />
+                <input class='form-control' type="date" name='end_date' required='true' value='' id="txtDate1" onchange="checkRentDates(this.id)" />
 
             {% if object.variation_set.all %}
 
@@ -536,13 +622,13 @@ $(function(){
               {% trans "Start Date" %}-:
                <br/>
               <i class="fas fa-calendar-week"></i>
-               <input class='form-control' type="text" name='start_date' required='True' value='{{ today_date }}' id="txtDate" onchange="checkRentDates()" />
+               <input class='form-control' type="date" name='start_date' required='true' value='' id="txtDatelg" onchange="checkRentDatesLg(this.id)" />
 
 
               {% trans "End Date" %}-:
               <br/>
               <i class="fas fa-calendar-week"></i>
-              <input class='form-control' type="text" name='end_date' required='True' value='{{ today_date }}' id="txtDate1" onchange="checkRentDates()" />
+              <input class='form-control' type="date" name='end_date' required='true' value='' id="txtDatelg1" onchange="checkRentDatesLg(this.id)" />
 
           {% if object.variation_set.all %}
 
@@ -770,7 +856,7 @@ $(function(){
             {% include 'analytics/trending_card.html' with instance=object %}
         </div>
       {% endfor %}
-     
+
 
 
     </div>
