@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from .views import product_list_view,ProductDetailSlugView,ProductImageUpdateView,my_productsimageView,my_productsquantityView,ProductQuantityUpdateView
-from .views import category_product_view_1,sub_category_product_view,sub_sub_category_product_view,sub_category_product_view_by_size,sub_sub_category_product_view_by_size
-from .views import sub_category_product_view_by_color,sub_sub_category_product_view_by_color,remove_rentalperiod,remove_variations,remove_quantity,remove_image,remove_tags
+from .views import category_product_view_1,sub_category_product_view,sub_sub_category_product_view
+from .views import remove_rentalperiod,remove_variations,remove_quantity,remove_image,remove_tags
 #from .views import  product_list_sort_by_low_to_high_view, product_list_sort_by_high_to_low_view
 
 
@@ -28,10 +28,10 @@ urlpatterns = [
     # path('Novels',category_product_view_2 , name='query_1'),
     # path('instruments',category_product_view_3 , name='query_3'),
     # path('Accessories',category_product_view_4 , name='query_4'),
-    path('sub_category/<slug>/<color>/',sub_category_product_view_by_color,name='query_5'),
-    path('sub_sub_category/<slug:slug>/<color>/',sub_sub_category_product_view_by_color,name='query_6'),
-    path('sub_category/size/<slug:slug>/<size>/',sub_category_product_view_by_size,name='size_sub_query'),
-    path('sub_sub_category/<slug:slug>/<size>/',sub_sub_category_product_view_by_size,name='size_sub_sub_query'),
+    # path('sub_category/<slug>/<color>/',sub_category_product_view_by_color,name='query_5'),
+    # path('sub_sub_category/<slug:slug>/<color>/',sub_sub_category_product_view_by_color,name='query_6'),
+    # path('sub_category/size/<slug:slug>/<size>/',sub_category_product_view_by_size,name='size_sub_query'),
+    # path('sub_sub_category/<slug:slug>/<size>/',sub_sub_category_product_view_by_size,name='size_sub_sub_query'),
     
    
 

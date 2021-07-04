@@ -1,8 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-{% url 'products:query_5' as category_list_url_5 %}
+
   <title>{{ title }}</title>
+  <style>
+    h1 {
+  margin: 0
+}
+.box {
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid grey;
+  border-radius: 8px;
+  background: #fff;
+}
+.hid-box {
+  top: 100%;
+  position: relative;
+  transition: all .3s ease-out;
+  height: 100%;
+}
+
+.box:hover > .hid-box{
+  top: 0;
+}
+
+  </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     $(document).ready(function(){
@@ -71,16 +95,11 @@
           <span class="checkmark"></span>
         </label>
 
-        <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug c.title %}"> -->
+        
           
         {% endfor %}
 
-        <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Red' %}">Red</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">Black</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">Green</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Blue' %}">Blue</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Mixed' %}">Mixed</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Other' %}">Other</a> -->
+        
 
       </div>
       <input style='display: none;' type="text" name='allselectedparameters' id="allcolorsvalues" size="10"> 
@@ -103,13 +122,9 @@
           <span class="checkmark"></span>
         </label>
 
-        <!-- <a class="dropdown-item" href="{% url 'products:size_sub_query' slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a> -->
+        
         {% endfor %}
-        <!-- <a class="dropdown-item" href="{% url 'products:query_5' slug 'Black' %}">XL</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Green' %}">L</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Blue' %}">M</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Mixed' %}">S</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' slug 'Other' %}">XS</a> -->
+       
 
       </div>
       </div>
@@ -134,14 +149,9 @@
       {% endif %}
       <span class="checkmark"></span>
     </label>
-        <!-- <a class="dropdown-item" href="{% url 'products:query_6' sub_slug c.title %}"></a> -->
+       
     {% endfor %}
-    <!-- <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Red' %}">Red</a>
-    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Black' %}">Black</a>
-    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Green' %}">Green</a>
-    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Blue' %}">Blue</a>
-    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Mixed' %}">Mixed</a>
-    <a class="dropdown-item" href="{% url 'products:query_6' sub_slug 'Other' %}">Other</a> -->
+    
 
   </div>
   <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues1" size="10"> 
@@ -164,13 +174,9 @@
           <span class="checkmark"></span>
         </label>
 
-        <!-- <a class="dropdown-item" href="{% url 'products:size_sub_sub_query' sub_slug s.title %}">{{ s.title|capfirst }} ({{ s.title__count }})</a> -->
+       
         {% endfor %}
-        <!-- <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Black' %}">XL</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Green' %}">L</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Blue' %}">M</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Mixed' %}">S</a>
-        <a class="dropdown-item" href="{% url 'products:query_5' sub_slug 'Other' %}">XS</a> -->
+        
 
       </div>
       </div>
@@ -289,8 +295,192 @@
 </script>
 
 
-
 </div>
+
+
+
+
+
+
+
+<div class="container d-md-none">
+  <div class="d-flex flex-row fixed-bottom">
+    <div id="sort" class="col-6 text-center py-2" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px" onclick="openSort()">
+      Sort
+    </div>
+    <div id="filter" class="col-6 text-center py-2" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px" onclick="openFilter()">
+      Filter
+    </div>
+  </div>
+  {% if slug %}
+  <form class='form' method='GET' action='{% url "products:query2" slug %}'>
+  {% elif sub_slug %}
+  <form class='form' method='GET' action='{% url "products:query1" sub_slug %}'>
+  {% endif %}
+    <div id="filter_container" class="box fixed-bottom d-none">
+      <div id="filter_box" class="hid-box">
+        <div class="d-flex flex-row mb-3">
+          <div id="cancel" class="col-6 text-left py-2" style="color: blue; font-weight: bold" onclick="closeFilter()">
+            Cancel
+          </div>
+          <div id="clear_filter" class="col-6 text-right py-2" style="color: blue; font-weight: bold" onclick="clearFilter()">
+            Clear Filters
+          </div>
+        </div>
+
+
+
+    {% for c in cc %}
+        <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
+          {% if c.title in get_params %}
+              <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
+
+              {% else %}
+
+              <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
+
+          {% endif %}
+          <span class="checkmark"></span>
+        </label>
+          
+    {% endfor %}
+
+
+
+    {% for s in ss %}
+
+    <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
+      {% if s.title in get_params %}
+        <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
+      {% else %}
+        <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
+      {% endif %}
+      <span class="checkmark"></span>
+    </label>
+
+   
+    {% endfor %}
+
+
+
+
+        <div class="d-flex flex-row px-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="filterCheck1">
+            <label class="form-check-label" for="filterCheck1">Check me out</label>
+          </div>
+        </div>
+        <div class="d-flex flex-row px-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="filterCheck2">
+            <label class="form-check-label" for="filterCheck2">Check me out</label>
+          </div>
+        </div>
+        <div class="d-flex flex-row px-3">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="filterCheck3">
+            <label class="form-check-label" for="filterCheck3">Check me out</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row fixed-bottom">
+      <button id="submit_filter" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" onclick="applyFilter()" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px">Apply</button>
+    </div>
+  </form>
+  <form class="" action="index.html" method="post">
+    <div id="sort_container" class="box fixed-bottom d-none" style="height: 200px">
+      <div id="sort_box" class="hid-box">
+        <div class="d-flex flex-row">
+          <div id="cancel_sort" class="col-6 text-left py-2" style="color: blue; font-weight: bold" onclick="closeSort()">
+            Cancel
+          </div>
+        </div>
+        <div class="d-flex flex-row px-3 mt-1">
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck1" checked>
+            <label class="form-check-label" for="sortCheck1">Check me out1</label>
+          </div>
+        </div>
+        <div class="d-flex flex-row px-3">
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck2">
+            <label class="form-check-label" for="sortCheck2">Check me out2</label>
+          </div>
+        </div>
+        <div class="d-flex flex-row px-3">
+          <div class="form-check">
+            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck3">
+            <label class="form-check-label" for="sortCheck3">Check me out3</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row fixed-bottom">
+      <button id="submit_sort" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px" onclick="applySort()">Apply</button>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  var isFilter = false;
+
+  function applySort() {
+    document.getElementById("sort").className = "col-6 text-center py-2";
+    document.getElementById("filter").className = "col-6 text-center py-2";
+    document.getElementById("sort_container").className = "box fixed-bottom d-none";
+    document.getElementById("sort_box").style.top = "100%";
+    document.getElementById("submit_sort").className = "d-none";
+  }
+
+  function applyFilter() {
+    document.getElementById("sort").className = "col-6 text-center py-2";
+    document.getElementById("filter").className = "col-6 text-center py-2";
+    document.getElementById("filter_container").className = "box fixed-bottom d-none";
+    document.getElementById("filter_box").style.top = "100%";
+    document.getElementById("submit_filter").className = "d-none";
+  }
+
+  function openFilter() {
+    // console.log("ss");
+    document.getElementById("sort").className = "d-none";
+    document.getElementById("filter").className = "d-none";
+    document.getElementById("filter_container").className = "box fixed-bottom";
+    document.getElementById("filter_box").style.top = "0";
+    document.getElementById("submit_filter").className = "col-12 text-center py-2 w-100";
+  }
+
+  var isSort = false;
+  function openSort() {
+    // console.log("ss");
+    document.getElementById("filter").className = "d-none";
+    document.getElementById("sort").className = "d-none";
+    document.getElementById("sort_container").className = "box fixed-bottom";
+    document.getElementById("sort_box").style.top = "0";
+    document.getElementById("submit_sort").className = "col-12 text-center py-2 w-100";
+  }
+
+  function clearFilter() {
+    document.getElementById("filterCheck1").checked = false;
+    document.getElementById("filterCheck2").checked = false;
+    document.getElementById("filterCheck3").checked = false;
+  }
+
+  function closeFilter() {
+    document.getElementById("filter_container").className = "box fixed-bottom d-none";
+    document.getElementById("filter_box").style.top = "100%";
+    document.getElementById("sort").className = "col-6 text-center py-2";
+    document.getElementById("filter").className = "col-6 text-center py-2";
+    document.getElementById("submit_filter").className = "d-none";
+  }
+
+  function closeSort() {
+    document.getElementById("sort").className = "col-6 text-center py-2";
+    document.getElementById("filter").className = "col-6 text-center py-2";
+    document.getElementById("sort_container").className = "box fixed-bottom d-none";
+    document.getElementById("sort_box").style.top = "100%";
+    document.getElementById("submit_sort").className = "d-none";
+  }
+</script>
 
 
 </div>
