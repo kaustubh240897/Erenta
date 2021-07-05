@@ -421,7 +421,7 @@ $(function(){
 
               <div class='row'>
 
-                <div class='col-lg-4 col-md-6 col-sm-12' >
+                <div class='col-md-6 col-sm-12' >
                       <br/>
             <h2 class="text-center margin-r"> <strong>{{ object.product_name|capfirst }} </strong></h2>
 
@@ -467,6 +467,27 @@ $(function(){
 
                     </div>
                   </div>
+
+                  <hr/>
+
+                  <div>
+                    <h3 class="text-center">{% trans "AboutItem" %}</h3>
+        
+                       {{ object.description|linebreaks }}<br/>
+        
+                  </div>
+                  <br/>
+                   <div class="text-center">
+                    * If you have any query for item contact to supplier.
+                     {% for obj in object.user.supplier_set.all %}
+                    <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
+        
+                      {% trans "Contact" %} -: {{ obj.Mobile_number }} <br/>
+                      {% trans "ContactTiming" %} -:  {{ obj.receive_message_time }}
+        
+                       {% endfor %}
+                  </div>
+
             <br/>
             <div id="form_xs" class="d-md-none mb-3" style=" background-color: lavender;">
              <form class='form' style="padding: 60px; " method='POST' action='{% url "cart:add_to_cart" object.id %}'> {% csrf_token %}
@@ -522,34 +543,18 @@ $(function(){
 
 
           </div>
-          <div class="container text-center" style="background-color: #007b5e; color: white;">
-            <h3 class="text-center">{% trans "AboutItem" %}</h3>
-
-               {{ object.description|linebreaks }}<br/>
-
-          </div>
-          <br/>
-           <div class="container text-center " style="background-color: white; color: black;">
-            * If you have any query for item contact to supplier.
-             {% for obj in object.user.supplier_set.all %}
-            <h3 class="text-center">Meet {{ obj.Nick_name }} </h3>
-
-              {% trans "Contact" %} -: {{ obj.Mobile_number }} <br/>
-              {% trans "ContactTiming" %} -:  {{ obj.receive_message_time }}
-
-               {% endfor %}
-          </div>
+          
 
 
       </div>
 
 
-        <div class=' col-lg-3 col-md-1'>
+        <div class='col-md-1'>
 
         </div>
 
 
-         <div class='col-sm-12 col-lg-5 col-md-5 container'>
+         <div class='col-sm-12 col-md-5 container'>
         <br/>
         <br/>
         <br/>
