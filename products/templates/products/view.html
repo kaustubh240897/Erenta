@@ -10,16 +10,16 @@
 .box {
   height: 500px;
   width: 100%;
-  overflow: hidden;
+  overflow: scroll;
   border: 1px solid grey;
   border-radius: 8px;
   background: #fff;
 }
 .hid-box {
-  top: 100%;
+  top: 80%;
   position: relative;
   transition: all .3s ease-out;
-  height: 100%;
+  height: auto;
 }
 
 .box:hover > .hid-box{
@@ -46,6 +46,7 @@
 
     $(document).ready(function(){
       $('.colorcheckedvalues1').click(function(){
+        console.log("script_top", "work");
         var txt = "";
         $('.colorcheckedvalues1:checked').each(function(){
           txt+=$(this).val()+","
@@ -61,7 +62,7 @@
     {% if qs %}
 
   <div class='container'>
-              <div class='text-center'>
+              <div class='d-none d-lg-block text-center '>
 
       <h3> {% if slug %} Subcategory -: {{ slug|capfirst }} {% elif sub_slug %} SubSubcategory -: {{ sub_slug|capfirst }} {% elif cat_slug %} Category -: {{ cat_slug|capfirst }} {% endif %}</h3>
 
@@ -73,7 +74,7 @@
             </div>
 
     </div>
-    <div class="d-flex flex-row">
+    <div class="d-none d-lg-flex flex-row">
      <!-- <div class="dropdown">
        <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Filter by Price
@@ -109,17 +110,17 @@
 
             {% endif %}
 
-        
-          
-       
 
-        
+
+
+
+
 
 
             <span class="checkmark"></span>
           </label>
           {% endfor %}
-       
+
 
 
         </div>
@@ -143,9 +144,9 @@
             <span class="checkmark"></span>
           </label>
 
-          
+
           {% endfor %}
-          
+
 
         </div>
         </div>
@@ -154,54 +155,56 @@
     </form>
       {% elif sub_slug %}
   <form class='form' method='GET' action='{% url "products:query2" sub_slug %}'>
-      <div class="dropdown mx-2">
-    <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Filter by Color
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-    {% for c in cc %}
-    <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
-      {% if c.title in get_params %}
-          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
+      <div class="d-flex flex-row mt-1">
+        <div class="dropdown mx-2">
+      <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Filter by Color
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      {% for c in cc %}
+      <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
+        {% if c.title in get_params %}
+            <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
 
-          {% else %}
+            {% else %}
 
-          <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
+            <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
 
-      {% endif %}
-      <span class="checkmark"></span>
-    </label>
-       
-    {% endfor %}
-    
+        {% endif %}
+        <span class="checkmark"></span>
+      </label>
 
+      {% endfor %}
+
+
+    </div>
+    <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues1" size="10">
   </div>
-  <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues1" size="10">
-</div>
 
 
-      <div class="dropdown mx-2">
-        <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Filter by Size
-      </a>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        {% for s in ss %}
+        <div class="dropdown mx-2">
+          <a class="btn btn-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Filter by Size
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          {% for s in ss %}
 
-        <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
-          {% if s.title in get_params %}
-            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
-          {% else %}
-            <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
-          {% endif %}
-          <span class="checkmark"></span>
-        </label>
+          <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
+            {% if s.title in get_params %}
+              <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
+            {% else %}
+              <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
+            {% endif %}
+            <span class="checkmark"></span>
+          </label>
 
-       
-        {% endfor %}
-        
 
-      </div>
-      <button class='btn btn-success' type="submit">Apply</button>
+          {% endfor %}
+
+
+        </div>
+        <button class='btn btn-success' type="submit">Apply</button>
+        </div>
       </div>
     </form>
       {% endif %}
@@ -210,7 +213,7 @@
     <br/>
 
     {% if cat_slug %}
-    <div class='row'>
+    <div class='row d-none d-lg-block'>
       <span class="badge badge-pill badge-secondary py-2 px-1 ml-2" style='cursor: pointer;'  data-toggle="modal" data-target="#exampleModalCenter">
         Sub Categories >
       </span>
@@ -222,7 +225,7 @@
 
       </div>
       {% elif slug %}
-      <div class='row'>
+      <div class='row d-none d-lg-block'>
         <span class="badge badge-pill badge-secondary py-2 px-1 ml-2" style='cursor: pointer;' data-toggle="modal" data-target="#exampleModalCenter">
           Sub Sub Categories >
         </span>
@@ -335,13 +338,13 @@
     </div>
   </div>
   {% if slug %}
-  <form class='form' method='GET' action='{% url "products:query2" slug %}'>
+  <form class='form' method='GET' action='{% url "products:query1" slug %}'>
   {% elif sub_slug %}
-  <form class='form' method='GET' action='{% url "products:query1" sub_slug %}'>
+  <form class='form' method='GET' action='{% url "products:query2" sub_slug %}'>
   {% endif %}
-    <div id="filter_container" class="box fixed-bottom d-none">
-      <div id="filter_box" class="hid-box">
-        <div class="d-flex flex-row mb-3">
+    <div id="filter_container" class="box fixed-bottom d-none pb-3">
+      <div id="filter_box" class="hid-box mb-3 pb-3">
+        <div class="d-flex flex-row">
           <div id="cancel" class="col-6 text-left py-2" style="color: blue; font-weight: bold" onclick="closeFilter()">
             Cancel
           </div>
@@ -353,27 +356,34 @@
 
 
     {% for c in cc %}
-        <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
-          {% if c.title in get_params %}
-              <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox" checked>
+        <div class="d-flex flex-row">
+          <div class="col">
+            <label class="container mb-3"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'></span><span class="px-1">{{ c.title|capfirst }} ({{ c.title__count }})</span>
+          </div>
+            {% if c.title in get_params %}
+                <div class="col">
+                  <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox" checked>
+                </div>
 
-              {% else %}
+                {% else %}
 
-              <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox">
+                <div class="col">
+                  <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox">
+                </div>
 
-          {% endif %}
-          <span class="checkmark"></span>
-        </label>
-          
+            {% endif %}
+          </label>
+        </div>
+
     {% endfor %}
 
     {% if slug %}
 
-    <input style='display: none;' type="text" name='allselectedparameters' id="allcolorsvalues2" size="10"> 
+    <input style="display: none" type="text" name='allselectedparameters' id="allcolorsvalues2" size="10">
 
     {% elif sub_slug %}
 
-    <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues3" size="10"> 
+    <input style="display: none" type="text" name='allselectedcolors' id="allcolorsvalues3" size="10">
 
     {% endif %}
 
@@ -381,25 +391,27 @@
 
     {% for s in ss %}
 
-    <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
-      {% if s.title in get_params %}
-        <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox" checked>
-      {% else %}
-        <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox">
-      {% endif %}
-      <span class="checkmark"></span>
-    </label>
+    <div class="d-flex flex-row">
+      <label class="container mb-3 pb-3">{{ s.title|capfirst }} ({{ s.title__count }})
+        {% if s.title in get_params %}
+          <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox" checked>
+        {% else %}
+          <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox">
+        {% endif %}
+        <span class="checkmark"></span>
+      </label>
+    </div>
 
-   
+
     {% endfor %}
 
 
 
 
-        
+
     </div>
     <div class="d-flex flex-row fixed-bottom">
-      <button id="submit_filter" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" onclick="applyFilter()" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px">Apply</button>
+      <button id="submit_filter" type="submit" name="button" class="d-none col-12 text-center py-2 w-100"  style="color: white; background: green; border: 2px solid #007500; border-radius: 4px">Apply</button>
     </div>
   </form>
   <form class="" action="index.html" method="post">
