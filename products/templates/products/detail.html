@@ -9,7 +9,7 @@
 
   const date_s = "{{ rent_periods_list|safe }}";
   console.log("backDate", date_s);
-  var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '') + ',03-07-2021' + ',04-07-2021' + ',05-07-2021';
+  var datesStr = date_s.replace(/[&\/\\#+()$~%.'":*?<>{}\[\]\s+]/g, '');
   console.log("backDateStr", datesStr);
   const dates = datesStr.split(',');
 
