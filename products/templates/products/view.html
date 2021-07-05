@@ -41,6 +41,21 @@
 
       });
     });
+
+
+
+    $(document).ready(function(){
+      $('.colorcheckedvalues1').click(function(){
+        var txt = "";
+        $('.colorcheckedvalues1:checked').each(function(){
+          txt+=$(this).val()+","
+
+        });
+        $('#allcolorsvalues2').val(txt);
+        $('#allcolorsvalues3').val(txt);
+
+      });
+    });
   </script>
 
     {% if qs %}
@@ -333,11 +348,11 @@
     {% for c in cc %}
         <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
           {% if c.title in get_params %}
-              <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
+              <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox" checked>
 
               {% else %}
 
-              <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox">
+              <input class='colorcheckedvalues1' value="{{ c.title }}" type="checkbox">
 
           {% endif %}
           <span class="checkmark"></span>
@@ -345,15 +360,25 @@
           
     {% endfor %}
 
+    {% if slug %}
+
+    <input style='display: none;' type="text" name='allselectedparameters' id="allcolorsvalues2" size="10"> 
+
+    {% elif sub_slug %}
+
+    <input style='display: none;' type="text" name='allselectedcolors' id="allcolorsvalues3" size="10"> 
+
+    {% endif %}
+
 
 
     {% for s in ss %}
 
     <label class="container">{{ s.title|capfirst }} ({{ s.title__count }})
       {% if s.title in get_params %}
-        <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox" checked>
+        <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox" checked>
       {% else %}
-        <input class='colorcheckedvalues' value="{{ s.title }}" type="checkbox">
+        <input class='colorcheckedvalues1' value="{{ s.title }}" type="checkbox">
       {% endif %}
       <span class="checkmark"></span>
     </label>
@@ -364,25 +389,7 @@
 
 
 
-        <div class="d-flex flex-row px-3">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="filterCheck1">
-            <label class="form-check-label" for="filterCheck1">Check me out</label>
-          </div>
-        </div>
-        <div class="d-flex flex-row px-3">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="filterCheck2">
-            <label class="form-check-label" for="filterCheck2">Check me out</label>
-          </div>
-        </div>
-        <div class="d-flex flex-row px-3">
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="filterCheck3">
-            <label class="form-check-label" for="filterCheck3">Check me out</label>
-          </div>
-        </div>
-      </div>
+        
     </div>
     <div class="d-flex flex-row fixed-bottom">
       <button id="submit_filter" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" onclick="applyFilter()" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px">Apply</button>
