@@ -426,6 +426,12 @@ a.remove:hover {
   }
 }
 
+@media screen and (max-width: 600px) {
+  .mar {
+    margin-top: -100px !important;
+  }
+}
+
 </style>
 
 {% if cart.cartitem_set.exists %}
@@ -455,11 +461,11 @@ a.remove:hover {
         transform: translateY(-40%);
         z-index: 50;
       }
-      
+
     </style>
   </head>
   <body>
-  
+
     <div class="container-fluid p-3" style="background: #fff">
       <div class="container">
         <div class="container d-lg-none multi_step_form">
@@ -501,10 +507,10 @@ a.remove:hover {
       </div>
     </div>
     {% for item in cart.cartitem_set.all %}
-    
+
     <div class="container overlay-pd mt-3">
       <div class="container p-3" style="background: #fff !important">
-        
+
         <div class="row">
           {{ forloop.counter }}.
           <div class="col-xs-2 col-md-1">
@@ -529,36 +535,36 @@ a.remove:hover {
                            {% if item.product.discount_price %}
                            <strike>Y{{ item.product.cost_per_day }} </strike>
 
-     Y{{ item.product.discount_price }} / 日 
-        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span> 
+     Y{{ item.product.discount_price }} / 日
+        <span class="badge badge-success">Saving ${{ item.get_amount_saved }}</span>
       {% else %}
-      <td>${{ item.product.cost_per_day }} / 日 
+      <td>${{ item.product.cost_per_day }} / 日
       {% endif %}</p>
               </div>
               <div class="col-sm-2 col-md-2 ml-0">
                 <p class="border border-success rounded px-1 ml-0" style="background-color: #1daf9e; text-align: left; color: #ffffff;">{{ item.product.brand }}</p>
               </div>
               {% if item.variations.all %}
-              {% for subitem in item.variations.all %} 
+              {% for subitem in item.variations.all %}
               {% if subitem.category == 'size' %}
               <div class="col-sm-3 col-md-3">
                 <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
-                  
+
                  <b>{{ subitem.title|capfirst }}サイズ </b>
-                 
+
                 </p>
               </div>
               {% endif %}
                  {% endfor %}
-              {% for subitem in item.variations.all %} 
+              {% for subitem in item.variations.all %}
                  {% if subitem.category == 'color' %}
-          
+
               <div class="col-sm-3 col-md-3">
                 <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">
-                  
+
                  <b>{{ subitem.title|capfirst }} {{ subitem.category }} </b>
-                 
-          
+
+
                 </p>
               </div>
               {% endif %}
@@ -567,7 +573,7 @@ a.remove:hover {
               <div class="col-sm-2 col-md-2">
                 <p class="border border-success rounded px-1" style="background-color: #1daf9e; text-align: left; color: #ffffff;">送料別</p>
               </div>
-              
+
             </div>
           </div>
           <div class="col-xs-1 col-md-2 text-right float-right">
@@ -581,7 +587,7 @@ a.remove:hover {
                       font-style: normal;
                       font-size: 125%;
                       color: #1daf9e;">Y{{ item.line_total }}
-                                          
+
               </p>
               <div class="removeWrap">
                 <a class="remove" href='{% url "cart:remove_cart" item.id %}' ><i class='fa fa-trash' style="color: black;"></i></a>
@@ -590,7 +596,7 @@ a.remove:hover {
         </div>
       </div>
     </div>
-    <div class="container">
+    <div class="container mar">
       <div class="container p-3" style="background-color: #ffffff;">
         <div class="row p-3">
           <div class="col col-md-2">
@@ -629,9 +635,9 @@ a.remove:hover {
     <div class="subtotal cf">
       <ul style='list-style: none;'>
         <li class="totalRow"><span class="label">Subtotal</span><span class="value">${{ cart.subtotal }}</span></li>
-        
+
             <li class="totalRow"><span class="label">Shipping</span><span class="value">$15.00</span></li>
-        
+
               <li class="totalRow"><span class="label">Tax</span><span class="value">${{ cart.tax }}</span></li>
               <li class="totalRow final"><span class="label">Total</span><span class="value"> ${{ cart.total }}</span></li>
         <li class="totalRow"><a  href='{% url "cart:checkout" %}' class="btn1 btn continue" style="color: #ffffff; border-radius: 4px; background-color: #1daf9e; margin-bottom: 5rem;">次へ進む</a></li>
@@ -645,11 +651,10 @@ a.remove:hover {
     <br/>
     <br/>
 
-    
-    
+
+
   </body>
 
-  
 
 
 
@@ -659,7 +664,8 @@ a.remove:hover {
 
 
 
-  
+
+
 
 
 
