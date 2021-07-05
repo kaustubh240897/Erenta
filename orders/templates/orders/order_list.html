@@ -355,6 +355,7 @@
                 pSw.setAttribute("style", "background-color: #e06a3b; color: #555555;");
                 if (j == 0) {
                   var nodeSw = document.createTextNode("申請");
+                  pSw.setAttribute("style", "background-color: #a9a9a9; color: #555555;");
                   pSw.appendChild(nodeSw);
                   colSw.appendChild(pSw);
                 } else if (j == 1) {
@@ -417,10 +418,10 @@
           }
         }
 
-    
+
 
         var listElm2 = document.getElementById('infList2');
-    
+
         // Add 20 items.
         var start2 = 0;
         var end2 = 0;
@@ -581,6 +582,7 @@
                 colSw.appendChild(pSw);
               } else if (j == 1) {
                 var nodeSw = document.createTextNode("支払");
+                pSw.setAttribute("style", "background-color: #a9a9a9; color: #555555;");
                 pSw.appendChild(nodeSw);
                 colSw.appendChild(pSw);
               } else if (j == 2) {
@@ -642,7 +644,7 @@
           start2 = end2;
         }
       }
-    
+
 
       var listElm3 = document.getElementById('infList3');
 
@@ -814,6 +816,7 @@
               colSw.appendChild(pSw);
             } else if (j == 2) {
               var nodeSw = document.createTextNode("発送");
+              pSw.setAttribute("style", "background-color: #a9a9a9; color: #555555;");
               pSw.appendChild(nodeSw);
               colSw.appendChild(pSw);
             } else if (j == 3) {
@@ -1047,6 +1050,7 @@
             colSw.appendChild(pSw);
           } else if (j == 4) {
             var nodeSw = document.createTextNode("レンタル期間");
+            pSw.setAttribute("style", "background-color: #a9a9a9; color: #555555;");
             pSw.appendChild(nodeSw);
             colSw.appendChild(pSw);
           } else if (j == 5) {
@@ -1289,6 +1293,7 @@ console.log("qs5",qs_5);
           colSw.appendChild(a);
         } else if (j == 7) {
           var nodeSw = document.createTextNode("取引終了");
+          pSw.setAttribute("style", "background-color: #a9a9a9; color: #555555;");
           pSw.appendChild(nodeSw);
           colSw.appendChild(pSw);
         }
