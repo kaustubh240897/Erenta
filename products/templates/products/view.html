@@ -16,7 +16,7 @@
   background: #fff;
 }
 .hid-box {
-  top: 80%;
+  top: 100%;
   position: relative;
   transition: all .3s ease-out;
   height: auto;
@@ -97,7 +97,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           {% for c in cc %}
 
-          <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;  {{ c.title|capfirst }} ({{ c.title__count }})</span>
+          <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'></span><span class="px-1">{{ c.title|capfirst }} ({{ c.title__count }})</span>
 
             {% if c.title in get_params %}
 
@@ -162,7 +162,7 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
       {% for c in cc %}
-      <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'>&emsp; &emsp;{{ c.title|capfirst }} ({{ c.title__count }})</span>
+      <label class="container"><span style='height: 25px; width: 25px; background-color: {{ c.title }}; border-radius: 50%; display: inline-block;'></span><span class="px-1">{{ c.title|capfirst }} ({{ c.title__count }})</span>
         {% if c.title in get_params %}
             <input class='colorcheckedvalues' value="{{ c.title }}" type="checkbox" checked>
 
@@ -414,38 +414,38 @@
       <button id="submit_filter" type="submit" name="button" class="d-none col-12 text-center py-2 w-100"  style="color: white; background: green; border: 2px solid #007500; border-radius: 4px">Apply</button>
     </div>
   </form>
-  <form class="" action="index.html" method="post">
-    <div id="sort_container" class="box fixed-bottom d-none" style="height: 200px">
-      <div id="sort_box" class="hid-box">
-        <div class="d-flex flex-row">
-          <div id="cancel_sort" class="col-6 text-left py-2" style="color: blue; font-weight: bold" onclick="closeSort()">
-            Cancel
-          </div>
-        </div>
-        <div class="d-flex flex-row px-3 mt-1">
-          <div class="form-check">
-            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck1" checked>
-            <label class="form-check-label" for="sortCheck1">Check me out1</label>
-          </div>
-        </div>
-        <div class="d-flex flex-row px-3">
-          <div class="form-check">
-            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck2">
-            <label class="form-check-label" for="sortCheck2">Check me out2</label>
-          </div>
-        </div>
-        <div class="d-flex flex-row px-3">
-          <div class="form-check">
-            <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck3">
-            <label class="form-check-label" for="sortCheck3">Check me out3</label>
-          </div>
+</div>
+<div class="container d-md-none">
+  <div id="sort_container" class="box fixed-bottom d-none" style="height: 200px">
+    <div id="sort_box" class="hid-box mb-3 pb-3">
+      <div class="d-flex flex-row">
+        <div id="cancel_sort" class="col-6 text-left py-2" style="color: blue; font-weight: bold" onclick="closeSort()">
+          Cancel
         </div>
       </div>
+      <div class="d-flex flex-row px-3 mt-1">
+        <div class="form-check">
+          <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck1" onclick="sortProductsPriceAscending()" checked>
+          <label class="form-check-label" for="sortCheck1">Price : Low to High</label>
+        </div>
+      </div>
+      <div class="d-flex flex-row px-3">
+        <div class="form-check">
+          <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck2" onclick="sortProductsPriceDescending()">
+          <label class="form-check-label" for="sortCheck2">Price : High to Low</label>
+        </div>
+      </div>
+      <!-- <div class="d-flex flex-row px-3">
+        <div class="form-check">
+          <input type="radio" class="form-check-input" name="sortRadio" id="sortCheck3">
+          <label class="form-check-label" for="sortCheck3">Check me out3</label>
+        </div>
+      </div> -->
     </div>
-    <div class="d-flex flex-row fixed-bottom">
-      <button id="submit_sort" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" style="color: white; background: green; border: 2px solid #007500; border-radius: 4px" onclick="applySort()">Apply</button>
-    </div>
-  </form>
+  </div>
+  <div class="d-flex flex-row fixed-bottom">
+    <button id="submit_sort" type="submit" name="button" class="d-none col-12 text-center py-2 w-100" style="z-index: 500 !important; color: white; background: green; border: 2px solid #007500; border-radius: 4px" onclick="applySort()">Close</button>
+  </div>
 </div>
 <script type="text/javascript">
   var isFilter = false;
@@ -477,10 +477,10 @@
 
   var isSort = false;
   function openSort() {
-    // console.log("ss");
+    console.log("opensort");
     document.getElementById("filter").className = "d-none";
     document.getElementById("sort").className = "d-none";
-    document.getElementById("sort_container").className = "box fixed-bottom";
+    document.getElementById("sort_container").className = "box fixed-bottom pb-3";
     document.getElementById("sort_box").style.top = "0";
     document.getElementById("submit_sort").className = "col-12 text-center py-2 w-100";
   }
@@ -506,6 +506,24 @@
     document.getElementById("sort_box").style.top = "100%";
     document.getElementById("submit_sort").className = "d-none";
   }
+
+  function sortProductsPriceAscending() {
+      var products = $('.prod');
+      //var productsXS = $('.prodXS');
+      products.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+      //productsXS.sort(function(a, b){ return $(a).data("price-item")-$(b).data("price-item")});
+      $(".prodList").html(products);
+      //$(".prodListXS").html(productsXS);
+  }
+  function sortProductsPriceDescending(){
+      var products = $('.prod');
+      //var productsXS = $('.prodXS');
+      products.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+      //productsXS.sort(function(a, b){ return $(b).data("price-item") - $(a).data("price-item")});
+      $(".prodList").html(products);
+      //$(".prodListXS").html(productsXS);
+  }
+  sortProductsPriceAscending();
 </script>
 
 
