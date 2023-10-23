@@ -27,13 +27,10 @@ SECRET_KEY = 'az07)e=s3ttmo+5l)!)1nw7!q=kd9sbah^&9qjj-(&y93q)167'
 
 ALLOWED_HOSTS = ['*']
 
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'kaustubh.dwi@gmail.com' # sendgrid
-# EMAIL_HOST_PASSWORD =  os.environ.get('EMAIL_HOST_PASSWORD', 'It12345cse')
-# EMAIL_PORT = 587
+
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Erenta <erentajapan@gmail.com>'
