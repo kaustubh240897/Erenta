@@ -1,5 +1,7 @@
 
 Ecommerce_Intern/settings/local.py
+Ecommerce_Intern/settings/production.py
+Ecommerce_Intern/settings/base.py
 
 .DS_STORE
 
@@ -101,6 +103,7 @@ vienv/
 env/
 venv/
 ENV/
+Ecommerce_Intern/aws/conf.py
 
 # Spyder project settings
 .spyderproject
