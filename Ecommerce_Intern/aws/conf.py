@@ -2,8 +2,8 @@ import datetime
 
 AWS_GROUP_NAME    = "kaustubh_rental_Group"
 AWS_USERNAME      = "kaustubh"
-AWS_ACCESS_KEY_ID = "AKIAXWWDIAQUDBIMUVGU"
-AWS_SECRET_ACCESS_KEY    = "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" 
+AWS_ACCESS_KEY_ID = ""
+AWS_SECRET_ACCESS_KEY    = "" 
 
 
 AWS_FILE_EXPIRE = 200
